@@ -45,6 +45,10 @@ class Users extends AbstractMigration
             'default' => null,
             'null' => true,
         ]);
+        $table->addColumn('is_admin', 'boolean', [
+            'default' => false,
+            'null' => false,
+        ]);
         $table->create();
 
         $this->afterChange();

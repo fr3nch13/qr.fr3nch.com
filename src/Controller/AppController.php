@@ -16,6 +16,9 @@ use Cake\Controller\Controller;
  *
  * @link https://book.cakephp.org/5/en/controllers.html#the-app-controller
  * @property \Authentication\Controller\Component\AuthenticationComponent $Authentication
+ * @property \Authorization\Controller\Component\AuthorizationComponent $Authorization
+ * @property \Cake\Controller\Component\FlashComponent $Flash
+ * @property \Cake\Controller\Component\FormProtectionComponent $FormProtection
  */
 class AppController extends Controller
 {
@@ -45,5 +48,10 @@ class AppController extends Controller
          * @link https://book.cakephp.org/5/en/tutorials-and-examples/cms/authentication.html
          */
         $this->loadComponent('Authentication.Authentication');
+
+        /**
+         *  @link https://book.cakephp.org/5/en/tutorials-and-examples/cms/authorization.html
+         */
+        $this->loadComponent('Authorization.Authorization');
     }
 }

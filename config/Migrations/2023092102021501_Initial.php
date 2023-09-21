@@ -115,6 +115,18 @@ class Initial extends AbstractMigration
             'default' => null,
             'null' => true,
         ])->addIndex(['source_id']);
+        $table->addColumn('user_id', 'integer', [
+            'default' => null,
+            'null' => true,
+        ])->addIndex(['user_id']);
+        $this->io->out(__('Adding Foreign Key: {0} -> {1}.{2}', [
+            'user_id', 'users', 'id'
+        ]));
+        $table->addForeignKey('user_id', 'users', 'id', [
+                'update' => 'NO_ACTION',
+                'delete' => 'SET_NULL',
+                'constraint' => 'qr_codes_user_id',
+            ]);
         $table->create();
 
         $this->io->out(__('Creating table: {0}', ['categories_qr_codes']));
@@ -131,7 +143,6 @@ class Initial extends AbstractMigration
         $this->io->out(__('Adding Foreign Key: {0} -> {1}.{2}', [
             'category_id', 'categories', 'id'
         ]));
-        // @todo #2 Figure out why my foreign keys aren't being created.
         $table->addForeignKey('category_id', 'categories', 'id', [
                 'update' => 'RESTRICT',
                 'delete' => 'CASCADE',
