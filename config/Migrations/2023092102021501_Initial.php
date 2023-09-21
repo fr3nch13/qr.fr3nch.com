@@ -131,7 +131,7 @@ class Initial extends AbstractMigration
         $this->io->out(__('Adding Foreign Key: {0} -> {1}.{2}', [
             'category_id', 'categories', 'id'
         ]));
-        // @todo Figure out why my foreign keys aren't being created.
+        // @todo #2 Figure out why my foreign keys aren't being created.
         $table->addForeignKey('category_id', 'categories', 'id', [
                 'update' => 'RESTRICT',
                 'delete' => 'CASCADE',
