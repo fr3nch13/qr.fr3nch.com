@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use App\Test\Fixture\SourcesFixture;
 use Migrations\AbstractSeed;
 
 /**
@@ -12,7 +13,7 @@ class SourceSeed extends AbstractSeed
 
     /**
      * The dependant records before this can be added.
-     * 
+     *
      * @return array<int, string> List of required seeds
      */
     public function getDependencies(): array
@@ -35,29 +36,11 @@ class SourceSeed extends AbstractSeed
     public function run(): void
     {
         $this->checkTable('sources');
-
-        $data = [
-            [
-                'id' => 1,
-                'key' => 'amazon',
-                'qr_code_key_field' => 'book',
-                'name' => 'Amazon',
-                'description' => 'Books for sale at Amazon',
-                'created' => date('Y-m-d H:i:s'),
-                'user_id' => 1,
-            ],
-            [
-                'id' => 2,
-                'key' => 'etsy',
-                'qr_code_key_field' => 'id',
-                'name' => 'Etsy',
-                'description' => 'Products for sale at my Etsy Store',
-                'created' => date('Y-m-d H:i:s'),
-                'user_id' => 1,
-            ],
-        ];
-
         $table = $this->table('sources');
+
+        $data = SourcesFixture::$data;
+        // add or change data here for the seeding.
+
         $table->insert($data)->save();
     }
 }

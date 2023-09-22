@@ -10,6 +10,29 @@ use Cake\TestSuite\Fixture\TestFixture;
  */
 class CategoriesFixture extends TestFixture
 {
+
+    /**
+     * @var array<int, array<string, mixed>> The data to insert
+     */
+    public static $data = [
+        [
+            'id' => 1,
+            'name' => 'Books',
+            'description' => 'List of available books',
+            'parent_id' => null,
+            'created' => date('Y-m-d H:i:s'),
+            'user_id' => 1,
+        ],
+        [
+            'id' => 2,
+            'name' => 'Journals',
+            'description' => 'Journals/Notebooks',
+            'parent_id' => 1,
+            'created' => date('Y-m-d H:i:s'),
+            'user_id' => 1,
+        ],
+    ];
+
     /**
      * Init method
      *
@@ -17,16 +40,7 @@ class CategoriesFixture extends TestFixture
      */
     public function init(): void
     {
-        $this->records = [
-            [
-                'id' => 1,
-                'name' => 'Lorem ipsum dolor sit amet',
-                'description' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-                'created' => '2023-09-21 05:20:50',
-                'modified' => '2023-09-21 05:20:50',
-                'parent_id' => 1,
-            ],
-        ];
+        $this->records = self::$data;
         parent::init();
     }
 }

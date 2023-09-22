@@ -10,6 +10,31 @@ use Cake\TestSuite\Fixture\TestFixture;
  */
 class SourcesFixture extends TestFixture
 {
+
+    /**
+     * @var array<int, array<string, mixed>> The data to insert
+     */
+    public static $data = [
+        [
+            'id' => 1,
+            'key' => 'amazon',
+            'qr_code_key_field' => 'book',
+            'name' => 'Amazon',
+            'description' => 'Books for sale at Amazon',
+            'created' => date('Y-m-d H:i:s'),
+            'user_id' => 1,
+        ],
+        [
+            'id' => 2,
+            'key' => 'etsy',
+            'qr_code_key_field' => 'id',
+            'name' => 'Etsy',
+            'description' => 'Products for sale at my Etsy Store',
+            'created' => date('Y-m-d H:i:s'),
+            'user_id' => 1,
+        ],
+    ];
+
     /**
      * Init method
      *
@@ -17,17 +42,7 @@ class SourcesFixture extends TestFixture
      */
     public function init(): void
     {
-        $this->records = [
-            [
-                'id' => 1,
-                'key' => 'Lorem ipsum dolor sit amet',
-                'qr_code_key_field' => 'Lorem ipsum dolor sit amet',
-                'name' => 'Lorem ipsum dolor sit amet',
-                'description' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-                'created' => '2023-09-21 05:21:03',
-                'modified' => '2023-09-21 05:21:03',
-            ],
-        ];
+        $this->records = self::$data;
         parent::init();
     }
 }

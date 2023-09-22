@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use App\Test\Fixture\QrCodesFixture;
 use Migrations\AbstractSeed;
 
 /**
@@ -12,7 +13,7 @@ class QrCodeSeed extends AbstractSeed
 
     /**
      * The dependant records before this can be added.
-     * 
+     *
      * @return array<int, string> List of required seeds
      */
     public function getDependencies(): array
@@ -36,22 +37,11 @@ class QrCodeSeed extends AbstractSeed
     public function run(): void
     {
         $this->checkTable('qr_codes');
-
-        $data = [
-            [
-                'id' => 1,
-                'key' => 'sownscribe',
-                'name' => 'Sow & Scribe',
-                'description' => 'The cute littly piggy journal/notebook',
-                'created' => date('Y-m-d H:i:s'),
-                'url' => 'https://amazon.com/path/to/details/page',
-                'bitly_id' => 'sownscribe',
-                'source_id' => 1,
-                'user_id' => 1,
-            ],
-        ];
-
         $table = $this->table('qr_codes');
+
+        $data = QrCodesFixture::$data;
+        // add or change data here for the seeding.
+
         $table->insert($data)->save();
     }
 }

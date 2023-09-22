@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\Fixture;
 
+use App\Seeds\QrCodeSeed;
 use Cake\TestSuite\Fixture\TestFixture;
 
 /**
@@ -10,6 +11,24 @@ use Cake\TestSuite\Fixture\TestFixture;
  */
 class QrCodesFixture extends TestFixture
 {
+
+    /**
+     * @var array<int, array<string, mixed>> The data to insert
+     */
+    public static $data = [
+        [
+            'id' => 1,
+            'key' => 'sownscribe',
+            'name' => 'Sow & Scribe',
+            'description' => 'The cute littly piggy journal/notebook',
+            'created' => date('Y-m-d H:i:s'),
+            'url' => 'https://amazon.com/path/to/details/page',
+            'bitly_id' => 'sownscribe',
+            'source_id' => 1,
+            'user_id' => 1,
+        ],
+    ];
+
     /**
      * Init method
      *
@@ -17,20 +36,7 @@ class QrCodesFixture extends TestFixture
      */
     public function init(): void
     {
-        $this->records = [
-            [
-                'id' => 1,
-                'key' => 'Lorem ipsum dolor sit amet',
-                'name' => 'Lorem ipsum dolor sit amet',
-                'description' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-                'created' => '2023-09-21 05:21:15',
-                'modified' => '2023-09-21 05:21:15',
-                'url' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-                'bitly_id' => 'Lorem ipsum dolor sit amet',
-                'source_id' => 1,
-                'user_id' => 1,
-            ],
-        ];
+        $this->records = self::$data;
         parent::init();
     }
 }

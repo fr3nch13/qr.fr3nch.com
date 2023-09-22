@@ -10,6 +10,18 @@ use Cake\TestSuite\Fixture\TestFixture;
  */
 class CategoriesQrCodesFixture extends TestFixture
 {
+
+    /**
+     * @var array<int, array<string, mixed>> The data to insert
+     */
+    public static $data = [
+        [
+            'id' => 1,
+            'qr_code_id' => 1,
+            'category_id' => 2,
+        ],
+    ];
+
     /**
      * Init method
      *
@@ -17,13 +29,7 @@ class CategoriesQrCodesFixture extends TestFixture
      */
     public function init(): void
     {
-        $this->records = [
-            [
-                'id' => 1,
-                'category_id' => 1,
-                'qr_code_id' => 1,
-            ],
-        ];
+        $this->records = self::$data;
         parent::init();
     }
 }

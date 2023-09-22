@@ -10,6 +10,37 @@ use Cake\TestSuite\Fixture\TestFixture;
  */
 class TagsFixture extends TestFixture
 {
+
+    /**
+     * @var array<int, array<string, mixed>> The data to insert
+     */
+    public static $data = [
+        [
+            'id' => 1,
+            'name' => 'Notebook',
+            'created' => date('Y-m-d H:i:s'),
+            'user_id' => 1,
+        ],
+        [
+            'id' => 2,
+            'name' => 'Journal',
+            'created' => date('Y-m-d H:i:s'),
+            'user_id' => 1,
+        ],
+        [
+            'id' => 3,
+            'name' => 'Amazon',
+            'created' => date('Y-m-d H:i:s'),
+            'user_id' => 1,
+        ],
+        [
+            'id' => 4,
+            'name' => 'Pig',
+            'created' => date('Y-m-d H:i:s'),
+            'user_id' => 1,
+        ],
+    ];
+
     /**
      * Init method
      *
@@ -17,14 +48,7 @@ class TagsFixture extends TestFixture
      */
     public function init(): void
     {
-        $this->records = [
-            [
-                'id' => 1,
-                'name' => 'Lorem ipsum dolor sit amet',
-                'created' => '2023-09-21 05:21:47',
-                'modified' => '2023-09-21 05:21:47',
-            ],
-        ];
+        $this->records = self::$data;
         parent::init();
     }
 }

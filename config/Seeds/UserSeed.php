@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use Cake\Core\Configure;
+use App\Test\Fixture\UsersFixture;
 use Authentication\PasswordHasher\DefaultPasswordHasher;
 use Migrations\AbstractSeed;
 
@@ -25,19 +25,11 @@ class UserSeed extends AbstractSeed
     public function run(): void
     {
         $this->checkTable('users');
-
-        $data = [
-            [
-                'id' => 1,
-                'name' => 'Admin',
-                'email' => 'changeme@example.com',
-                'password' => (new DefaultPasswordHasher())->hash('admin'),
-                'is_admin' => true,
-                'created' => date('Y-m-d H:i:s'),
-            ],
-        ];
-
         $table = $this->table('users');
+
+        $data = UsersFixture::$data;
+        // add or change data here for the seeding.
+
         $table->insert($data)->save();
     }
 }

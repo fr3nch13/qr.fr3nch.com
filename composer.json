@@ -30,7 +30,8 @@
         "psr-4": {
             "App\\": "src/",
             "App\\Migrations\\": "config/Migrations",
-            "App\\Seeds\\": "config/Seeds"
+            "App\\Seeds\\": "config/Seeds",
+            "App\\Test\\Fixture\\": "tests/Fixture"
         }
     },
     "autoload-dev": {
@@ -42,6 +43,8 @@
     "scripts": {
         "post-install-cmd": "App\\Console\\Installer::postInstall",
         "post-create-project-cmd": "App\\Console\\Installer::postInstall",
+        "migrate": "bin/cake migrations migrate",
+        "seed": "bin/cake migrations seed",
         "ci": [
             "@check",
             "@coverage-text"

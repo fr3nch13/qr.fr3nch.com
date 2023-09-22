@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use App\Test\Fixture\TagsFixture;
 use Migrations\AbstractSeed;
 
 /**
@@ -12,7 +13,7 @@ class TagSeed extends AbstractSeed
 
     /**
      * The dependant records before this can be added.
-     * 
+     *
      * @return array<int, string> List of required seeds
      */
     public function getDependencies(): array
@@ -35,35 +36,11 @@ class TagSeed extends AbstractSeed
     public function run(): void
     {
         $this->checkTable('tags');
-
-        $data = [
-            [
-                'id' => 1,
-                'name' => 'Notebook',
-                'created' => date('Y-m-d H:i:s'),
-                'user_id' => 1,
-            ],
-            [
-                'id' => 2,
-                'name' => 'Journal',
-                'created' => date('Y-m-d H:i:s'),
-                'user_id' => 1,
-            ],
-            [
-                'id' => 3,
-                'name' => 'Amazon',
-                'created' => date('Y-m-d H:i:s'),
-                'user_id' => 1,
-            ],
-            [
-                'id' => 4,
-                'name' => 'Pig',
-                'created' => date('Y-m-d H:i:s'),
-                'user_id' => 1,
-            ],
-        ];
-
         $table = $this->table('tags');
+
+        $data = TagsFixture::$data;
+        // add or change data here for the seeding.
+
         $table->insert($data)->save();
     }
 }

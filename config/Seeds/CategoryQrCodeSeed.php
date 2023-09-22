@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use App\Test\Fixture\CategoriesQrCodesFixture;
 use Migrations\AbstractSeed;
 
 /**
@@ -12,7 +13,7 @@ class CategoryQrCodeSeed extends AbstractSeed
 
     /**
      * The dependant records before this can be added.
-     * 
+     *
      * @return array<int, string> List of required seeds
      */
     public function getDependencies(): array
@@ -36,16 +37,11 @@ class CategoryQrCodeSeed extends AbstractSeed
     public function run(): void
     {
         $this->checkTable('categories_qr_codes');
-
-        $data = [
-            [
-                'id' => 1,
-                'qr_code_id' => 1,
-                'category_id' => 2,
-            ],
-        ];
-
         $table = $this->table('categories_qr_codes');
+
+        $data = CategoriesQrCodesFixture::$data;
+        // add or change data here for the seeding.
+
         $table->insert($data)->save();
     }
 }

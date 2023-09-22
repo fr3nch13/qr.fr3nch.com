@@ -10,6 +10,29 @@ use Cake\TestSuite\Fixture\TestFixture;
  */
 class UsersFixture extends TestFixture
 {
+
+    /**
+     * @var array<int, array<string, mixed>> The data to insert
+     */
+    public static $data = [
+        [
+            'id' => 1,
+            'name' => 'Admin',
+            'email' => 'admin@example.com',
+            'password' => (new DefaultPasswordHasher())->hash('admin'),
+            'is_admin' => true,
+            'created' => date('Y-m-d H:i:s'),
+        ],
+        [
+            'id' => 2,
+            'name' => 'Regular',
+            'email' => 'regular@example.com',
+            'password' => (new DefaultPasswordHasher())->hash('admin'),
+            'is_admin' => true,
+            'created' => date('Y-m-d H:i:s'),
+        ],
+    ];
+
     /**
      * Init method
      *
@@ -17,16 +40,7 @@ class UsersFixture extends TestFixture
      */
     public function init(): void
     {
-        $this->records = [
-            [
-                'id' => 1,
-                'name' => 'Lorem ipsum dolor sit amet',
-                'email' => 'Lorem ipsum dolor sit amet',
-                'password' => 'Lorem ipsum dolor sit amet',
-                'created' => '2023-09-21 04:33:33',
-                'modified' => '2023-09-21 04:33:33',
-            ],
-        ];
+        $this->records = self::$data;
         parent::init();
     }
 }
