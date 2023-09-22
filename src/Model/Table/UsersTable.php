@@ -42,6 +42,22 @@ class UsersTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
+
+        $this->hasMany('Categories')
+            ->setClassName('Categories')
+            ->setForeignKey('user_id');
+
+        $this->hasMany('QrCodes')
+            ->setClassName('QrCodes')
+            ->setForeignKey('user_id');
+
+        $this->hasMany('Sources')
+            ->setClassName('Sources')
+            ->setForeignKey('user_id');
+
+        $this->hasMany('Tags')
+            ->setClassName('Tags')
+            ->setForeignKey('user_id');
     }
 
     /**

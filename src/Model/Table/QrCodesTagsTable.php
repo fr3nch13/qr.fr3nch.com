@@ -42,14 +42,15 @@ class QrCodesTagsTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
-        $this->belongsTo('Tags', [
-            'foreignKey' => 'tag_id',
-            'joinType' => 'INNER',
-        ]);
-        $this->belongsTo('QrCodes', [
-            'foreignKey' => 'qr_code_id',
-            'joinType' => 'INNER',
-        ]);
+        $this->hasMany('Tags')
+            ->setClassName('Tags')
+            ->setForeignKey('tag_id')
+            ->setJoinType('INNER');
+
+        $this->hasMany('QrCodes')
+            ->setClassName('QrCodes')
+            ->setForeignKey('qr_code_id')
+            ->setJoinType('INNER');
     }
 
     /**

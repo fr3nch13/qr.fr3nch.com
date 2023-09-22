@@ -54,6 +54,35 @@ class SourcesTableTest extends TestCase
     }
 
     /**
+     * Test Associations
+     *
+     * @return void
+     * @uses \App\Model\Table\SourcesTable::initialize()
+     */
+    public function testAssociations(): void
+    {
+        // get all of the associations
+        $Associations = $this->Sources->associations();
+
+        ////// foreach association.
+        // make sure the association exists
+        $this->assertNotNull($Associations->get('Users'));
+        $this->assertInstanceOf(\Cake\ORM\Association\BelongsTo::class, $Associations->get('Users'));
+        $this->assertInstanceOf(\App\Model\Table\UsersTable::class, $Associations->get('Users')->getTarget());
+        $Association = $this->Sources->Users;
+        $this->assertSame('Users', $Association->getName());
+        $this->assertSame('user_id', $Association->getForeignKey());
+
+        // make sure the association exists
+        $this->assertNotNull($Associations->get('QrCodes'));
+        $this->assertInstanceOf(\Cake\ORM\Association\HasMany::class, $Associations->get('QrCodes'));
+        $this->assertInstanceOf(\App\Model\Table\QrCodesTable::class, $Associations->get('QrCodes')->getTarget());
+        $Association = $this->Sources->QrCodes;
+        $this->assertSame('QrCodes', $Association->getName());
+        $this->assertSame('source_id', $Association->getForeignKey());
+    }
+
+    /**
      * Test validationDefault method
      *
      * @return void

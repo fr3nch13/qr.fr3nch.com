@@ -47,22 +47,25 @@ class QrCodesTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->belongsTo('Sources', [
-            'foreignKey' => 'source_id',
-        ]);
-        $this->belongsTo('Users', [
-            'foreignKey' => 'user_id',
-        ]);
-        $this->belongsToMany('Categories', [
-            'foreignKey' => 'qr_code_id',
-            'targetForeignKey' => 'category_id',
-            'joinTable' => 'categories_qr_codes',
-        ]);
-        $this->belongsToMany('Tags', [
-            'foreignKey' => 'qr_code_id',
-            'targetForeignKey' => 'tag_id',
-            'joinTable' => 'qr_codes_tags',
-        ]);
+        $this->belongsTo('Users')
+            ->setClassName('Users')
+            ->setForeignKey('user_id');
+
+        $this->belongsTo('Sources')
+            ->setClassName('Sources')
+            ->setForeignKey('source_id');
+
+        $this->belongsToMany('Categories')
+            ->setClassName('Categories')
+            ->setForeignKey('qr_code_id')
+            ->setTargetForeignKey('category_id')
+            ->setThrough('CategoriesQrCodes');
+
+        $this->belongsToMany('Tags')
+            ->setClassName('Tags')
+            ->setForeignKey('qr_code_id')
+            ->setTargetForeignKey('tag_id')
+            ->setThrough('QrCodesTags');
     }
 
     /**

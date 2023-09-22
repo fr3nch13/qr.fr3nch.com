@@ -43,11 +43,15 @@ class TagsTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->belongsToMany('QrCodes', [
-            'foreignKey' => 'tag_id',
-            'targetForeignKey' => 'qr_code_id',
-            'joinTable' => 'qr_codes_tags',
-        ]);
+        $this->belongsTo('Users')
+            ->setClassName('Users')
+            ->setForeignKey('user_id');
+
+        $this->belongsToMany('QrCodes')
+            ->setClassName('QrCodes')
+            ->setForeignKey('tag_id')
+            ->setTargetForeignKey('qr_code_id')
+            ->setThrough('QrCodesTags');
     }
 
     /**

@@ -44,9 +44,13 @@ class SourcesTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->hasMany('QrCodes', [
-            'foreignKey' => 'source_id',
-        ]);
+        $this->belongsTo('Users')
+            ->setClassName('Users')
+            ->setForeignKey('user_id');
+
+        $this->hasMany('QrCodes')
+            ->setClassName('QrCodes')
+            ->setForeignKey('source_id');
     }
 
     /**

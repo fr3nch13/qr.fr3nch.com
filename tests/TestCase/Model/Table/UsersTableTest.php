@@ -74,6 +74,71 @@ class UsersTableTest extends TestCase
     }
 
     /**
+     * Test the behaviors
+     *
+     * @return void
+     */
+    public function testBehaviors(): void
+    {
+        $behaviors = [
+            'Timestamp' => \Cake\ORM\Behavior\TimestampBehavior::class,
+        ];
+        foreach ($behaviors as $name => $class) {
+            $behavior = $this->Users->behaviors()->get($name);
+            $this->assertNotNull($behavior, __('Behavior `{0}` is null.', [$name]));
+            $this->assertInstanceOf($class, $behavior, __('Behavior `{0}` isn\'t an instance of {1}.', [
+                $name,
+                $class,
+            ]));
+        }
+    }
+
+    /**
+     * Test Associations
+     *
+     * @return void
+     * @uses \App\Model\Table\UsersTable::initialize()
+     */
+    public function testAssociations(): void
+    {
+        // get all of the associations
+        $Associations = $this->Users->associations();
+
+        ////// foreach association.
+        // make sure the association exists
+        $this->assertNotNull($Associations->get('Categories'));
+        $this->assertInstanceOf(\Cake\ORM\Association\HasMany::class, $Associations->get('Categories'));
+        $this->assertInstanceOf(\App\Model\Table\CategoriesTable::class, $Associations->get('Categories')->getTarget());
+        $Association = $this->Users->Categories;
+        $this->assertSame('Categories', $Association->getName());
+        $this->assertSame('user_id', $Association->getForeignKey());
+
+        // make sure the association exists
+        $this->assertNotNull($Associations->get('QrCodes'));
+        $this->assertInstanceOf(\Cake\ORM\Association\HasMany::class, $Associations->get('QrCodes'));
+        $this->assertInstanceOf(\App\Model\Table\QrCodesTable::class, $Associations->get('QrCodes')->getTarget());
+        $Association = $this->Users->QrCodes;
+        $this->assertSame('QrCodes', $Association->getName());
+        $this->assertSame('user_id', $Association->getForeignKey());
+
+        // make sure the association exists
+        $this->assertNotNull($Associations->get('Sources'));
+        $this->assertInstanceOf(\Cake\ORM\Association\HasMany::class, $Associations->get('Sources'));
+        $this->assertInstanceOf(\App\Model\Table\SourcesTable::class, $Associations->get('Sources')->getTarget());
+        $Association = $this->Users->Sources;
+        $this->assertSame('Sources', $Association->getName());
+        $this->assertSame('user_id', $Association->getForeignKey());
+
+        // make sure the association exists
+        $this->assertNotNull($Associations->get('Tags'));
+        $this->assertInstanceOf(\Cake\ORM\Association\HasMany::class, $Associations->get('Tags'));
+        $this->assertInstanceOf(\App\Model\Table\TagsTable::class, $Associations->get('Tags')->getTarget());
+        $Association = $this->Users->Tags;
+        $this->assertSame('Tags', $Association->getName());
+        $this->assertSame('user_id', $Association->getForeignKey());
+    }
+
+    /**
      * Test validationDefault method
      *
      * @return void

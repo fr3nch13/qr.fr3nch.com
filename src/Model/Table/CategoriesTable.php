@@ -13,6 +13,7 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\CategoriesTable&\Cake\ORM\Association\BelongsTo $ParentCategories
  * @property \App\Model\Table\CategoriesTable&\Cake\ORM\Association\HasMany $ChildCategories
  * @property \App\Model\Table\QrCodesTable&\Cake\ORM\Association\BelongsToMany $QrCodes
+ * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
  * @method \App\Model\Entity\Category newEmptyEntity()
  * @method \App\Model\Entity\Category newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Category[] newEntities(array $data, array $options = [])
@@ -46,19 +47,23 @@ class CategoriesTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->belongsTo('ParentCategories', [
-            'className' => 'Categories',
-            'foreignKey' => 'parent_id',
-        ]);
-        $this->hasMany('ChildCategories', [
-            'className' => 'Categories',
-            'foreignKey' => 'parent_id',
-        ]);
-        $this->belongsToMany('QrCodes', [
-            'foreignKey' => 'category_id',
-            'targetForeignKey' => 'qr_code_id',
-            'joinTable' => 'categories_qr_codes',
-        ]);
+        $this->belongsTo('Users')
+            ->setClassName('Users')
+            ->setForeignKey('user_id');
+
+        $this->belongsTo('ParentCategories')
+            ->setClassName('Categories')
+            ->setForeignKey('parent_id');
+
+        $this->hasMany('ChildCategories')
+            ->setClassName('Categories')
+            ->setForeignKey('parent_id');
+
+        $this->belongsToMany('QrCodes')
+            ->setClassName('QrCodes')
+            ->setForeignKey('category_id')
+            ->setTargetForeignKey('qr_code_id')
+            ->setThrough('CategoriesQrCodes');
     }
 
     /**

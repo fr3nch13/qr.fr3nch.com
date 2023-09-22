@@ -56,6 +56,37 @@ class TagsTableTest extends TestCase
     }
 
     /**
+     * Test Associations
+     *
+     * @return void
+     * @uses \App\Model\Table\CategoriesTable::initialize()
+     */
+    public function testAssociations(): void
+    {
+        // get all of the associations
+        $Associations = $this->Tags->associations();
+
+        ////// foreach association.
+        // make sure the association exists
+        $this->assertNotNull($Associations->get('Users'));
+        $this->assertInstanceOf(\Cake\ORM\Association\BelongsTo::class, $Associations->get('Users'));
+        $this->assertInstanceOf(\App\Model\Table\UsersTable::class, $Associations->get('Users')->getTarget());
+        $Association = $this->Tags->Users;
+        $this->assertSame('Users', $Association->getName());
+        $this->assertSame('user_id', $Association->getForeignKey());
+
+        // make sure the association exists
+        $this->assertNotNull($Associations->get('QrCodes'));
+        $this->assertInstanceOf(\Cake\ORM\Association\BelongsToMany::class, $Associations->get('QrCodes'));
+        $this->assertInstanceOf(\App\Model\Table\QrCodesTable::class, $Associations->get('QrCodes')->getTarget());
+        $Association = $this->Tags->QrCodes;
+        $this->assertSame('QrCodes', $Association->getName());
+        $this->assertSame('QrCodesTags', $Association->getThrough());
+        $this->assertSame('tag_id', $Association->getForeignKey());
+        $this->assertSame('qr_code_id', $Association->getTargetForeignKey());
+    }
+
+    /**
      * Test validationDefault method
      *
      * @return void
