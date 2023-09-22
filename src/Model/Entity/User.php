@@ -15,6 +15,7 @@ use Cake\ORM\Entity;
  * @property string $password
  * @property \Cake\I18n\DateTime|null $created
  * @property \Cake\I18n\DateTime|null $modified
+ * @property bool $is_admin
  */
 class User extends Entity
 {
@@ -33,6 +34,7 @@ class User extends Entity
         'password' => true,
         'created' => true,
         'modified' => true,
+        'is_admin' => true,
     ];
 
     /**

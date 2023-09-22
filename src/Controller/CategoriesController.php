@@ -17,6 +17,7 @@ class CategoriesController extends AppController
      */
     public function index()
     {
+        $this->Authorization->skipAuthorization();
         $query = $this->Categories->find()
             ->contain(['ParentCategories']);
         $categories = $this->paginate($query);
@@ -33,6 +34,7 @@ class CategoriesController extends AppController
      */
     public function view($id = null)
     {
+        $this->Authorization->skipAuthorization();
         $category = $this->Categories->get($id, contain: ['ParentCategories', 'QrCodes', 'ChildCategories']);
         $this->set(compact('category'));
     }
@@ -45,6 +47,7 @@ class CategoriesController extends AppController
     public function add()
     {
         $category = $this->Categories->newEmptyEntity();
+        $this->Authorization->authorize($category);
         if ($this->request->is('post')) {
             $category = $this->Categories->patchEntity($category, $this->request->getData());
             if ($this->Categories->save($category)) {
@@ -69,6 +72,7 @@ class CategoriesController extends AppController
     public function edit($id = null)
     {
         $category = $this->Categories->get($id, contain: ['QrCodes']);
+        $this->Authorization->authorize($category);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $category = $this->Categories->patchEntity($category, $this->request->getData());
             if ($this->Categories->save($category)) {

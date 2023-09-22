@@ -60,6 +60,7 @@ class QrCodesController extends AppController
     public function add()
     {
         $qrCode = $this->QrCodes->newEmptyEntity();
+        $this->Authorization->authorize($qrCode);
         if ($this->request->is('post')) {
             $qrCode = $this->QrCodes->patchEntity($qrCode, $this->request->getData());
             if ($this->QrCodes->save($qrCode)) {
@@ -86,6 +87,7 @@ class QrCodesController extends AppController
     public function edit($id = null)
     {
         $qrCode = $this->QrCodes->get($id, contain: ['Categories', 'Tags']);
+        $this->Authorization->authorize($qrCode);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $qrCode = $this->QrCodes->patchEntity($qrCode, $this->request->getData());
             if ($this->QrCodes->save($qrCode)) {
@@ -113,6 +115,7 @@ class QrCodesController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $qrCode = $this->QrCodes->get($id);
+        $this->Authorization->authorize($qrCode);
         if ($this->QrCodes->delete($qrCode)) {
             $this->Flash->success(__('The qr code has been deleted.'));
         } else {

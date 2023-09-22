@@ -17,6 +17,7 @@ class TagsController extends AppController
      */
     public function index()
     {
+        $this->Authorization->skipAuthorization();
         $query = $this->Tags->find();
         $tags = $this->paginate($query);
 
@@ -32,6 +33,7 @@ class TagsController extends AppController
      */
     public function view($id = null)
     {
+        $this->Authorization->skipAuthorization();
         $tag = $this->Tags->get($id, contain: ['QrCodes']);
         $this->set(compact('tag'));
     }

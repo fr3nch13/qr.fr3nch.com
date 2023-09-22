@@ -17,6 +17,7 @@ class SourcesController extends AppController
      */
     public function index()
     {
+        $this->Authorization->skipAuthorization();
         $query = $this->Sources->find();
         $sources = $this->paginate($query);
 
@@ -32,6 +33,7 @@ class SourcesController extends AppController
      */
     public function view($id = null)
     {
+        $this->Authorization->skipAuthorization();
         $source = $this->Sources->get($id, contain: ['QrCodes']);
         $this->set(compact('source'));
     }
