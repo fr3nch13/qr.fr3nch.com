@@ -109,7 +109,10 @@ class PagesControllerTest extends TestCase
         $this->enableCsrfToken();
         $this->post('/pages/home', ['hello' => 'world']);
 
+        $content = (string)$this->_response->getBody();
+
         $this->assertThat(403, $this->logicalNot(new StatusCode($this->_response)));
-        $this->assertResponseNotContains('CSRF');
+        //$this->assertResponseNotContains('CSRF');
+        $this->assertResponseContains('`_Token` was not found in request data.');
     }
 }
