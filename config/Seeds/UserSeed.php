@@ -2,7 +2,6 @@
 declare(strict_types=1);
 
 use App\Test\Fixture\UsersFixture;
-use Authentication\PasswordHasher\DefaultPasswordHasher;
 use Migrations\AbstractSeed;
 
 /**
@@ -27,7 +26,7 @@ class UserSeed extends AbstractSeed
         $this->checkTable('users');
         $table = $this->table('users');
 
-        $data = (new UsersFixture())->data;
+        $data = (new UsersFixture())->getData();
         // add or change data here for the seeding.
 
         $table->insert($data)->save();

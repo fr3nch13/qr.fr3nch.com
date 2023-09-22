@@ -39,7 +39,7 @@ class QrCodeTagSeed extends AbstractSeed
         $this->checkTable('qr_codes_tags');
         $table = $this->table('qr_codes_tags');
 
-        $data = (new QrCodesTagsFixture())->data;
+        $data = (new QrCodesTagsFixture())->getData();
         // add or change data here for the seeding.
 
         $table->insert($data)->save();

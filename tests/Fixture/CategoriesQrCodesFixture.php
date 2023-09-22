@@ -10,17 +10,28 @@ use Cake\TestSuite\Fixture\TestFixture;
  */
 class CategoriesQrCodesFixture extends TestFixture
 {
-
     /**
-     * @var array<int, array<string, mixed>> The data to insert
+     * Define your data here.
+     *
+     * @param array<int, array<string, int>> The data to use to overwrite the default
+     * @return array<int, array<string, int>> The data to insert
      */
-    public $data = [
-        [
-            'id' => 1,
-            'qr_code_id' => 1,
-            'category_id' => 2,
-        ],
-    ];
+    public function getData(array $data = []): array
+    {
+        $default = [
+            [
+                'id' => 1,
+                'qr_code_id' => 1,
+                'category_id' => 2,
+            ],
+        ];
+
+        if (empty($data)) {
+            $data = $default;
+        }
+
+        return $data;
+    }
 
     /**
      * Init method
@@ -29,7 +40,7 @@ class CategoriesQrCodesFixture extends TestFixture
      */
     public function init(): void
     {
-        $this->records = $this->data;
+        $this->records = $this->getData();
         parent::init();
     }
 }

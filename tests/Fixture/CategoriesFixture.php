@@ -10,28 +10,39 @@ use Cake\TestSuite\Fixture\TestFixture;
  */
 class CategoriesFixture extends TestFixture
 {
-
     /**
-     * @var array<int, array<string, mixed>> The data to insert
+     * Define your data here.
+     *
+     * @param array<int, array<string, mixed>> The data to use to overwrite the default
+     * @return array<int, array<string, mixed>> The data to insert
      */
-    public $data = [
-        [
-            'id' => 1,
-            'name' => 'Books',
-            'description' => 'List of available books',
-            'parent_id' => null,
-            'created' => date('Y-m-d H:i:s'),
-            'user_id' => 1,
-        ],
-        [
-            'id' => 2,
-            'name' => 'Journals',
-            'description' => 'Journals/Notebooks',
-            'parent_id' => 1,
-            'created' => date('Y-m-d H:i:s'),
-            'user_id' => 1,
-        ],
-    ];
+    public function getData(array $data = []): array
+    {
+        $default = [
+            [
+                'id' => 1,
+                'name' => 'Books',
+                'description' => 'List of available books',
+                'parent_id' => null,
+                'created' => date('Y-m-d H:i:s'),
+                'user_id' => 1,
+            ],
+            [
+                'id' => 2,
+                'name' => 'Journals',
+                'description' => 'Journals/Notebooks',
+                'parent_id' => 1,
+                'created' => date('Y-m-d H:i:s'),
+                'user_id' => 1,
+            ],
+        ];
+
+        if (empty($data)) {
+            $data = $default;
+        }
+
+        return $data;
+    }
 
     /**
      * Init method
@@ -40,7 +51,7 @@ class CategoriesFixture extends TestFixture
      */
     public function init(): void
     {
-        $this->records = $this->data;
+        $this->records = $this->getData();
         parent::init();
     }
 }
