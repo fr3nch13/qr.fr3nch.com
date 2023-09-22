@@ -56,6 +56,30 @@ class CategoriesQrCodesTableTest extends TestCase
     }
 
     /**
+     * Tests the class name of the Table
+     *
+     * @return void
+     * @uses \App\Model\Table\CategoriesQrCodesTable::initialize()
+     */
+    public function testClassInstance(): void
+    {
+        $this->assertInstanceOf(CategoriesQrCodesTable::class, $this->CategoriesQrCodes);
+    }
+
+    /**
+     * Testing a method.
+     *
+     * @return void
+     * @uses \App\Model\Table\CategoriesQrCodesTable::initialize()
+     */
+    public function testInitialize(): void
+    {
+        $this->assertSame('categories_qr_codes', $this->CategoriesQrCodes->getTable());
+        $this->assertSame('id', $this->CategoriesQrCodes->getDisplayField());
+        $this->assertSame('id', $this->CategoriesQrCodes->getPrimaryKey());
+    }
+
+    /**
      * Test Associations
      *
      * @return void

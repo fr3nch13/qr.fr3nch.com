@@ -56,6 +56,30 @@ class QrCodesTagsTableTest extends TestCase
     }
 
     /**
+     * Tests the class name of the Table
+     *
+     * @return void
+     * @uses \App\Model\Table\QrCodesTagsTable::initialize()
+     */
+    public function testClassInstance(): void
+    {
+        $this->assertInstanceOf(QrCodesTagsTable::class, $this->QrCodesTags);
+    }
+
+    /**
+     * Testing a method.
+     *
+     * @return void
+     * @uses \App\Model\Table\QrCodesTagsTable::initialize()
+     */
+    public function testInitialize(): void
+    {
+        $this->assertSame('qr_codes_tags', $this->QrCodesTags->getTable());
+        $this->assertSame('id', $this->QrCodesTags->getDisplayField());
+        $this->assertSame('id', $this->QrCodesTags->getPrimaryKey());
+    }
+
+    /**
      * Test Associations
      *
      * @return void

@@ -56,6 +56,51 @@ class TagsTableTest extends TestCase
     }
 
     /**
+     * Tests the class name of the Table
+     *
+     * @return void
+     * @uses \App\Model\Table\TagsTable::initialize()
+     */
+    public function testClassInstance(): void
+    {
+        $this->assertInstanceOf(TagsTable::class, $this->Tags);
+    }
+
+    /**
+     * Testing a method.
+     *
+     * @return void
+     * @uses \App\Model\Table\TagsTable::initialize()
+     */
+    public function testInitialize(): void
+    {
+        $this->assertSame('tags', $this->Tags->getTable());
+        $this->assertSame('name', $this->Tags->getDisplayField());
+        $this->assertSame('id', $this->Tags->getPrimaryKey());
+    }
+
+    /**
+     * Test the behaviors
+     *
+     * @return void
+     * @uses \App\Model\Table\UsersTable::initialize()
+     */
+    public function testBehaviors(): void
+    {
+        $behaviors = [
+            'Timestamp' => \Cake\ORM\Behavior\TimestampBehavior::class,
+        ];
+        foreach ($behaviors as $name => $class) {
+            $behavior = $this->Tags->behaviors()->get($name);
+            $this->assertNotNull($behavior, __('Behavior `{0}` is null.', [$name]));
+            $this->assertInstanceOf($class, $behavior, __('Behavior `{0}` isn\'t an instance of {1}.', [
+                $name,
+                $class,
+            ]));
+        }
+    }
+
+    /**
      * Test Associations
      *
      * @return void

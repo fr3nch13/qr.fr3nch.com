@@ -55,6 +55,7 @@ class UsersTableTest extends TestCase
      * Tests the class name of the Table
      *
      * @return void
+     * @uses \App\Model\Table\UsersTable::initialize()
      */
     public function testClassInstance(): void
     {
@@ -65,6 +66,7 @@ class UsersTableTest extends TestCase
      * Testing a method.
      *
      * @return void
+     * @uses \App\Model\Table\UsersTable::initialize()
      */
     public function testInitialize(): void
     {
@@ -77,6 +79,7 @@ class UsersTableTest extends TestCase
      * Test the behaviors
      *
      * @return void
+     * @uses \App\Model\Table\UsersTable::initialize()
      */
     public function testBehaviors(): void
     {

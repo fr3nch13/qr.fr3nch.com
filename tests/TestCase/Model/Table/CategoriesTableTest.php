@@ -53,6 +53,51 @@ class CategoriesTableTest extends TestCase
     }
 
     /**
+     * Tests the class name of the Table
+     *
+     * @return void
+     * @uses \App\Model\Table\CategoriesTable::initialize()
+     */
+    public function testClassInstance(): void
+    {
+        $this->assertInstanceOf(CategoriesTable::class, $this->Categories);
+    }
+
+    /**
+     * Testing a method.
+     *
+     * @return void
+     * @uses \App\Model\Table\CategoriesTable::initialize()
+     */
+    public function testInitialize(): void
+    {
+        $this->assertSame('categories', $this->Categories->getTable());
+        $this->assertSame('name', $this->Categories->getDisplayField());
+        $this->assertSame('id', $this->Categories->getPrimaryKey());
+    }
+
+    /**
+     * Test the behaviors
+     *
+     * @return void
+     * @uses \App\Model\Table\UsersTable::initialize()
+     */
+    public function testBehaviors(): void
+    {
+        $behaviors = [
+            'Timestamp' => \Cake\ORM\Behavior\TimestampBehavior::class,
+        ];
+        foreach ($behaviors as $name => $class) {
+            $behavior = $this->Categories->behaviors()->get($name);
+            $this->assertNotNull($behavior, __('Behavior `{0}` is null.', [$name]));
+            $this->assertInstanceOf($class, $behavior, __('Behavior `{0}` isn\'t an instance of {1}.', [
+                $name,
+                $class,
+            ]));
+        }
+    }
+
+    /**
      * Test Associations
      *
      * @return void
