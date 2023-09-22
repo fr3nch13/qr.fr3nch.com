@@ -18,7 +18,7 @@ class CategoryPolicy
      * @param \App\Model\Entity\Category $Category
      * @return bool
      */
-    public function canAdd(IdentityInterface $user, Category $Category)
+    public function canAdd(IdentityInterface $user, Category $Category): bool
     {
         // All logged in users can create qr codes.
         return $this->isAdmin($user, $Category);
@@ -31,7 +31,7 @@ class CategoryPolicy
      * @param \App\Model\Entity\Category $Category
      * @return bool
      */
-    public function canEdit(IdentityInterface $user, Category $Category)
+    public function canEdit(IdentityInterface $user, Category $Category): bool
     {
         return $this->isAdmin($user, $Category);
     }
@@ -43,7 +43,7 @@ class CategoryPolicy
      * @param \App\Model\Entity\Category $Category
      * @return bool
      */
-    public function canDelete(IdentityInterface $user, Category $Category)
+    public function canDelete(IdentityInterface $user, Category $Category): bool
     {
         return $this->isAdmin($user, $Category);
     }
@@ -55,7 +55,7 @@ class CategoryPolicy
      * @param \App\Model\Entity\Category $Category
      * @return bool
      */
-    public function canView(IdentityInterface $user, Category $Category)
+    public function canView(IdentityInterface $user, Category $Category): bool
     {
         // All logged in users can view a qr code.
         return true;

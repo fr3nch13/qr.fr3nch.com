@@ -18,7 +18,7 @@ class TagPolicy
      * @param \App\Model\Entity\Tag $Tag
      * @return bool
      */
-    public function canAdd(IdentityInterface $user, Tag $Tag)
+    public function canAdd(IdentityInterface $user, Tag $Tag): bool
     {
         // All logged in users can create qr codes.
         return true;
@@ -31,7 +31,7 @@ class TagPolicy
      * @param \App\Model\Entity\Tag $Tag
      * @return bool
      */
-    public function canEdit(IdentityInterface $user, Tag $Tag)
+    public function canEdit(IdentityInterface $user, Tag $Tag): bool
     {
         return $this->isCreator($user, $Tag);
     }
@@ -43,7 +43,7 @@ class TagPolicy
      * @param \App\Model\Entity\Tag $Tag
      * @return bool
      */
-    public function canDelete(IdentityInterface $user, Tag $Tag)
+    public function canDelete(IdentityInterface $user, Tag $Tag): bool
     {
         return $this->isCreator($user, $Tag);
     }
@@ -55,7 +55,7 @@ class TagPolicy
      * @param \App\Model\Entity\Tag $Tag
      * @return bool
      */
-    public function canView(IdentityInterface $user, Tag $Tag)
+    public function canView(IdentityInterface $user, Tag $Tag): bool
     {
         // All logged in users can view a qr code.
         return true;

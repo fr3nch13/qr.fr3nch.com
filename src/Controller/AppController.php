@@ -39,7 +39,7 @@ class AppController extends Controller
 
         /*
          * Enable the following component for recommended CakePHP form protection settings.
-         * 
+         *
          * @link https://book.cakephp.org/4/en/controllers/components/form-protection.html
          */
         $this->loadComponent('FormProtection');

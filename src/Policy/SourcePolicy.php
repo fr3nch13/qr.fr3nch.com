@@ -18,7 +18,7 @@ class SourcePolicy
      * @param \App\Model\Entity\Source $Source
      * @return bool
      */
-    public function canAdd(IdentityInterface $user, Source $Source)
+    public function canAdd(IdentityInterface $user, Source $Source): bool
     {
         // All logged in users can create qr codes.
         return $this->isAdmin($user, $Source);
@@ -31,7 +31,7 @@ class SourcePolicy
      * @param \App\Model\Entity\Source $Source
      * @return bool
      */
-    public function canEdit(IdentityInterface $user, Source $Source)
+    public function canEdit(IdentityInterface $user, Source $Source): bool
     {
         return $this->isAdmin($user, $Source);
     }
@@ -43,7 +43,7 @@ class SourcePolicy
      * @param \App\Model\Entity\Source $Source
      * @return bool
      */
-    public function canDelete(IdentityInterface $user, Source $Source)
+    public function canDelete(IdentityInterface $user, Source $Source): bool
     {
         return $this->isAdmin($user, $Source);
     }
@@ -55,7 +55,7 @@ class SourcePolicy
      * @param \App\Model\Entity\Source $Source
      * @return bool
      */
-    public function canView(IdentityInterface $user, Source $Source)
+    public function canView(IdentityInterface $user, Source $Source): bool
     {
         // All logged in users can view a qr code.
         return true;

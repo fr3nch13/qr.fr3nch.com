@@ -18,7 +18,7 @@ class QrCodePolicy
      * @param \App\Model\Entity\QrCode $qrCode
      * @return bool
      */
-    public function canAdd(IdentityInterface $user, QrCode $qrCode)
+    public function canAdd(IdentityInterface $user, QrCode $qrCode): bool
     {
         // All logged in users can create qr codes.
         return true;
@@ -31,7 +31,7 @@ class QrCodePolicy
      * @param \App\Model\Entity\QrCode $qrCode
      * @return bool
      */
-    public function canEdit(IdentityInterface $user, QrCode $qrCode)
+    public function canEdit(IdentityInterface $user, QrCode $qrCode): bool
     {
         return $this->isCreator($user, $qrCode);
     }
@@ -43,7 +43,7 @@ class QrCodePolicy
      * @param \App\Model\Entity\QrCode $qrCode
      * @return bool
      */
-    public function canDelete(IdentityInterface $user, QrCode $qrCode)
+    public function canDelete(IdentityInterface $user, QrCode $qrCode): bool
     {
         return $this->isCreator($user, $qrCode);
     }
@@ -55,7 +55,7 @@ class QrCodePolicy
      * @param \App\Model\Entity\QrCode $qrCode
      * @return bool
      */
-    public function canView(IdentityInterface $user, QrCode $qrCode)
+    public function canView(IdentityInterface $user, QrCode $qrCode): bool
     {
         // All logged in users can view a qr code.
         return true;

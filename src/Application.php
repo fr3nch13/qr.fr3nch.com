@@ -47,8 +47,8 @@ use Psr\Http\Message\ServerRequestInterface;
  *
  * @extends \Cake\Http\BaseApplication<\App\Application>
  */
-class Application extends BaseApplication
-    implements AuthenticationServiceProviderInterface,
+class Application extends BaseApplication implements
+    AuthenticationServiceProviderInterface,
     AuthorizationServiceProviderInterface
 {
     /**
@@ -117,10 +117,10 @@ class Application extends BaseApplication
             ->add(new CsrfProtectionMiddleware([
                 'httponly' => true,
             ]))
-            
+
             // @link https://book.cakephp.org/5/en/tutorials-and-examples/cms/authentication.html
             ->add(new AuthenticationMiddleware($this))
-            
+
             // @link https://book.cakephp.org/5/en/tutorials-and-examples/cms/authorization.html
             ->add(new AuthorizationMiddleware($this));
 
@@ -156,7 +156,7 @@ class Application extends BaseApplication
 
     /**
      * Gets and Configures the Authentication Service
-     * 
+     *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @return \Authentication\AuthenticationServiceInterface
      */
@@ -172,7 +172,7 @@ class Application extends BaseApplication
             'fields' => [
                 'username' => 'email',
                 'password' => 'password',
-            ]
+            ],
         ]);
 
         // Load the authenticators, you want session first
@@ -192,14 +192,14 @@ class Application extends BaseApplication
 
     /**
      * Gets the Authorization Service
-     * 
+     *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @return \Authorization\AuthorizationServiceInterface
      */
     public function getAuthorizationService(ServerRequestInterface $request): AuthorizationServiceInterface
-{
-    $resolver = new OrmResolver();
+    {
+        $resolver = new OrmResolver();
 
-    return new AuthorizationService($resolver);
-}
+        return new AuthorizationService($resolver);
+    }
 }

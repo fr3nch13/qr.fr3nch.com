@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -13,7 +12,6 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\TagsTable&\Cake\ORM\Association\BelongsTo $Tags
  * @property \App\Model\Table\QrCodesTable&\Cake\ORM\Association\BelongsTo $QrCodes
- *
  * @method \App\Model\Entity\QrCodesTag newEmptyEntity()
  * @method \App\Model\Entity\QrCodesTag newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\QrCodesTag[] newEntities(array $data, array $options = [])

@@ -42,14 +42,28 @@
     "scripts": {
         "post-install-cmd": "App\\Console\\Installer::postInstall",
         "post-create-project-cmd": "App\\Console\\Installer::postInstall",
+        "ci": [
+            "@check",
+            "@coverage-text"
+        ],
         "check": [
             "@test",
+            "@cs-check",
+            "@phpstan"
+        ],
+        "fix": [
+            "@cs-fix",
             "@cs-check"
         ],
-        "cs-check": "phpcs --colors -p",
-        "cs-fix": "phpcbf --colors -p",
-        "stan": "phpstan analyse",
-        "test": "phpunit --colors=always"
+        "cs-check": "php -d memory_limit=-1 ./vendor/bin/phpcs --colors -p",
+        "cs-fix": "php -d memory_limit=-1 ./vendor/bin/phpcbf --colors -p",
+        "test": "php -d memory_limit=-1 ./vendor/bin/phpunit --colors=always --testdox",
+        "cs-checkstyle": "@cs-check -- --report=checkstyle",
+        "phpstan": "php -d memory_limit=-1 ./vendor/bin/phpstan --no-progress -vvv",
+        "phpstan-github": "php -d memory_limit=-1 ./vendor/bin/phpstan --no-progress -vvv --error-format=github",
+        "coverage": "php -d memory_limit=-1 -d xdebug.mode=coverage ./vendor/bin/phpunit --log-junit tmp/coverage/unitreport.xml --coverage-html tmp/coverage --testdox",
+        "coverage-clover": "php -d memory_limit=-1 -d xdebug.mode=coverage ./vendor/bin/phpunit --coverage-clover=tmp/coverage.xml --testdox",
+        "coverage-text": "php -d memory_limit=-1 -d xdebug.mode=coverage ./vendor/bin/phpunit --coverage-text --colors=never --testdox"
     },
     "prefer-stable": true,
     "config": {

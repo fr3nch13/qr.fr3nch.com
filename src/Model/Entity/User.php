@@ -48,12 +48,12 @@ class User extends Entity
 
     /**
      * Hashes the password
-     * 
+     *
      * @param string $password The password to hash.
-     * @return null|string The hashed password.
+     * @return string|null The hashed password.
      * @link https://book.cakephp.org/5/en/tutorials-and-examples/cms/authentication.html
      */
-    protected function _setPassword(string $password) : ?string
+    protected function _setPassword(string $password): ?string
     {
         if (strlen($password) > 0) {
             return (new DefaultPasswordHasher())->hash($password);

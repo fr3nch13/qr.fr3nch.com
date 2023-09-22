@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -15,7 +14,6 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
  * @property \App\Model\Table\CategoriesTable&\Cake\ORM\Association\BelongsToMany $Categories
  * @property \App\Model\Table\TagsTable&\Cake\ORM\Association\BelongsToMany $Tags
- *
  * @method \App\Model\Entity\QrCode newEmptyEntity()
  * @method \App\Model\Entity\QrCode newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\QrCode[] newEntities(array $data, array $options = [])
@@ -29,7 +27,6 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\QrCode[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
  * @method \App\Model\Entity\QrCode[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
  * @method \App\Model\Entity\QrCode[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
- *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class QrCodesTable extends Table
