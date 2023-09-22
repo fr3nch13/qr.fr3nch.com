@@ -52,6 +52,28 @@ class UsersTableTest extends TestCase
     }
 
     /**
+     * Tests the class name of the Table
+     *
+     * @return void
+     */
+    public function testClassInstance(): void
+    {
+        $this->assertInstanceOf(UsersTable::class, $this->Users);
+    }
+
+    /**
+     * Testing a method.
+     *
+     * @return void
+     */
+    public function testInitialize(): void
+    {
+        $this->assertSame('users', $this->Users->getTable());
+        $this->assertSame('name', $this->Users->getDisplayField());
+        $this->assertSame('id', $this->Users->getPrimaryKey());
+    }
+
+    /**
      * Test validationDefault method
      *
      * @return void
