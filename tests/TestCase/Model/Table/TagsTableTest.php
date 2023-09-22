@@ -24,8 +24,11 @@ class TagsTableTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
+        'app.Users',
+        'app.Sources',
         'app.Tags',
         'app.QrCodes',
+        'app.QrCodesTags',
     ];
 
     /**

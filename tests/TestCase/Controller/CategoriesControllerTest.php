@@ -21,6 +21,8 @@ class CategoriesControllerTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
+        'app.Users',
+        'app.Sources',
         'app.Categories',
         'app.QrCodes',
         'app.CategoriesQrCodes',

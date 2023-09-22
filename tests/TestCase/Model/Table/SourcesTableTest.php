@@ -24,6 +24,7 @@ class SourcesTableTest extends TestCase
      * @var array<string>
      */
     protected array $fixtures = [
+        'app.Users',
         'app.Sources',
         'app.QrCodes',
     ];
