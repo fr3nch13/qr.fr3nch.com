@@ -42,14 +42,15 @@ class CategoriesQrCodesTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
-        $this->belongsTo('Categories', [
-            'foreignKey' => 'category_id',
-            'joinType' => 'INNER',
-        ]);
-        $this->belongsTo('QrCodes', [
-            'foreignKey' => 'qr_code_id',
-            'joinType' => 'INNER',
-        ]);
+        $this->hasMany('Categories')
+            ->setClassName('Categories')
+            ->setForeignKey('category_id')
+            ->setJoinType('INNER');
+
+        $this->hasMany('QrCodes')
+            ->setClassName('QrCodes')
+            ->setForeignKey('qr_code_id')
+            ->setJoinType('INNER');
     }
 
     /**
