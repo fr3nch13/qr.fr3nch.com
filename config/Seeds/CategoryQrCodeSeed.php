@@ -39,7 +39,7 @@ class CategoryQrCodeSeed extends AbstractSeed
         $this->checkTable('categories_qr_codes');
         $table = $this->table('categories_qr_codes');
 
-        $data = CategoriesQrCodesFixture::$data;
+        $data = (new CategoriesQrCodesFixture())->data;
         // add or change data here for the seeding.
 
         $table->insert($data)->save();

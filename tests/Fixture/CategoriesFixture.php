@@ -14,7 +14,7 @@ class CategoriesFixture extends TestFixture
     /**
      * @var array<int, array<string, mixed>> The data to insert
      */
-    public static $data = [
+    public $data = [
         [
             'id' => 1,
             'name' => 'Books',
@@ -40,7 +40,7 @@ class CategoriesFixture extends TestFixture
      */
     public function init(): void
     {
-        $this->records = self::$data;
+        $this->records = $this->data;
         parent::init();
     }
 }

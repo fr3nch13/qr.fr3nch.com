@@ -38,7 +38,7 @@ class TagSeed extends AbstractSeed
         $this->checkTable('tags');
         $table = $this->table('tags');
 
-        $data = TagsFixture::$data;
+        $data = (new TagsFixture())->data;
         // add or change data here for the seeding.
 
         $table->insert($data)->save();

@@ -38,7 +38,7 @@ class SourceSeed extends AbstractSeed
         $this->checkTable('sources');
         $table = $this->table('sources');
 
-        $data = SourcesFixture::$data;
+        $data = (new SourcesFixture())->data;
         // add or change data here for the seeding.
 
         $table->insert($data)->save();

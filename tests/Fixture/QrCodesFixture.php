@@ -15,7 +15,7 @@ class QrCodesFixture extends TestFixture
     /**
      * @var array<int, array<string, mixed>> The data to insert
      */
-    public static $data = [
+    public $data = [
         [
             'id' => 1,
             'key' => 'sownscribe',
@@ -36,7 +36,7 @@ class QrCodesFixture extends TestFixture
      */
     public function init(): void
     {
-        $this->records = self::$data;
+        $this->records = $this->data;
         parent::init();
     }
 }

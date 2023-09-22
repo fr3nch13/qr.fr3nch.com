@@ -27,7 +27,7 @@ class UserSeed extends AbstractSeed
         $this->checkTable('users');
         $table = $this->table('users');
 
-        $data = UsersFixture::$data;
+        $data = (new UsersFixture())->data;
         // add or change data here for the seeding.
 
         $table->insert($data)->save();
