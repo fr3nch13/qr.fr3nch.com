@@ -20,12 +20,14 @@ jobs:
       matrix:
         php-version: ['8.1', '8.2', 'latest']
         dependencies: ['highest']
+        composer-options: ['']
         include:
           - php-version: '8.1'
             dependencies: 'lowest'
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Git checkout
+      uses: actions/checkout@v4
 
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
@@ -54,7 +56,8 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Git checkout
+      uses: actions/checkout@v4
 
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
@@ -73,3 +76,32 @@ jobs:
     - name: Run phpstan
       if: always()
       run: phpstan
+
+  coverage-php:
+    name: Code Coverage
+    runs-on: ubuntu-22.04
+
+    steps:
+    - name: Git checkout
+      uses: actions/checkout@v4
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.1'
+        extensions: mbstring, intl
+        coverage: pcov
+
+    - name: Composer install
+      uses: ramsey/composer-install@v2
+
+    - name: Run PHPUnit
+      run:  composer run-script coverage-clover
+
+    - name: Upload to Codecov
+      uses: codecov/codecov-action@v3
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      with:
+        files: ./tmp/coverage.xml
+        verbose: true
