@@ -149,7 +149,74 @@ class UsersTableTest extends TestCase
      */
     public function testValidationDefault(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        // test no set fields
+        $user = $this->Users->newEntity([]);
+        $expected = [
+            'name' => [
+                '_required' => 'This field is required',
+            ],
+            'email' => [
+                '_required' => 'This field is required',
+            ],
+            'password' => [
+                '_required' => 'This field is required',
+            ],
+        ];
+        $this->assertSame($expected, $user->getErrors());
+
+        // test setting the fields after an empty entity.
+        $user->set('name', 'test user');
+        $user->set('email', 'test@example.com');
+        $user->set('password', 'password');
+
+        $this->assertSame([], $user->getErrors());
+
+        // test empty fields
+        $user = $this->Users->newEntity([
+            'name' => '',
+            'email' => '',
+            'password' => '',
+        ]);
+
+        $expected = [
+            'name' => [
+                '_empty' => 'The Name is required, and can not be empty.',
+            ],
+            'email' => [
+                '_empty' => 'The Email is required, and can not be empty.',
+            ],
+            'password' => [
+                '_empty' => 'The Password is required, and can not be empty.',
+            ],
+        ];
+
+        $this->assertSame($expected, $user->getErrors());
+
+        // test bad email
+        $user = $this->Users->newEntity([
+            'name' => 'test',
+            'email' => 'test',
+            'password' => 'test',
+        ]);
+
+        $expected = [
+            'email' => [
+                'email' => 'The provided value must be an e-mail address',
+            ],
+        ];
+
+        $this->assertSame($expected, $user->getErrors());
+
+        // test valid entity
+        $user = $this->Users->newEntity([
+            'name' => 'test user',
+            'email' => 'test@test.com',
+            'password' => 'test',
+        ]);
+
+        $expected = [];
+
+        $this->assertSame($expected, $user->getErrors());
     }
 
     /**
@@ -160,6 +227,28 @@ class UsersTableTest extends TestCase
      */
     public function testBuildRules(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        // check the rules thow errors
+        $entity = $this->Users->newEntity([
+            'name' => 'required',
+            'email' => 'admin@example.com',
+            'password' => 'password',
+        ]);
+        $result = $this->Users->checkRules($entity);
+        $this->assertFalse($result);
+        $expected = [
+            'email' => [
+                '_isUnique' => 'This value is already in use',
+            ],
+        ];
+        $this->assertSame($expected, $entity->getErrors());
+
+        // check that we are passing the rules.
+        $entity = $this->Users->newEntity([
+            'password' => 'password',
+            'name' => 'required',
+            'email' => 'required@required.com',
+        ]);
+        $result = $this->Users->checkRules($entity);
+        $this->assertTrue($result);
     }
 }

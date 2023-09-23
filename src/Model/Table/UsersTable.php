@@ -71,19 +71,20 @@ class UsersTable extends Table
         $validator
             ->scalar('name')
             ->maxLength('name', 255)
-            ->requirePresence('name', 'create')
-            ->notEmptyString('name');
+            ->notEmptyString('name', __('The Name is required, and can not be empty.'))
+            ->requirePresence('name', Validator::WHEN_CREATE);
 
         $validator
             ->email('email')
-            ->requirePresence('email', 'create')
-            ->notEmptyString('email');
+            ->maxLength('email', 255)
+            ->notEmptyString('email', __('The Email is required, and can not be empty.'))
+            ->requirePresence('email', Validator::WHEN_CREATE);
 
         $validator
             ->scalar('password')
             ->maxLength('password', 255)
-            ->requirePresence('password', 'create')
-            ->notEmptyString('password');
+            ->notEmptyString('password', __('The Password is required, and can not be empty.'))
+            ->requirePresence('password', Validator::WHEN_CREATE);
 
         return $validator;
     }
