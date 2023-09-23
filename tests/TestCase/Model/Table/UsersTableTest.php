@@ -192,7 +192,7 @@ class UsersTableTest extends TestCase
 
         $this->assertSame($expected, $user->getErrors());
 
-        // test bad email
+        // test bad email, short password
         $user = $this->Users->newEntity([
             'name' => 'test',
             'email' => 'test',
@@ -203,6 +203,30 @@ class UsersTableTest extends TestCase
             'email' => [
                 'email' => 'The provided value must be an e-mail address',
             ],
+            'password' => [
+                'minLength' => 'The provided value must be at least `8` characters long',
+            ]
+        ];
+
+        $this->assertSame($expected, $user->getErrors());
+
+        // test max length
+        $user = $this->Users->newEntity([
+            'name' => str_repeat('a', 256),
+            'email' => str_repeat('a', 256) . '@test.com',
+            'password' => str_repeat('a', 256),
+        ]);
+
+        $expected = [
+            'name' => [
+                'maxLength' => 'The provided value must be at most `255` characters long',
+            ],
+            'email' => [
+                'maxLength' => 'The provided value must be at most `255` characters long',
+            ],
+            'password' => [
+                'maxLength' => 'The provided value must be at most `255` characters long',
+            ]
         ];
 
         $this->assertSame($expected, $user->getErrors());
@@ -211,7 +235,7 @@ class UsersTableTest extends TestCase
         $user = $this->Users->newEntity([
             'name' => 'test user',
             'email' => 'test@test.com',
-            'password' => 'test',
+            'password' => 'testtest',
         ]);
 
         $expected = [];

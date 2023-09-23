@@ -82,6 +82,7 @@ class UsersTable extends Table
 
         $validator
             ->scalar('password')
+            ->minLength('password', 8)
             ->maxLength('password', 255)
             ->notEmptyString('password', __('The Password is required, and can not be empty.'))
             ->requirePresence('password', Validator::WHEN_CREATE);
