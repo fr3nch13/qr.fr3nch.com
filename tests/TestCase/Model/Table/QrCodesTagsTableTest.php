@@ -121,7 +121,33 @@ class QrCodesTagsTableTest extends TestCase
      */
     public function testValidationDefault(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        // test no set fields
+        $entity = $this->QrCodesTags->newEntity([]);
+        $expected = [
+            'tag_id' => [
+                '_required' => 'This field is required',
+            ],
+            'qr_code_id' => [
+                '_required' => 'This field is required',
+            ],
+        ];
+        $this->assertSame($expected, $entity->getErrors());
+
+        // test setting the fields after an empty entity.
+        $entity->set('tag_id', 'tag_id');
+        $entity->set('qr_code_id', 'qr_code_id');
+
+        $this->assertSame([], $entity->getErrors());
+
+        // test valid entity
+        $entity = $this->QrCodesTags->newEntity([
+            'tag_id' => '1',
+            'qr_code_id' => '1',
+        ]);
+
+        $expected = [];
+
+        $this->assertSame($expected, $entity->getErrors());
     }
 
     /**
@@ -132,6 +158,45 @@ class QrCodesTagsTableTest extends TestCase
      */
     public function testBuildRules(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        // bad tag_id, and qr_code_id
+        $entity = $this->QrCodesTags->newEntity([
+            'tag_id' => 999,
+            'qr_code_id' => 999,
+        ]);
+        $result = $this->QrCodesTags->checkRules($entity);
+        $this->assertFalse($result);
+        $expected = [
+            'tag_id' => [
+                '_existsIn' => 'Unknown Tag',
+            ],
+            'qr_code_id' => [
+                '_existsIn' => 'Unknown QR Code',
+            ],
+        ];
+        $this->assertSame($expected, $entity->getErrors());
+
+        // Check for unique tagging that already exists
+        $entity = $this->QrCodesTags->newEntity([
+            'tag_id' => 1,
+            'qr_code_id' => 1,
+        ]);
+        $result = $this->QrCodesTags->checkRules($entity);
+        $this->assertFalse($result);
+        $expected = [
+            'tags' => [
+                '_isUnique' => 'This QR Code has already been tagged with this Tag',
+            ],
+        ];
+        $this->assertSame($expected, $entity->getErrors());
+
+        // A valid entry
+        $entity = $this->QrCodesTags->newEntity([
+            'tag_id' => 2,
+            'qr_code_id' => 2,
+        ]);
+        $result = $this->QrCodesTags->checkRules($entity);
+        $this->assertTrue($result);
+        $expected = [];
+        $this->assertSame($expected, $entity->getErrors());
     }
 }

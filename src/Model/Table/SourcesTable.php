@@ -65,26 +65,48 @@ class SourcesTable extends Table
         $validator
             ->scalar('key')
             ->maxLength('key', 255)
-            ->requirePresence('key', 'create')
-            ->notEmptyString('key')
-            ->add('key', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+            ->notEmptyString('key', __('The Key is required, and can not be empty.'))
+            ->requirePresence('key', Validator::WHEN_CREATE)
+            ->add('key', 'unique', [
+                'rule' => 'validateUnique',
+                'provider' => 'table',
+                'message' => __('This Key already exists.'),
+            ])
+            ->add('key', 'characters', [
+                'rule' => 'characters',
+                'provider' => 'key',
+            ]);
 
         $validator
             ->scalar('qr_code_key_field')
             ->maxLength('qr_code_key_field', 255)
-            ->requirePresence('qr_code_key_field', 'create')
-            ->notEmptyString('qr_code_key_field');
+            ->notEmptyString('qr_code_key_field', __('The QR Code Key Field is required, and can not be empty.'))
+            ->requirePresence('qr_code_key_field', Validator::WHEN_CREATE)
+            ->add('qr_code_key_field', 'characters', [
+                'rule' => 'characters',
+                'provider' => 'key',
+            ]);
 
         $validator
             ->scalar('name')
             ->maxLength('name', 255)
-            ->requirePresence('name', 'create')
-            ->notEmptyString('name');
+            ->notEmptyString('name', __('The Name is required, and can not be empty.'))
+            ->requirePresence('name', Validator::WHEN_CREATE)
+            ->add('name', 'unique', [
+                'rule' => 'validateUnique',
+                'provider' => 'table',
+                'message' => __('This Name already exists.'),
+            ]);
 
         $validator
             ->scalar('description')
-            ->requirePresence('description', 'create')
-            ->notEmptyString('description');
+            ->notEmptyString('description', __('The Description is required, and can not be empty.'))
+            ->requirePresence('description', Validator::WHEN_CREATE);
+
+        $validator
+            ->integer('user_id')
+            ->notEmptyString('user_id')
+            ->requirePresence('user_id', Validator::WHEN_CREATE);
 
         return $validator;
     }
@@ -98,7 +120,14 @@ class SourcesTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->isUnique(['key']), ['errorField' => 'key']);
+        // commented out as this is already done by the validator above.
+        //$rules->add($rules->isUnique(['key']), ['errorField' => 'key']);
+        // commented out as this is already done by the validator above.
+        //$rules->add($rules->isUnique(['name']), ['errorField' => 'name']);
+        $rules->add($rules->existsIn('user_id', 'Users'), [
+            'errorField' => 'user_id',
+            'message' => __('Unknown User'),
+        ]);
 
         return $rules;
     }

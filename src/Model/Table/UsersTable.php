@@ -82,7 +82,12 @@ class UsersTable extends Table
             ->email('email')
             ->maxLength('email', 255)
             ->notEmptyString('email', __('The Email is required, and can not be empty.'))
-            ->requirePresence('email', Validator::WHEN_CREATE);
+            ->requirePresence('email', Validator::WHEN_CREATE)
+            ->add('email', 'unique', [
+                'rule' => 'validateUnique',
+                'provider' => 'table',
+                'message' => __('This Email already exists.'),
+            ]);
 
         $validator
             ->scalar('password')
@@ -103,7 +108,8 @@ class UsersTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->isUnique(['email']), ['errorField' => 'email']);
+        // commented out as this is already done by the validator above.
+        //$rules->add($rules->isUnique(['email']), ['errorField' => 'email']);
 
         return $rules;
     }

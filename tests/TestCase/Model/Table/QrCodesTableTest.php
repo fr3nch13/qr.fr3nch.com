@@ -168,7 +168,140 @@ class QrCodesTableTest extends TestCase
      */
     public function testValidationDefault(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        // test no set fields
+        $entity = $this->QrCodes->newEntity([]);
+        $expected = [
+            'key' => [
+                '_required' => 'This field is required',
+            ],
+            'name' => [
+                '_required' => 'This field is required',
+            ],
+            'description' => [
+                '_required' => 'This field is required',
+            ],
+            'url' => [
+                '_required' => 'This field is required',
+            ],
+            'bitly_id' => [
+                '_required' => 'This field is required',
+            ],
+            'source_id' => [
+                '_required' => 'This field is required',
+            ],
+            'user_id' => [
+                '_required' => 'This field is required',
+            ],
+        ];
+        $this->assertSame($expected, $entity->getErrors());
+
+        // test setting the fields after an empty entity.
+        $entity->set('key', 'key');
+        $entity->set('name', 'name');
+        $entity->set('description', 'description');
+        $entity->set('url', 'url');
+        $entity->set('bitly_id', '1');
+        $entity->set('source_id', '1');
+        $entity->set('user_id', '1');
+
+        $this->assertSame([], $entity->getErrors());
+
+        // test existing fields
+        $entity = $this->QrCodes->newEntity([
+            'key' => 'sownscribe',
+            'name' => 'Sow & Scribe',
+            'description' => 'description',
+            'url' => 'https://www.amazon.com/path/to/product',
+            'bitly_id' => '1',
+            'source_id' => '1',
+            'user_id' => '1',
+        ]);
+
+        $expected = [
+            'key' => [
+                'unique' => 'This Key already exists.',
+            ],
+        ];
+
+        $this->assertSame($expected, $entity->getErrors());
+
+        // test max length
+        $entity = $this->QrCodes->newEntity([
+            'key' => str_repeat('a', 256),
+            'name' => str_repeat('a', 256),
+            'description' => 'description',
+            'url' => 'https://www.amazon.com/path/to/product',
+            'bitly_id' => str_repeat('a', 256),
+            'source_id' => 1, // int instead of a string, like above.
+            'user_id' => 1, // int instead of a string, like above.
+        ]);
+
+        $expected = [
+            'key' => [
+                'maxLength' => 'The provided value must be at most `255` characters long',
+            ],
+            'name' => [
+                'maxLength' => 'The provided value must be at most `255` characters long',
+            ],
+            'bitly_id' => [
+                'maxLength' => 'The provided value must be at most `255` characters long',
+            ],
+        ];
+
+        $this->assertSame($expected, $entity->getErrors());
+
+        // test space in key
+        $entity = $this->QrCodes->newEntity([
+            'key' => 'sow n scribe',
+            'name' => 'Sow & Scribe',
+            'description' => 'description',
+            'url' => 'https://www.amazon.com/path/to/product',
+            'bitly_id' => 'bitly_id',
+            'source_id' => '1',
+            'user_id' => '1',
+        ]);
+
+        $expected = [
+            'key' => [
+                'characters' => 'Value cannot have a space in it.',
+            ],
+        ];
+
+        $this->assertSame($expected, $entity->getErrors());
+
+        // test bad url
+        $entity = $this->QrCodes->newEntity([
+            'key' => 'newkey',
+            'name' => 'New Name',
+            'description' => 'description',
+            'url' => 'Not a URL',
+            'bitly_id' => 'bitly_id',
+            'source_id' => '1',
+            'user_id' => '1',
+        ]);
+
+        $expected = [
+            'url' => [
+                'url' => 'The URL is invalid.',
+            ],
+        ];
+
+        $this->assertSame($expected, $entity->getErrors());
+
+        // test valid entity
+        $entity = $this->QrCodes->newEntity([
+            'key' => 'newsource',
+            'name' => 'new name',
+            'description' => 'description',
+            'url' => 'https://www.amazon.com/path/to/product',
+            'bitly_id' => 'bitly_id',
+            'source_id' => 1, // int instead of a string, like above.
+            'user_id' => 1, // int instead of a string, like above.
+        ]);
+
+        $expected = [];
+
+        $this->assertSame($expected, $entity->getErrors());
     }
 
     /**
@@ -179,6 +312,41 @@ class QrCodesTableTest extends TestCase
      */
     public function testBuildRules(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        // bad name, and user id
+        $entity = $this->QrCodes->newEntity([
+            'key' => 'newsource',
+            'name' => 'new name',
+            'description' => 'description',
+            'url' => 'https://www.amazon.com/path/to/product',
+            'bitly_id' => 'bitly_id',
+            'source_id' => 999,
+            'user_id' => 999,
+        ]);
+        $result = $this->QrCodes->checkRules($entity);
+        $this->assertFalse($result);
+        $expected = [
+            'source_id' => [
+                '_existsIn' => 'Unknown Source',
+            ],
+            'user_id' => [
+                '_existsIn' => 'Unknown User',
+            ],
+        ];
+        $this->assertSame($expected, $entity->getErrors());
+
+        // check that we are passing the rules.
+        $entity = $this->QrCodes->newEntity([
+            'key' => 'newsource',
+            'name' => 'new name',
+            'description' => 'description',
+            'url' => 'https://www.amazon.com/path/to/product',
+            'bitly_id' => 'bitly_id',
+            'source_id' => 1,
+            'user_id' => 1,
+        ]);
+        $result = $this->QrCodes->checkRules($entity);
+        $this->assertTrue($result);
+        $expected = [];
+        $this->assertSame($expected, $entity->getErrors());
     }
 }

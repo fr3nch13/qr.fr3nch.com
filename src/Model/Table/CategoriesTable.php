@@ -77,17 +77,22 @@ class CategoriesTable extends Table
         $validator
             ->scalar('name')
             ->maxLength('name', 255)
-            ->requirePresence('name', 'create')
-            ->notEmptyString('name');
+            ->notEmptyString('name')
+            ->requirePresence('name', Validator::WHEN_CREATE);
 
         $validator
             ->scalar('description')
-            ->requirePresence('description', 'create')
-            ->notEmptyString('description');
+            ->notEmptyString('description')
+            ->requirePresence('description', Validator::WHEN_CREATE);
 
         $validator
             ->integer('parent_id')
             ->allowEmptyString('parent_id');
+
+        $validator
+            ->integer('user_id')
+            ->notEmptyString('user_id')
+            ->requirePresence('user_id', Validator::WHEN_CREATE);
 
         return $validator;
     }
@@ -101,7 +106,15 @@ class CategoriesTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn('parent_id', 'ParentCategories'), ['errorField' => 'parent_id']);
+        $rules->add($rules->existsIn('parent_id', 'ParentCategories'), [
+            'errorField' => 'parent_id',
+            'message' => __('Unknown Parent Category'),
+        ]);
+
+        $rules->add($rules->existsIn('user_id', 'Users'), [
+            'errorField' => 'user_id',
+            'message' => __('Unknown User'),
+        ]);
 
         return $rules;
     }

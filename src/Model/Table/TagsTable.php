@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
@@ -66,9 +67,38 @@ class TagsTable extends Table
         $validator
             ->scalar('name')
             ->maxLength('name', 255)
-            ->requirePresence('name', 'create')
-            ->notEmptyString('name');
+            ->notEmptyString('name', __('The Name is required, and can not be empty.'))
+            ->requirePresence('name', Validator::WHEN_CREATE)
+            ->add('name', 'unique', [
+                'rule' => 'validateUnique',
+                'provider' => 'table',
+                'message' => __('This Tag already exists.'),
+            ]);
+
+        $validator
+            ->integer('user_id')
+            ->notEmptyString('user_id')
+            ->requirePresence('user_id', Validator::WHEN_CREATE);
 
         return $validator;
+    }
+
+    /**
+     * Returns a rules checker object that will be used for validating
+     * application integrity.
+     *
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @return \Cake\ORM\RulesChecker
+     */
+    public function buildRules(RulesChecker $rules): RulesChecker
+    {
+        // commented out as this is already done by the validator above.
+        //$rules->add($rules->isUnique(['name']), ['errorField' => 'name']);
+        $rules->add($rules->existsIn('user_id', 'Users'), [
+            'errorField' => 'user_id',
+            'message' => __('Unknown User'),
+        ]);
+
+        return $rules;
     }
 }

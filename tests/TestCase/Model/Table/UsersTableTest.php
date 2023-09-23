@@ -239,6 +239,21 @@ class UsersTableTest extends TestCase
 
         $this->assertSame($expected, $user->getErrors());
 
+        // test unique email
+        $user = $this->Users->newEntity([
+            'name' => 'test user',
+            'email' => 'admin@example.com',
+            'password' => 'testtest',
+        ]);
+
+        $expected = [
+            'email' => [
+                'unique' => 'This Email already exists.',
+            ],
+        ];
+
+        $this->assertSame($expected, $user->getErrors());
+
         // test valid entity
         $user = $this->Users->newEntity([
             'name' => 'test user',
@@ -266,10 +281,12 @@ class UsersTableTest extends TestCase
             'password' => 'password',
         ]);
         $result = $this->Users->checkRules($entity);
-        $this->assertFalse($result);
+        // will be true as it doesn't even pass entity validation above.
+        $this->assertTrue($result);
+
         $expected = [
             'email' => [
-                '_isUnique' => 'This value is already in use',
+                'unique' => 'This Email already exists.',
             ],
         ];
         $this->assertSame($expected, $entity->getErrors());

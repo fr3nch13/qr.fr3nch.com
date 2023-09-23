@@ -58,16 +58,20 @@ class QrCodesTagsTable extends Table
      *
      * @param \Cake\Validation\Validator $validator Validator instance.
      * @return \Cake\Validation\Validator
+     * @todo Check to make sure the combination of tag_id and qr_code_id are unique,
+     *      So we're not tagging the same QR with the same Tag multiple times.
      */
     public function validationDefault(Validator $validator): Validator
     {
         $validator
             ->integer('tag_id')
-            ->notEmptyString('tag_id');
+            ->notEmptyString('tag_id')
+            ->requirePresence('tag_id', Validator::WHEN_CREATE);
 
         $validator
             ->integer('qr_code_id')
-            ->notEmptyString('qr_code_id');
+            ->notEmptyString('qr_code_id')
+            ->requirePresence('qr_code_id', Validator::WHEN_CREATE);
 
         return $validator;
     }
@@ -81,8 +85,18 @@ class QrCodesTagsTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->existsIn('tag_id', 'Tags'), ['errorField' => 'tag_id']);
-        $rules->add($rules->existsIn('qr_code_id', 'QrCodes'), ['errorField' => 'qr_code_id']);
+        $rules->add($rules->isUnique(['tag_id', 'qr_code_id']), [
+            'errorField' => 'tags',
+            'message' => __('This QR Code has already been tagged with this Tag'),
+        ]);
+        $rules->add($rules->existsIn('tag_id', 'Tags'), [
+            'errorField' => 'tag_id',
+            'message' => __('Unknown Tag'),
+        ]);
+        $rules->add($rules->existsIn('qr_code_id', 'QrCodes'), [
+            'errorField' => 'qr_code_id',
+            'message' => __('Unknown QR Code'),
+        ]);
 
         return $rules;
     }

@@ -79,38 +79,53 @@ class QrCodesTable extends Table
         $validator
             ->scalar('key')
             ->maxLength('key', 255)
-            ->requirePresence('key', 'create')
             ->notEmptyString('key')
-            ->add('key', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+            ->requirePresence('key', Validator::WHEN_CREATE)
+            ->add('key', 'unique', [
+                'rule' => 'validateUnique',
+                'provider' => 'table',
+                'message' => __('This Key already exists.'),
+            ])
+            ->add('key', 'characters', [
+                'rule' => 'characters',
+                'provider' => 'key',
+            ]);
 
         $validator
             ->scalar('name')
             ->maxLength('name', 255)
-            ->requirePresence('name', 'create')
-            ->notEmptyString('name');
+            ->notEmptyString('name')
+            ->requirePresence('name', Validator::WHEN_CREATE);
 
         $validator
             ->scalar('description')
-            ->requirePresence('description', 'create')
-            ->notEmptyString('description');
+            ->notEmptyString('description')
+            ->requirePresence('description', Validator::WHEN_CREATE);
 
         $validator
             ->scalar('url')
-            ->requirePresence('url', 'create')
-            ->notEmptyString('url');
+            ->notEmptyString('url')
+            ->requirePresence('url', Validator::WHEN_CREATE)
+            ->add('url', 'url', [
+                'rule' => 'url',
+                'message' => __('The URL is invalid.'),
+            ]);
 
         $validator
             ->scalar('bitly_id')
             ->maxLength('bitly_id', 255)
-            ->allowEmptyString('bitly_id');
+            ->notEmptyString('bitly_id')
+            ->requirePresence('bitly_id', Validator::WHEN_CREATE);
 
         $validator
             ->integer('source_id')
-            ->allowEmptyString('source_id');
+            ->notEmptyString('source_id')
+            ->requirePresence('source_id', Validator::WHEN_CREATE);
 
         $validator
             ->integer('user_id')
-            ->allowEmptyString('user_id');
+            ->notEmptyString('user_id')
+            ->requirePresence('user_id', Validator::WHEN_CREATE);
 
         return $validator;
     }
@@ -124,9 +139,17 @@ class QrCodesTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        $rules->add($rules->isUnique(['key']), ['errorField' => 'key']);
-        $rules->add($rules->existsIn('source_id', 'Sources'), ['errorField' => 'source_id']);
-        $rules->add($rules->existsIn('user_id', 'Users'), ['errorField' => 'user_id']);
+        // commented out as this is already done by the validator above.
+        //$rules->add($rules->isUnique(['key']), ['errorField' => 'key']);
+        $rules->add($rules->existsIn('source_id', 'Sources'), [
+            'errorField' => 'source_id',
+            'message' => __('Unknown Source'),
+        ]);
+
+        $rules->add($rules->existsIn('user_id', 'Users'), [
+            'errorField' => 'user_id',
+            'message' => __('Unknown User'),
+        ]);
 
         return $rules;
     }

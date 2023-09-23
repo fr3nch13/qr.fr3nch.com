@@ -30,6 +30,17 @@ class QrCodesFixture extends TestFixture
                 'source_id' => 1,
                 'user_id' => 1,
             ],
+            [
+                'id' => 2,
+                'key' => 'witchinghour',
+                'name' => 'The Witching Hour',
+                'description' => 'A Halloween themed journal/notebook with a witch flying at night',
+                'created' => date('Y-m-d H:i:s'),
+                'url' => 'https://amazon.com/path/to/details/page2',
+                'bitly_id' => 'witchinghour',
+                'source_id' => 1,
+                'user_id' => 1,
+            ],
         ];
 
         if (empty($data)) {

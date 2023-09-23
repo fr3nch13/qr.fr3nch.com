@@ -142,7 +142,111 @@ class SourcesTableTest extends TestCase
      */
     public function testValidationDefault(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        // test no set fields
+        $entity = $this->Sources->newEntity([]);
+        $expected = [
+            'key' => [
+                '_required' => 'This field is required',
+            ],
+            'qr_code_key_field' => [
+                '_required' => 'This field is required',
+            ],
+            'name' => [
+                '_required' => 'This field is required',
+            ],
+            'description' => [
+                '_required' => 'This field is required',
+            ],
+            'user_id' => [
+                '_required' => 'This field is required',
+            ],
+        ];
+        $this->assertSame($expected, $entity->getErrors());
+
+        // test setting the fields after an empty entity.
+        $entity->set('key', 'key');
+        $entity->set('qr_code_key_field', 'qr_code_key_field');
+        $entity->set('name', 'name');
+        $entity->set('description', 'description');
+        $entity->set('user_id', '1');
+
+        $this->assertSame([], $entity->getErrors());
+
+        // test existing fields
+        $entity = $this->Sources->newEntity([
+            'key' => 'amazon',
+            'qr_code_key_field' => 'qr_code_key_field',
+            'name' => 'Etsy',
+            'description' => 'description',
+            'user_id' => '1',
+        ]);
+
+        $expected = [
+            'key' => [
+                'unique' => 'This Key already exists.',
+            ],
+            'name' => [
+                'unique' => 'This Name already exists.',
+            ],
+        ];
+
+        $this->assertSame($expected, $entity->getErrors());
+
+        // test max length
+        $entity = $this->Sources->newEntity([
+            'key' => str_repeat('a', 256),
+            'qr_code_key_field' => str_repeat('a', 256),
+            'name' => str_repeat('a', 256),
+            'description' => 'description',
+            'user_id' => 1, // int instead of a string, like above.
+        ]);
+
+        $expected = [
+            'key' => [
+                'maxLength' => 'The provided value must be at most `255` characters long',
+            ],
+            'qr_code_key_field' => [
+                'maxLength' => 'The provided value must be at most `255` characters long',
+            ],
+            'name' => [
+                'maxLength' => 'The provided value must be at most `255` characters long',
+            ],
+        ];
+
+        $this->assertSame($expected, $entity->getErrors());
+
+        // test space in key
+        $entity = $this->Sources->newEntity([
+            'key' => 'new source',
+            'qr_code_key_field' => 'new key field',
+            'name' => 'new name',
+            'description' => 'description',
+            'user_id' => 1,
+        ]);
+
+        $expected = [
+            'key' => [
+                'characters' => 'Value cannot have a space in it.',
+            ],
+            'qr_code_key_field' => [
+                'characters' => 'Value cannot have a space in it.',
+            ],
+        ];
+
+        $this->assertSame($expected, $entity->getErrors());
+
+        // test valid entity
+        $entity = $this->Sources->newEntity([
+            'key' => 'newsource',
+            'qr_code_key_field' => 'newkeyfield',
+            'name' => 'new name',
+            'description' => 'description',
+            'user_id' => 1,
+        ]);
+
+        $expected = [];
+
+        $this->assertSame($expected, $entity->getErrors());
     }
 
     /**
@@ -153,6 +257,34 @@ class SourcesTableTest extends TestCase
      */
     public function testBuildRules(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        // bad name, and user id
+        $entity = $this->Sources->newEntity([
+            'key' => 'newsource',
+            'qr_code_key_field' => 'newkeyfield',
+            'name' => 'new name',
+            'description' => 'description',
+            'user_id' => 999,
+        ]);
+        $result = $this->Sources->checkRules($entity);
+        $this->assertFalse($result);
+        $expected = [
+            'user_id' => [
+                '_existsIn' => 'Unknown User',
+            ],
+        ];
+        $this->assertSame($expected, $entity->getErrors());
+
+        // check that we are passing the rules.
+        $entity = $this->Sources->newEntity([
+            'key' => 'newsource',
+            'qr_code_key_field' => 'newkeyfield',
+            'name' => 'new name',
+            'description' => 'description',
+            'user_id' => 1,
+        ]);
+        $result = $this->Sources->checkRules($entity);
+        $this->assertTrue($result);
+        $expected = [];
+        $this->assertSame($expected, $entity->getErrors());
     }
 }

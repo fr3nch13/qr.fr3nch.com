@@ -160,7 +160,65 @@ class CategoriesTableTest extends TestCase
      */
     public function testValidationDefault(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        // test no set fields
+        $entity = $this->Categories->newEntity([]);
+        $expected = [
+            'name' => [
+                '_required' => 'This field is required',
+            ],
+            'description' => [
+                '_required' => 'This field is required',
+            ],
+            'user_id' => [
+                '_required' => 'This field is required',
+            ],
+        ];
+        $this->assertSame($expected, $entity->getErrors());
+
+        // test setting the fields after an empty entity.
+        $entity->set('name', 'name');
+        $entity->set('description', 'description');
+        $entity->set('user_id', '1');
+
+        $this->assertSame([], $entity->getErrors());
+
+        // test max length
+        $entity = $this->Categories->newEntity([
+            'name' => str_repeat('a', 256),
+            'description' => 'description',
+            'user_id' => 1, // int instead of a string, like above.
+        ]);
+
+        $expected = [
+            'name' => [
+                'maxLength' => 'The provided value must be at most `255` characters long',
+            ],
+        ];
+
+        $this->assertSame($expected, $entity->getErrors());
+
+        // test valid entity
+        $entity = $this->Categories->newEntity([
+            'name' => 'new name',
+            'description' => 'description',
+            'user_id' => 1,
+        ]);
+
+        $expected = [];
+
+        $this->assertSame($expected, $entity->getErrors());
+
+        // test valid entity with parent
+        $entity = $this->Categories->newEntity([
+            'name' => 'new name',
+            'description' => 'description',
+            'parent_id' => 1,
+            'user_id' => 1,
+        ]);
+
+        $expected = [];
+
+        $this->assertSame($expected, $entity->getErrors());
     }
 
     /**
@@ -171,6 +229,35 @@ class CategoriesTableTest extends TestCase
      */
     public function testBuildRules(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        // bad parent, and user id
+        $entity = $this->Categories->newEntity([
+            'name' => 'new name',
+            'description' => 'description',
+            'parent_id' => 999,
+            'user_id' => 999,
+        ]);
+        $result = $this->Categories->checkRules($entity);
+        $this->assertFalse($result);
+        $expected = [
+            'parent_id' => [
+                '_existsIn' => 'Unknown Parent Category',
+            ],
+            'user_id' => [
+                '_existsIn' => 'Unknown User',
+            ],
+        ];
+        $this->assertSame($expected, $entity->getErrors());
+
+        // check that we are passing the rules.
+        $entity = $this->Categories->newEntity([
+            'name' => 'new name',
+            'description' => 'description',
+            'parent_id' => 1,
+            'user_id' => 1,
+        ]);
+        $result = $this->Categories->checkRules($entity);
+        $this->assertTrue($result);
+        $expected = [];
+        $this->assertSame($expected, $entity->getErrors());
     }
 }

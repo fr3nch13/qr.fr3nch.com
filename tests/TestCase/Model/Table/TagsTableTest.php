@@ -90,7 +90,7 @@ class TagsTableTest extends TestCase
      * Test the behaviors
      *
      * @return void
-     * @uses \App\Model\Table\UsersTable::initialize()
+     * @uses \App\Model\Table\TagsTable::initialize()
      */
     public function testBehaviors(): void
     {
@@ -146,6 +146,107 @@ class TagsTableTest extends TestCase
      */
     public function testValidationDefault(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        // test no set fields
+        $entity = $this->Tags->newEntity([]);
+        $expected = [
+            'name' => [
+                '_required' => 'This field is required',
+            ],
+            'user_id' => [
+                '_required' => 'This field is required',
+            ],
+        ];
+        $this->assertSame($expected, $entity->getErrors());
+
+        // test setting the fields after an empty entity.
+        $entity->set('name', 'uniquetag');
+        $entity->set('user_id', '1');
+
+        $this->assertSame([], $entity->getErrors());
+
+        // test missing user_id
+        $entity = $this->Tags->newEntity([
+            'name' => 'uniquetag',
+        ]);
+
+        $expected = [
+            'user_id' => [
+                '_required' => 'This field is required',
+            ],
+        ];
+
+        $this->assertSame($expected, $entity->getErrors());
+
+        // test existing tag
+        $entity = $this->Tags->newEntity([
+            'name' => 'Notebook',
+            'user_id' => '1',
+        ]);
+
+        $expected = [
+            'name' => [
+                'unique' => 'This Tag already exists.',
+            ],
+        ];
+
+        $this->assertSame($expected, $entity->getErrors());
+
+        // test max length
+        $entity = $this->Tags->newEntity([
+            'name' => str_repeat('a', 256),
+            'user_id' => 1, // int instead of a string, like above.
+        ]);
+
+        $expected = [
+            'name' => [
+                'maxLength' => 'The provided value must be at most `255` characters long',
+            ],
+        ];
+
+        $this->assertSame($expected, $entity->getErrors());
+
+        // test valid entity
+        $entity = $this->Tags->newEntity([
+            'name' => 'newtag',
+            'user_id' => 1,
+        ]);
+
+        $expected = [];
+
+        $this->assertSame($expected, $entity->getErrors());
+    }
+
+    /**
+     * Test buildRules method
+     *
+     * @return void
+     * @uses \App\Model\Table\TagsTable::buildRules()
+     */
+    public function testBuildRules(): void
+    {
+        // bad name, and user id
+        $entity = $this->Tags->newEntity([
+            'name' => 'Notebook',
+            'user_id' => 999,
+        ]);
+        $result = $this->Tags->checkRules($entity);
+        $this->assertFalse($result);
+        $expected = [
+            'name' => [
+                'unique' => 'This Tag already exists.',
+            ],
+            'user_id' => [
+                '_existsIn' => 'Unknown User',
+            ],
+        ];
+        $this->assertSame($expected, $entity->getErrors());
+
+        // check that we are passing the rules.
+        $entity = $this->Tags->newEntity([
+            'name' => 'uniquetag',
+            'user_id' => 1,
+        ]);
+        $result = $this->Tags->checkRules($entity);
+        $this->assertTrue($result);
     }
 }

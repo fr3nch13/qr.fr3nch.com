@@ -35,6 +35,14 @@ class CategoriesFixture extends TestFixture
                 'created' => date('Y-m-d H:i:s'),
                 'user_id' => 1,
             ],
+            [
+                'id' => 3,
+                'name' => 'Charms',
+                'description' => 'JLittle Charms',
+                'parent_id' => null,
+                'created' => date('Y-m-d H:i:s'),
+                'user_id' => 1,
+            ],
         ];
 
         if (empty($data)) {
