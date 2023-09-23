@@ -14,55 +14,77 @@ class CategoryPolicy
     /**
      * Check if $user can add Category
      *
-     * @param \Authorization\IdentityInterface $user The user.
+     * @param \Authorization\Identity $identity The identity object.
      * @param \App\Model\Entity\Category $Category
      * @return bool
      */
-    public function canAdd(IdentityInterface $user, Category $Category): bool
+    public function canAdd(IdentityInterface $identity, Category $Category): bool
     {
         // All logged in users can create qr codes.
-        return $this->isAdmin($user, $Category);
+        return $this->isAdmin($identity, $Category);
     }
 
     /**
      * Check if $user can edit Category
      *
-     * @param \Authorization\IdentityInterface $user The user.
+     * @param \Authorization\Identity $identity The identity object.
      * @param \App\Model\Entity\Category $Category
      * @return bool
      */
-    public function canEdit(IdentityInterface $user, Category $Category): bool
+    public function canEdit(IdentityInterface $identity, Category $Category): bool
     {
-        return $this->isAdmin($user, $Category);
+        return $this->isAdmin($identity, $Category);
     }
 
     /**
      * Check if $user can delete Category
      *
-     * @param \Authorization\IdentityInterface $user The user.
+     * @param \Authorization\Identity $identity The identity object.
      * @param \App\Model\Entity\Category $Category
      * @return bool
      */
-    public function canDelete(IdentityInterface $user, Category $Category): bool
+    public function canDelete(IdentityInterface $identity, Category $Category): bool
     {
-        return $this->isAdmin($user, $Category);
+        return $this->isAdmin($identity, $Category);
     }
 
     /**
      * Check if $user can view Category
      *
-     * @param \Authorization\IdentityInterface $user The user.
+     * @param \Authorization\Identity $identity The identity object.
      * @param \App\Model\Entity\Category $Category
      * @return bool
      */
-    public function canView(IdentityInterface $user, Category $Category): bool
+    public function canView(IdentityInterface $identity, Category $Category): bool
     {
         // All logged in users can view a qr code.
         return true;
     }
 
-    protected function isAdmin(IdentityInterface $user, Category $Category)
+    /**
+     * Check if $user created the Category
+     *
+     * @param \Authorization\Identity $identity The identity object.
+     * @param \App\Model\Entity\Category $Category
+     * @return bool
+     */
+    protected function isCreator(IdentityInterface $identity, Category $Category): bool
     {
-        return $user->getOriginalData()->is_admin ? true : false;
+        return $Category->user_id === $identity->getIdentifier();
+    }
+
+    /**
+     * Check if $user is an Admin
+     *
+     * @param \Authorization\Identity $identity The identity object.
+     * @param \App\Model\Entity\Category $Category
+     * @return bool
+     */
+    protected function isAdmin(IdentityInterface $identity, Category $Category): bool
+    {
+        /** @var \App\Model\Entity\User $user */
+        $user = $identity->getOriginalData();
+
+        return $user->is_admin ? true : false;
     }
 }

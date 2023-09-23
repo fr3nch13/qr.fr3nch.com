@@ -14,11 +14,11 @@ class TagPolicy
     /**
      * Check if $user can add Tag
      *
-     * @param \Authorization\IdentityInterface $user The user.
+     * @param \Authorization\Identity $identity The identity object.
      * @param \App\Model\Entity\Tag $Tag
      * @return bool
      */
-    public function canAdd(IdentityInterface $user, Tag $Tag): bool
+    public function canAdd(IdentityInterface $identity, Tag $Tag): bool
     {
         // All logged in users can create qr codes.
         return true;
@@ -27,47 +27,64 @@ class TagPolicy
     /**
      * Check if $user can edit Tag
      *
-     * @param \Authorization\IdentityInterface $user The user.
+     * @param \Authorization\Identity $identity The identity object.
      * @param \App\Model\Entity\Tag $Tag
      * @return bool
      */
-    public function canEdit(IdentityInterface $user, Tag $Tag): bool
+    public function canEdit(IdentityInterface $identity, Tag $Tag): bool
     {
-        return $this->isCreator($user, $Tag);
+        return $this->isCreator($identity, $Tag) || $this->isAdmin($identity, $Tag);
     }
 
     /**
      * Check if $user can delete Tag
      *
-     * @param \Authorization\IdentityInterface $user The user.
+     * @param \Authorization\Identity $identity The identity object.
      * @param \App\Model\Entity\Tag $Tag
      * @return bool
      */
-    public function canDelete(IdentityInterface $user, Tag $Tag): bool
+    public function canDelete(IdentityInterface $identity, Tag $Tag): bool
     {
-        return $this->isCreator($user, $Tag);
+        return $this->isCreator($identity, $Tag) || $this->isAdmin($identity, $Tag);
     }
 
     /**
      * Check if $user can view Tag
      *
-     * @param \Authorization\IdentityInterface $user The user.
+     * @param \Authorization\Identity $identity The identity object.
      * @param \App\Model\Entity\Tag $Tag
      * @return bool
      */
-    public function canView(IdentityInterface $user, Tag $Tag): bool
+    public function canView(IdentityInterface $identity, Tag $Tag): bool
     {
         // All logged in users can view a qr code.
         return true;
     }
 
-    protected function isCreator(IdentityInterface $user, Tag $Tag)
+    /**
+     * Check if $user created the Tag
+     *
+     * @param \Authorization\Identity $identity The identity object.
+     * @param \App\Model\Entity\Tag $Tag
+     * @return bool
+     */
+    protected function isCreator(IdentityInterface $identity, Tag $Tag): bool
     {
-        return $Tag->user_id === $user->getIdentifier();
+        return $Tag->user_id === $identity->getIdentifier();
     }
 
-    protected function isAdmin(IdentityInterface $user, Tag $Tag)
+    /**
+     * Check if $user is an Admin
+     *
+     * @param \Authorization\Identity $identity The identity object.
+     * @param \App\Model\Entity\Tag $Tag
+     * @return bool
+     */
+    protected function isAdmin(IdentityInterface $identity, Tag $Tag): bool
     {
-        return $user->getOriginalData()->is_admin ? true : false;
+        /** @var \App\Model\Entity\User $user */
+        $user = $identity->getOriginalData();
+
+        return $user->is_admin ? true : false;
     }
 }

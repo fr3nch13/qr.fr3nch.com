@@ -13,7 +13,7 @@ class CategoriesFixture extends TestFixture
     /**
      * Define your data here.
      *
-     * @param array<int, array<string, mixed>> The data to use to overwrite the default
+     * @param array<int, array<string, mixed>> $data The data to use to overwrite the default
      * @return array<int, array<string, mixed>> The data to insert
      */
     public function getData(array $data = []): array

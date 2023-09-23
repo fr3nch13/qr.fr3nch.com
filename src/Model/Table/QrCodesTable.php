@@ -10,14 +10,14 @@ use Cake\Validation\Validator;
 /**
  * QrCodes Model
  *
- * @property \App\Model\Table\SourcesTable&\Cake\ORM\Association\BelongsTo $Sources
- * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
  * @property \App\Model\Table\CategoriesTable&\Cake\ORM\Association\BelongsToMany $Categories
+ * @property \App\Model\Table\SourcesTable&\Cake\ORM\Association\BelongsTo $Sources
  * @property \App\Model\Table\TagsTable&\Cake\ORM\Association\BelongsToMany $Tags
+ * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
  * @method \App\Model\Entity\QrCode newEmptyEntity()
  * @method \App\Model\Entity\QrCode newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\QrCode[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\QrCode get($primaryKey, $options = [])
+ * @method \App\Model\Entity\QrCode get($primaryKey, $contain = [])
  * @method \App\Model\Entity\QrCode findOrCreate($search, ?callable $callback = null, $options = [])
  * @method \App\Model\Entity\QrCode patchEntity(\App\Model\Entity\QrCode  $entity, array $data, array $options = [])
  * @method \App\Model\Entity\QrCode[] patchEntities(iterable $entities, array $data, array $options = [])
@@ -34,7 +34,7 @@ class QrCodesTable extends Table
     /**
      * Initialize method
      *
-     * @param array $config The configuration for the Table.
+     * @param array<string, mixed> $config The configuration for the Table.
      * @return void
      */
     public function initialize(array $config): void

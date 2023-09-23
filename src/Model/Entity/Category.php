@@ -14,10 +14,12 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\DateTime|null $created
  * @property \Cake\I18n\DateTime|null $modified
  * @property int|null $parent_id
+ * @property int|null $user_id
  *
- * @property \App\Model\Entity\ParentCategory $parent_category
- * @property \App\Model\Entity\ChildCategory[] $child_categories
+ * @property \App\Model\Entity\Category $parent_category
+ * @property \App\Model\Entity\Category[] $child_categories
  * @property \App\Model\Entity\QrCode[] $qr_codes
+ * @property \App\Model\Entity\User $user
  */
 class Category extends Entity
 {
@@ -38,6 +40,8 @@ class Category extends Entity
         'parent_id' => true,
         'parent_category' => true,
         'child_categories' => true,
+        'user_id' => true,
         'qr_codes' => true,
+        'user' => true,
     ];
 }

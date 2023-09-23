@@ -3,7 +3,13 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Model\Table;
 
+use App\Model\Table\CategoriesTable;
+use App\Model\Table\QrCodesTable;
+use App\Model\Table\SourcesTable;
+use App\Model\Table\TagsTable;
 use App\Model\Table\UsersTable;
+use Cake\ORM\Association\HasMany;
+use Cake\ORM\Behavior\TimestampBehavior;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -36,7 +42,9 @@ class UsersTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Users') ? [] : ['className' => UsersTable::class];
-        $this->Users = $this->getTableLocator()->get('Users', $config);
+        /** @var \App\Model\Table\UsersTable $Users */
+        $Users = $this->getTableLocator()->get('Users', $config);
+        $this->Users = $Users;
     }
 
     /**
@@ -84,7 +92,7 @@ class UsersTableTest extends TestCase
     public function testBehaviors(): void
     {
         $behaviors = [
-            'Timestamp' => \Cake\ORM\Behavior\TimestampBehavior::class,
+            'Timestamp' => TimestampBehavior::class,
         ];
         foreach ($behaviors as $name => $class) {
             $behavior = $this->Users->behaviors()->get($name);
@@ -110,32 +118,32 @@ class UsersTableTest extends TestCase
         ////// foreach association.
         // make sure the association exists
         $this->assertNotNull($Associations->get('Categories'));
-        $this->assertInstanceOf(\Cake\ORM\Association\HasMany::class, $Associations->get('Categories'));
-        $this->assertInstanceOf(\App\Model\Table\CategoriesTable::class, $Associations->get('Categories')->getTarget());
+        $this->assertInstanceOf(HasMany::class, $Associations->get('Categories'));
+        $this->assertInstanceOf(CategoriesTable::class, $Associations->get('Categories')->getTarget());
         $Association = $this->Users->Categories;
         $this->assertSame('Categories', $Association->getName());
         $this->assertSame('user_id', $Association->getForeignKey());
 
         // make sure the association exists
         $this->assertNotNull($Associations->get('QrCodes'));
-        $this->assertInstanceOf(\Cake\ORM\Association\HasMany::class, $Associations->get('QrCodes'));
-        $this->assertInstanceOf(\App\Model\Table\QrCodesTable::class, $Associations->get('QrCodes')->getTarget());
+        $this->assertInstanceOf(HasMany::class, $Associations->get('QrCodes'));
+        $this->assertInstanceOf(QrCodesTable::class, $Associations->get('QrCodes')->getTarget());
         $Association = $this->Users->QrCodes;
         $this->assertSame('QrCodes', $Association->getName());
         $this->assertSame('user_id', $Association->getForeignKey());
 
         // make sure the association exists
         $this->assertNotNull($Associations->get('Sources'));
-        $this->assertInstanceOf(\Cake\ORM\Association\HasMany::class, $Associations->get('Sources'));
-        $this->assertInstanceOf(\App\Model\Table\SourcesTable::class, $Associations->get('Sources')->getTarget());
+        $this->assertInstanceOf(HasMany::class, $Associations->get('Sources'));
+        $this->assertInstanceOf(SourcesTable::class, $Associations->get('Sources')->getTarget());
         $Association = $this->Users->Sources;
         $this->assertSame('Sources', $Association->getName());
         $this->assertSame('user_id', $Association->getForeignKey());
 
         // make sure the association exists
         $this->assertNotNull($Associations->get('Tags'));
-        $this->assertInstanceOf(\Cake\ORM\Association\HasMany::class, $Associations->get('Tags'));
-        $this->assertInstanceOf(\App\Model\Table\TagsTable::class, $Associations->get('Tags')->getTarget());
+        $this->assertInstanceOf(HasMany::class, $Associations->get('Tags'));
+        $this->assertInstanceOf(TagsTable::class, $Associations->get('Tags')->getTarget());
         $Association = $this->Users->Tags;
         $this->assertSame('Tags', $Association->getName());
         $this->assertSame('user_id', $Association->getForeignKey());
@@ -205,7 +213,7 @@ class UsersTableTest extends TestCase
             ],
             'password' => [
                 'minLength' => 'The provided value must be at least `8` characters long',
-            ]
+            ],
         ];
 
         $this->assertSame($expected, $user->getErrors());
@@ -226,7 +234,7 @@ class UsersTableTest extends TestCase
             ],
             'password' => [
                 'maxLength' => 'The provided value must be at most `255` characters long',
-            ]
+            ],
         ];
 
         $this->assertSame($expected, $user->getErrors());

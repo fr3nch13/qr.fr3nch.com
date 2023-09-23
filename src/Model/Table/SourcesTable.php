@@ -11,10 +11,11 @@ use Cake\Validation\Validator;
  * Sources Model
  *
  * @property \App\Model\Table\QrCodesTable&\Cake\ORM\Association\HasMany $QrCodes
+ * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
  * @method \App\Model\Entity\Source newEmptyEntity()
  * @method \App\Model\Entity\Source newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Source[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\Source get($primaryKey, $options = [])
+ * @method \App\Model\Entity\Source get($primaryKey, $contain = [])
  * @method \App\Model\Entity\Source findOrCreate($search, ?callable $callback = null, $options = [])
  * @method \App\Model\Entity\Source patchEntity(\App\Model\Entity\Source  $entity, array $data, array $options = [])
  * @method \App\Model\Entity\Source[] patchEntities(iterable $entities, array $data, array $options = [])
@@ -31,7 +32,7 @@ class SourcesTable extends Table
     /**
      * Initialize method
      *
-     * @param array $config The configuration for the Table.
+     * @param array<string, mixed> $config The configuration for the Table.
      * @return void
      */
     public function initialize(array $config): void

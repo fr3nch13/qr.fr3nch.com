@@ -10,14 +10,14 @@ use Cake\Validation\Validator;
 /**
  * Categories Model
  *
- * @property \App\Model\Table\CategoriesTable&\Cake\ORM\Association\BelongsTo $ParentCategories
  * @property \App\Model\Table\CategoriesTable&\Cake\ORM\Association\HasMany $ChildCategories
+ * @property \App\Model\Table\CategoriesTable&\Cake\ORM\Association\BelongsTo $ParentCategories
  * @property \App\Model\Table\QrCodesTable&\Cake\ORM\Association\BelongsToMany $QrCodes
  * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
  * @method \App\Model\Entity\Category newEmptyEntity()
  * @method \App\Model\Entity\Category newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Category[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\Category get($primaryKey, $options = [])
+ * @method \App\Model\Entity\Category get($primaryKey, $contain = [])
  * @method \App\Model\Entity\Category findOrCreate($search, ?callable $callback = null, $options = [])
  * @method \App\Model\Entity\Category patchEntity(\App\Model\Entity\Category  $entity, array $data, array $options = [])
  * @method \App\Model\Entity\Category[] patchEntities(iterable $entities, array $data, array $options = [])
@@ -34,7 +34,7 @@ class CategoriesTable extends Table
     /**
      * Initialize method
      *
-     * @param array $config The configuration for the Table.
+     * @param array<string, mixed> $config The configuration for the Table.
      * @return void
      */
     public function initialize(array $config): void

@@ -3,7 +3,12 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Model\Table;
 
+use App\Model\Table\QrCodesTable;
 use App\Model\Table\TagsTable;
+use App\Model\Table\UsersTable;
+use Cake\ORM\Association\BelongsTo;
+use Cake\ORM\Association\BelongsToMany;
+use Cake\ORM\Behavior\TimestampBehavior;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -40,7 +45,9 @@ class TagsTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Tags') ? [] : ['className' => TagsTable::class];
-        $this->Tags = $this->getTableLocator()->get('Tags', $config);
+        /** @var \App\Model\Table\TagsTable $Tags */
+        $Tags = $this->getTableLocator()->get('Tags', $config);
+        $this->Tags = $Tags;
     }
 
     /**
@@ -88,7 +95,7 @@ class TagsTableTest extends TestCase
     public function testBehaviors(): void
     {
         $behaviors = [
-            'Timestamp' => \Cake\ORM\Behavior\TimestampBehavior::class,
+            'Timestamp' => TimestampBehavior::class,
         ];
         foreach ($behaviors as $name => $class) {
             $behavior = $this->Tags->behaviors()->get($name);
@@ -114,16 +121,16 @@ class TagsTableTest extends TestCase
         ////// foreach association.
         // make sure the association exists
         $this->assertNotNull($Associations->get('Users'));
-        $this->assertInstanceOf(\Cake\ORM\Association\BelongsTo::class, $Associations->get('Users'));
-        $this->assertInstanceOf(\App\Model\Table\UsersTable::class, $Associations->get('Users')->getTarget());
+        $this->assertInstanceOf(BelongsTo::class, $Associations->get('Users'));
+        $this->assertInstanceOf(UsersTable::class, $Associations->get('Users')->getTarget());
         $Association = $this->Tags->Users;
         $this->assertSame('Users', $Association->getName());
         $this->assertSame('user_id', $Association->getForeignKey());
 
         // make sure the association exists
         $this->assertNotNull($Associations->get('QrCodes'));
-        $this->assertInstanceOf(\Cake\ORM\Association\BelongsToMany::class, $Associations->get('QrCodes'));
-        $this->assertInstanceOf(\App\Model\Table\QrCodesTable::class, $Associations->get('QrCodes')->getTarget());
+        $this->assertInstanceOf(BelongsToMany::class, $Associations->get('QrCodes'));
+        $this->assertInstanceOf(QrCodesTable::class, $Associations->get('QrCodes')->getTarget());
         $Association = $this->Tags->QrCodes;
         $this->assertSame('QrCodes', $Association->getName());
         $this->assertSame('QrCodesTags', $Association->getThrough());

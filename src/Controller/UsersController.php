@@ -33,19 +33,23 @@ class UsersController extends AppController
     {
         $this->Authorization->skipAuthorization();
         $this->request->allowMethod(['get', 'post']);
+        /** @var \Authentication\Authenticator\Result|null $result */
         $result = $this->Authentication->getResult();
         // regardless of POST or GET, redirect if user is logged in
-        if ($result && $result->isValid()) {
-            // redirect to /qr-codes after login success
-            $redirect = $this->request->getQuery('redirect', [
-                'controller' => 'QrCodes',
-                'action' => 'index',
-            ]);
+        if ($result) {
+            if ($result->isValid()) {
+                // redirect to /qr-codes after login success
+                $redirect = $this->request->getQuery('redirect', [
+                    'controller' => 'QrCodes',
+                    'action' => 'index',
+                ]);
 
-            return $this->redirect($redirect);
+                return $this->redirect($redirect);
+            }
         }
+
         // display error if user submitted and authentication failed
-        if ($this->request->is('post') && !$result->isValid()) {
+        if ($this->request->is('post') && (!$result || !$result->isValid())) {
             $this->Flash->error(__('Invalid email or password'));
         }
     }
@@ -53,18 +57,21 @@ class UsersController extends AppController
     /**
      * Allow users to logout
      *
-     * @return \Cake\Http\Response The redirect
+     * @return \Cake\Http\Response|null The redirect
      */
-    public function logout(): Response
+    public function logout(): ?Response
     {
         $this->Authorization->skipAuthorization();
+        /** @var \Authentication\Authenticator\Result|null $result */
         $result = $this->Authentication->getResult();
         // regardless of POST or GET, redirect if user is logged in
-        if ($result && $result->isValid()) {
-            $this->Authentication->logout();
+        if ($result) {
+            if ($result->isValid()) {
+                $this->Authentication->logout();
+            }
         }
 
-        // eitherway redirect them to the login page
+        // either way redirect them to the login page
         return $this->redirect(['controller' => 'Users', 'action' => 'login']);
     }
 

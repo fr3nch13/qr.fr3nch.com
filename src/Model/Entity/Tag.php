@@ -12,8 +12,10 @@ use Cake\ORM\Entity;
  * @property string $name
  * @property \Cake\I18n\DateTime|null $created
  * @property \Cake\I18n\DateTime|null $modified
+ * @property int|null $user_id
  *
  * @property \App\Model\Entity\QrCode[] $qr_codes
+ * @property \App\Model\Entity\User $user
  */
 class Tag extends Entity
 {
@@ -30,6 +32,8 @@ class Tag extends Entity
         'name' => true,
         'created' => true,
         'modified' => true,
+        'user_id' => true,
         'qr_codes' => true,
+        'user' => true,
     ];
 }

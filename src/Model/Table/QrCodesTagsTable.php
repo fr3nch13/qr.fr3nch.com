@@ -10,12 +10,12 @@ use Cake\Validation\Validator;
 /**
  * QrCodesTags Model
  *
- * @property \App\Model\Table\TagsTable&\Cake\ORM\Association\BelongsTo $Tags
  * @property \App\Model\Table\QrCodesTable&\Cake\ORM\Association\BelongsTo $QrCodes
+ * @property \App\Model\Table\TagsTable&\Cake\ORM\Association\BelongsTo $Tags
  * @method \App\Model\Entity\QrCodesTag newEmptyEntity()
  * @method \App\Model\Entity\QrCodesTag newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\QrCodesTag[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\QrCodesTag get($primaryKey, $options = [])
+ * @method \App\Model\Entity\QrCodesTag get($primaryKey, $contain = [])
  * @method \App\Model\Entity\QrCodesTag findOrCreate($search, ?callable $callback = null, $options = [])
  * @method \App\Model\Entity\QrCodesTag patchEntity(\App\Model\Entity\QrCodesTag  $entity, array $data, array $options = [])
  * @method \App\Model\Entity\QrCodesTag[] patchEntities(iterable $entities, array $data, array $options = [])
@@ -31,7 +31,7 @@ class QrCodesTagsTable extends Table
     /**
      * Initialize method
      *
-     * @param array $config The configuration for the Table.
+     * @param array<string, mixed> $config The configuration for the Table.
      * @return void
      */
     public function initialize(array $config): void

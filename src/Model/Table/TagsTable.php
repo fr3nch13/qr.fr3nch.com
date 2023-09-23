@@ -10,10 +10,11 @@ use Cake\Validation\Validator;
  * Tags Model
  *
  * @property \App\Model\Table\QrCodesTable&\Cake\ORM\Association\BelongsToMany $QrCodes
+ * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
  * @method \App\Model\Entity\Tag newEmptyEntity()
  * @method \App\Model\Entity\Tag newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Tag[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\Tag get($primaryKey, $options = [])
+ * @method \App\Model\Entity\Tag get($primaryKey, $contain = [])
  * @method \App\Model\Entity\Tag findOrCreate($search, ?callable $callback = null, $options = [])
  * @method \App\Model\Entity\Tag patchEntity(\App\Model\Entity\Tag  $entity, array $data, array $options = [])
  * @method \App\Model\Entity\Tag[] patchEntities(iterable $entities, array $data, array $options = [])
@@ -30,7 +31,7 @@ class TagsTable extends Table
     /**
      * Initialize method
      *
-     * @param array $config The configuration for the Table.
+     * @param array<string, mixed> $config The configuration for the Table.
      * @return void
      */
     public function initialize(array $config): void

@@ -10,10 +10,14 @@ use Cake\Validation\Validator;
 /**
  * Users Model
  *
+ * @property \App\Model\Table\CategoriesTable&\Cake\ORM\Association\HasMany $Categories
+ * @property \App\Model\Table\QrCodesTable&\Cake\ORM\Association\HasMany $QrCodes
+ * @property \App\Model\Table\SourcesTable&\Cake\ORM\Association\HasMany $Sources
+ * @property \App\Model\Table\TagsTable&\Cake\ORM\Association\HasMany $Tags
  * @method \App\Model\Entity\User newEmptyEntity()
  * @method \App\Model\Entity\User newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\User[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\User get($primaryKey, $options = [])
+ * @method \App\Model\Entity\User get($primaryKey, $contain = [])
  * @method \App\Model\Entity\User findOrCreate($search, ?callable $callback = null, $options = [])
  * @method \App\Model\Entity\User patchEntity(\App\Model\Entity\User  $entity, array $data, array $options = [])
  * @method \App\Model\Entity\User[] patchEntities(iterable $entities, array $data, array $options = [])
@@ -30,7 +34,7 @@ class UsersTable extends Table
     /**
      * Initialize method
      *
-     * @param array $config The configuration for the Table.
+     * @param array<string, mixed> $config The configuration for the Table.
      * @return void
      */
     public function initialize(array $config): void

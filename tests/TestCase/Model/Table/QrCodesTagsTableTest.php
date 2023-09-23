@@ -3,7 +3,10 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Model\Table;
 
+use App\Model\Table\QrCodesTable;
 use App\Model\Table\QrCodesTagsTable;
+use App\Model\Table\TagsTable;
+use Cake\ORM\Association\HasMany;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -40,7 +43,9 @@ class QrCodesTagsTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('QrCodesTags') ? [] : ['className' => QrCodesTagsTable::class];
-        $this->QrCodesTags = $this->getTableLocator()->get('QrCodesTags', $config);
+        /** @var \App\Model\Table\QrCodesTagsTable $QrCodesTags */
+        $QrCodesTags = $this->getTableLocator()->get('QrCodesTags', $config);
+        $this->QrCodesTags = $QrCodesTags;
     }
 
     /**
@@ -93,16 +98,16 @@ class QrCodesTagsTableTest extends TestCase
         ////// foreach association.
         // make sure the association exists
         $this->assertNotNull($Associations->get('Tags'));
-        $this->assertInstanceOf(\Cake\ORM\Association\HasMany::class, $Associations->get('Tags'));
-        $this->assertInstanceOf(\App\Model\Table\TagsTable::class, $Associations->get('Tags')->getTarget());
+        $this->assertInstanceOf(HasMany::class, $Associations->get('Tags'));
+        $this->assertInstanceOf(TagsTable::class, $Associations->get('Tags')->getTarget());
         $Association = $this->QrCodesTags->Tags;
         $this->assertSame('Tags', $Association->getName());
         $this->assertSame('tag_id', $Association->getForeignKey());
 
         // make sure the association exists
         $this->assertNotNull($Associations->get('QrCodes'));
-        $this->assertInstanceOf(\Cake\ORM\Association\HasMany::class, $Associations->get('QrCodes'));
-        $this->assertInstanceOf(\App\Model\Table\QrCodesTable::class, $Associations->get('QrCodes')->getTarget());
+        $this->assertInstanceOf(HasMany::class, $Associations->get('QrCodes'));
+        $this->assertInstanceOf(QrCodesTable::class, $Associations->get('QrCodes')->getTarget());
         $Association = $this->QrCodesTags->QrCodes;
         $this->assertSame('QrCodes', $Association->getName());
         $this->assertSame('qr_code_id', $Association->getForeignKey());

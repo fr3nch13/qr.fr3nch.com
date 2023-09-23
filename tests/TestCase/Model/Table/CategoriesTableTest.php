@@ -4,6 +4,12 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\CategoriesTable;
+use App\Model\Table\QrCodesTable;
+use App\Model\Table\UsersTable;
+use Cake\ORM\Association\BelongsTo;
+use Cake\ORM\Association\BelongsToMany;
+use Cake\ORM\Association\HasMany;
+use Cake\ORM\Behavior\TimestampBehavior;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -37,7 +43,9 @@ class CategoriesTableTest extends TestCase
     {
         parent::setUp();
         $config = $this->getTableLocator()->exists('Categories') ? [] : ['className' => CategoriesTable::class];
-        $this->Categories = $this->getTableLocator()->get('Categories', $config);
+        /** @var \App\Model\Table\CategoriesTable $Categories */
+        $Categories = $this->getTableLocator()->get('Categories', $config);
+        $this->Categories = $Categories;
     }
 
     /**
@@ -85,7 +93,7 @@ class CategoriesTableTest extends TestCase
     public function testBehaviors(): void
     {
         $behaviors = [
-            'Timestamp' => \Cake\ORM\Behavior\TimestampBehavior::class,
+            'Timestamp' => TimestampBehavior::class,
         ];
         foreach ($behaviors as $name => $class) {
             $behavior = $this->Categories->behaviors()->get($name);
@@ -111,32 +119,32 @@ class CategoriesTableTest extends TestCase
         ////// foreach association.
         // make sure the association exists
         $this->assertNotNull($Associations->get('Users'));
-        $this->assertInstanceOf(\Cake\ORM\Association\BelongsTo::class, $Associations->get('Users'));
-        $this->assertInstanceOf(\App\Model\Table\UsersTable::class, $Associations->get('Users')->getTarget());
+        $this->assertInstanceOf(BelongsTo::class, $Associations->get('Users'));
+        $this->assertInstanceOf(UsersTable::class, $Associations->get('Users')->getTarget());
         $Association = $this->Categories->Users;
         $this->assertSame('Users', $Association->getName());
         $this->assertSame('user_id', $Association->getForeignKey());
 
         // make sure the association exists
         $this->assertNotNull($Associations->get('ParentCategories'));
-        $this->assertInstanceOf(\Cake\ORM\Association\BelongsTo::class, $Associations->get('ParentCategories'));
-        $this->assertInstanceOf(\App\Model\Table\CategoriesTable::class, $Associations->get('ParentCategories')->getTarget());
+        $this->assertInstanceOf(BelongsTo::class, $Associations->get('ParentCategories'));
+        $this->assertInstanceOf(CategoriesTable::class, $Associations->get('ParentCategories')->getTarget());
         $Association = $this->Categories->ParentCategories;
         $this->assertSame('ParentCategories', $Association->getName());
         $this->assertSame('parent_id', $Association->getForeignKey());
 
         // make sure the association exists
         $this->assertNotNull($Associations->get('ChildCategories'));
-        $this->assertInstanceOf(\Cake\ORM\Association\HasMany::class, $Associations->get('ChildCategories'));
-        $this->assertInstanceOf(\App\Model\Table\CategoriesTable::class, $Associations->get('ChildCategories')->getTarget());
+        $this->assertInstanceOf(HasMany::class, $Associations->get('ChildCategories'));
+        $this->assertInstanceOf(CategoriesTable::class, $Associations->get('ChildCategories')->getTarget());
         $Association = $this->Categories->ChildCategories;
         $this->assertSame('ChildCategories', $Association->getName());
         $this->assertSame('parent_id', $Association->getForeignKey());
 
         // make sure the association exists
         $this->assertNotNull($Associations->get('QrCodes'));
-        $this->assertInstanceOf(\Cake\ORM\Association\BelongsToMany::class, $Associations->get('QrCodes'));
-        $this->assertInstanceOf(\App\Model\Table\QrCodesTable::class, $Associations->get('QrCodes')->getTarget());
+        $this->assertInstanceOf(BelongsToMany::class, $Associations->get('QrCodes'));
+        $this->assertInstanceOf(QrCodesTable::class, $Associations->get('QrCodes')->getTarget());
         $Association = $this->Categories->QrCodes;
         $this->assertSame('QrCodes', $Association->getName());
         $this->assertSame('CategoriesQrCodes', $Association->getThrough());
