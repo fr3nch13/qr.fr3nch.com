@@ -47,7 +47,7 @@ jobs:
       run: composer run-script post-install-cmd --no-interaction
 
     - name: Run PHPUnit
-      run: vendor/bin/phpunit
+      run: composer test
       env:
         DATABASE_TEST_URL: sqlite://./testdb.sqlite
 
