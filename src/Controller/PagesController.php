@@ -58,6 +58,8 @@ class PagesController extends AppController
     public function display(string ...$path): ?Response
     {
         $this->Authorization->skipAuthorization();
+        $activeUser = $this->getActiveUser();
+
         if (!$path) {
             return $this->redirect('/');
         }
@@ -72,7 +74,7 @@ class PagesController extends AppController
         if (!empty($path[1])) {
             $subpage = $path[1];
         }
-        $this->set(compact('page', 'subpage'));
+        $this->set(compact('page', 'subpage', 'activeUser'));
 
         try {
             return $this->render(implode('/', $path));

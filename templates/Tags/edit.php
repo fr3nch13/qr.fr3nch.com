@@ -19,13 +19,14 @@
     </aside>
     <div class="column column-80">
         <div class="tags form content">
-            <?= $this->Form->create($tag) ?>
+            <?= $this->Form->create($tag, ['method' => 'patch']) ?>
             <fieldset>
                 <legend><?= __('Edit Tag') ?></legend>
-                <?php
-                    echo $this->Form->control('name');
-                    echo $this->Form->control('qr_codes._ids', ['options' => $qrCodes]);
-                ?>
+
+                <?= $this->Form->control('name'); ?>
+
+                <?= $this->Form->control('qr_codes._ids', ['options' => $qrCodes]); ?>
+
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>
             <?= $this->Form->end() ?>

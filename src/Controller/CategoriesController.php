@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Event\EventInterface;
+
 /**
  * Categories Controller
  *
@@ -11,18 +13,32 @@ namespace App\Controller;
 class CategoriesController extends AppController
 {
     /**
+     * Runs before the code in the actions
+     */
+    public function beforeFilter(EventInterface $event): void
+    {
+        parent::beforeFilter($event);
+
+        //Allow anyone to view the list of categories, and their details page.
+        $this->Authentication->addUnauthenticatedActions(['index', 'view']);
+    }
+
+    /**
      * Index method
      *
      * @return \Cake\Http\Response|null|void Renders view
      */
     public function index()
     {
+        $this->request->allowMethod(['get']);
         $this->Authorization->skipAuthorization();
-        $query = $this->Categories->find()
+
+        $query = $this->Categories->find('all')
             ->contain(['ParentCategories']);
         $categories = $this->paginate($query);
 
         $this->set(compact('categories'));
+        $this->set('_serialize', ['categories']);
     }
 
     /**
@@ -34,9 +50,13 @@ class CategoriesController extends AppController
      */
     public function view(?string $id = null)
     {
+        $this->request->allowMethod(['get']);
         $this->Authorization->skipAuthorization();
-        $category = $this->Categories->get($id, contain: ['ParentCategories', 'QrCodes', 'ChildCategories']);
+
+        $category = $this->Categories->get((int)$id, contain: ['ParentCategories', 'QrCodes', 'ChildCategories']);
+
         $this->set(compact('category'));
+        $this->set('_serialize', ['category']);
     }
 
     /**
@@ -46,10 +66,14 @@ class CategoriesController extends AppController
      */
     public function add()
     {
+        $this->request->allowMethod(['get', 'post']);
+
         $category = $this->Categories->newEmptyEntity();
         $this->Authorization->authorize($category);
+
         if ($this->request->is('post')) {
             $category = $this->Categories->patchEntity($category, $this->request->getData());
+            $category->user_id = $this->getActiveUser('id');
             if ($this->Categories->save($category)) {
                 $this->Flash->success(__('The category has been saved.'));
 
@@ -57,9 +81,11 @@ class CategoriesController extends AppController
             }
             $this->Flash->error(__('The category could not be saved. Please, try again.'));
         }
+
         $parentCategories = $this->Categories->ParentCategories->find('list', limit: 200)->all();
-        $qrCodes = $this->Categories->QrCodes->find('list', limit: 200)->all();
-        $this->set(compact('category', 'parentCategories', 'qrCodes'));
+
+        $this->set(compact('category', 'parentCategories'));
+        $this->set('_serialize', ['category', 'parentCategories']);
     }
 
     /**
@@ -71,9 +97,12 @@ class CategoriesController extends AppController
      */
     public function edit(?string $id = null)
     {
-        $category = $this->Categories->get($id, contain: ['QrCodes']);
+        $this->request->allowMethod(['get', 'patch']);
+
+        $category = $this->Categories->get((int)$id, contain: ['QrCodes']);
         $this->Authorization->authorize($category);
-        if ($this->request->is(['patch', 'post', 'put'])) {
+
+        if ($this->request->is('patch')) {
             $category = $this->Categories->patchEntity($category, $this->request->getData());
             if ($this->Categories->save($category)) {
                 $this->Flash->success(__('The category has been saved.'));
@@ -82,9 +111,11 @@ class CategoriesController extends AppController
             }
             $this->Flash->error(__('The category could not be saved. Please, try again.'));
         }
+
         $parentCategories = $this->Categories->ParentCategories->find('list', limit: 200)->all();
-        $qrCodes = $this->Categories->QrCodes->find('list', limit: 200)->all();
-        $this->set(compact('category', 'parentCategories', 'qrCodes'));
+
+        $this->set(compact('category', 'parentCategories'));
+        $this->set('_serialize', ['category', 'parentCategories']);
     }
 
     /**
@@ -96,11 +127,15 @@ class CategoriesController extends AppController
      */
     public function delete(?string $id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
-        $category = $this->Categories->get($id);
+        $this->request->allowMethod(['delete']);
+
+        $category = $this->Categories->get((int)$id);
+        $this->Authorization->authorize($category);
+
         if ($this->Categories->delete($category)) {
             $this->Flash->success(__('The category has been deleted.'));
         } else {
+            // @todo how to test this, since the get() above with throw a 404 first.
             $this->Flash->error(__('The category could not be deleted. Please, try again.'));
         }
 

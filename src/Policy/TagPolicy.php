@@ -82,9 +82,9 @@ class TagPolicy
      */
     protected function isAdmin(IdentityInterface $identity, Tag $Tag): bool
     {
-        /** @var \App\Model\Entity\User $user */
-        $user = $identity->getOriginalData();
+        /** @var \App\Model\Entity\User $entity */
+        $entity = $identity->getOriginalData();
 
-        return $user->is_admin ? true : false;
+        return $entity->is_admin ? true : false;
     }
 }

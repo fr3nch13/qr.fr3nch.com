@@ -16,11 +16,13 @@
             <?= $this->Form->create($user) ?>
             <fieldset>
                 <legend><?= __('Add User') ?></legend>
-                <?php
-                    echo $this->Form->control('name');
-                    echo $this->Form->control('email');
-                    echo $this->Form->control('password');
-                ?>
+
+                <?= $this->Form->control('name'); ?>
+
+                <?= $this->Form->control('email'); ?>
+
+                <?= $this->Form->control('password'); ?>
+
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>
             <?= $this->Form->end() ?>

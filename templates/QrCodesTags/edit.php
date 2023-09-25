@@ -20,7 +20,7 @@
     </aside>
     <div class="column column-80">
         <div class="qrCodesTags form content">
-            <?= $this->Form->create($qrCodesTag) ?>
+            <?= $this->Form->create($qrCodesTag, ['method' => 'patch']) ?>
             <fieldset>
                 <legend><?= __('Edit Qr Codes Tag') ?></legend>
                 <?php

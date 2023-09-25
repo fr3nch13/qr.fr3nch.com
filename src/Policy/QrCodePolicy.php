@@ -49,19 +49,6 @@ class QrCodePolicy
     }
 
     /**
-     * Check if $user can view QrCode
-     *
-     * @param \Authorization\Identity $identity The identity object.
-     * @param \App\Model\Entity\QrCode $QrCode
-     * @return bool
-     */
-    public function canView(IdentityInterface $identity, QrCode $QrCode): bool
-    {
-        // All logged in users can view a qr code.
-        return true;
-    }
-
-    /**
      * Check if $user created the QrCode
      *
      * @param \Authorization\Identity $identity The identity object.
@@ -82,9 +69,9 @@ class QrCodePolicy
      */
     protected function isAdmin(IdentityInterface $identity, QrCode $QrCode): bool
     {
-        /** @var \App\Model\Entity\User $user */
-        $user = $identity->getOriginalData();
+        /** @var \App\Model\Entity\User $entity */
+        $entity = $identity->getOriginalData();
 
-        return $user->is_admin ? true : false;
+        return $entity->is_admin ? true : false;
     }
 }

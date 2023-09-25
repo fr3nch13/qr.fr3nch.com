@@ -55,10 +55,10 @@ class User extends Entity
      */
     protected function _setPassword(string $password): ?string
     {
-        if (strlen($password) > 0) {
-            return (new DefaultPasswordHasher())->hash($password);
-        }
-
-        return null;
+        // when creating a new entity, the rules in the table require this
+        // to be at least 8 characters.
+        // if this Entity is being created directly, it should throw a runtime error
+        // when the password is anything but a sting.
+        return (new DefaultPasswordHasher())->hash($password);
     }
 }

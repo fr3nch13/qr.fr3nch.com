@@ -17,10 +17,11 @@
             <?= $this->Form->create($tag) ?>
             <fieldset>
                 <legend><?= __('Add Tag') ?></legend>
-                <?php
-                    echo $this->Form->control('name');
-                    echo $this->Form->control('qr_codes._ids', ['options' => $qrCodes]);
-                ?>
+
+                <?= $this->Form->control('name'); ?>
+
+                <?= $this->Form->control('qr_codes._ids', ['options' => $qrCodes]); ?>
+
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>
             <?= $this->Form->end() ?>

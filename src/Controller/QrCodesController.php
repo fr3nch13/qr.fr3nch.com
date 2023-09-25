@@ -30,12 +30,15 @@ class QrCodesController extends AppController
      */
     public function index()
     {
+        $this->request->allowMethod(['get']);
         $this->Authorization->skipAuthorization();
-        $query = $this->QrCodes->find()
+
+        $query = $this->QrCodes->find('all')
             ->contain(['Sources', 'Users']);
         $qrCodes = $this->paginate($query);
 
         $this->set(compact('qrCodes'));
+        $this->set('_serialize', ['qrCodes']);
     }
 
     /**
@@ -47,9 +50,13 @@ class QrCodesController extends AppController
      */
     public function view(?string $id = null)
     {
+        $this->request->allowMethod(['get']);
         $this->Authorization->skipAuthorization();
-        $qrCode = $this->QrCodes->get($id, contain: ['Sources', 'Users', 'Categories', 'Tags']);
+
+        $qrCode = $this->QrCodes->get((int)$id, contain: ['Sources', 'Users', 'Categories', 'Tags']);
+
         $this->set(compact('qrCode'));
+        $this->set('_serialize', ['qrCode']);
     }
 
     /**
@@ -59,10 +66,14 @@ class QrCodesController extends AppController
      */
     public function add()
     {
+        $this->request->allowMethod(['get', 'post']);
+
         $qrCode = $this->QrCodes->newEmptyEntity();
         $this->Authorization->authorize($qrCode);
+
         if ($this->request->is('post')) {
             $qrCode = $this->QrCodes->patchEntity($qrCode, $this->request->getData());
+            $qrCode->user_id = $this->getActiveUser('id');
             if ($this->QrCodes->save($qrCode)) {
                 $this->Flash->success(__('The qr code has been saved.'));
 
@@ -70,11 +81,13 @@ class QrCodesController extends AppController
             }
             $this->Flash->error(__('The qr code could not be saved. Please, try again.'));
         }
+
         $sources = $this->QrCodes->Sources->find('list', limit: 200)->all();
-        $users = $this->QrCodes->Users->find('list', limit: 200)->all();
         $categories = $this->QrCodes->Categories->find('list', limit: 200)->all();
         $tags = $this->QrCodes->Tags->find('list', limit: 200)->all();
-        $this->set(compact('qrCode', 'sources', 'users', 'categories', 'tags'));
+
+        $this->set(compact('qrCode', 'sources', 'categories', 'tags'));
+        $this->set('_serialize', ['qrCode', 'sources', 'categories', 'tags']);
     }
 
     /**
@@ -86,9 +99,12 @@ class QrCodesController extends AppController
      */
     public function edit(?string $id = null)
     {
-        $qrCode = $this->QrCodes->get($id, contain: ['Categories', 'Tags']);
+        $this->request->allowMethod(['get', 'patch']);
+
+        $qrCode = $this->QrCodes->get((int)$id, contain: ['Categories', 'Tags']);
         $this->Authorization->authorize($qrCode);
-        if ($this->request->is(['patch', 'post', 'put'])) {
+
+        if ($this->request->is('patch')) {
             $qrCode = $this->QrCodes->patchEntity($qrCode, $this->request->getData());
             if ($this->QrCodes->save($qrCode)) {
                 $this->Flash->success(__('The qr code has been saved.'));
@@ -97,11 +113,13 @@ class QrCodesController extends AppController
             }
             $this->Flash->error(__('The qr code could not be saved. Please, try again.'));
         }
+
         $sources = $this->QrCodes->Sources->find('list', limit: 200)->all();
-        $users = $this->QrCodes->Users->find('list', limit: 200)->all();
         $categories = $this->QrCodes->Categories->find('list', limit: 200)->all();
         $tags = $this->QrCodes->Tags->find('list', limit: 200)->all();
-        $this->set(compact('qrCode', 'sources', 'users', 'categories', 'tags'));
+
+        $this->set(compact('qrCode', 'sources', 'categories', 'tags'));
+        $this->set('_serialize', ['qrCode', 'sources', 'categories', 'tags']);
     }
 
     /**
@@ -113,12 +131,15 @@ class QrCodesController extends AppController
      */
     public function delete(?string $id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
-        $qrCode = $this->QrCodes->get($id);
+        $this->request->allowMethod(['delete']);
+
+        $qrCode = $this->QrCodes->get((int)$id);
         $this->Authorization->authorize($qrCode);
+
         if ($this->QrCodes->delete($qrCode)) {
             $this->Flash->success(__('The qr code has been deleted.'));
         } else {
+            // @todo how to test this, since the get() above with throw a 404 first.
             $this->Flash->error(__('The qr code could not be deleted. Please, try again.'));
         }
 

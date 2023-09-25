@@ -32,8 +32,16 @@ class UsersFixture extends TestFixture
                 'id' => 2,
                 'name' => 'Regular',
                 'email' => 'regular@example.com',
-                'password' => (new DefaultPasswordHasher())->hash('admin'),
-                'is_admin' => true,
+                'password' => (new DefaultPasswordHasher())->hash('regular'),
+                'is_admin' => false,
+                'created' => date('Y-m-d H:i:s'),
+            ],
+            [
+                'id' => 3,
+                'name' => 'Delete Me',
+                'email' => 'deleteme@example.com',
+                'password' => (new DefaultPasswordHasher())->hash('deleteme'),
+                'is_admin' => false,
                 'created' => date('Y-m-d H:i:s'),
             ],
         ];

@@ -18,14 +18,16 @@
     </aside>
     <div class="column column-80">
         <div class="users form content">
-            <?= $this->Form->create($user) ?>
+            <?= $this->Form->create($user, ['method' => 'patch']) ?>
             <fieldset>
                 <legend><?= __('Edit User') ?></legend>
-                <?php
-                    echo $this->Form->control('name');
-                    echo $this->Form->control('email');
-                    echo $this->Form->control('password');
-                ?>
+
+                <?= $this->Form->control('name'); ?>
+
+                <?= $this->Form->control('email'); ?>
+
+                <?= $this->Form->control('password'); ?>
+
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>
             <?= $this->Form->end() ?>

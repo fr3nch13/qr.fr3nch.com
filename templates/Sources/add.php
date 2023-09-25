@@ -16,12 +16,15 @@
             <?= $this->Form->create($source) ?>
             <fieldset>
                 <legend><?= __('Add Source') ?></legend>
-                <?php
-                    echo $this->Form->control('key');
-                    echo $this->Form->control('qr_code_key_field');
-                    echo $this->Form->control('name');
-                    echo $this->Form->control('description');
-                ?>
+
+                <?= $this->Form->control('key'); ?>
+
+                <?= $this->Form->control('qr_code_key_field'); ?>
+
+                <?= $this->Form->control('name'); ?>
+
+                <?= $this->Form->control('description'); ?>
+
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>
             <?= $this->Form->end() ?>

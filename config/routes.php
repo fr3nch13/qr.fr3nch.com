@@ -48,6 +48,7 @@ return function (RouteBuilder $routes): void {
      * `{action}` markers.
      */
     $routes->setRouteClass(DashedRoute::class);
+    $routes->setExtensions(['json', 'html']);
 
     $routes->scope('/', function (RouteBuilder $builder): void {
         /*
@@ -93,4 +94,19 @@ return function (RouteBuilder $routes): void {
      * });
      * ```
      */
+
+     /*
+    // @todo Create the controllers for the api
+    // @todo Figure out why the redirect for the login is going here
+    // commented out until this is resolved.
+    // i mean it's not that i need an api interface at the moment.
+    // @link https://book.cakephp.org/5/en/development/routing.html#restful-routing
+    $routes->scope('/api', function (RouteBuilder $routes) {
+        $routes->resources('Categories');
+        $routes->resources('QrCodes');
+        $routes->resources('Sources');
+        $routes->resources('Tags');
+        $routes->resources('Users');
+    });
+    */
 };

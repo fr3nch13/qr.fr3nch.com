@@ -60,7 +60,6 @@
                             <th><?= __('Url') ?></th>
                             <th><?= __('Bitly Id') ?></th>
                             <th><?= __('Source Id') ?></th>
-                            <th><?= __('User Id') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                         <?php foreach ($category->qr_codes as $qrCodes) : ?>
@@ -74,44 +73,10 @@
                             <td><?= h($qrCodes->url) ?></td>
                             <td><?= h($qrCodes->bitly_id) ?></td>
                             <td><?= h($qrCodes->source_id) ?></td>
-                            <td><?= h($qrCodes->user_id) ?></td>
                             <td class="actions">
                                 <?= $this->Html->link(__('View'), ['controller' => 'QrCodes', 'action' => 'view', $qrCodes->id]) ?>
                                 <?= $this->Html->link(__('Edit'), ['controller' => 'QrCodes', 'action' => 'edit', $qrCodes->id]) ?>
                                 <?= $this->Form->postLink(__('Delete'), ['controller' => 'QrCodes', 'action' => 'delete', $qrCodes->id], ['confirm' => __('Are you sure you want to delete # {0}?', $qrCodes->id)]) ?>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </table>
-                </div>
-                <?php endif; ?>
-            </div>
-            <div class="related">
-                <h4><?= __('Related Categories') ?></h4>
-                <?php if (!empty($category->child_categories)) : ?>
-                <div class="table-responsive">
-                    <table>
-                        <tr>
-                            <th><?= __('Id') ?></th>
-                            <th><?= __('Name') ?></th>
-                            <th><?= __('Description') ?></th>
-                            <th><?= __('Created') ?></th>
-                            <th><?= __('Modified') ?></th>
-                            <th><?= __('Parent Id') ?></th>
-                            <th class="actions"><?= __('Actions') ?></th>
-                        </tr>
-                        <?php foreach ($category->child_categories as $childCategories) : ?>
-                        <tr>
-                            <td><?= h($childCategories->id) ?></td>
-                            <td><?= h($childCategories->name) ?></td>
-                            <td><?= h($childCategories->description) ?></td>
-                            <td><?= h($childCategories->created) ?></td>
-                            <td><?= h($childCategories->modified) ?></td>
-                            <td><?= h($childCategories->parent_id) ?></td>
-                            <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'Categories', 'action' => 'view', $childCategories->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'Categories', 'action' => 'edit', $childCategories->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Categories', 'action' => 'delete', $childCategories->id], ['confirm' => __('Are you sure you want to delete # {0}?', $childCategories->id)]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>

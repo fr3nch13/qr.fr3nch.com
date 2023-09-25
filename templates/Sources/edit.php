@@ -18,7 +18,7 @@
     </aside>
     <div class="column column-80">
         <div class="sources form content">
-            <?= $this->Form->create($source) ?>
+            <?= $this->Form->create($source, ['method' => 'patch']) ?>
             <fieldset>
                 <legend><?= __('Edit Source') ?></legend>
                 <?php

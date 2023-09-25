@@ -199,4 +199,15 @@ class CategoriesQrCodesTableTest extends TestCase
         $expected = [];
         $this->assertSame($expected, $entity->getErrors());
     }
+
+    /**
+     * Test the entity itself
+     *
+     * @return void
+     * @uses \App\Model\Entity\CategoriesQrCode
+     */
+    public function testEntity(): void
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
 }

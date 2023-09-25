@@ -3,7 +3,6 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Category $category
  * @var \Cake\Collection\CollectionInterface|string[] $parentCategories
- * @var \Cake\Collection\CollectionInterface|string[] $qrCodes
  */
 ?>
 <div class="row">
@@ -15,15 +14,16 @@
     </aside>
     <div class="column column-80">
         <div class="categories form content">
-            <?= $this->Form->create($category) ?>
+            <?= $this->Form->create($category, ['method' => 'post']) ?>
             <fieldset>
                 <legend><?= __('Add Category') ?></legend>
-                <?php
-                    echo $this->Form->control('name');
-                    echo $this->Form->control('description');
-                    echo $this->Form->control('parent_id', ['options' => $parentCategories, 'empty' => true]);
-                    echo $this->Form->control('qr_codes._ids', ['options' => $qrCodes]);
-                ?>
+
+                <?= $this->Form->control('name'); ?>
+
+                <?= $this->Form->control('description'); ?>
+
+                <?= $this->Form->control('parent_id', ['options' => $parentCategories, 'empty' => true]); ?>
+
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>
             <?= $this->Form->end() ?>

@@ -63,12 +63,11 @@ class Application extends BaseApplication implements
 
         if (PHP_SAPI === 'cli') {
             $this->bootstrapCli();
-        } else {
-            FactoryLocator::add(
-                'Table',
-                (new TableLocator())->allowFallbackClass(false)
-            );
         }
+        FactoryLocator::add(
+            'Table',
+            (new TableLocator())->allowFallbackClass(false)
+        );
 
         /*
          * Only try to load DebugKit in development mode

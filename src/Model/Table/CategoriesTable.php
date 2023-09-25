@@ -17,7 +17,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Category newEmptyEntity()
  * @method \App\Model\Entity\Category newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\Category[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\Category get($primaryKey, $contain = [])
+ * @method \App\Model\Entity\Category get(int $primaryKey, $contain = [])
  * @method \App\Model\Entity\Category findOrCreate($search, ?callable $callback = null, $options = [])
  * @method \App\Model\Entity\Category patchEntity(\App\Model\Entity\Category  $entity, array $data, array $options = [])
  * @method \App\Model\Entity\Category[] patchEntities(iterable $entities, array $data, array $options = [])
@@ -78,6 +78,11 @@ class CategoriesTable extends Table
             ->scalar('name')
             ->maxLength('name', 255)
             ->notEmptyString('name')
+            ->add('name', 'unique', [
+                'rule' => 'validateUnique',
+                'provider' => 'table',
+                'message' => __('This Name already exists.'),
+            ])
             ->requirePresence('name', Validator::WHEN_CREATE);
 
         $validator

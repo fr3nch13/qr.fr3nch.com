@@ -21,7 +21,7 @@ class UsersController extends AppController
         parent::beforeFilter($event);
         // Configure the login action to not require authentication, preventing
         // the infinite redirect loop issue
-        $this->Authentication->addUnauthenticatedActions(['login']);
+        $this->Authentication->addUnauthenticatedActions(['login', 'logout']);
     }
 
     /**
@@ -31,13 +31,19 @@ class UsersController extends AppController
      */
     public function login()
     {
-        $this->Authorization->skipAuthorization();
         $this->request->allowMethod(['get', 'post']);
+        $this->Authorization->skipAuthorization();
+
         /** @var \Authentication\Authenticator\Result|null $result */
         $result = $this->Authentication->getResult();
+
         // regardless of POST or GET, redirect if user is logged in
         if ($result) {
             if ($result->isValid()) {
+                $this->Flash->success(__('Welcome back {0}', [
+                    $this->getActiveUser('name'),
+                ]));
+
                 // redirect to /qr-codes after login success
                 $redirect = $this->request->getQuery('redirect', [
                     'controller' => 'QrCodes',
@@ -61,9 +67,12 @@ class UsersController extends AppController
      */
     public function logout(): ?Response
     {
+        $this->request->allowMethod(['get', 'post']);
         $this->Authorization->skipAuthorization();
+
         /** @var \Authentication\Authenticator\Result|null $result */
         $result = $this->Authentication->getResult();
+
         // regardless of POST or GET, redirect if user is logged in
         if ($result) {
             if ($result->isValid()) {
@@ -71,8 +80,13 @@ class UsersController extends AppController
             }
         }
 
+        $this->Flash->success(__('You have been logged out'));
+
         // either way redirect them to the login page
-        return $this->redirect(['controller' => 'Users', 'action' => 'login']);
+        return $this->redirect([
+            'controller' => 'Users',
+            'action' => 'login',
+        ]);
     }
 
     /**
@@ -82,10 +96,18 @@ class UsersController extends AppController
      */
     public function index()
     {
-        $query = $this->Users->find();
+        $this->request->allowMethod(['get']);
+        // @todo Figure out how to do authorization on a logged-in index page
+        // seems like i need to make a Policy for the Model
+        // Specifically here, make sure only admin can see the list.
+        $this->Authorization->skipAuthorization();
+
+        $query = $this->Users->find('all');
+
         $users = $this->paginate($query);
 
         $this->set(compact('users'));
+        $this->set('_serialize', ['users']);
     }
 
     /**
@@ -97,8 +119,13 @@ class UsersController extends AppController
      */
     public function view(?string $id = null)
     {
-        $user = $this->Users->get($id, contain: []);
+        $this->request->allowMethod(['get']);
+
+        $user = $this->Users->get((int)$id, contain: []);
+        $this->Authorization->authorize($user);
+
         $this->set(compact('user'));
+        $this->set('_serialize', ['user']);
     }
 
     /**
@@ -108,7 +135,11 @@ class UsersController extends AppController
      */
     public function add()
     {
+        $this->request->allowMethod(['get', 'post']);
+
         $user = $this->Users->newEmptyEntity();
+        $this->Authorization->authorize($user);
+
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
@@ -119,6 +150,7 @@ class UsersController extends AppController
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
         $this->set(compact('user'));
+        $this->set('_serialize', ['user']);
     }
 
     /**
@@ -130,8 +162,12 @@ class UsersController extends AppController
      */
     public function edit(?string $id = null)
     {
-        $user = $this->Users->get($id, contain: []);
-        if ($this->request->is(['patch', 'post', 'put'])) {
+        $this->request->allowMethod(['get', 'patch']);
+
+        $user = $this->Users->get((int)$id, contain: []);
+        $this->Authorization->authorize($user);
+
+        if ($this->request->is('patch')) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
@@ -141,6 +177,7 @@ class UsersController extends AppController
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
         $this->set(compact('user'));
+        $this->set('_serialize', ['user']);
     }
 
     /**
@@ -152,11 +189,15 @@ class UsersController extends AppController
      */
     public function delete(?string $id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
-        $user = $this->Users->get($id);
+        $this->request->allowMethod(['delete']);
+
+        $user = $this->Users->get((int)$id);
+        $this->Authorization->authorize($user);
+
         if ($this->Users->delete($user)) {
             $this->Flash->success(__('The user has been deleted.'));
         } else {
+            // @todo how to test this, since the get() above with throw a 404 first.
             $this->Flash->error(__('The user could not be deleted. Please, try again.'));
         }
 

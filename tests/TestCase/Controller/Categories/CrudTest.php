@@ -1,0 +1,269 @@
+<?php
+declare(strict_types=1);
+
+namespace App\Test\TestCase\Controller\Categories;
+
+use App\Test\TestCase\Controller\LoggedInTrait;
+use Cake\Core\Configure;
+use Cake\TestSuite\IntegrationTestTrait;
+use Cake\TestSuite\TestCase;
+
+/**
+ * App\Controller\CategoriesController Test Case
+ *
+ * @uses \App\Controller\CategoriesController
+ */
+class CrudTest extends TestCase
+{
+    use IntegrationTestTrait;
+
+    use LoggedInTrait;
+
+    /**
+     * Fixtures
+     *
+     * @var array<string>
+     */
+    protected array $fixtures = [
+        'app.Users',
+        'app.Sources',
+        'app.Categories',
+        'app.QrCodes',
+        'app.CategoriesQrCodes',
+        'app.Tags',
+        'app.QrCodesTags',
+    ];
+
+    /**
+     * Test index method
+     *
+     * @return void
+     * @uses \App\Controller\CategoriesController::index()
+     */
+    public function testIndex(): void
+    {
+        Configure::write('debug', true);
+        $this->enableRetainFlashMessages();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->loginUserAdmin();
+
+        // get
+        $this->get('/categories');
+        $this->assertResponseOk();
+        $this->assertResponseContains('<div class="categories index content">');
+        $this->assertResponseContains('<h3>Categories</h3>');
+
+        // post
+        $this->post('/categories');
+        $this->assertResponseCode(405);
+        $this->assertResponseContains('Method Not Allowed');
+
+        // patch
+        $this->patch('/categories');
+        $this->assertResponseCode(405);
+        $this->assertResponseContains('Method Not Allowed');
+
+        // put
+        $this->put('/categories');
+        $this->assertResponseCode(405);
+        $this->assertResponseContains('Method Not Allowed');
+
+        // delete
+        $this->delete('/categories');
+        $this->assertResponseCode(405);
+        $this->assertResponseContains('Method Not Allowed');
+    }
+
+    /**
+     * Test view method
+     *
+     * @return void
+     * @uses \App\Controller\CategoriesController::view()
+     */
+    public function testView(): void
+    {
+        Configure::write('debug', true);
+        $this->enableRetainFlashMessages();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->loginUserAdmin();
+
+        // test get
+        $this->get('/categories/view/1');
+        $this->assertResponseOk();
+        $this->assertResponseContains('<div class="categories view content">');
+        $this->assertResponseContains('<h3>Books</h3>');
+
+        // post
+        $this->post('/categories/view/1');
+        $this->assertResponseCode(405);
+        $this->assertResponseContains('Method Not Allowed');
+
+        // patch
+        $this->patch('/categories/view/1');
+        $this->assertResponseCode(405);
+        $this->assertResponseContains('Method Not Allowed');
+
+        // put
+        $this->put('/categories/view/1');
+        $this->assertResponseCode(405);
+        $this->assertResponseContains('Method Not Allowed');
+
+        // delete
+        $this->delete('/categories/view/1');
+        $this->assertResponseCode(405);
+        $this->assertResponseContains('Method Not Allowed');
+    }
+
+    /**
+     * Test add method
+     *
+     * @return void
+     * @uses \App\Controller\CategoriesController::add()
+     */
+    public function testAdd(): void
+    {
+        Configure::write('debug', true);
+        $this->enableRetainFlashMessages();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->loginUserAdmin();
+
+        // test get
+        $this->get('/categories/add');
+        $this->assertResponseOk();
+        $this->assertResponseContains('<div class="categories form content">');
+        $this->assertResponseContains('<form method="post" accept-charset="utf-8" action="/categories/add">');
+        $this->assertResponseContains('<legend>Add Category</legend>');
+
+        // post
+        $this->post('/categories/add', [
+            'name' => 'New Category',
+            'description' => 'The Description',
+        ]);
+        $this->assertRedirect();
+        $this->assertResponseCode(302);
+        $this->assertRedirectContains('/categories');
+        $this->assertFlashMessage('The category has been saved.', 'flash');
+        $this->assertFlashElement('flash/success');
+
+        // patch
+        $this->patch('/categories/add', [
+            'name' => 'New Category',
+            'description' => 'The Description',
+        ]);
+        $this->assertResponseCode(405);
+        $this->assertResponseContains('Method Not Allowed');
+
+        // put
+        $this->put('/categories/add', [
+            'name' => 'New Category',
+            'description' => 'The Description',
+        ]);
+        $this->assertResponseCode(405);
+        $this->assertResponseContains('Method Not Allowed');
+
+        // delete
+        $this->delete('/categories/add');
+        $this->assertResponseCode(405);
+        $this->assertResponseContains('Method Not Allowed');
+    }
+
+    /**
+     * Test edit method
+     *
+     * @return void
+     * @uses \App\Controller\CategoriesController::edit()
+     */
+    public function testEdit(): void
+    {
+        Configure::write('debug', true);
+        $this->enableRetainFlashMessages();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->loginUserAdmin();
+
+        // test get
+        $this->get('/categories/edit/1');
+        $this->assertResponseOk();
+        $this->assertResponseContains('<div class="categories form content">');
+        $this->assertResponseContains('<form method="patch" accept-charset="utf-8" action="/categories/edit/1">');
+        $this->assertResponseContains('<legend>Edit Category</legend>');
+
+        // post
+        $this->post('/categories/edit/1', [
+            'name' => 'New Category',
+            'description' => 'The Description',
+        ]);
+        $this->assertResponseCode(405);
+        $this->assertResponseContains('Method Not Allowed');
+
+        // patch
+        $this->patch('/categories/edit/1', [
+            'name' => 'New Category',
+            'description' => 'The Description',
+        ]);
+        $this->assertRedirect();
+        $this->assertResponseCode(302);
+        $this->assertRedirectContains('/categories');
+        $this->assertFlashMessage('The category has been saved.', 'flash');
+        $this->assertFlashElement('flash/success');
+
+        // put
+        $this->put('/categories/edit/1', [
+            'name' => 'New Category',
+            'description' => 'The Description',
+        ]);
+        $this->assertResponseCode(405);
+        $this->assertResponseContains('Method Not Allowed');
+
+        // delete
+        $this->delete('/categories/edit/1');
+        $this->assertResponseCode(405);
+        $this->assertResponseContains('Method Not Allowed');
+    }
+
+    /**
+     * Test delete method
+     *
+     * @return void
+     * @uses \App\Controller\CategoriesController::delete()
+     */
+    public function testDelete(): void
+    {
+        Configure::write('debug', true);
+        $this->enableRetainFlashMessages();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->loginUserAdmin();
+
+        // test get
+        $this->get('/categories/delete/1');
+        $this->assertResponseCode(405);
+        $this->assertResponseContains('Method Not Allowed');
+
+        // post
+        $this->post('/categories/delete/1');
+        $this->assertResponseCode(405);
+        $this->assertResponseContains('Method Not Allowed');
+
+        // patch
+        $this->patch('/categories/delete/1');
+        $this->assertResponseCode(405);
+        $this->assertResponseContains('Method Not Allowed');
+
+        // put
+        $this->put('/categories/delete/1');
+        $this->assertResponseCode(405);
+        $this->assertResponseContains('Method Not Allowed');
+
+        // delete
+        $this->delete('/categories/delete/1');
+        $this->assertFlashMessage('The category has been deleted.', 'flash');
+        $this->assertFlashElement('flash/success');
+        $this->assertRedirect();
+        $this->assertResponseCode(302);
+        $this->assertRedirectContains('/categories');
+    }
+}

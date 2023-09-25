@@ -49,42 +49,18 @@ class CategoryPolicy
     }
 
     /**
-     * Check if $user can view Category
-     *
-     * @param \Authorization\Identity $identity The identity object.
-     * @param \App\Model\Entity\Category $Category
-     * @return bool
-     */
-    public function canView(IdentityInterface $identity, Category $Category): bool
-    {
-        // All logged in users can view a qr code.
-        return true;
-    }
-
-    /**
-     * Check if $user created the Category
-     *
-     * @param \Authorization\Identity $identity The identity object.
-     * @param \App\Model\Entity\Category $Category
-     * @return bool
-     */
-    protected function isCreator(IdentityInterface $identity, Category $Category): bool
-    {
-        return $Category->user_id === $identity->getIdentifier();
-    }
-
-    /**
      * Check if $user is an Admin
      *
      * @param \Authorization\Identity $identity The identity object.
      * @param \App\Model\Entity\Category $Category
      * @return bool
+     * @todo I think their policy stuff doesn't match their documentation. Going with how it's working right now.
      */
     protected function isAdmin(IdentityInterface $identity, Category $Category): bool
     {
-        /** @var \App\Model\Entity\User $user */
-        $user = $identity->getOriginalData();
+        /** @var \App\Model\Entity\User $entity */
+        $entity = $identity->getOriginalData();
 
-        return $user->is_admin ? true : false;
+        return $entity->is_admin ? true : false;
     }
 }

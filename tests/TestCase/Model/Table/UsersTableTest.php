@@ -300,4 +300,30 @@ class UsersTableTest extends TestCase
         $result = $this->Users->checkRules($entity);
         $this->assertTrue($result);
     }
+
+    /**
+     * Test the entity itself
+     *
+     * @return void
+     * @uses \App\Model\Entity\User
+     */
+    public function testEntity(): void
+    {
+        // test the password hashing
+        $entity = $this->Users->newEntity([
+            'name' => 'New User',
+            'email' => 'newuser@example.com',
+            'password' => 'password',
+        ]);
+        $this->assertSame(60, strlen($entity->password));
+        $this->assertMatchesRegularExpression('/^\$[\/\d\w\.\$]+$/', $entity->password);
+
+        // test the password hashing
+        $entity = $this->Users->newEntity([
+            'name' => 'New User',
+            'email' => 'newuser@example.com',
+            'password' => '',
+        ]);
+        $this->assertNull($entity->password);
+    }
 }

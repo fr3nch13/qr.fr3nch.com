@@ -6,6 +6,7 @@ declare(strict_types=1);
  */
 namespace App\Controller;
 
+use App\Model\Entity\User;
 use Cake\Controller\Controller;
 
 /**
@@ -22,6 +23,11 @@ use Cake\Controller\Controller;
  */
 class AppController extends Controller
 {
+    /**
+     * @var \App\Model\Entity\User|null The logged in user entity.
+     */
+    public ?User $ActiveUser = null;
+
     /**
      * Initialization hook method.
      *
@@ -53,5 +59,30 @@ class AppController extends Controller
          *  @link https://book.cakephp.org/5/en/tutorials-and-examples/cms/authorization.html
          */
         $this->loadComponent('Authorization.Authorization');
+    }
+
+    /**
+     * Gets the active/logged in user from the session.
+     *
+     * @param string|null $field If the user exists, return this field
+     * @param mixed|null $default If the field doesn't exist, or the users doesn't then return this.
+     * @return mixed The logged in user, or $default if none, or the field doesn't exist.
+     */
+    public function getActiveUser(?string $field = null, mixed $default = null): mixed
+    {
+        /** @var \Authentication\Identity|null $identity */
+        $identity = $this->Authentication->getIdentity();
+        if ($identity) {
+            /** @var \App\Model\Entity\User|null $user */
+            $user = $identity->getOriginalData();
+
+            if ($user && $field) {
+                return $user->{$field} ?: $default;
+            }
+
+            return $user;
+        }
+
+        return $default;
     }
 }

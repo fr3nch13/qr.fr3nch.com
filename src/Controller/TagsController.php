@@ -17,11 +17,17 @@ class TagsController extends AppController
      */
     public function index()
     {
+        $this->request->allowMethod(['get']);
+        // @todo Figure out how to do authorization on a logged-in index page
+        // seems like i need to make a Policy for the Model
         $this->Authorization->skipAuthorization();
-        $query = $this->Tags->find();
+
+        $query = $this->Tags->find('all');
+
         $tags = $this->paginate($query);
 
         $this->set(compact('tags'));
+        $this->set('_serialize', ['tags']);
     }
 
     /**
@@ -33,9 +39,13 @@ class TagsController extends AppController
      */
     public function view(?string $id = null)
     {
-        $this->Authorization->skipAuthorization();
-        $tag = $this->Tags->get($id, contain: ['QrCodes']);
+        $this->request->allowMethod(['get']);
+
+        $tag = $this->Tags->get((int)$id, contain: ['QrCodes']);
+        $this->Authorization->authorize($tag);
+
         $this->set(compact('tag'));
+        $this->set('_serialize', ['tag']);
     }
 
     /**
@@ -45,9 +55,14 @@ class TagsController extends AppController
      */
     public function add()
     {
+        $this->request->allowMethod(['get', 'post']);
+
         $tag = $this->Tags->newEmptyEntity();
+        $this->Authorization->authorize($tag);
+
         if ($this->request->is('post')) {
             $tag = $this->Tags->patchEntity($tag, $this->request->getData());
+            $tag->user_id = $this->getActiveUser('id');
             if ($this->Tags->save($tag)) {
                 $this->Flash->success(__('The tag has been saved.'));
 
@@ -55,8 +70,10 @@ class TagsController extends AppController
             }
             $this->Flash->error(__('The tag could not be saved. Please, try again.'));
         }
+
         $qrCodes = $this->Tags->QrCodes->find('list', limit: 200)->all();
         $this->set(compact('tag', 'qrCodes'));
+        $this->set('_serialize', ['tag', 'qrCodes']);
     }
 
     /**
@@ -68,8 +85,12 @@ class TagsController extends AppController
      */
     public function edit(?string $id = null)
     {
-        $tag = $this->Tags->get($id, contain: ['QrCodes']);
-        if ($this->request->is(['patch', 'post', 'put'])) {
+        $this->request->allowMethod(['get', 'patch']);
+
+        $tag = $this->Tags->get((int)$id, contain: ['QrCodes']);
+        $this->Authorization->authorize($tag);
+
+        if ($this->request->is('patch')) {
             $tag = $this->Tags->patchEntity($tag, $this->request->getData());
             if ($this->Tags->save($tag)) {
                 $this->Flash->success(__('The tag has been saved.'));
@@ -78,8 +99,10 @@ class TagsController extends AppController
             }
             $this->Flash->error(__('The tag could not be saved. Please, try again.'));
         }
+
         $qrCodes = $this->Tags->QrCodes->find('list', limit: 200)->all();
         $this->set(compact('tag', 'qrCodes'));
+        $this->set('_serialize', ['tag', 'qrCodes']);
     }
 
     /**
@@ -91,11 +114,15 @@ class TagsController extends AppController
      */
     public function delete(?string $id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
-        $tag = $this->Tags->get($id);
+        $this->request->allowMethod(['delete']);
+
+        $tag = $this->Tags->get((int)$id);
+        $this->Authorization->authorize($tag);
+
         if ($this->Tags->delete($tag)) {
             $this->Flash->success(__('The tag has been deleted.'));
         } else {
+            // @todo how to test this, since the get() above with throw a 404 first.
             $this->Flash->error(__('The tag could not be deleted. Please, try again.'));
         }
 

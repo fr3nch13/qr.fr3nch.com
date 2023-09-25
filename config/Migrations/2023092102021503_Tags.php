@@ -64,7 +64,6 @@ class Tags extends AbstractMigration
         $this->io->out(__('Adding Foreign Key: {0} -> {1}.{2}', [
             'tag_id', 'tags', 'id'
         ]));
-        // @todo #2 Figure out why my foreign keys aren't being created.
         $table->addForeignKey('tag_id', 'tags', 'id', [
                 'update' => 'RESTRICT',
                 'delete' => 'CASCADE',

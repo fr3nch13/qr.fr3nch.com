@@ -17,11 +17,17 @@ class SourcesController extends AppController
      */
     public function index()
     {
+        $this->request->allowMethod(['get']);
+        // @todo Figure out how to do authorization on a logged-in index page
+        // seems like i need to make a Policy for the Model
         $this->Authorization->skipAuthorization();
-        $query = $this->Sources->find();
+
+        $query = $this->Sources->find('all');
+
         $sources = $this->paginate($query);
 
         $this->set(compact('sources'));
+        $this->set('_serialize', ['sources']);
     }
 
     /**
@@ -33,9 +39,13 @@ class SourcesController extends AppController
      */
     public function view(?string $id = null)
     {
-        $this->Authorization->skipAuthorization();
-        $source = $this->Sources->get($id, contain: ['QrCodes']);
+        $this->request->allowMethod(['get']);
+
+        $source = $this->Sources->get((int)$id, contain: ['QrCodes']);
+        $this->Authorization->authorize($source);
+
         $this->set(compact('source'));
+        $this->set('_serialize', ['source']);
     }
 
     /**
@@ -45,9 +55,14 @@ class SourcesController extends AppController
      */
     public function add()
     {
+        $this->request->allowMethod(['get', 'post']);
+
         $source = $this->Sources->newEmptyEntity();
+        $this->Authorization->authorize($source);
+
         if ($this->request->is('post')) {
             $source = $this->Sources->patchEntity($source, $this->request->getData());
+            $source->user_id = $this->getActiveUser('id');
             if ($this->Sources->save($source)) {
                 $this->Flash->success(__('The source has been saved.'));
 
@@ -55,7 +70,9 @@ class SourcesController extends AppController
             }
             $this->Flash->error(__('The source could not be saved. Please, try again.'));
         }
+
         $this->set(compact('source'));
+        $this->set('_serialize', ['source']);
     }
 
     /**
@@ -67,8 +84,12 @@ class SourcesController extends AppController
      */
     public function edit(?string $id = null)
     {
-        $source = $this->Sources->get($id, contain: []);
-        if ($this->request->is(['patch', 'post', 'put'])) {
+        $this->request->allowMethod(['get', 'patch']);
+
+        $source = $this->Sources->get((int)$id, contain: []);
+        $this->Authorization->authorize($source);
+
+        if ($this->request->is('patch')) {
             $source = $this->Sources->patchEntity($source, $this->request->getData());
             if ($this->Sources->save($source)) {
                 $this->Flash->success(__('The source has been saved.'));
@@ -77,7 +98,9 @@ class SourcesController extends AppController
             }
             $this->Flash->error(__('The source could not be saved. Please, try again.'));
         }
+
         $this->set(compact('source'));
+        $this->set('_serialize', ['source']);
     }
 
     /**
@@ -89,11 +112,15 @@ class SourcesController extends AppController
      */
     public function delete(?string $id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
-        $source = $this->Sources->get($id);
+        $this->request->allowMethod(['delete']);
+
+        $source = $this->Sources->get((int)$id);
+        $this->Authorization->authorize($source);
+
         if ($this->Sources->delete($source)) {
             $this->Flash->success(__('The source has been deleted.'));
         } else {
+            // @todo how to test this, since the get() above with throw a 404 first.
             $this->Flash->error(__('The source could not be deleted. Please, try again.'));
         }
 

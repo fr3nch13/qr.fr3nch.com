@@ -15,7 +15,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\QrCodesTag newEmptyEntity()
  * @method \App\Model\Entity\QrCodesTag newEntity(array $data, array $options = [])
  * @method \App\Model\Entity\QrCodesTag[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\QrCodesTag get($primaryKey, $contain = [])
+ * @method \App\Model\Entity\QrCodesTag get(int $primaryKey, $contain = [])
  * @method \App\Model\Entity\QrCodesTag findOrCreate($search, ?callable $callback = null, $options = [])
  * @method \App\Model\Entity\QrCodesTag patchEntity(\App\Model\Entity\QrCodesTag  $entity, array $data, array $options = [])
  * @method \App\Model\Entity\QrCodesTag[] patchEntities(iterable $entities, array $data, array $options = [])
