@@ -22,7 +22,6 @@ class SourcesData
             [
                 'id' => 1,
                 'key' => 'amazon',
-                'qr_code_key_field' => 'book',
                 'name' => 'Amazon',
                 'description' => 'Books for sale at Amazon',
                 'created' => date('Y-m-d H:i:s'),
@@ -31,7 +30,6 @@ class SourcesData
             [
                 'id' => 2,
                 'key' => 'etsy',
-                'qr_code_key_field' => 'id',
                 'name' => 'Etsy',
                 'description' => 'Products for sale at my Etsy Store',
                 'created' => date('Y-m-d H:i:s'),

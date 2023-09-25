@@ -21,12 +21,13 @@
             <?= $this->Form->create($source, ['method' => 'patch']) ?>
             <fieldset>
                 <legend><?= __('Edit Source') ?></legend>
-                <?php
-                    echo $this->Form->control('key');
-                    echo $this->Form->control('qr_code_key_field');
-                    echo $this->Form->control('name');
-                    echo $this->Form->control('description');
-                ?>
+
+                <?php echo $this->Form->control('key'); ?>
+
+                <?php echo $this->Form->control('name'); ?>
+
+                <?php echo $this->Form->control('description'); ?>
+
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>
             <?= $this->Form->end() ?>

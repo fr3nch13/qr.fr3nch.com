@@ -63,7 +63,6 @@ class FormsTest extends TestCase
         // formatting fail
         $this->post('/sources/add', [
             'key' => 'new source',
-            'qr_code_key_field' => 'newkey field',
             'name' => 'new name',
             'description' => 'description',
         ]);
@@ -79,7 +78,6 @@ class FormsTest extends TestCase
         // test success
         $this->post('/sources/add', [
             'key' => 'newsource',
-            'qr_code_key_field' => 'newkeyfield',
             'name' => 'new name',
             'description' => 'description',
         ]);

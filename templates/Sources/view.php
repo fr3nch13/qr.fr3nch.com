@@ -23,10 +23,6 @@
                     <td><?= h($source->key) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Qr Code Key Field') ?></th>
-                    <td><?= h($source->qr_code_key_field) ?></td>
-                </tr>
-                <tr>
                     <th><?= __('Name') ?></th>
                     <td><?= h($source->name) ?></td>
                 </tr>

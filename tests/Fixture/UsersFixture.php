@@ -18,6 +18,7 @@ class UsersFixture extends TestFixture
     public function init(): void
     {
         $this->records = (new \App\Migrations\Data\UsersData())->getData();
+        debug($this->records);
         parent::init();
     }
 }

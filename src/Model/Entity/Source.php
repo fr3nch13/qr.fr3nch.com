@@ -10,7 +10,6 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property string $key
- * @property string $qr_code_key_field
  * @property string $name
  * @property string $description
  * @property \Cake\I18n\DateTime|null $created
@@ -33,7 +32,6 @@ class Source extends Entity
      */
     protected array $_accessible = [
         'key' => true,
-        'qr_code_key_field' => true,
         'name' => true,
         'description' => true,
         'created' => true,

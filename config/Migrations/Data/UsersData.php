@@ -24,7 +24,7 @@ class UsersData
                 'name' => 'Admin',
                 'email' => 'admin@example.com',
                 'password' => (new DefaultPasswordHasher())->hash('admin'),
-                'is_admin' => true,
+                'is_admin' => 1,
                 'created' => date('Y-m-d H:i:s'),
             ],
             [
@@ -32,7 +32,7 @@ class UsersData
                 'name' => 'Regular',
                 'email' => 'regular@example.com',
                 'password' => (new DefaultPasswordHasher())->hash('regular'),
-                'is_admin' => false,
+                'is_admin' => 0,
                 'created' => date('Y-m-d H:i:s'),
             ],
             [
@@ -40,7 +40,7 @@ class UsersData
                 'name' => 'Delete Me',
                 'email' => 'deleteme@example.com',
                 'password' => (new DefaultPasswordHasher())->hash('deleteme'),
-                'is_admin' => false,
+                'is_admin' => 0,
                 'created' => date('Y-m-d H:i:s'),
             ],
         ];

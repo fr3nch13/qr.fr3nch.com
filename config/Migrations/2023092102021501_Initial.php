@@ -96,11 +96,6 @@ class Initial extends AbstractMigration
             'limit' => 255,
             'null' => false,
         ])->addIndex(['key'], ['unique' => true]);
-        $table->addColumn('qr_code_key_field', 'string', [
-            'default' => null,
-            'limit' => 255,
-            'null' => false,
-        ])->addIndex(['qr_code_key_field']);
         $table->addColumn('name', 'string', [
             'default' => null,
             'limit' => 255,

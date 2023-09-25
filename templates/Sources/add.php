@@ -19,8 +19,6 @@
 
                 <?= $this->Form->control('key'); ?>
 
-                <?= $this->Form->control('qr_code_key_field'); ?>
-
                 <?= $this->Form->control('name'); ?>
 
                 <?= $this->Form->control('description'); ?>

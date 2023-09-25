@@ -78,16 +78,6 @@ class SourcesTable extends Table
             ]);
 
         $validator
-            ->scalar('qr_code_key_field')
-            ->maxLength('qr_code_key_field', 255)
-            ->notEmptyString('qr_code_key_field', __('The QR Code Key Field is required, and can not be empty.'))
-            ->requirePresence('qr_code_key_field', Validator::WHEN_CREATE)
-            ->add('qr_code_key_field', 'characters', [
-                'rule' => 'characters',
-                'provider' => 'key',
-            ]);
-
-        $validator
             ->scalar('name')
             ->maxLength('name', 255)
             ->notEmptyString('name', __('The Name is required, and can not be empty.'))

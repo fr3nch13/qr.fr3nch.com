@@ -148,9 +148,6 @@ class SourcesTableTest extends TestCase
             'key' => [
                 '_required' => 'This field is required',
             ],
-            'qr_code_key_field' => [
-                '_required' => 'This field is required',
-            ],
             'name' => [
                 '_required' => 'This field is required',
             ],
@@ -165,7 +162,6 @@ class SourcesTableTest extends TestCase
 
         // test setting the fields after an empty entity.
         $entity->set('key', 'key');
-        $entity->set('qr_code_key_field', 'qr_code_key_field');
         $entity->set('name', 'name');
         $entity->set('description', 'description');
         $entity->set('user_id', '1');
@@ -175,7 +171,6 @@ class SourcesTableTest extends TestCase
         // test existing fields
         $entity = $this->Sources->newEntity([
             'key' => 'amazon',
-            'qr_code_key_field' => 'qr_code_key_field',
             'name' => 'Etsy',
             'description' => 'description',
             'user_id' => '1',
@@ -195,7 +190,6 @@ class SourcesTableTest extends TestCase
         // test max length
         $entity = $this->Sources->newEntity([
             'key' => str_repeat('a', 256),
-            'qr_code_key_field' => str_repeat('a', 256),
             'name' => str_repeat('a', 256),
             'description' => 'description',
             'user_id' => 1, // int instead of a string, like above.
@@ -203,9 +197,6 @@ class SourcesTableTest extends TestCase
 
         $expected = [
             'key' => [
-                'maxLength' => 'The provided value must be at most `255` characters long',
-            ],
-            'qr_code_key_field' => [
                 'maxLength' => 'The provided value must be at most `255` characters long',
             ],
             'name' => [
@@ -218,7 +209,6 @@ class SourcesTableTest extends TestCase
         // test space in key
         $entity = $this->Sources->newEntity([
             'key' => 'new source',
-            'qr_code_key_field' => 'new key field',
             'name' => 'new name',
             'description' => 'description',
             'user_id' => 1,
@@ -228,9 +218,6 @@ class SourcesTableTest extends TestCase
             'key' => [
                 'characters' => 'Value cannot have a space in it.',
             ],
-            'qr_code_key_field' => [
-                'characters' => 'Value cannot have a space in it.',
-            ],
         ];
 
         $this->assertSame($expected, $entity->getErrors());
@@ -238,7 +225,6 @@ class SourcesTableTest extends TestCase
         // test valid entity
         $entity = $this->Sources->newEntity([
             'key' => 'newsource',
-            'qr_code_key_field' => 'newkeyfield',
             'name' => 'new name',
             'description' => 'description',
             'user_id' => 1,
@@ -260,7 +246,6 @@ class SourcesTableTest extends TestCase
         // bad name, and user id
         $entity = $this->Sources->newEntity([
             'key' => 'newsource',
-            'qr_code_key_field' => 'newkeyfield',
             'name' => 'new name',
             'description' => 'description',
             'user_id' => 999,
@@ -277,7 +262,6 @@ class SourcesTableTest extends TestCase
         // check that we are passing the rules.
         $entity = $this->Sources->newEntity([
             'key' => 'newsource',
-            'qr_code_key_field' => 'newkeyfield',
             'name' => 'new name',
             'description' => 'description',
             'user_id' => 1,

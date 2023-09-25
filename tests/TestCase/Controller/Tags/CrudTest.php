@@ -140,7 +140,6 @@ class CrudTest extends TestCase
         // post
         $this->post('/tags/add', [
             'key' => 'newtag',
-            'qr_code_key_field' => 'newkeyfield',
             'name' => 'new name',
             'description' => 'description',
         ]);
@@ -153,7 +152,6 @@ class CrudTest extends TestCase
         // patch
         $this->patch('/tags/add', [
             'key' => 'newtag',
-            'qr_code_key_field' => 'newkeyfield',
             'name' => 'new name',
             'description' => 'description',
         ]);
@@ -163,7 +161,6 @@ class CrudTest extends TestCase
         // put
         $this->put('/tags/add', [
             'key' => 'newtag',
-            'qr_code_key_field' => 'newkeyfield',
             'name' => 'new name',
             'description' => 'description',
         ]);
