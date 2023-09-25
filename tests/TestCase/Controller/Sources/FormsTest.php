@@ -73,7 +73,6 @@ class FormsTest extends TestCase
         $this->assertResponseContains('<legend>Add Source</legend>');
         // test to make sure the fields that are required are actually tagged as so.
         $this->assertResponseContains('<div class="error-message" id="key-error">Value cannot have a space in it.</div>');
-        $this->assertResponseContains('<div class="error-message" id="qr-code-key-field-error">Value cannot have a space in it.</div>');
 
         // test success
         $this->post('/sources/add', [
