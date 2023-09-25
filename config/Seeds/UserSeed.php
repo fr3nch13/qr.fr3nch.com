@@ -1,7 +1,6 @@
 <?php
 declare(strict_types=1);
 
-use App\Test\Fixture\UsersFixture;
 use Migrations\AbstractSeed;
 
 /**
@@ -26,7 +25,7 @@ class UserSeed extends AbstractSeed
         $this->checkTable('users');
         $table = $this->table('users');
 
-        $data = (new UsersFixture())->getData();
+        $data = (new \App\Migrations\Data\UsersData())->getData();
         // add or change data here for the seeding.
 
         $table->insert($data)->save();

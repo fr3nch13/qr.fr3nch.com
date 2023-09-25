@@ -11,36 +11,13 @@ use Cake\TestSuite\Fixture\TestFixture;
 class CategoriesQrCodesFixture extends TestFixture
 {
     /**
-     * Define your data here.
-     *
-     * @param array<int, array<string, mixed>> $data The data to use to overwrite the default
-     * @return array<int, array<string, int>> The data to insert
-     */
-    public function getData(array $data = []): array
-    {
-        $default = [
-            [
-                'id' => 1,
-                'qr_code_id' => 1,
-                'category_id' => 2,
-            ],
-        ];
-
-        if (empty($data)) {
-            $data = $default;
-        }
-
-        return $data;
-    }
-
-    /**
      * Init method
      *
      * @return void
      */
     public function init(): void
     {
-        $this->records = $this->getData();
+        $this->records = (new \App\Migrations\Data\CategoriesQrCodesData())->getData();
         parent::init();
     }
 }

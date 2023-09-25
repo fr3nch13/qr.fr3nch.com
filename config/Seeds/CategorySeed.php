@@ -38,7 +38,7 @@ class CategorySeed extends AbstractSeed
         $this->checkTable('categories');
         $table = $this->table('categories');
 
-        $data = (new CategoriesFixture())->getData();
+        $data = (new \App\Migrations\Data\CategoriesData())->getData();
         // add or change data here for the seeding.
 
         $table->insert($data)->save();
