@@ -17,8 +17,6 @@
             <fieldset>
                 <legend><?= __('Add Source') ?></legend>
 
-                <?= $this->Form->control('key'); ?>
-
                 <?= $this->Form->control('name'); ?>
 
                 <?= $this->Form->control('description'); ?>

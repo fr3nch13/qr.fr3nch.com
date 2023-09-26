@@ -21,7 +21,7 @@
             <fieldset>
                 <legend><?= __('Add Qr Code') ?></legend>
 
-                <?= $this->Form->control('key'); ?>
+                <?= $this->Form->control('qrkey'); ?>
 
                 <?= $this->Form->control('name'); ?>
 

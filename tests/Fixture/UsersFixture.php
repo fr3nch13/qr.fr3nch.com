@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Test\Fixture;
 
 use Authentication\PasswordHasher\DefaultPasswordHasher;
-use Cake\I18n\FrozenTime;
+use Cake\I18n\DateTime;
 
 /**
  * UsersFixture
@@ -12,15 +12,20 @@ use Cake\I18n\FrozenTime;
 class UsersFixture extends CoreFixture
 {
     /**
+     * Table property
+     *
+     * @var string
+     */
+    public string $table = 'users';
+
+    /**
      * Init method
      *
      * @return void
      */
     public function init(): void
     {
-        $this->import = [
-            'model' => 'Users',
-        ];
+        $this->io->out(__('--- Init Fixture: {0} ---', [self::class]));
 
         $this->records = [
             [
@@ -29,7 +34,7 @@ class UsersFixture extends CoreFixture
                 'email' => 'admin@example.com',
                 'password' => (new DefaultPasswordHasher())->hash('admin'),
                 'is_admin' => 1,
-                'created' => date('Y-m-d H:i:s'),
+                'created' => new DateTime(),
             ],
             [
                 'id' => 2,
@@ -37,7 +42,7 @@ class UsersFixture extends CoreFixture
                 'email' => 'regular@example.com',
                 'password' => (new DefaultPasswordHasher())->hash('regular'),
                 'is_admin' => 0,
-                'created' => date('Y-m-d H:i:s'),
+                'created' => new DateTime(),
             ],
             [
                 'id' => 3,
@@ -45,7 +50,7 @@ class UsersFixture extends CoreFixture
                 'email' => 'deleteme@example.com',
                 'password' => (new DefaultPasswordHasher())->hash('deleteme'),
                 'is_admin' => 0,
-                'created' => date('Y-m-d H:i:s'),
+                'created' => new DateTime(),
             ],
         ];
         parent::init();

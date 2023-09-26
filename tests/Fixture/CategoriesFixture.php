@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\Fixture;
 
-use Cake\I18n\FrozenTime;
+use Cake\I18n\DateTime;
 
 /**
  * CategoriesFixture
@@ -11,15 +11,20 @@ use Cake\I18n\FrozenTime;
 class CategoriesFixture extends CoreFixture
 {
     /**
+     * Table property
+     *
+     * @var string
+     */
+    public string $table = 'categories';
+
+    /**
      * Init method
      *
      * @return void
      */
     public function init(): void
     {
-        $this->import = [
-            'model' => 'Categories',
-        ];
+        $this->io->out(__('--- Init Fixture: {0} ---', [self::class]));
 
         $this->records = [
             [
@@ -27,7 +32,7 @@ class CategoriesFixture extends CoreFixture
                 'name' => 'Books',
                 'description' => 'List of available books',
                 'parent_id' => null,
-                'created' => date('Y-m-d H:i:s'),
+                'created' => new DateTime(),
                 'user_id' => 1,
             ],
             [
@@ -35,7 +40,7 @@ class CategoriesFixture extends CoreFixture
                 'name' => 'Journals',
                 'description' => 'Journals/Notebooks',
                 'parent_id' => 1,
-                'created' => date('Y-m-d H:i:s'),
+                'created' => new DateTime(),
                 'user_id' => 1,
             ],
             [
@@ -43,7 +48,7 @@ class CategoriesFixture extends CoreFixture
                 'name' => 'Charms',
                 'description' => 'JLittle Charms',
                 'parent_id' => null,
-                'created' => date('Y-m-d H:i:s'),
+                'created' => new DateTime(),
                 'user_id' => 1,
             ],
         ];

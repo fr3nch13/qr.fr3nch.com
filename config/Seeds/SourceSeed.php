@@ -42,14 +42,14 @@ class SourceSeed extends AbstractSeed
                 'id' => 1,
                 'name' => 'Amazon',
                 'description' => 'Books for sale at Amazon',
-                'created' => date('Y-m-d H:i:s'),
+                'created' => new DateTime(),
                 'user_id' => 1,
             ],
             [
                 'id' => 2,
                 'name' => 'Etsy',
                 'description' => 'Products for sale at my Etsy Store',
-                'created' => date('Y-m-d H:i:s'),
+                'created' => new DateTime(),
                 'user_id' => 1,
             ],
         ];

@@ -9,7 +9,7 @@ use Cake\ORM\Entity;
  * QrCode Entity
  *
  * @property int $id
- * @property string $key
+ * @property string $qrkey
  * @property string $name
  * @property string $description
  * @property \Cake\I18n\DateTime|null $created
@@ -36,7 +36,7 @@ class QrCode extends Entity
      * @var array<string, bool>
      */
     protected array $_accessible = [
-        'key' => true,
+        'qrkey' => true,
         'name' => true,
         'description' => true,
         'created' => true,

@@ -22,8 +22,6 @@
             <fieldset>
                 <legend><?= __('Edit Source') ?></legend>
 
-                <?php echo $this->Form->control('key'); ?>
-
                 <?php echo $this->Form->control('name'); ?>
 
                 <?php echo $this->Form->control('description'); ?>

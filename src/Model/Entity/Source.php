@@ -9,7 +9,6 @@ use Cake\ORM\Entity;
  * Source Entity
  *
  * @property int $id
- * @property string $key
  * @property string $name
  * @property string $description
  * @property \Cake\I18n\DateTime|null $created
@@ -31,7 +30,6 @@ class Source extends Entity
      * @var array<string, bool>
      */
     protected array $_accessible = [
-        'key' => true,
         'name' => true,
         'description' => true,
         'created' => true,

@@ -171,7 +171,7 @@ class QrCodesTableTest extends TestCase
         // test no set fields
         $entity = $this->QrCodes->newEntity([]);
         $expected = [
-            'key' => [
+            'qrkey' => [
                 '_required' => 'This field is required',
             ],
             'name' => [
@@ -196,7 +196,7 @@ class QrCodesTableTest extends TestCase
         $this->assertSame($expected, $entity->getErrors());
 
         // test setting the fields after an empty entity.
-        $entity->set('key', 'key');
+        $entity->set('qrkey', 'qrkey');
         $entity->set('name', 'name');
         $entity->set('description', 'description');
         $entity->set('url', 'url');
@@ -208,7 +208,7 @@ class QrCodesTableTest extends TestCase
 
         // test existing fields
         $entity = $this->QrCodes->newEntity([
-            'key' => 'sownscribe',
+            'qrkey' => 'sownscribe',
             'name' => 'Sow & Scribe',
             'description' => 'description',
             'url' => 'https://www.amazon.com/path/to/product',
@@ -218,7 +218,7 @@ class QrCodesTableTest extends TestCase
         ]);
 
         $expected = [
-            'key' => [
+            'qrkey' => [
                 'unique' => 'This Key already exists.',
             ],
         ];
@@ -227,7 +227,7 @@ class QrCodesTableTest extends TestCase
 
         // test max length
         $entity = $this->QrCodes->newEntity([
-            'key' => str_repeat('a', 256),
+            'qrkey' => str_repeat('a', 256),
             'name' => str_repeat('a', 256),
             'description' => 'description',
             'url' => 'https://www.amazon.com/path/to/product',
@@ -237,7 +237,7 @@ class QrCodesTableTest extends TestCase
         ]);
 
         $expected = [
-            'key' => [
+            'qrkey' => [
                 'maxLength' => 'The provided value must be at most `255` characters long',
             ],
             'name' => [
@@ -252,7 +252,7 @@ class QrCodesTableTest extends TestCase
 
         // test space in key
         $entity = $this->QrCodes->newEntity([
-            'key' => 'sow n scribe',
+            'qrkey' => 'sow n scribe',
             'name' => 'Sow & Scribe',
             'description' => 'description',
             'url' => 'https://www.amazon.com/path/to/product',
@@ -262,7 +262,7 @@ class QrCodesTableTest extends TestCase
         ]);
 
         $expected = [
-            'key' => [
+            'qrkey' => [
                 'characters' => 'Value cannot have a space in it.',
             ],
         ];
@@ -271,7 +271,7 @@ class QrCodesTableTest extends TestCase
 
         // test bad url
         $entity = $this->QrCodes->newEntity([
-            'key' => 'newkey',
+            'qrkey' => 'newkey',
             'name' => 'New Name',
             'description' => 'description',
             'url' => 'Not a URL',
@@ -290,7 +290,7 @@ class QrCodesTableTest extends TestCase
 
         // test valid entity
         $entity = $this->QrCodes->newEntity([
-            'key' => 'newsource',
+            'qrkey' => 'newsource',
             'name' => 'new name',
             'description' => 'description',
             'url' => 'https://www.amazon.com/path/to/product',
@@ -314,7 +314,7 @@ class QrCodesTableTest extends TestCase
     {
         // bad name, and user id
         $entity = $this->QrCodes->newEntity([
-            'key' => 'newsource',
+            'qrkey' => 'newsource',
             'name' => 'new name',
             'description' => 'description',
             'url' => 'https://www.amazon.com/path/to/product',
@@ -336,7 +336,7 @@ class QrCodesTableTest extends TestCase
 
         // check that we are passing the rules.
         $entity = $this->QrCodes->newEntity([
-            'key' => 'newsource',
+            'qrkey' => 'newsource',
             'name' => 'new name',
             'description' => 'description',
             'url' => 'https://www.amazon.com/path/to/product',

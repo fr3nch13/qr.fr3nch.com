@@ -139,7 +139,6 @@ class CrudTest extends TestCase
 
         // post
         $this->post('/sources/add', [
-            'key' => 'newsource',
             'name' => 'new name',
             'description' => 'description',
         ]);
@@ -151,7 +150,6 @@ class CrudTest extends TestCase
 
         // patch
         $this->patch('/sources/add', [
-            'key' => 'newsource',
             'name' => 'new name',
             'description' => 'description',
         ]);
@@ -160,7 +158,6 @@ class CrudTest extends TestCase
 
         // put
         $this->put('/sources/add', [
-            'key' => 'newsource',
             'name' => 'new name',
             'description' => 'description',
         ]);

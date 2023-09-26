@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace App\Test\Fixture;
 
 use Cake\Console\ConsoleIo;
-use Cake\Core\Configure;
 use Cake\TestSuite\Fixture\TestFixture;
 
 /**
@@ -13,7 +12,7 @@ use Cake\TestSuite\Fixture\TestFixture;
 class CoreFixture extends TestFixture
 {
     /**
-     * @var \Cake\Console\ConsoleIo|null
+     * @var \Cake\Console\ConsoleIo
      */
     public $io;
 
@@ -21,16 +20,6 @@ class CoreFixture extends TestFixture
     {
         $this->loadIo();
         parent::__construct();
-    }
-
-    /**
-     * Init method
-     */
-    public function init(): void
-    {
-        $this->io->out(__('--- Init Fixture: {0} ---', [self::class]));
-
-        parent::init();
     }
 
     /**

@@ -57,7 +57,7 @@ class FormsTest extends TestCase
         $this->assertResponseContains('<form method="post" accept-charset="utf-8" action="/qr-codes/add">');
         $this->assertResponseContains('<legend>Add Qr Code</legend>');
         // test to make sure the fields that are required are actually tagged as so.
-        $this->assertResponseContains('id="key-error"');
+        $this->assertResponseContains('id="qrkey-error"');
         $this->assertResponseContains('id="name-error"');
         $this->assertResponseContains('id="description-error"');
         $this->assertResponseContains('id="url-error"');
@@ -67,7 +67,7 @@ class FormsTest extends TestCase
 
         // test success
         $this->post('/qr-codes/add', [
-            'key' => 'newqrcode',
+            'qrkey' => 'newqrcode',
             'name' => 'New QrCode',
             'description' => 'The Description',
             'url' => 'https://amazon.com/path/to/details/page/newqrcode',
@@ -98,18 +98,18 @@ class FormsTest extends TestCase
 
         // test fail
         $this->patch('/qr-codes/edit/1', [
-            'key' => 'witchinghour', // an existing record
+            'qrkey' => 'witchinghour', // an existing record
         ]);
         $this->assertResponseOk();
         $this->assertResponseContains('<div class="message error" onclick="this.classList.add(\'hidden\');">The qr code could not be saved. Please, try again.</div>');
         $this->assertResponseContains('<div class="qrCodes form content">');
         $this->assertResponseContains('<form method="patch" accept-charset="utf-8" action="/qr-codes/edit/1">');
         $this->assertResponseContains('<legend>Edit Qr Code</legend>');
-        $this->assertResponseContains('<div class="error-message" id="key-error">This Key already exists.</div>');
+        $this->assertResponseContains('<div class="error-message" id="qrkey-error">This Key already exists.</div>');
 
         // a bad key
         $this->patch('/qr-codes/edit/1', [
-            'key' => 'witching hour', // an existing record
+            'qrkey' => 'witching hour', // an existing record
         ]);
         $this->assertResponseOk();
         $this->assertResponseContains('<div class="message error" onclick="this.classList.add(\'hidden\');">The qr code could not be saved. Please, try again.</div>');
@@ -117,7 +117,7 @@ class FormsTest extends TestCase
         $this->assertResponseContains('<form method="patch" accept-charset="utf-8" action="/qr-codes/edit/1">');
         $this->assertResponseContains('<legend>Edit Qr Code</legend>');
         // test to make sure the fields that are required are actually tagged as so.
-        $this->assertResponseContains('<div class="error-message" id="key-error">Value cannot have a space in it.</div>');
+        $this->assertResponseContains('<div class="error-message" id="qrkey-error">Value cannot have a space in it.</div>');
 
         // test success
         $this->patch('/qr-codes/edit/1', [

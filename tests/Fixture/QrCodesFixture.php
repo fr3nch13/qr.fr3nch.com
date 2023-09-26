@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\Fixture;
 
-use Cake\I18n\FrozenTime;
+use Cake\I18n\DateTime;
 
 /**
  * QrCodesFixture
@@ -11,15 +11,20 @@ use Cake\I18n\FrozenTime;
 class QrCodesFixture extends CoreFixture
 {
     /**
+     * Table property
+     *
+     * @var string
+     */
+    public string $table = 'qr_codes';
+
+    /**
      * Init method
      *
      * @return void
      */
     public function init(): void
     {
-        $this->import = [
-            'model' => 'QrCodes',
-        ];
+        $this->io->out(__('--- Init Fixture: {0} ---', [self::class]));
 
         $this->records = [
             [
@@ -27,7 +32,7 @@ class QrCodesFixture extends CoreFixture
                 'qrkey' => 'sownscribe',
                 'name' => 'Sow & Scribe',
                 'description' => 'The cute littly piggy journal/notebook',
-                'created' => date('Y-m-d H:i:s'),
+                'created' => new DateTime(),
                 'url' => 'https://amazon.com/path/to/details/page',
                 'bitly_id' => 'sownscribe',
                 'source_id' => 1,
@@ -38,7 +43,7 @@ class QrCodesFixture extends CoreFixture
                 'qrkey' => 'witchinghour',
                 'name' => 'The Witching Hour',
                 'description' => 'A Halloween themed journal/notebook with a witch flying at night',
-                'created' => date('Y-m-d H:i:s'),
+                'created' => new DateTime(),
                 'url' => 'https://amazon.com/path/to/details/page2',
                 'bitly_id' => 'witchinghour',
                 'source_id' => 1,

@@ -3,13 +3,18 @@ declare(strict_types=1);
 
 namespace App\Test\Fixture;
 
-use Cake\I18n\FrozenTime;
-
 /**
  * QrCodesTagsFixture
  */
 class QrCodesTagsFixture extends CoreFixture
 {
+    /**
+     * Table property
+     *
+     * @var string
+     */
+    public string $table = 'qr_codes_tags';
+
     /**
      * Init method
      *
@@ -17,9 +22,7 @@ class QrCodesTagsFixture extends CoreFixture
      */
     public function init(): void
     {
-        $this->import = [
-            'model' => 'QrCodesTags',
-        ];
+        $this->io->out(__('--- Init Fixture: {0} ---', [self::class]));
 
         $this->records = [
             [

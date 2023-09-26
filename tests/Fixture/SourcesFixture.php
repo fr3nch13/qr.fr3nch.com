@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\Fixture;
 
-use Cake\I18n\FrozenTime;
+use Cake\I18n\DateTime;
 
 /**
  * SourcesFixture
@@ -11,27 +11,34 @@ use Cake\I18n\FrozenTime;
 class SourcesFixture extends CoreFixture
 {
     /**
+     * Table property
+     *
+     * @var string
+     */
+    public string $table = 'sources';
+
+    /**
      * Init method
      *
      * @return void
      */
     public function init(): void
     {
-        $this->table = 'sources';
+        $this->io->out(__('--- Init Fixture: {0} ---', [self::class]));
 
         $this->records = [
             [
                 'id' => 1,
                 'name' => 'Amazon',
                 'description' => 'Books for sale at Amazon',
-                'created' => date('Y-m-d H:i:s'),
+                'created' => new DateTime(),
                 'user_id' => 1,
             ],
             [
                 'id' => 2,
                 'name' => 'Etsy',
                 'description' => 'Products for sale at my Etsy Store',
-                'created' => date('Y-m-d H:i:s'),
+                'created' => new DateTime(),
                 'user_id' => 1,
             ],
         ];

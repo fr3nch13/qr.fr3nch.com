@@ -229,7 +229,7 @@ ServerRequest::addDetector('tablet', function ($request) {
 // see https://book.cakephp.org/4/en/core-libraries/time.html#setting-the-default-locale-and-format-string
 // and https://unicode-org.github.io/icu/userguide/format_parse/datetime/#datetime-format-syntax
 //\Cake\I18n\FrozenDate::setToStringFormat('dd.MM.yyyy');
-//\Cake\I18n\FrozenTime::setToStringFormat('dd.MM.yyyy HH:mm');
+//\Cake\I18n\DateTime::setToStringFormat('dd.MM.yyyy HH:mm');
 
 // Used by the Tables to validate the key fields.
 Validator::addDefaultProvider('key', 'App\Model\Validation\KeyValidator');

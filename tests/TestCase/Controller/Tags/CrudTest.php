@@ -139,9 +139,7 @@ class CrudTest extends TestCase
 
         // post
         $this->post('/tags/add', [
-            'key' => 'newtag',
-            'name' => 'new name',
-            'description' => 'description',
+            'name' => 'New Tag',
         ]);
         $this->assertRedirect();
         $this->assertResponseCode(302);
@@ -151,18 +149,14 @@ class CrudTest extends TestCase
 
         // patch
         $this->patch('/tags/add', [
-            'key' => 'newtag',
-            'name' => 'new name',
-            'description' => 'description',
+            'name' => 'New Tag',
         ]);
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // put
         $this->put('/tags/add', [
-            'key' => 'newtag',
-            'name' => 'new name',
-            'description' => 'description',
+            'name' => 'New Tag',
         ]);
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
@@ -196,16 +190,14 @@ class CrudTest extends TestCase
 
         // post
         $this->post('/tags/edit/1', [
-            'name' => 'New Tag',
-            'description' => 'The Description',
+            'name' => 'Updated Tag',
         ]);
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // patch
         $this->patch('/tags/edit/1', [
-            'name' => 'New Tag',
-            'description' => 'The Description',
+            'name' => 'Updated Tag',
         ]);
         $this->assertRedirect();
         $this->assertResponseCode(302);
@@ -215,8 +207,7 @@ class CrudTest extends TestCase
 
         // put
         $this->put('/tags/edit/1', [
-            'name' => 'New Tag',
-            'description' => 'The Description',
+            'name' => 'Updated Tag',
         ]);
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');

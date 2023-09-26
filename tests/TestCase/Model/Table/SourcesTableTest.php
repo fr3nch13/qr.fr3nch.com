@@ -145,9 +145,6 @@ class SourcesTableTest extends TestCase
         // test no set fields
         $entity = $this->Sources->newEntity([]);
         $expected = [
-            'key' => [
-                '_required' => 'This field is required',
-            ],
             'name' => [
                 '_required' => 'This field is required',
             ],
@@ -161,7 +158,6 @@ class SourcesTableTest extends TestCase
         $this->assertSame($expected, $entity->getErrors());
 
         // test setting the fields after an empty entity.
-        $entity->set('key', 'key');
         $entity->set('name', 'name');
         $entity->set('description', 'description');
         $entity->set('user_id', '1');
@@ -170,16 +166,12 @@ class SourcesTableTest extends TestCase
 
         // test existing fields
         $entity = $this->Sources->newEntity([
-            'key' => 'amazon',
             'name' => 'Etsy',
             'description' => 'description',
             'user_id' => '1',
         ]);
 
         $expected = [
-            'key' => [
-                'unique' => 'This Key already exists.',
-            ],
             'name' => [
                 'unique' => 'This Name already exists.',
             ],
@@ -189,16 +181,12 @@ class SourcesTableTest extends TestCase
 
         // test max length
         $entity = $this->Sources->newEntity([
-            'key' => str_repeat('a', 256),
             'name' => str_repeat('a', 256),
             'description' => 'description',
             'user_id' => 1, // int instead of a string, like above.
         ]);
 
         $expected = [
-            'key' => [
-                'maxLength' => 'The provided value must be at most `255` characters long',
-            ],
             'name' => [
                 'maxLength' => 'The provided value must be at most `255` characters long',
             ],
@@ -206,25 +194,8 @@ class SourcesTableTest extends TestCase
 
         $this->assertSame($expected, $entity->getErrors());
 
-        // test space in key
-        $entity = $this->Sources->newEntity([
-            'key' => 'new source',
-            'name' => 'new name',
-            'description' => 'description',
-            'user_id' => 1,
-        ]);
-
-        $expected = [
-            'key' => [
-                'characters' => 'Value cannot have a space in it.',
-            ],
-        ];
-
-        $this->assertSame($expected, $entity->getErrors());
-
         // test valid entity
         $entity = $this->Sources->newEntity([
-            'key' => 'newsource',
             'name' => 'new name',
             'description' => 'description',
             'user_id' => 1,
@@ -245,7 +216,6 @@ class SourcesTableTest extends TestCase
     {
         // bad name, and user id
         $entity = $this->Sources->newEntity([
-            'key' => 'newsource',
             'name' => 'new name',
             'description' => 'description',
             'user_id' => 999,
@@ -261,7 +231,6 @@ class SourcesTableTest extends TestCase
 
         // check that we are passing the rules.
         $entity = $this->Sources->newEntity([
-            'key' => 'newsource',
             'name' => 'new name',
             'description' => 'description',
             'user_id' => 1,

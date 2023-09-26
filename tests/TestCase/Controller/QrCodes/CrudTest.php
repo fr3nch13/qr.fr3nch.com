@@ -139,7 +139,7 @@ class CrudTest extends TestCase
 
         // post
         $this->post('/qr-codes/add', [
-            'key' => 'newqrcode',
+            'qrkey' => 'newqrcode',
             'name' => 'New QrCode',
             'description' => 'The Description',
             'url' => 'https://amazon.com/path/to/details/page/newqrcode',
@@ -155,7 +155,7 @@ class CrudTest extends TestCase
 
         // patch
         $this->patch('/qr-codes/add', [
-            'key' => 'newqrcode',
+            'qrkey' => 'newqrcode',
             'name' => 'New QrCode',
             'description' => 'The Description',
             'url' => 'https://amazon.com/path/to/details/page/newqrcode',
@@ -168,7 +168,7 @@ class CrudTest extends TestCase
 
         // put
         $this->put('/qr-codes/add', [
-            'key' => 'newqrcode',
+            'qrkey' => 'newqrcode',
             'name' => 'New QrCode',
             'description' => 'The Description',
             'url' => 'https://amazon.com/path/to/details/page/newqrcode',

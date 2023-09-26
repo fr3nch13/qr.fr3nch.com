@@ -12,7 +12,7 @@
             <thead>
                 <tr>
                     <th><?= $this->Paginator->sort('id') ?></th>
-                    <th><?= $this->Paginator->sort('key') ?></th>
+                    <th><?= $this->Paginator->sort('qrkey') ?></th>
                     <th><?= $this->Paginator->sort('name') ?></th>
                     <th><?= $this->Paginator->sort('created') ?></th>
                     <th><?= $this->Paginator->sort('modified') ?></th>
@@ -26,7 +26,7 @@
                 <?php foreach ($qrCodes as $qrCode): ?>
                 <tr>
                     <td><?= $this->Number->format($qrCode->id) ?></td>
-                    <td><?= h($qrCode->key) ?></td>
+                    <td><?= h($qrCode->qrkey) ?></td>
                     <td><?= h($qrCode->name) ?></td>
                     <td><?= h($qrCode->created) ?></td>
                     <td><?= h($qrCode->modified) ?></td>

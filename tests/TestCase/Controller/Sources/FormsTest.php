@@ -60,10 +60,9 @@ class FormsTest extends TestCase
         $this->assertResponseContains('id="name-error"');
         $this->assertResponseContains('id="description-error"');
 
-        // formatting fail
+        // existing fail
         $this->post('/sources/add', [
-            'key' => 'new source',
-            'name' => 'new name',
+            'name' => 'Etsy',
             'description' => 'description',
         ]);
         $this->assertResponseOk();
@@ -72,11 +71,10 @@ class FormsTest extends TestCase
         $this->assertResponseContains('<form method="post" accept-charset="utf-8" action="/sources/add">');
         $this->assertResponseContains('<legend>Add Source</legend>');
         // test to make sure the fields that are required are actually tagged as so.
-        $this->assertResponseContains('<div class="error-message" id="key-error">Value cannot have a space in it.</div>');
+        $this->assertResponseContains('<div class="error-message" id="name-error">This Name already exists.</div>');
 
         // test success
         $this->post('/sources/add', [
-            'key' => 'newsource',
             'name' => 'new name',
             'description' => 'description',
         ]);

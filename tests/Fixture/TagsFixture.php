@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\Fixture;
 
-use Cake\I18n\FrozenTime;
+use Cake\I18n\DateTime;
 
 /**
  * TagsFixture
@@ -11,39 +11,44 @@ use Cake\I18n\FrozenTime;
 class TagsFixture extends CoreFixture
 {
     /**
+     * Table property
+     *
+     * @var string
+     */
+    public string $table = 'tags';
+
+    /**
      * Init method
      *
      * @return void
      */
     public function init(): void
     {
-        $this->import = [
-            'model' => 'Tags',
-        ];
+        $this->io->out(__('--- Init Fixture: {0} ---', [self::class]));
 
         $this->records = [
             [
                 'id' => 1,
                 'name' => 'Notebook',
-                'created' => date('Y-m-d H:i:s'),
+                'created' => new DateTime(),
                 'user_id' => 1,
             ],
             [
                 'id' => 2,
                 'name' => 'Journal',
-                'created' => date('Y-m-d H:i:s'),
+                'created' => new DateTime(),
                 'user_id' => 1,
             ],
             [
                 'id' => 3,
                 'name' => 'Amazon',
-                'created' => date('Y-m-d H:i:s'),
+                'created' => new DateTime(),
                 'user_id' => 1,
             ],
             [
                 'id' => 4,
                 'name' => 'Pig',
-                'created' => date('Y-m-d H:i:s'),
+                'created' => new DateTime(),
                 'user_id' => 1,
             ],
         ];

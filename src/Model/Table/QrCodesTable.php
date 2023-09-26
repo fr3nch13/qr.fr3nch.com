@@ -88,7 +88,7 @@ class QrCodesTable extends Table
             ])
             ->add('qrkey', 'characters', [
                 'rule' => 'characters',
-                'provider' => 'qrkey',
+                'provider' => 'key',
             ]);
 
         $validator
