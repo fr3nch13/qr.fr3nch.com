@@ -63,21 +63,6 @@ class SourcesTable extends Table
     public function validationDefault(Validator $validator): Validator
     {
         $validator
-            ->scalar('key')
-            ->maxLength('key', 255)
-            ->notEmptyString('key', __('The Key is required, and can not be empty.'))
-            ->requirePresence('key', Validator::WHEN_CREATE)
-            ->add('key', 'unique', [
-                'rule' => 'validateUnique',
-                'provider' => 'table',
-                'message' => __('This Key already exists.'),
-            ])
-            ->add('key', 'characters', [
-                'rule' => 'characters',
-                'provider' => 'key',
-            ]);
-
-        $validator
             ->scalar('name')
             ->maxLength('name', 255)
             ->notEmptyString('name', __('The Name is required, and can not be empty.'))
@@ -110,10 +95,6 @@ class SourcesTable extends Table
      */
     public function buildRules(RulesChecker $rules): RulesChecker
     {
-        // commented out as this is already done by the validator above.
-        //$rules->add($rules->isUnique(['key']), ['errorField' => 'key']);
-        // commented out as this is already done by the validator above.
-        //$rules->add($rules->isUnique(['name']), ['errorField' => 'name']);
         $rules->add($rules->existsIn('user_id', 'Users'), [
             'errorField' => 'user_id',
             'message' => __('Unknown User'),
