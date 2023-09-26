@@ -3,14 +3,12 @@ declare(strict_types=1);
 
 namespace App\Test\Fixture;
 
-use Cake\Console\ConsoleIo;
 use Cake\I18n\FrozenTime;
-use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * QrCodesFixture
  */
-class QrCodesFixture extends TestFixture
+class QrCodesFixture extends CoreFixture
 {
     /**
      * Init method
@@ -19,9 +17,6 @@ class QrCodesFixture extends TestFixture
      */
     public function init(): void
     {
-        $io = new ConsoleIo();
-        $io->out(__('--- Init Fixture: {0} ---', [self::class]));
-
         $this->import = [
             'model' => 'QrCodes',
         ];
@@ -29,7 +24,7 @@ class QrCodesFixture extends TestFixture
         $this->records = [
             [
                 'id' => 1,
-                'key' => 'sownscribe',
+                'qrkey' => 'sownscribe',
                 'name' => 'Sow & Scribe',
                 'description' => 'The cute littly piggy journal/notebook',
                 'created' => date('Y-m-d H:i:s'),
@@ -40,7 +35,7 @@ class QrCodesFixture extends TestFixture
             ],
             [
                 'id' => 2,
-                'key' => 'witchinghour',
+                'qrkey' => 'witchinghour',
                 'name' => 'The Witching Hour',
                 'description' => 'A Halloween themed journal/notebook with a witch flying at night',
                 'created' => date('Y-m-d H:i:s'),

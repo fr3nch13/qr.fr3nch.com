@@ -41,7 +41,7 @@ class QrCodeSeed extends AbstractSeed
         $data = [
             [
                 'id' => 1,
-                'key' => 'sownscribe',
+                'qrkey' => 'sownscribe',
                 'name' => 'Sow & Scribe',
                 'description' => 'The cute littly piggy journal/notebook',
                 'created' => date('Y-m-d H:i:s'),
@@ -52,7 +52,7 @@ class QrCodeSeed extends AbstractSeed
             ],
             [
                 'id' => 2,
-                'key' => 'witchinghour',
+                'qrkey' => 'witchinghour',
                 'name' => 'The Witching Hour',
                 'description' => 'A Halloween themed journal/notebook with a witch flying at night',
                 'created' => date('Y-m-d H:i:s'),

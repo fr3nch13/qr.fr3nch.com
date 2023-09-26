@@ -4,14 +4,12 @@ declare(strict_types=1);
 namespace App\Test\Fixture;
 
 use Authentication\PasswordHasher\DefaultPasswordHasher;
-use Cake\Console\ConsoleIo;
 use Cake\I18n\FrozenTime;
-use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * UsersFixture
  */
-class UsersFixture extends TestFixture
+class UsersFixture extends CoreFixture
 {
     /**
      * Init method
@@ -20,9 +18,6 @@ class UsersFixture extends TestFixture
      */
     public function init(): void
     {
-        $io = new ConsoleIo();
-        $io->out(__('--- Init Fixture: {0} ---', [self::class]));
-
         $this->import = [
             'model' => 'Users',
         ];

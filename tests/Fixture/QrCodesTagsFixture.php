@@ -3,14 +3,12 @@ declare(strict_types=1);
 
 namespace App\Test\Fixture;
 
-use Cake\Console\ConsoleIo;
 use Cake\I18n\FrozenTime;
-use Cake\TestSuite\Fixture\TestFixture;
 
 /**
  * QrCodesTagsFixture
  */
-class QrCodesTagsFixture extends TestFixture
+class QrCodesTagsFixture extends CoreFixture
 {
     /**
      * Init method
@@ -19,9 +17,6 @@ class QrCodesTagsFixture extends TestFixture
      */
     public function init(): void
     {
-        $io = new ConsoleIo();
-        $io->out(__('--- Init Fixture: {0} ---', [self::class]));
-
         $this->import = [
             'model' => 'QrCodesTags',
         ];

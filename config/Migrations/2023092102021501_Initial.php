@@ -53,11 +53,6 @@ class Initial extends AbstractMigration
         $this->io->out(__('Creating table: {0}', ['sources']));
         $table = $this->table('sources', $this->tableOptions());
         $table->addColumn('id', 'integer', $this->primaryKeyOptions());
-        $table->addColumn('key', 'string', [
-            'default' => null,
-            'limit' => 255,
-            'null' => false,
-        ])->addIndex(['key'], ['unique' => true]);
         $table->addColumn('name', 'string', [
             'default' => null,
             'limit' => 255,
@@ -79,7 +74,6 @@ class Initial extends AbstractMigration
             'default' => null,
             'null' => true,
         ])->addIndex(['user_id']);
-        /*
         $this->io->out(__('Adding Foreign Key: {0} -> {1}.{2}', [
             'user_id', 'users', 'id'
         ]));
@@ -88,7 +82,6 @@ class Initial extends AbstractMigration
                 'delete' => 'SET_NULL',
                 'constraint' => 'sources_user_id',
             ]);
-        */
         $table->create();
 
         $this->io->out(__('Creating table: {0}', ['categories']));
@@ -119,7 +112,6 @@ class Initial extends AbstractMigration
             'default' => null,
             'null' => true,
         ])->addIndex(['user_id']);
-        /*
         $this->io->out(__('Adding Foreign Key: {0} -> {1}.{2}', [
             'user_id', 'users', 'id'
         ]));
@@ -128,17 +120,16 @@ class Initial extends AbstractMigration
                 'delete' => 'SET_NULL',
                 'constraint' => 'categories_user_id',
             ]);
-        */
         $table->create();
 
         $this->io->out(__('Creating table: {0}', ['qr_codes']));
         $table = $this->table('qr_codes', $this->tableOptions());
         $table->addColumn('id', 'integer', $this->primaryKeyOptions());
-        $table->addColumn('key', 'string', [
+        $table->addColumn('qrkey', 'string', [
             'default' => null,
             'limit' => 255,
             'null' => false,
-        ])->addIndex(['key'], ['unique' => true]);
+        ])->addIndex(['qrkey'], ['unique' => true]);
         $table->addColumn('name', 'string', [
             'default' => null,
             'limit' => 255,
@@ -173,7 +164,6 @@ class Initial extends AbstractMigration
             'default' => null,
             'null' => true,
         ])->addIndex(['user_id']);
-        /*
         $this->io->out(__('Adding Foreign Key: {0} -> {1}.{2}', [
             'user_id', 'users', 'id'
         ]));
@@ -182,7 +172,6 @@ class Initial extends AbstractMigration
                 'delete' => 'SET_NULL',
                 'constraint' => 'qr_codes_user_id',
             ]);
-        */
         $table->create();
 
         $this->io->out(__('Creating table: {0}', ['categories_qr_codes']));
@@ -196,7 +185,6 @@ class Initial extends AbstractMigration
             'default' => null,
             'null' => false,
         ])->addIndex(['qr_code_id']);
-        /*
         $this->io->out(__('Adding Foreign Key: {0} -> {1}.{2}', [
             'category_id', 'categories', 'id'
         ]));
@@ -213,7 +201,6 @@ class Initial extends AbstractMigration
                 'delete' => 'CASCADE',
                 'constraint' => 'categories_qr_codes_qr_code_id',
             ]);
-        */
         $table->create();
 
         $this->io->out(__('Creating table: {0}', ['tags']));
@@ -236,7 +223,6 @@ class Initial extends AbstractMigration
             'default' => null,
             'null' => true,
         ])->addIndex(['user_id']);
-        /*
         $this->io->out(__('Adding Foreign Key: {0} -> {1}.{2}', [
             'user_id', 'users', 'id'
         ]));
@@ -245,7 +231,6 @@ class Initial extends AbstractMigration
                 'delete' => 'SET_NULL',
                 'constraint' => 'tags_user_id',
             ]);
-        */
         $table->create();
 
         $this->io->out(__('Creating table: {0}', ['qr_codes_tags']));
@@ -259,7 +244,6 @@ class Initial extends AbstractMigration
             'default' => null,
             'null' => false,
         ])->addIndex(['qr_code_id']);
-        /*
         $this->io->out(__('Adding Foreign Key: {0} -> {1}.{2}', [
             'tag_id', 'tags', 'id'
         ]));
@@ -276,7 +260,6 @@ class Initial extends AbstractMigration
                 'delete' => 'CASCADE',
                 'constraint' => 'qr_codes_tags_qr_code_id',
             ]);
-        */
         $table->create();
 
         $this->afterChange();

@@ -40,7 +40,6 @@ class SourceSeed extends AbstractSeed
         $data = [
             [
                 'id' => 1,
-                'key' => 'amazon',
                 'name' => 'Amazon',
                 'description' => 'Books for sale at Amazon',
                 'created' => date('Y-m-d H:i:s'),
@@ -48,7 +47,6 @@ class SourceSeed extends AbstractSeed
             ],
             [
                 'id' => 2,
-                'key' => 'etsy',
                 'name' => 'Etsy',
                 'description' => 'Products for sale at my Etsy Store',
                 'created' => date('Y-m-d H:i:s'),
