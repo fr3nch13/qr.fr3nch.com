@@ -1,7 +1,6 @@
 <?php
 declare(strict_types=1);
 
-use App\Test\Fixture\QrCodesFixture;
 use Migrations\AbstractSeed;
 
 /**
@@ -19,8 +18,8 @@ class QrCodeSeed extends AbstractSeed
     public function getDependencies(): array
     {
         return [
-            'SourceSeed',
             'UserSeed',
+            'SourceSeed',
         ];
     }
 

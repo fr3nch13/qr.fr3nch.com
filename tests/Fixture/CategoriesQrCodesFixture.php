@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\Fixture;
 
+use App\Migrations\Data\CategoriesQrCodesData;
 use Cake\TestSuite\Fixture\TestFixture;
 
 /**
@@ -17,7 +18,7 @@ class CategoriesQrCodesFixture extends TestFixture
      */
     public function init(): void
     {
-        $this->records = (new \App\Migrations\Data\CategoriesQrCodesData())->getData();
+        $this->records = (new CategoriesQrCodesData())->getData();
         parent::init();
     }
 }

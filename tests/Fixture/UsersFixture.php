@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\Fixture;
 
+use App\Migrations\Data\UsersData;
 use Cake\TestSuite\Fixture\TestFixture;
 
 /**
@@ -17,7 +18,7 @@ class UsersFixture extends TestFixture
      */
     public function init(): void
     {
-        $this->records = (new \App\Migrations\Data\UsersData())->getData();
+        $this->records = (new UsersData())->getData();
         parent::init();
     }
 }

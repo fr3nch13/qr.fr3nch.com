@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\Fixture;
 
+use App\Migrations\Data\CategoriesData;
 use Cake\TestSuite\Fixture\TestFixture;
 
 /**
@@ -17,7 +18,7 @@ class CategoriesFixture extends TestFixture
      */
     public function init(): void
     {
-        $this->records = (new \App\Migrations\Data\CategoriesData())->getData();
+        $this->records = (new CategoriesData())->getData();
         parent::init();
     }
 }

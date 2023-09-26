@@ -1,7 +1,6 @@
 <?php
 declare(strict_types=1);
 
-use App\Test\Fixture\TagsFixture;
 use Migrations\AbstractSeed;
 
 /**
