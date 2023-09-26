@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Test\Fixture;
 
-use App\Migrations\Data\TagsData;
 use Cake\TestSuite\Fixture\TestFixture;
 
 /**
@@ -18,7 +17,32 @@ class TagsFixture extends TestFixture
      */
     public function init(): void
     {
-        $this->records = (new TagsData())->getData();
+        $this->records = [
+            [
+                'id' => 1,
+                'name' => 'Notebook',
+                'created' => date('Y-m-d H:i:s'),
+                'user_id' => 1,
+            ],
+            [
+                'id' => 2,
+                'name' => 'Journal',
+                'created' => date('Y-m-d H:i:s'),
+                'user_id' => 1,
+            ],
+            [
+                'id' => 3,
+                'name' => 'Amazon',
+                'created' => date('Y-m-d H:i:s'),
+                'user_id' => 1,
+            ],
+            [
+                'id' => 4,
+                'name' => 'Pig',
+                'created' => date('Y-m-d H:i:s'),
+                'user_id' => 1,
+            ],
+        ];
         parent::init();
     }
 }

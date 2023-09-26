@@ -37,7 +37,32 @@ class CategorySeed extends AbstractSeed
         $this->checkTable('categories');
         $table = $this->table('categories');
 
-        $data = (new \App\Migrations\Data\CategoriesData())->getData();
+        $data = [
+            [
+                'id' => 1,
+                'name' => 'Books',
+                'description' => 'List of available books',
+                'parent_id' => null,
+                'created' => date('Y-m-d H:i:s'),
+                'user_id' => 1,
+            ],
+            [
+                'id' => 2,
+                'name' => 'Journals',
+                'description' => 'Journals/Notebooks',
+                'parent_id' => 1,
+                'created' => date('Y-m-d H:i:s'),
+                'user_id' => 1,
+            ],
+            [
+                'id' => 3,
+                'name' => 'Charms',
+                'description' => 'JLittle Charms',
+                'parent_id' => null,
+                'created' => date('Y-m-d H:i:s'),
+                'user_id' => 1,
+            ],
+        ];
         // add or change data here for the seeding.
 
         $table->insert($data)->save();

@@ -37,8 +37,24 @@ class SourceSeed extends AbstractSeed
         $this->checkTable('sources');
         $table = $this->table('sources');
 
-        $data = (new \App\Migrations\Data\SourcesData())->getData();
-        // add or change data here for the seeding.
+        $data = [
+            [
+                'id' => 1,
+                'key' => 'amazon',
+                'name' => 'Amazon',
+                'description' => 'Books for sale at Amazon',
+                'created' => date('Y-m-d H:i:s'),
+                'user_id' => 1,
+            ],
+            [
+                'id' => 2,
+                'key' => 'etsy',
+                'name' => 'Etsy',
+                'description' => 'Products for sale at my Etsy Store',
+                'created' => date('Y-m-d H:i:s'),
+                'user_id' => 1,
+            ],
+        ];
 
         $table->insert($data)->save();
     }
