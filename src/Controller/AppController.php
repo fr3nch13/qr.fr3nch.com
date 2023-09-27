@@ -62,19 +62,11 @@ class AppController extends Controller
          *  @link https://book.cakephp.org/5/en/tutorials-and-examples/cms/authorization.html
          */
         $this->loadComponent('Authorization.Authorization');
-    }
 
-    /**
-     * The supported View Classes
-     *
-     * This required a negotiated view based on the request's contentType.
-     *
-     * @return array<int, string> List of available views.
-     * @link https://book.cakephp.org/5/en/controllers.html#content-type-negotiation-fallbacks
-     */
-    public function viewClasses(): array
-    {
-        return [AjaxView::class, JsonView::class, AppView::class];
+        // determine which view class to use
+        if ($this->request->is('ajax')) {
+            $this->viewBuilder()->setClassName(AjaxView::class);
+        }
     }
 
     /**

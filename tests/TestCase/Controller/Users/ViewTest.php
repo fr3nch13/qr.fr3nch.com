@@ -31,6 +31,61 @@ class ViewTest extends BaseControllerTest
     }
 
     /**
+     * Test login method
+     *
+     * @return void
+     * @uses \App\Controller\UsersController::index()
+     */
+    public function testLoginNormal(): void
+    {
+        // not logged in
+        $this->get('/users/login');
+        $this->assertResponseOk();
+        $this->helperTestLayoutNormal();
+
+        // test with reqular
+        $this->loginUserRegular();
+        $this->get('/users/login');
+        $this->assertResponseCode(302);
+        $this->assertRedirectContains('/qr-codes');
+
+        // test with admin
+        $this->loginUserAdmin();
+        $this->get('/users/login');
+        $this->assertResponseCode(302);
+        $this->assertRedirectContains('/qr-codes');
+    }
+
+    /**
+     * Test index method
+     *
+     * @return void
+     * @uses \App\Controller\UsersController::index()
+     */
+    public function testLoginAjax(): void
+    {
+        // not logged in
+        $this->requestAsAjax();
+        $this->get('/users/login');
+        $this->assertResponseOk();
+        $this->helperTestLayoutAjax();
+
+        // test with reqular
+        $this->requestAsAjax();
+        $this->loginUserRegular();
+        $this->get('/users/login');
+        $this->assertResponseCode(302);
+        $this->assertRedirectContains('/qr-codes');
+
+        // test with admin
+        $this->requestAsAjax();
+        $this->loginUserAdmin();
+        $this->get('/users/login');
+        $this->assertResponseCode(302);
+        $this->assertRedirectContains('/qr-codes');
+    }
+
+    /**
      * Test index method
      *
      * @return void
