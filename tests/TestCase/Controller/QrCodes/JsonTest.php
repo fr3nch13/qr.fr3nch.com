@@ -57,7 +57,6 @@ class JsonTest extends BaseControllerTest
         $this->assertTrue(isset($first['source']));
         $this->assertFalse(isset($first['user_id']));
         $this->assertFalse(isset($first['user']));
-
     }
 
     /**
@@ -123,22 +122,22 @@ class JsonTest extends BaseControllerTest
         $this->assertFalse(empty($content['errors']));
         $expected = [
             'qrkey' => [
-                '_required' => 'This field is required'
+                '_required' => 'This field is required',
             ],
             'name' => [
-                '_required' => 'This field is required'
+                '_required' => 'This field is required',
             ],
             'description' => [
-                '_required' => 'This field is required'
+                '_required' => 'This field is required',
             ],
             'url' => [
-                '_required' => 'This field is required'
+                '_required' => 'This field is required',
             ],
             'bitly_id' => [
-                '_required' => 'This field is required'
+                '_required' => 'This field is required',
             ],
             'source_id' => [
-                '_required' => 'This field is required'
+                '_required' => 'This field is required',
             ],
         ];
         $this->assertSame($expected, $content['errors']);

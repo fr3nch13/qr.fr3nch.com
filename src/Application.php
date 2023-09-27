@@ -30,8 +30,6 @@ use Cake\Core\ContainerInterface;
 use Cake\Datasource\FactoryLocator;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\BaseApplication;
-use Cake\Http\Client\Request;
-use Cake\Http\ServerRequest;
 use Cake\Http\Middleware\BodyParserMiddleware;
 use Cake\Http\Middleware\CsrfProtectionMiddleware;
 use Cake\Http\MiddlewareQueue;
@@ -204,7 +202,7 @@ class Application extends BaseApplication implements
                     'controller' => 'Users',
                     'action' => 'login',
                     '_ext' => 'json',
-                ])
+                ]),
             ],
         ]);
 

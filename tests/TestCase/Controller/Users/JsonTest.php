@@ -139,7 +139,6 @@ class JsonTest extends BaseControllerTest
         $item = $content['users'][1];
         $this->assertSame(2, $item['id']);
         $this->assertFalse(isset($item['password']));
-
     }
 
     /**
@@ -198,13 +197,13 @@ class JsonTest extends BaseControllerTest
 
         $expected = [
             'name' => [
-                '_required' => 'This field is required'
+                '_required' => 'This field is required',
             ],
             'email' => [
-                '_required' => 'This field is required'
+                '_required' => 'This field is required',
             ],
             'password' => [
-                '_required' => 'This field is required'
+                '_required' => 'This field is required',
             ],
         ];
         $this->assertSame($expected, $content['errors']);
