@@ -34,6 +34,7 @@
                     <td><?= $qrCode->hasValue('source') ? $this->Html->link($qrCode->source->name, ['controller' => 'Sources', 'action' => 'view', $qrCode->source->id]) : '' ?></td>
                     <td><?= $qrCode->hasValue('user') ? $this->Html->link($qrCode->user->name, ['controller' => 'Users', 'action' => 'view', $qrCode->user->id]) : '' ?></td>
                     <td class="actions">
+                        <?= $this->Html->link(__('Follow'), ['action' => 'forward', $qrCode->qrkey]) ?>
                         <?= $this->Html->link(__('View'), ['action' => 'view', $qrCode->id]) ?>
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $qrCode->id]) ?>
                         <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $qrCode->id], ['confirm' => __('Are you sure you want to delete # {0}?', $qrCode->id)]) ?>

@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Test\TestCase\Controller\Categories;
+namespace App\Test\TestCase\Controller\QrCodes;
 
 use App\Test\TestCase\Controller\BaseControllerTest;
 use Cake\Core\Configure;
 
 /**
- * App\Controller\CategoriesController Test Case
+ * App\Controller\QrCodesController Test Case
  *
  * Tests the other aspects of the controller
  *
- * @uses \App\Controller\CategoriesController
+ * @uses \App\Controller\QrCodesController
  */
 class GeneralTest extends BaseControllerTest
 {
@@ -33,7 +33,7 @@ class GeneralTest extends BaseControllerTest
      * Test index method
      *
      * @return void
-     * @uses \App\Controller\CategoriesController::index()
+     * @uses \App\Controller\QrCodesController::index()
      */
     public function testForward(): void
     {
