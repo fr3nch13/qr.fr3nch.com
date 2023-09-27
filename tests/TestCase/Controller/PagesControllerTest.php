@@ -18,18 +18,14 @@ namespace App\Test\TestCase\Controller;
 
 use Cake\Core\Configure;
 use Cake\TestSuite\Constraint\Response\StatusCode;
-use Cake\TestSuite\IntegrationTestTrait;
-use Cake\TestSuite\TestCase;
 
 /**
  * PagesControllerTest class
  *
  * @uses \App\Controller\PagesController
  */
-class PagesControllerTest extends TestCase
+class PagesControllerTest extends BaseControllerTest
 {
-    use IntegrationTestTrait;
-
     /**
      * testDisplay method
      *
@@ -38,7 +34,75 @@ class PagesControllerTest extends TestCase
     public function testDisplay()
     {
         Configure::write('debug', true);
+
         $this->get('/pages/home');
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('CakePHP');
+        $this->assertResponseContains('<html>');
+    }
+
+    /**
+     * testDisplay method
+     *
+     * @return void
+     */
+    public function testDisplayRootRoute()
+    {
+        Configure::write('debug', true);
+
+        $this->get('/');
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('QR Codes');
+        $this->assertResponseContains('<html>');
+    }
+
+    /**
+     * testDisplay method
+     *
+     * @return void
+     */
+    public function testDisplaySubPage()
+    {
+        Configure::write('debug', true);
+
+        $this->get('/pages/about/staff');
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('CakePHP');
+        $this->assertResponseContains('<html>');
+        $this->assertResponseContains('<h1>Staff</h1>');
+    }
+
+    /**
+     * testDisplay method
+     *
+     * @return void
+     */
+    public function testDisplaySDirectly()
+    {
+        Configure::write('debug', true);
+
+        $this->get('/pages');
+
+        $this->assertRedirect();
+        $this->assertResponseCode(302);
+        $this->assertRedirectContains('/');
+    }
+
+    /**
+     * testDisplay method Logged in user
+     *
+     * @return void
+     */
+    public function testDisplayLoggedIn()
+    {
+        Configure::write('debug', true);
+        $this->loginUserAdmin();
+
+        $this->get('/pages/home');
+
         $this->assertResponseOk();
         $this->assertResponseContains('CakePHP');
         $this->assertResponseContains('<html>');
@@ -52,6 +116,7 @@ class PagesControllerTest extends TestCase
     public function testMissingTemplate()
     {
         Configure::write('debug', false);
+
         $this->get('/pages/not_existing');
 
         $this->assertResponseError();
@@ -66,6 +131,7 @@ class PagesControllerTest extends TestCase
     public function testMissingTemplateInDebug()
     {
         Configure::write('debug', true);
+
         $this->get('/pages/not_existing');
 
         $this->assertResponseFailure();
@@ -82,6 +148,7 @@ class PagesControllerTest extends TestCase
     public function testDirectoryTraversalProtection()
     {
         $this->get('/pages/../Layout/ajax');
+
         $this->assertResponseCode(403);
         $this->assertResponseContains('Forbidden');
     }
@@ -106,10 +173,12 @@ class PagesControllerTest extends TestCase
      */
     public function testCsrfAppliedOk()
     {
+        Configure::write('debug', true);
         $this->enableCsrfToken();
+
         $this->post('/pages/home', ['hello' => 'world']);
 
         $this->assertThat(403, $this->logicalNot(new StatusCode($this->_response)));
-        $this->assertResponseNotContains('CSRF');
+        $this->assertResponseContains('`_Token` was not found in request data.');
     }
 }

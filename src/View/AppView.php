@@ -27,6 +27,25 @@ use Cake\View\View;
 class AppView extends View
 {
     /**
+     * The name of the layout file to render the view inside of. The name
+     * specified is the filename of the layout in /templates/Layout without
+     * the .php extension.
+     *
+     * @var string
+     */
+    protected string $layout = 'default';
+
+    /**
+     * Get content type for this view.
+     *
+     * @return string
+     */
+    public static function contentType(): string
+    {
+        return 'text/html';
+    }
+
+    /**
      * Initialization hook method.
      *
      * Use this method to add common initialization code like adding helpers.
@@ -37,5 +56,8 @@ class AppView extends View
      */
     public function initialize(): void
     {
+        $this->addHelper('Flash');
+        $this->addHelper('Form');
+        $this->addHelper('Html');
     }
 }

@@ -9,4 +9,12 @@
 
     <file>src/</file>
     <file>tests/</file>
+
+    <!-- Allow TODO tags -->
+    <rule ref="Generic.Commenting.Todo.CommentFound">
+        <severity>0</severity>
+    </rule>
+    <rule ref="Generic.Commenting.Todo.TaskFound">
+        <severity>0</severity>
+    </rule>
 </ruleset>

@@ -17,6 +17,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Core\Configure;
+use Cake\Event\EventInterface;
 use Cake\Http\Exception\ForbiddenException;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
@@ -32,6 +33,17 @@ use Cake\View\Exception\MissingTemplateException;
 class PagesController extends AppController
 {
     /**
+     * Runs before the code in the actions
+     */
+    public function beforeFilter(EventInterface $event): void
+    {
+        parent::beforeFilter($event);
+        // Configure the login action to not require authentication, preventing
+        // the infinite redirect loop issue
+        $this->Authentication->addUnauthenticatedActions(['display']);
+    }
+
+    /**
      * Displays a view
      *
      * @param string ...$path Path segments.
@@ -45,6 +57,9 @@ class PagesController extends AppController
      */
     public function display(string ...$path): ?Response
     {
+        $this->Authorization->skipAuthorization();
+        $activeUser = $this->getActiveUser();
+
         if (!$path) {
             return $this->redirect('/');
         }
@@ -59,7 +74,7 @@ class PagesController extends AppController
         if (!empty($path[1])) {
             $subpage = $path[1];
         }
-        $this->set(compact('page', 'subpage'));
+        $this->set(compact('page', 'subpage', 'activeUser'));
 
         try {
             return $this->render(implode('/', $path));

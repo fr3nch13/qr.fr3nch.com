@@ -14,4 +14,9 @@
  * @var \App\View\AppView $this
  */
 
-echo $this->fetch('content');
+?>
+<!-- START: App.layout/ajax -->
+
+<?= $this->fetch('content'); ?>
+
+<!-- END: App.layout/ajax -->

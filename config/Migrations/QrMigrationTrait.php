@@ -15,7 +15,7 @@ trait QrMigrationTrait
 
     /**
      * Makes the I/O object
-     * 
+     *
      * @return void
      */
     public function makeIo(): void
@@ -27,7 +27,7 @@ trait QrMigrationTrait
 
     /**
      * The default table options
-     * 
+     *
      * @return array The array of options
      */
     public function tableOptions(): array
@@ -45,7 +45,7 @@ trait QrMigrationTrait
 
     /**
      * The default options for the primary key
-     * 
+     *
      * @return array
      */
     public function primaryKeyOptions(): array
@@ -54,13 +54,13 @@ trait QrMigrationTrait
             'null' => false,
             'limit' => MysqlAdapter::INT_REGULAR,
             'precision' => 10,
-            'identity' => 'enable',
+            'identity' => true,
         ];
     }
 
     /**
      * Run stuff before Change
-     * 
+     *
      * @return void
      */
     public function beforeChange(): void
@@ -77,7 +77,7 @@ trait QrMigrationTrait
 
     /**
      * Run stuff after Change
-     * 
+     *
      * @return void
      */
     public function afterChange(): void

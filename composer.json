@@ -6,17 +6,21 @@
     "license": "MIT",
     "require": {
         "php": ">=8.1",
+        "cakephp/authentication": "^3.0.2",
+        "cakephp/authorization": "^3.0.1",
         "cakephp/cakephp": "^5.0.0",
-        "cakephp/migrations": "^4.0",
-        "cakephp/plugin-installer": "^2.0",
+        "cakephp/migrations": "^4.1",
+        "cakephp/plugin-installer": "^2.0.1",
         "mobiledetect/mobiledetectlib": "^3.74"
     },
     "require-dev": {
-        "cakephp/bake": "^3.0.0",
-        "cakephp/cakephp-codesniffer": "^5.0",
-        "cakephp/debug_kit": "^5.0.0",
+        "cakephp/cakephp": "5.x-dev as 5.0.1",
+        "cakephp/bake": "^3.0.2",
+        "cakephp/cakephp-codesniffer": "^5.1.1",
+        "cakephp/debug_kit": "^5.0.1",
         "josegonzalez/dotenv": "^4.0",
-        "phpunit/phpunit": "^10.1.0"
+        "phpstan/phpstan": "^1.10.35",
+        "phpunit/phpunit": "^10.3.5"
     },
     "suggest": {
         "markstory/asset_compress": "An asset compression plugin which provides file concatenation and a flexible filter system for preprocessing and minification.",
@@ -27,7 +31,8 @@
     "autoload": {
         "psr-4": {
             "App\\": "src/",
-            "App\\Migrations\\": "config/Migrations"
+            "App\\Migrations\\": "config/Migrations",
+            "App\\Test\\Fixture\\": "tests/Fixture"
         }
     },
     "autoload-dev": {
@@ -39,15 +44,32 @@
     "scripts": {
         "post-install-cmd": "App\\Console\\Installer::postInstall",
         "post-create-project-cmd": "App\\Console\\Installer::postInstall",
+        "migrate": "bin/cake migrations migrate",
+        "seed": "bin/cake migrations seed",
+        "ci": [
+            "@check",
+            "@coverage-text"
+        ],
         "check": [
             "@test",
+            "@cs-check",
+            "@phpstan"
+        ],
+        "fix": [
+            "@cs-fix",
             "@cs-check"
         ],
-        "cs-check": "phpcs --colors -p",
-        "cs-fix": "phpcbf --colors -p",
-        "stan": "phpstan analyse",
-        "test": "phpunit --colors=always"
+        "cs-check": "php -d memory_limit=-1 ./vendor/bin/phpcs --colors -p",
+        "cs-fix": "php -d memory_limit=-1 ./vendor/bin/phpcbf --colors -p",
+        "test": "php -d memory_limit=-1 ./vendor/bin/phpunit --colors=always",
+        "cs-checkstyle": "@cs-check -- --report=checkstyle",
+        "phpstan": "php -d memory_limit=-1 ./vendor/bin/phpstan --no-progress -vvv",
+        "phpstan-github": "php -d memory_limit=-1 ./vendor/bin/phpstan --no-progress -vvv --error-format=github",
+        "coverage": "php -d memory_limit=-1 -d xdebug.mode=coverage ./vendor/bin/phpunit --coverage-html tmp/coverage",
+        "coverage-clover": "php -d memory_limit=-1 -d xdebug.mode=coverage ./vendor/bin/phpunit --coverage-clover=tmp/coverage.xml",
+        "coverage-text": "php -d memory_limit=-1 -d xdebug.mode=coverage ./vendor/bin/phpunit --coverage-text --colors=never"
     },
+    "minimum-stability": "dev",
     "prefer-stable": true,
     "config": {
         "platform-check": true,

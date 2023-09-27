@@ -33,6 +33,16 @@ class AjaxView extends AppView
     protected string $layout = 'ajax';
 
     /**
+     * Get content type for this view.
+     *
+     * @return string
+     */
+    public static function contentType(): string
+    {
+        return 'text/html';
+    }
+
+    /**
      * Initialization hook method.
      *
      * @return void

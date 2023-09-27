@@ -4,24 +4,158 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fffc398769b69b87ac31ecaf0fda9af8",
+    "content-hash": "24f29d91a8b6fcdc393f1ab395ad253e",
     "packages": [
         {
-            "name": "cakephp/cakephp",
-            "version": "5.0.0",
+            "name": "cakephp/authentication",
+            "version": "3.0.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/cakephp/cakephp.git",
-                "reference": "2da6ed819f520e472ea12b011a9c7a7f39310a4a"
+                "url": "https://github.com/cakephp/authentication.git",
+                "reference": "0ab6de3811d65ab77faf018792611c79841a1055"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/2da6ed819f520e472ea12b011a9c7a7f39310a4a",
-                "reference": "2da6ed819f520e472ea12b011a9c7a7f39310a4a",
+                "url": "https://api.github.com/repos/cakephp/authentication/zipball/0ab6de3811d65ab77faf018792611c79841a1055",
+                "reference": "0ab6de3811d65ab77faf018792611c79841a1055",
                 "shasum": ""
             },
             "require": {
-                "cakephp/chronos": "^3.0",
+                "cakephp/http": "^5.0",
+                "laminas/laminas-diactoros": "^3.0",
+                "psr/http-client": "^1.0",
+                "psr/http-message": "^2.0",
+                "psr/http-server-handler": "^1.0",
+                "psr/http-server-middleware": "^1.0"
+            },
+            "require-dev": {
+                "cakephp/cakephp": "^5.0",
+                "cakephp/cakephp-codesniffer": "^5.0",
+                "firebase/php-jwt": "^6.2",
+                "phpunit/phpunit": "^10.1.0"
+            },
+            "suggest": {
+                "cakephp/cakephp": "Install full core to use \"CookieAuthenticator\".",
+                "cakephp/orm": "To use \"OrmResolver\" (Not needed separately if using full CakePHP framework).",
+                "cakephp/utility": "Provides CakePHP security methods. Required for the JWT adapter and Legacy password hasher.",
+                "ext-ldap": "Make sure this php extension is installed and enabled on your system if you want to use the built-in LDAP adapter for \"LdapIdentifier\".",
+                "firebase/php-jwt": "If you want to use the JWT adapter add this dependency"
+            },
+            "type": "cakephp-plugin",
+            "autoload": {
+                "psr-4": {
+                    "Authentication\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "CakePHP Community",
+                    "homepage": "https://github.com/cakephp/authentication/graphs/contributors"
+                }
+            ],
+            "description": "Authentication plugin for CakePHP",
+            "homepage": "https://cakephp.org",
+            "keywords": [
+                "Authentication",
+                "auth",
+                "cakephp",
+                "middleware"
+            ],
+            "support": {
+                "docs": "https://book.cakephp.org/authentication/2/en/",
+                "forum": "https://stackoverflow.com/tags/cakephp",
+                "irc": "irc://irc.freenode.org/cakephp",
+                "issues": "https://github.com/cakephp/authentication/issues",
+                "source": "https://github.com/cakephp/authentication"
+            },
+            "time": "2023-09-10T03:38:32+00:00"
+        },
+        {
+            "name": "cakephp/authorization",
+            "version": "3.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cakephp/authorization.git",
+                "reference": "d11757715be992f290d5599c0cb7105d0ce9b73d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cakephp/authorization/zipball/d11757715be992f290d5599c0cb7105d0ce9b73d",
+                "reference": "d11757715be992f290d5599c0cb7105d0ce9b73d",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/http": "^5.0",
+                "php": ">=8.1",
+                "psr/http-client": "^1.0",
+                "psr/http-message": "^2.0",
+                "psr/http-server-handler": "^1.0",
+                "psr/http-server-middleware": "^1.0"
+            },
+            "require-dev": {
+                "cakephp/authentication": "^3.0",
+                "cakephp/bake": "^3.0",
+                "cakephp/cakephp": "^5.0",
+                "cakephp/cakephp-codesniffer": "^5.0",
+                "cakephp/plugin-installer": "^1.3",
+                "phpunit/phpunit": "^10.1.0"
+            },
+            "suggest": {
+                "cakephp/http": "To use \"RequestPolicyInterface\" (Not needed separately if using full CakePHP framework).",
+                "cakephp/orm": "To use \"OrmResolver\" (Not needed separately if using full CakePHP framework)."
+            },
+            "type": "cakephp-plugin",
+            "autoload": {
+                "psr-4": {
+                    "Authorization\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "CakePHP Community",
+                    "homepage": "https://github.com/cakephp/authorization/graphs/contributors"
+                }
+            ],
+            "description": "Authorization abstraction layer plugin for CakePHP",
+            "keywords": [
+                "access",
+                "auth",
+                "authorization",
+                "cakephp"
+            ],
+            "support": {
+                "docs": "https://cakephp.org/authorization/2/en/",
+                "forum": "https://stackoverflow.com/tags/cakephp",
+                "irc": "irc://irc.freenode.org/cakephp",
+                "issues": "https://github.com/cakephp/authorization/issues",
+                "source": "https://github.com/cakephp/authorization"
+            },
+            "time": "2023-09-10T03:43:35+00:00"
+        },
+        {
+            "name": "cakephp/cakephp",
+            "version": "5.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cakephp/cakephp.git",
+                "reference": "223d268f2232bc2b0d3fc3ed01a7fbdb06b059e3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/223d268f2232bc2b0d3fc3ed01a7fbdb06b059e3",
+                "reference": "223d268f2232bc2b0d3fc3ed01a7fbdb06b059e3",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/chronos": "3.x-dev",
                 "composer/ca-bundle": "^1.2",
                 "ext-intl": "*",
                 "ext-json": "*",
@@ -77,6 +211,7 @@
                 "lib-ICU": "To use locale-aware features in the I18n and Database packages",
                 "paragonie/csp-builder": "CSP builder, to use the CSP Middleware"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "files": [
@@ -121,20 +256,20 @@
                 "issues": "https://github.com/cakephp/cakephp/issues",
                 "source": "https://github.com/cakephp/cakephp"
             },
-            "time": "2023-09-10T02:50:02+00:00"
+            "time": "2023-09-24T03:43:37+00:00"
         },
         {
             "name": "cakephp/chronos",
-            "version": "3.0.1",
+            "version": "3.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/chronos.git",
-                "reference": "a89857afd81938e0f67ec6eb01197c2bdac66719"
+                "reference": "900cfbdb4fab109b0c0f1197e3557a3138a285a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/chronos/zipball/a89857afd81938e0f67ec6eb01197c2bdac66719",
-                "reference": "a89857afd81938e0f67ec6eb01197c2bdac66719",
+                "url": "https://api.github.com/repos/cakephp/chronos/zipball/900cfbdb4fab109b0c0f1197e3557a3138a285a4",
+                "reference": "900cfbdb4fab109b0c0f1197e3557a3138a285a4",
                 "shasum": ""
             },
             "require": {
@@ -144,6 +279,7 @@
                 "cakephp/cakephp-codesniffer": "^5.0",
                 "phpunit/phpunit": "^10.1.0"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -176,32 +312,32 @@
                 "issues": "https://github.com/cakephp/chronos/issues",
                 "source": "https://github.com/cakephp/chronos"
             },
-            "time": "2023-09-09T03:47:34+00:00"
+            "time": "2023-09-25T03:07:05+00:00"
         },
         {
             "name": "cakephp/migrations",
-            "version": "4.0.1",
+            "version": "4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/migrations.git",
-                "reference": "ac1d9566393c29e8c168c427c310f1ec6aad60cf"
+                "reference": "7659d42eca36fed9c75912116043497e40923734"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/migrations/zipball/ac1d9566393c29e8c168c427c310f1ec6aad60cf",
-                "reference": "ac1d9566393c29e8c168c427c310f1ec6aad60cf",
+                "url": "https://api.github.com/repos/cakephp/migrations/zipball/7659d42eca36fed9c75912116043497e40923734",
+                "reference": "7659d42eca36fed9c75912116043497e40923734",
                 "shasum": ""
             },
             "require": {
                 "cakephp/cache": "^5.0",
                 "cakephp/orm": "^5.0",
                 "php": ">=8.1",
-                "robmorgan/phinx": "^2.0"
+                "robmorgan/phinx": "^0.15.2"
             },
             "require-dev": {
                 "cakephp/bake": "^3.0",
                 "cakephp/cakephp": "^5.0",
-                "cakephp/cakephp-codesniffer": "^4.1",
+                "cakephp/cakephp-codesniffer": "^5.0",
                 "phpunit/phpunit": "^10.1.0"
             },
             "suggest": {
@@ -236,7 +372,7 @@
                 "issues": "https://github.com/cakephp/migrations/issues",
                 "source": "https://github.com/cakephp/migrations"
             },
-            "time": "2023-09-10T04:13:00+00:00"
+            "time": "2023-09-23T01:13:42+00:00"
         },
         {
             "name": "cakephp/plugin-installer",
@@ -710,16 +846,16 @@
         },
         {
             "name": "psr/http-client",
-            "version": "1.0.2",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/http-client.git",
-                "reference": "0955afe48220520692d2d09f7ab7e0f93ffd6a31"
+                "reference": "bb5906edc1c324c9a05aa0873d40117941e5fa90"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/http-client/zipball/0955afe48220520692d2d09f7ab7e0f93ffd6a31",
-                "reference": "0955afe48220520692d2d09f7ab7e0f93ffd6a31",
+                "url": "https://api.github.com/repos/php-fig/http-client/zipball/bb5906edc1c324c9a05aa0873d40117941e5fa90",
+                "reference": "bb5906edc1c324c9a05aa0873d40117941e5fa90",
                 "shasum": ""
             },
             "require": {
@@ -756,9 +892,9 @@
                 "psr-18"
             ],
             "support": {
-                "source": "https://github.com/php-fig/http-client/tree/1.0.2"
+                "source": "https://github.com/php-fig/http-client"
             },
-            "time": "2023-04-10T20:12:12+00:00"
+            "time": "2023-09-23T14:17:50+00:00"
         },
         {
             "name": "psr/http-factory",
@@ -1084,16 +1220,16 @@
         },
         {
             "name": "robmorgan/phinx",
-            "version": "2.0.2",
+            "version": "0.15.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/phinx.git",
-                "reference": "89481434e06b2f559e907f4e7374525004316180"
+                "reference": "26753bdb66827383781eb0033b34cb467da1d12c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/phinx/zipball/89481434e06b2f559e907f4e7374525004316180",
-                "reference": "89481434e06b2f559e907f4e7374525004316180",
+                "url": "https://api.github.com/repos/cakephp/phinx/zipball/26753bdb66827383781eb0033b34cb467da1d12c",
+                "reference": "26753bdb66827383781eb0033b34cb467da1d12c",
                 "shasum": ""
             },
             "require": {
@@ -1105,11 +1241,10 @@
             },
             "require-dev": {
                 "cakephp/cakephp": "^5.0",
-                "cakephp/cakephp-codesniffer": "^4.0",
+                "cakephp/cakephp-codesniffer": "^5.0",
                 "ext-json": "*",
                 "ext-pdo": "*",
                 "phpunit/phpunit": "^9.5.19",
-                "sebastian/comparator": ">=1.2.3",
                 "symfony/yaml": "^3.4|^4.0|^5.0|^6.0"
             },
             "suggest": {
@@ -1165,9 +1300,9 @@
             ],
             "support": {
                 "issues": "https://github.com/cakephp/phinx/issues",
-                "source": "https://github.com/cakephp/phinx/tree/2.0.2"
+                "source": "https://github.com/cakephp/phinx/tree/0.15.2"
             },
-            "time": "2023-09-10T14:14:08+00:00"
+            "time": "2023-09-22T18:18:07+00:00"
         },
         {
             "name": "symfony/config",
@@ -3054,16 +3189,16 @@
         },
         {
             "name": "justinrainbow/json-schema",
-            "version": "5.2.12",
+            "version": "v5.2.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/justinrainbow/json-schema.git",
-                "reference": "ad87d5a5ca981228e0e205c2bc7dfb8e24559b60"
+                "reference": "fbbe7e5d79f618997bc3332a6f49246036c45793"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/ad87d5a5ca981228e0e205c2bc7dfb8e24559b60",
-                "reference": "ad87d5a5ca981228e0e205c2bc7dfb8e24559b60",
+                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/fbbe7e5d79f618997bc3332a6f49246036c45793",
+                "reference": "fbbe7e5d79f618997bc3332a6f49246036c45793",
                 "shasum": ""
             },
             "require": {
@@ -3118,9 +3253,9 @@
             ],
             "support": {
                 "issues": "https://github.com/justinrainbow/json-schema/issues",
-                "source": "https://github.com/justinrainbow/json-schema/tree/5.2.12"
+                "source": "https://github.com/justinrainbow/json-schema/tree/v5.2.13"
             },
-            "time": "2022-04-13T08:02:27+00:00"
+            "time": "2023-09-26T02:20:38+00:00"
         },
         {
             "name": "m1/env",
@@ -3412,16 +3547,16 @@
         },
         {
             "name": "phpstan/phpdoc-parser",
-            "version": "1.24.1",
+            "version": "1.24.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpdoc-parser.git",
-                "reference": "9f854d275c2dbf84915a5c0ec9a2d17d2cd86b01"
+                "reference": "bcad8d995980440892759db0c32acae7c8e79442"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/9f854d275c2dbf84915a5c0ec9a2d17d2cd86b01",
-                "reference": "9f854d275c2dbf84915a5c0ec9a2d17d2cd86b01",
+                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/bcad8d995980440892759db0c32acae7c8e79442",
+                "reference": "bcad8d995980440892759db0c32acae7c8e79442",
                 "shasum": ""
             },
             "require": {
@@ -3453,9 +3588,71 @@
             "description": "PHPDoc parser with support for nullable, intersection and generic types",
             "support": {
                 "issues": "https://github.com/phpstan/phpdoc-parser/issues",
-                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.24.1"
+                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.24.2"
             },
-            "time": "2023-09-18T12:18:02+00:00"
+            "time": "2023-09-26T12:28:12+00:00"
+        },
+        {
+            "name": "phpstan/phpstan",
+            "version": "1.10.35",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpstan/phpstan.git",
+                "reference": "e730e5facb75ffe09dfb229795e8c01a459f26c3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/e730e5facb75ffe09dfb229795e8c01a459f26c3",
+                "reference": "e730e5facb75ffe09dfb229795e8c01a459f26c3",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2|^8.0"
+            },
+            "conflict": {
+                "phpstan/phpstan-shim": "*"
+            },
+            "bin": [
+                "phpstan",
+                "phpstan.phar"
+            ],
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "bootstrap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHPStan - PHP Static Analysis Tool",
+            "keywords": [
+                "dev",
+                "static analysis"
+            ],
+            "support": {
+                "docs": "https://phpstan.org/user-guide/getting-started",
+                "forum": "https://github.com/phpstan/phpstan/discussions",
+                "issues": "https://github.com/phpstan/phpstan/issues",
+                "security": "https://github.com/phpstan/phpstan/security/policy",
+                "source": "https://github.com/phpstan/phpstan-src"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/ondrejmirtes",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/phpstan",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/phpstan/phpstan",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2023-09-19T15:27:56+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -4387,16 +4584,16 @@
         },
         {
             "name": "sebastian/exporter",
-            "version": "5.1.0",
+            "version": "5.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/exporter.git",
-                "reference": "c3fa8483f9539b190f7cd4bfc4a07631dd1df344"
+                "reference": "64f51654862e0f5e318db7e9dcc2292c63cdbddc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/exporter/zipball/c3fa8483f9539b190f7cd4bfc4a07631dd1df344",
-                "reference": "c3fa8483f9539b190f7cd4bfc4a07631dd1df344",
+                "url": "https://api.github.com/repos/sebastianbergmann/exporter/zipball/64f51654862e0f5e318db7e9dcc2292c63cdbddc",
+                "reference": "64f51654862e0f5e318db7e9dcc2292c63cdbddc",
                 "shasum": ""
             },
             "require": {
@@ -4410,7 +4607,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "5.0-dev"
+                    "dev-main": "5.1-dev"
                 }
             },
             "autoload": {
@@ -4453,7 +4650,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/exporter/issues",
                 "security": "https://github.com/sebastianbergmann/exporter/security/policy",
-                "source": "https://github.com/sebastianbergmann/exporter/tree/5.1.0"
+                "source": "https://github.com/sebastianbergmann/exporter/tree/5.1.1"
             },
             "funding": [
                 {
@@ -4461,7 +4658,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-09-18T07:15:37+00:00"
+            "time": "2023-09-24T13:22:09+00:00"
         },
         {
             "name": "sebastian/global-state",
@@ -5718,9 +5915,18 @@
             "time": "2023-08-28T11:09:02+00:00"
         }
     ],
-    "aliases": [],
-    "minimum-stability": "stable",
-    "stability-flags": [],
+    "aliases": [
+        {
+            "package": "cakephp/cakephp",
+            "version": "5.9999999.9999999.9999999-dev",
+            "alias": "5.0.1",
+            "alias_normalized": "5.0.1.0"
+        }
+    ],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "cakephp/cakephp": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

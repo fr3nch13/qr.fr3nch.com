@@ -1,6 +1,14 @@
 parameters:
-    level: 8
-    treatPhpDocTypesAsCertain: false
-    checkGenericClassInNonGenericObjectType: false
-    paths:
-        - src/
+	level: 8
+	treatPhpDocTypesAsCertain: false
+	checkGenericClassInNonGenericObjectType: false
+	bootstrapFiles:
+		- config/paths.php
+		- vendor/cakephp/cakephp/src/functions.php
+	paths:
+		- src/
+		- tests/
+	ignoreErrors:
+		-
+			message: '#Cannot call method getBody\(\) on Psr\\Http\\Message\\ResponseInterface\|null\.#'
+			path: tests/TestCase/Controller/*
