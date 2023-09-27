@@ -72,8 +72,9 @@ class SourcesController extends AppController
         }
 
         $errors = $source->getErrors();
-        $this->set(compact('source'));
-        $this->viewBuilder()->setOption('serialize', ['source']);
+
+        $this->set(compact('source', 'errors'));
+        $this->viewBuilder()->setOption('serialize', ['source', 'errors']);
     }
 
     /**

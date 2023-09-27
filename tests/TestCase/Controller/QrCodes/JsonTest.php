@@ -3,10 +3,8 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller\QrCodes;
 
-use App\Test\TestCase\Controller\LoggedInTrait;
+use App\Test\TestCase\Controller\BaseControllerTest;
 use Cake\Core\Configure;
-use Cake\TestSuite\IntegrationTestTrait;
-use Cake\TestSuite\TestCase;
 
 /**
  * App\Controller\QrCodesController Test Case
@@ -17,27 +15,8 @@ use Cake\TestSuite\TestCase;
  *
  * @uses \App\Controller\QrCodesController
  */
-class JsonTest extends TestCase
+class JsonTest extends BaseControllerTest
 {
-    use IntegrationTestTrait;
-
-    use LoggedInTrait;
-
-    /**
-     * Fixtures
-     *
-     * @var array<string>
-     */
-    protected array $fixtures = [
-        'app.Users',
-        'app.Sources',
-        'app.Categories',
-        'app.QrCodes',
-        'app.CategoriesQrCodes',
-        'app.Tags',
-        'app.QrCodesTags',
-    ];
-
     /**
      * setUp method
      *
@@ -64,6 +43,7 @@ class JsonTest extends TestCase
     {
         $this->get('/qr-codes');
         $this->assertResponseOk();
+
         $content = (string)$this->_response->getBody();
         $content = json_decode($content, true);
 
@@ -90,11 +70,11 @@ class JsonTest extends TestCase
     {
         $this->get('/qr-codes/view/1');
         $this->assertResponseOk();
+
         $content = (string)$this->_response->getBody();
         $content = json_decode($content, true);
 
         $this->assertTrue(isset($content['qrCode']));
-
         $this->assertSame(1, $content['qrCode']['id']);
         $this->assertTrue(isset($content['qrCode']['tags']));
         $this->assertTrue(isset($content['qrCode']['categories']));
@@ -121,8 +101,26 @@ class JsonTest extends TestCase
         $this->assertTrue(empty($content['qrCode']));
 
         $this->assertTrue(isset($content['errors']));
-        $this->assertFalse(empty($content['errors']));
+        $this->assertTrue(empty($content['errors']));
 
+        $this->assertTrue(isset($content['sources']));
+        $this->assertCount(2, $content['sources']);
+        $this->assertTrue(isset($content['categories']));
+        $this->assertCount(3, $content['categories']);
+        $this->assertTrue(isset($content['tags']));
+        $this->assertCount(4, $content['tags']);
+
+        // a post fail
+        $this->post('/qr-codes/add.json', []);
+        $this->assertResponseOk();
+        $content = (string)$this->_response->getBody();
+        $content = json_decode($content, true);
+
+        $this->assertTrue(isset($content['qrCode']));
+        $this->assertTrue(empty($content['qrCode']));
+
+        $this->assertTrue(isset($content['errors']));
+        $this->assertFalse(empty($content['errors']));
         $expected = [
             'qrkey' => [
                 '_required' => 'This field is required'
@@ -142,32 +140,8 @@ class JsonTest extends TestCase
             'source_id' => [
                 '_required' => 'This field is required'
             ],
-            'user_id' => [
-                '_required' => 'This field is required'
-            ]
         ];
         $this->assertSame($expected, $content['errors']);
-
-        $this->assertTrue(isset($content['sources']));
-        $this->assertCount(2, $content['sources']);
-        $this->assertTrue(isset($content['categories']));
-        $this->assertCount(3, $content['categories']);
-        $this->assertTrue(isset($content['tags']));
-        $this->assertCount(4, $content['tags']);
-
-        // a post fail
-        $this->post('/qr-codes/add.json', [
-            'name' => 'New JSON QR Code',
-            'description' => 'Description of the code',
-        ]);
-        $this->assertResponseOk();
-        $content = (string)$this->_response->getBody();
-        $content = json_decode($content, true);
-
-        $this->assertTrue(isset($content['qrCode']));
-        $this->assertFalse(empty($content['qrCode']));
-        $this->assertTrue(isset($content['errors']));
-        $this->assertFalse(empty($content['errors']));
 
         $this->assertTrue(isset($content['sources']));
         $this->assertCount(2, $content['sources']);

@@ -58,6 +58,11 @@ class UsersController extends AppController
         if ($this->request->is('post') && (!$result || !$result->isValid())) {
             $this->Flash->error(__('Invalid email or password'));
         }
+
+        $errors = $result->getErrors();
+
+        $this->set(compact('result', 'errors'));
+        $this->viewBuilder()->setOption('serialize', ['result', 'errors']);
     }
 
     /**

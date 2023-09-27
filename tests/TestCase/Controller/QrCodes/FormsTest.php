@@ -3,10 +3,8 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller\QrCodes;
 
-use App\Test\TestCase\Controller\LoggedInTrait;
+use App\Test\TestCase\Controller\BaseControllerTest;
 use Cake\Core\Configure;
-use Cake\TestSuite\IntegrationTestTrait;
-use Cake\TestSuite\TestCase;
 
 /**
  * App\Controller\QrCodesController Test Case
@@ -17,27 +15,8 @@ use Cake\TestSuite\TestCase;
  *
  * @uses \App\Controller\QrCodesController
  */
-class FormsTest extends TestCase
+class FormsTest extends BaseControllerTest
 {
-    use IntegrationTestTrait;
-
-    use LoggedInTrait;
-
-    /**
-     * Fixtures
-     *
-     * @var array<string>
-     */
-    protected array $fixtures = [
-        'app.Users',
-        'app.Sources',
-        'app.Categories',
-        'app.QrCodes',
-        'app.CategoriesQrCodes',
-        'app.Tags',
-        'app.QrCodesTags',
-    ];
-
     /**
      * setUp method
      *

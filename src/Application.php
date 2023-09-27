@@ -30,6 +30,8 @@ use Cake\Core\ContainerInterface;
 use Cake\Datasource\FactoryLocator;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\BaseApplication;
+use Cake\Http\Client\Request;
+use Cake\Http\ServerRequest;
 use Cake\Http\Middleware\BodyParserMiddleware;
 use Cake\Http\Middleware\CsrfProtectionMiddleware;
 use Cake\Http\MiddlewareQueue;
@@ -162,7 +164,12 @@ class Application extends BaseApplication implements
     public function getAuthenticationService(ServerRequestInterface $request): AuthenticationServiceInterface
     {
         $authenticationService = new AuthenticationService([
-            'unauthenticatedRedirect' => Router::url('/users/login'),
+            'unauthenticatedRedirect' => Router::url([
+                'prefix' => false,
+                'plugin' => null,
+                'controller' => 'Users',
+                'action' => 'login',
+            ]),
             'queryParam' => 'redirect',
         ]);
 
@@ -183,7 +190,22 @@ class Application extends BaseApplication implements
                 'username' => 'email',
                 'password' => 'password',
             ],
-            'loginUrl' => Router::url('/users/login'),
+            'loginUrl' => [
+                Router::url([
+                    'prefix' => false,
+                    'plugin' => false,
+                    'controller' => 'Users',
+                    'action' => 'login',
+                    '_ext' => null,
+                ]),
+                Router::url([
+                    'prefix' => false,
+                    'plugin' => false,
+                    'controller' => 'Users',
+                    'action' => 'login',
+                    '_ext' => 'json',
+                ])
+            ],
         ]);
 
         return $authenticationService;

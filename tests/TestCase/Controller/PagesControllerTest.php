@@ -18,35 +18,14 @@ namespace App\Test\TestCase\Controller;
 
 use Cake\Core\Configure;
 use Cake\TestSuite\Constraint\Response\StatusCode;
-use Cake\TestSuite\IntegrationTestTrait;
-use Cake\TestSuite\TestCase;
 
 /**
  * PagesControllerTest class
  *
  * @uses \App\Controller\PagesController
  */
-class PagesControllerTest extends TestCase
+class PagesControllerTest extends BaseControllerTest
 {
-    use IntegrationTestTrait;
-
-    use LoggedInTrait;
-
-    /**
-     * Fixtures
-     *
-     * @var array<string>
-     */
-    protected array $fixtures = [
-        'app.Users',
-        'app.Sources',
-        'app.Categories',
-        'app.QrCodes',
-        'app.CategoriesQrCodes',
-        'app.Tags',
-        'app.QrCodesTags',
-    ];
-
     /**
      * testDisplay method
      *

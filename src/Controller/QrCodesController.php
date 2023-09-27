@@ -68,7 +68,7 @@ class QrCodesController extends AppController
     {
         $this->request->allowMethod(['get', 'post']);
 
-        $qrCode = $this->QrCodes->newEntity([]);
+        $qrCode = $this->QrCodes->newEmptyEntity();
         $this->Authorization->authorize($qrCode);
 
         if ($this->request->is('post')) {
