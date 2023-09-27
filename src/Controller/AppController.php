@@ -74,7 +74,7 @@ class AppController extends Controller
      */
     public function viewClasses(): array
     {
-        return [AppView::class, AjaxView::class, JsonView::class];
+        return [AjaxView::class, JsonView::class, AppView::class];
     }
 
     /**

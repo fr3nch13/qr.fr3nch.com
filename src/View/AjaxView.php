@@ -41,4 +41,16 @@ class AjaxView extends AppView
     {
         return 'text/html';
     }
+
+    /**
+     * Initialization hook method.
+     *
+     * @return void
+     */
+    public function initialize(): void
+    {
+        parent::initialize();
+
+        $this->response = $this->response->withType('ajax');
+    }
 }
