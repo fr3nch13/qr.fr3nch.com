@@ -249,15 +249,4 @@ class TagsTableTest extends TestCase
         $result = $this->Tags->checkRules($entity);
         $this->assertTrue($result);
     }
-
-    /**
-     * Test the entity itself
-     *
-     * @return void
-     * @uses \App\Model\Entity\Tag
-     */
-    public function testEntity(): void
-    {
-        $this->markTestIncomplete('Not implemented yet.');
-    }
 }

@@ -210,28 +210,28 @@ class CrudTest extends BaseControllerTest
     public function testDelete(): void
     {
         // test get
-        $this->get('/categories/delete/1');
+        $this->get('/categories/delete/3');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // post
-        $this->post('/categories/delete/1');
+        $this->post('/categories/delete/3');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // patch
-        $this->patch('/categories/delete/1');
+        $this->patch('/categories/delete/3');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('/categories/delete/1');
+        $this->put('/categories/delete/3');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('/categories/delete/1');
-        $this->assertFlashMessage('The category has been deleted.', 'flash');
+        $this->delete('/categories/delete/3');
+        $this->assertFlashMessage('The category `Charms` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
         $this->assertRedirect();
         $this->assertResponseCode(302);

@@ -31,6 +31,16 @@ class BaseControllerTest extends TestCase
     public $Users;
 
     /**
+     * Just a dumb test so I can keep the name.
+     *
+     * @return void
+     */
+    public function testAssertSame(): void
+    {
+        $this->assertSame(1, 1);
+    }
+
+    /**
      * Logs in a User
      *
      * @param int $id The ID of the user to login.

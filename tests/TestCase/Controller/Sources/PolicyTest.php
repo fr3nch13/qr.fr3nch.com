@@ -212,7 +212,7 @@ class PolicyTest extends BaseControllerTest
         // test with admin, post no data, no CSRF
         $this->loginUserAdmin();
         $this->delete('/sources/delete/1');
-        $this->assertFlashMessage('The source has been deleted.', 'flash');
+        $this->assertFlashMessage('The source `Amazon` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
         $this->assertRedirect();
         $this->assertResponseCode(302);

@@ -135,12 +135,11 @@ class CategoriesController extends AppController
         $this->Authorization->authorize($category);
 
         if ($this->Categories->delete($category)) {
-            $this->Flash->success(__('The category has been deleted.'));
-        } else {
-            // @todo how to test this, since the get() above with throw a 404 first.
-            $this->Flash->error(__('The category could not be deleted. Please, try again.'));
-        }
+            $this->Flash->success(__('The category `{0}` has been deleted.', [
+                $category->name,
+            ]));
 
-        return $this->redirect(['action' => 'index']);
+            return $this->redirect(['action' => 'index']);
+        }
     }
 }

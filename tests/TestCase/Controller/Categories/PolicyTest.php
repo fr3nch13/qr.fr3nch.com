@@ -189,32 +189,32 @@ class PolicyTest extends BaseControllerTest
 
         // test get with reqular, get
         $this->loginUserRegular();
-        $this->get('/categories/delete/1');
+        $this->get('/categories/delete/3');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // test post with regular, post
         $this->loginUserRegular();
-        $this->post('/categories/delete/1');
+        $this->post('/categories/delete/3');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // test delete with regular user
         $this->loginUserRegular();
-        $this->delete('/categories/delete/1');
+        $this->delete('/categories/delete/3');
         $this->assertResponseCode(403);
         $this->assertResponseContains('Error: Identity is not authorized to perform `delete` on `App\Model\Entity\Category`.');
 
         // test post with admin, get
         $this->loginUserAdmin();
-        $this->post('/categories/delete/1');
+        $this->post('/categories/delete/3');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // test with admin, post no data, no CSRF
         $this->loginUserAdmin();
-        $this->delete('/categories/delete/1');
-        $this->assertFlashMessage('The category has been deleted.', 'flash');
+        $this->delete('/categories/delete/3');
+        $this->assertFlashMessage('The category `Charms` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
         $this->assertRedirect();
         $this->assertResponseCode(302);

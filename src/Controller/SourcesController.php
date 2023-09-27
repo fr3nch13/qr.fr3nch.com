@@ -122,12 +122,11 @@ class SourcesController extends AppController
         $this->Authorization->authorize($source);
 
         if ($this->Sources->delete($source)) {
-            $this->Flash->success(__('The source has been deleted.'));
-        } else {
-            // @todo how to test this, since the get() above with throw a 404 first.
-            $this->Flash->error(__('The source could not be deleted. Please, try again.'));
-        }
+            $this->Flash->success(__('The source `{0}` has been deleted.', [
+                $source->name,
+            ]));
 
-        return $this->redirect(['action' => 'index']);
+            return $this->redirect(['action' => 'index']);
+        }
     }
 }

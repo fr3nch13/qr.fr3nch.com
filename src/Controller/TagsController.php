@@ -124,12 +124,11 @@ class TagsController extends AppController
         $this->Authorization->authorize($tag);
 
         if ($this->Tags->delete($tag)) {
-            $this->Flash->success(__('The tag has been deleted.'));
-        } else {
-            // @todo how to test this, since the get() above with throw a 404 first.
-            $this->Flash->error(__('The tag could not be deleted. Please, try again.'));
-        }
+            $this->Flash->success(__('The tag `{0}` has been deleted.', [
+                $tag->name,
+            ]));
 
-        return $this->redirect(['action' => 'index']);
+            return $this->redirect(['action' => 'index']);
+        }
     }
 }

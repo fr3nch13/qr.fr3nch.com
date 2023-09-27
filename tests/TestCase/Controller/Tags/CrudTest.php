@@ -250,7 +250,7 @@ class CrudTest extends BaseControllerTest
 
         // delete
         $this->delete('/tags/delete/1');
-        $this->assertFlashMessage('The tag has been deleted.', 'flash');
+        $this->assertFlashMessage('The tag `Notebook` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
         $this->assertRedirect();
         $this->assertResponseCode(302);

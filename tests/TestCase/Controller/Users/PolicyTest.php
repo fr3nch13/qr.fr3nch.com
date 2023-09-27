@@ -289,7 +289,7 @@ class PolicyTest extends BaseControllerTest
         // test with admin, post no data, no CSRF
         $this->loginUserAdmin();
         $this->delete('/users/delete/3');
-        $this->assertFlashMessage('The user has been deleted.', 'flash');
+        $this->assertFlashMessage('The user `Delete Me` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
         $this->assertRedirect();
         $this->assertResponseCode(302);

@@ -238,7 +238,7 @@ class CrudTest extends BaseControllerTest
 
         // delete
         $this->delete('/qr-codes/delete/1');
-        $this->assertFlashMessage('The qr code has been deleted.', 'flash');
+        $this->assertFlashMessage('The qr code `Sow & Scribe` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
         $this->assertRedirect();
         $this->assertResponseCode(302);

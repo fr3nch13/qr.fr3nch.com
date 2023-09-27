@@ -139,12 +139,11 @@ class QrCodesController extends AppController
         $this->Authorization->authorize($qrCode);
 
         if ($this->QrCodes->delete($qrCode)) {
-            $this->Flash->success(__('The qr code has been deleted.'));
-        } else {
-            // @todo how to test this, since the get() above with throw a 404 first.
-            $this->Flash->error(__('The qr code could not be deleted. Please, try again.'));
-        }
+            $this->Flash->success(__('The qr code `{0}` has been deleted.', [
+                $qrCode->name,
+            ]));
 
-        return $this->redirect(['action' => 'index']);
+            return $this->redirect(['action' => 'index']);
+        }
     }
 }

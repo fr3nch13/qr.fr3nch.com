@@ -206,12 +206,11 @@ class UsersController extends AppController
         $this->Authorization->authorize($user);
 
         if ($this->Users->delete($user)) {
-            $this->Flash->success(__('The user has been deleted.'));
-        } else {
-            // @todo how to test this, since the get() above with throw a 404 first.
-            $this->Flash->error(__('The user could not be deleted. Please, try again.'));
-        }
+            $this->Flash->success(__('The user `{0}` has been deleted.', [
+                $user->name,
+            ]));
 
-        return $this->redirect(['action' => 'index']);
+            return $this->redirect(['action' => 'index']);
+        }
     }
 }
