@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Event\EventInterface;
+use Cake\Http\Response;
 
 /**
  * QrCodes Controller
@@ -20,7 +21,40 @@ class QrCodesController extends AppController
         parent::beforeFilter($event);
         // Configure the login action to not require authentication, preventing
         // the infinite redirect loop issue
-        $this->Authentication->addUnauthenticatedActions(['index', 'view']);
+        $this->Authentication->addUnauthenticatedActions(['forward', 'index', 'view']);
+    }
+
+    /**
+     * The method that handles the forwarding
+     *
+     * @param string|null $key The QR Code key to lookup.
+     * @return \Cake\Http\Response|null The response object.
+     */
+    public function forward(?string $key = null): ?Response
+    {
+        $this->request->allowMethod(['get']);
+        $this->Authorization->skipAuthorization();
+
+        // if no key given, redirect them to the index page.
+        if (!$key) {
+            return $this->redirect([
+                'action' => 'index',
+            ]);
+        }
+
+        $qrCode = $this->QrCodes->find('key', key: $key)->first();
+        // if we can't find it, redirect to index with an error message.
+        if (!$qrCode) {
+            $this->Flash->error(__('A QR Code with the key: `{0}` could not be found.', [
+                $key,
+            ]));
+
+            return $this->redirect([
+                'action' => 'index',
+            ]);
+        }
+
+        return $this->redirect($qrCode->url);
     }
 
     /**
@@ -32,6 +66,15 @@ class QrCodesController extends AppController
     {
         $this->request->allowMethod(['get']);
         $this->Authorization->skipAuthorization();
+
+        // look for an incoming key int the query,
+        // and redirect it to the forward action.
+        if ($this->request->getQuery('k')) {
+            $this->redirect([
+                'action' => 'forward',
+                $this->request->getQuery('k'),
+            ]);
+        }
 
         $query = $this->QrCodes->find('all')
             ->contain(['Sources', 'Users', 'Categories', 'Tags']);

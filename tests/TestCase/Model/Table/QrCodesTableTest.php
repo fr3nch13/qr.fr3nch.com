@@ -349,4 +349,20 @@ class QrCodesTableTest extends TestCase
         $expected = [];
         $this->assertSame($expected, $entity->getErrors());
     }
+
+    /**
+     * The custom finder
+     *
+     * @return void
+     */
+    public function testFinderKey(): void
+    {
+        // test getting an existing record
+        $qrCode = $this->QrCodes->find('key', key: 'sownscribe') ->first();
+        $this->assertSame(1, $qrCode->id);
+
+        // test getting a non-existant record
+        $qrCode = $this->QrCodes->find('key', key: 'dontexist') ->first();
+        $this->assertNull($qrCode);
+    }
 }
