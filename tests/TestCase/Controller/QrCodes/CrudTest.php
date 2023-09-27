@@ -11,6 +11,8 @@ use Cake\TestSuite\TestCase;
 /**
  * App\Controller\QrCodesController Test Case
  *
+ * Tests that the proper http method is being used.
+ *
  * @uses \App\Controller\QrCodesController
  */
 class CrudTest extends TestCase
@@ -35,6 +37,21 @@ class CrudTest extends TestCase
     ];
 
     /**
+     * setUp method
+     *
+     * @return void
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+        Configure::write('debug', true);
+        $this->enableRetainFlashMessages();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->loginUserAdmin();
+    }
+
+    /**
      * Test index method
      *
      * @return void
@@ -42,12 +59,6 @@ class CrudTest extends TestCase
      */
     public function testIndex(): void
     {
-        Configure::write('debug', true);
-        $this->enableRetainFlashMessages();
-        $this->enableCsrfToken();
-        $this->enableSecurityToken();
-        $this->loginUserAdmin();
-
         // get
         $this->get('/qr-codes');
         $this->assertResponseOk();
@@ -83,12 +94,6 @@ class CrudTest extends TestCase
      */
     public function testView(): void
     {
-        Configure::write('debug', true);
-        $this->enableRetainFlashMessages();
-        $this->enableCsrfToken();
-        $this->enableSecurityToken();
-        $this->loginUserAdmin();
-
         // test get
         $this->get('/qr-codes/view/1');
         $this->assertResponseOk();
@@ -124,12 +129,6 @@ class CrudTest extends TestCase
      */
     public function testAdd(): void
     {
-        Configure::write('debug', true);
-        $this->enableRetainFlashMessages();
-        $this->enableCsrfToken();
-        $this->enableSecurityToken();
-        $this->loginUserAdmin();
-
         // test get
         $this->get('/qr-codes/add');
         $this->assertResponseOk();
@@ -193,12 +192,6 @@ class CrudTest extends TestCase
      */
     public function testEdit(): void
     {
-        Configure::write('debug', true);
-        $this->enableRetainFlashMessages();
-        $this->enableCsrfToken();
-        $this->enableSecurityToken();
-        $this->loginUserAdmin();
-
         // test get
         $this->get('/qr-codes/edit/1');
         $this->assertResponseOk();
@@ -244,12 +237,6 @@ class CrudTest extends TestCase
      */
     public function testDelete(): void
     {
-        Configure::write('debug', true);
-        $this->enableRetainFlashMessages();
-        $this->enableCsrfToken();
-        $this->enableSecurityToken();
-        $this->loginUserAdmin();
-
         // test get
         $this->get('/qr-codes/delete/1');
         $this->assertResponseCode(405);

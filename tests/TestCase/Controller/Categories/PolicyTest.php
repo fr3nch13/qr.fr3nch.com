@@ -11,6 +11,8 @@ use Cake\TestSuite\TestCase;
 /**
  * App\Controller\CategoriesController Test Case
  *
+ * Tests the the policies are correct, and are being properly applied.
+ *
  * @uses \App\Controller\CategoriesController
  */
 class PolicyTest extends TestCase
@@ -35,6 +37,18 @@ class PolicyTest extends TestCase
     ];
 
     /**
+     * setUp method
+     *
+     * @return void
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+        Configure::write('debug', true);
+        $this->enableRetainFlashMessages();
+    }
+
+    /**
      * Test index method
      *
      * @return void
@@ -42,8 +56,6 @@ class PolicyTest extends TestCase
      */
     public function testIndex(): void
     {
-        Configure::write('debug', true);
-
         // not logged in
         $this->get('/categories');
         $this->assertResponseOk();
@@ -75,8 +87,6 @@ class PolicyTest extends TestCase
      */
     public function testView(): void
     {
-        Configure::write('debug', true);
-
         // not logged in
         $this->get('/categories/view/1');
         $this->assertResponseOk();
@@ -119,9 +129,6 @@ class PolicyTest extends TestCase
      */
     public function testAdd(): void
     {
-        Configure::write('debug', true);
-        $this->enableRetainFlashMessages();
-
         // not logged in, so should redirect
         $this->get('/categories/add');
         $this->assertRedirect();
@@ -151,9 +158,6 @@ class PolicyTest extends TestCase
      */
     public function testEdit(): void
     {
-        Configure::write('debug', true);
-        $this->enableRetainFlashMessages();
-
         // not logged in, so should redirect
         $this->get('/categories/edit');
         $this->assertRedirect();
@@ -189,10 +193,8 @@ class PolicyTest extends TestCase
      */
     public function testDelete(): void
     {
-        Configure::write('debug', true); // needed for the Csrf/Security to properly mock.
         $this->enableCsrfToken();
         $this->enableSecurityToken();
-        $this->enableRetainFlashMessages();
 
         // not logged in, so should redirect
         $this->get('/categories/delete');

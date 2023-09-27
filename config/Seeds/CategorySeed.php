@@ -43,7 +43,7 @@ class CategorySeed extends AbstractSeed
                 'name' => 'Books',
                 'description' => 'List of available books',
                 'parent_id' => null,
-                'created' => new DateTime(),
+                'created' => (new DateTime())->format('Y-m-d H:i:s'),
                 'user_id' => 1,
             ],
             [
@@ -51,7 +51,7 @@ class CategorySeed extends AbstractSeed
                 'name' => 'Journals',
                 'description' => 'Journals/Notebooks',
                 'parent_id' => 1,
-                'created' => new DateTime(),
+                'created' => (new DateTime())->format('Y-m-d H:i:s'),
                 'user_id' => 1,
             ],
             [
@@ -59,7 +59,7 @@ class CategorySeed extends AbstractSeed
                 'name' => 'Charms',
                 'description' => 'JLittle Charms',
                 'parent_id' => null,
-                'created' => new DateTime(),
+                'created' => (new DateTime())->format('Y-m-d H:i:s'),
                 'user_id' => 1,
             ],
         ];

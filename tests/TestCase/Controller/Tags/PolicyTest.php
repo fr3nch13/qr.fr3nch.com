@@ -11,6 +11,8 @@ use Cake\TestSuite\TestCase;
 /**
  * App\Controller\TagsController Test Case
  *
+ * Tests the the policies are correct, and are being properly applied.
+ *
  * @uses \App\Controller\TagsController
  */
 class PolicyTest extends TestCase
@@ -35,6 +37,18 @@ class PolicyTest extends TestCase
     ];
 
     /**
+     * setUp method
+     *
+     * @return void
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+        Configure::write('debug', true);
+        $this->enableRetainFlashMessages();
+    }
+
+    /**
      * Test index method
      *
      * @return void
@@ -42,8 +56,6 @@ class PolicyTest extends TestCase
      */
     public function testIndex(): void
     {
-        Configure::write('debug', true);
-
         // not logged in
         $this->get('/tags');
         $this->assertRedirect();
@@ -53,7 +65,6 @@ class PolicyTest extends TestCase
         // test with admin
         $this->loginUserAdmin();
         $this->get('/tags');
-
         $this->assertResponseOk();
         $this->assertResponseContains('<div class="tags index content">');
         $this->assertResponseContains('<h3>Tags</h3>');
@@ -61,7 +72,6 @@ class PolicyTest extends TestCase
         // test with reqular
         $this->loginUserRegular();
         $this->get('/tags');
-
         $this->assertResponseOk();
         $this->assertResponseContains('<div class="tags index content">');
         $this->assertResponseContains('<h3>Tags</h3>');
@@ -75,8 +85,6 @@ class PolicyTest extends TestCase
      */
     public function testView(): void
     {
-        Configure::write('debug', true);
-
         // not logged in
         $this->get('/tags/view/1');
         $this->assertRedirect();
@@ -119,9 +127,6 @@ class PolicyTest extends TestCase
      */
     public function testAdd(): void
     {
-        Configure::write('debug', true);
-        $this->enableRetainFlashMessages();
-
         // not logged in, so should redirect
         $this->get('/tags/add');
         $this->assertRedirect();
@@ -153,9 +158,6 @@ class PolicyTest extends TestCase
      */
     public function testEdit(): void
     {
-        Configure::write('debug', true);
-        $this->enableRetainFlashMessages();
-
         // not logged in, so should redirect
         $this->get('/tags/edit');
         $this->assertRedirect();
@@ -191,10 +193,8 @@ class PolicyTest extends TestCase
      */
     public function testDelete(): void
     {
-        Configure::write('debug', true); // needed for the Csrf/Security to properly mock.
         $this->enableCsrfToken();
         $this->enableSecurityToken();
-        $this->enableRetainFlashMessages();
 
         // not logged in, so should redirect
         $this->get('/tags/delete');

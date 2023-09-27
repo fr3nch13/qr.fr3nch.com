@@ -11,6 +11,10 @@ use Cake\TestSuite\TestCase;
 /**
  * App\Controller\QrCodesController Test Case
  *
+ * Tests that the forms are working properly,
+ * and displaying the proper information to the end user.
+ * Especially on an error.
+ *
  * @uses \App\Controller\QrCodesController
  */
 class FormsTest extends TestCase
@@ -35,6 +39,21 @@ class FormsTest extends TestCase
     ];
 
     /**
+     * setUp method
+     *
+     * @return void
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+        Configure::write('debug', true);
+        $this->enableRetainFlashMessages();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->loginUserAdmin();
+    }
+
+    /**
      * Test add method
      *
      * @return void
@@ -42,12 +61,6 @@ class FormsTest extends TestCase
      */
     public function testAdd(): void
     {
-        Configure::write('debug', true);
-        $this->enableRetainFlashMessages();
-        $this->enableCsrfToken();
-        $this->enableSecurityToken();
-        $this->loginUserAdmin();
-
         // test failed
         $this->post('/qr-codes/add', [
         ]);
@@ -90,12 +103,6 @@ class FormsTest extends TestCase
      */
     public function testEdit(): void
     {
-        Configure::write('debug', true);
-        $this->enableRetainFlashMessages();
-        $this->enableCsrfToken();
-        $this->enableSecurityToken();
-        $this->loginUserAdmin();
-
         // test fail
         $this->patch('/qr-codes/edit/1', [
             'qrkey' => 'witchinghour', // an existing record

@@ -15,6 +15,9 @@
  */
 ?>
 <!DOCTYPE html>
+
+<!-- START: App.layout/error -->
+
 <html>
 <head>
     <?= $this->Html->charset() ?>
@@ -37,3 +40,5 @@
     </div>
 </body>
 </html>
+
+<!-- START: App.layout/error -->

@@ -34,11 +34,11 @@ class QrCodesController extends AppController
         $this->Authorization->skipAuthorization();
 
         $query = $this->QrCodes->find('all')
-            ->contain(['Sources', 'Users']);
+            ->contain(['Sources', 'Users', 'Categories', 'Tags']);
         $qrCodes = $this->paginate($query);
 
         $this->set(compact('qrCodes'));
-        $this->set('_serialize', ['qrCodes']);
+        $this->viewBuilder()->setOption('serialize', ['qrCodes']);
     }
 
     /**
@@ -56,7 +56,7 @@ class QrCodesController extends AppController
         $qrCode = $this->QrCodes->get((int)$id, contain: ['Sources', 'Users', 'Categories', 'Tags']);
 
         $this->set(compact('qrCode'));
-        $this->set('_serialize', ['qrCode']);
+        $this->viewBuilder()->setOption('serialize', ['qrCode']);
     }
 
     /**
@@ -68,7 +68,7 @@ class QrCodesController extends AppController
     {
         $this->request->allowMethod(['get', 'post']);
 
-        $qrCode = $this->QrCodes->newEmptyEntity();
+        $qrCode = $this->QrCodes->newEntity([]);
         $this->Authorization->authorize($qrCode);
 
         if ($this->request->is('post')) {
@@ -87,7 +87,7 @@ class QrCodesController extends AppController
         $tags = $this->QrCodes->Tags->find('list', limit: 200)->all();
 
         $this->set(compact('qrCode', 'sources', 'categories', 'tags'));
-        $this->set('_serialize', ['qrCode', 'sources', 'categories', 'tags']);
+        $this->viewBuilder()->setOption('serialize', ['qrCode', 'sources', 'categories', 'tags']);
     }
 
     /**
@@ -119,7 +119,8 @@ class QrCodesController extends AppController
         $tags = $this->QrCodes->Tags->find('list', limit: 200)->all();
 
         $this->set(compact('qrCode', 'sources', 'categories', 'tags'));
-        $this->set('_serialize', ['qrCode', 'sources', 'categories', 'tags']);
+        $this->viewBuilder()
+            ->setOption('serialize', ['qrCode', 'sources', 'categories', 'tags']);
     }
 
     /**

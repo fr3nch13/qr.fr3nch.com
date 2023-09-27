@@ -11,6 +11,8 @@ use Cake\TestSuite\TestCase;
 /**
  * App\Controller\UsersController Test Case
  *
+ * Tests that the proper http method is being used.
+ *
  * @uses \App\Controller\UsersController
  */
 class CrudTest extends TestCase
@@ -35,6 +37,20 @@ class CrudTest extends TestCase
     ];
 
     /**
+     * setUp method
+     *
+     * @return void
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+        Configure::write('debug', true);
+        $this->enableRetainFlashMessages();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+    }
+
+    /**
      * Test login method
      *
      * @return void
@@ -42,10 +58,6 @@ class CrudTest extends TestCase
      */
     public function testLogin(): void
     {
-        Configure::write('debug', true);
-        $this->enableRetainFlashMessages();
-        $this->enableCsrfToken();
-        $this->enableSecurityToken();
         //$this->loginUserAdmin();
         // test this without being logged in this is tested in PolicyTest
 
@@ -81,11 +93,6 @@ class CrudTest extends TestCase
      */
     public function testLogout(): void
     {
-        Configure::write('debug', true);
-        $this->enableRetainFlashMessages();
-        $this->enableCsrfToken();
-        $this->enableSecurityToken();
-
         // get
         $this->loginUserAdmin();
         $this->get('/users/logout');
@@ -129,10 +136,6 @@ class CrudTest extends TestCase
      */
     public function testIndex(): void
     {
-        Configure::write('debug', true);
-        $this->enableRetainFlashMessages();
-        $this->enableCsrfToken();
-        $this->enableSecurityToken();
         $this->loginUserAdmin();
 
         // get
@@ -170,10 +173,6 @@ class CrudTest extends TestCase
      */
     public function testView(): void
     {
-        Configure::write('debug', true);
-        $this->enableRetainFlashMessages();
-        $this->enableCsrfToken();
-        $this->enableSecurityToken();
         $this->loginUserAdmin();
 
         // test get
@@ -211,10 +210,6 @@ class CrudTest extends TestCase
      */
     public function testAdd(): void
     {
-        Configure::write('debug', true);
-        $this->enableRetainFlashMessages();
-        $this->enableCsrfToken();
-        $this->enableSecurityToken();
         $this->loginUserAdmin();
 
         // test get
@@ -268,10 +263,6 @@ class CrudTest extends TestCase
      */
     public function testEdit(): void
     {
-        Configure::write('debug', true);
-        $this->enableRetainFlashMessages();
-        $this->enableCsrfToken();
-        $this->enableSecurityToken();
         $this->loginUserAdmin();
 
         // test get
@@ -319,10 +310,6 @@ class CrudTest extends TestCase
      */
     public function testDelete(): void
     {
-        Configure::write('debug', true);
-        $this->enableRetainFlashMessages();
-        $this->enableCsrfToken();
-        $this->enableSecurityToken();
         $this->loginUserAdmin();
 
         // test get

@@ -11,6 +11,8 @@ use Cake\TestSuite\TestCase;
 /**
  * App\Controller\QrCodesController Test Case
  *
+ * Tests the the policies are correct, and are being properly applied.
+ *
  * @uses \App\Controller\QrCodesController
  */
 class PolicyTest extends TestCase
@@ -35,6 +37,18 @@ class PolicyTest extends TestCase
     ];
 
     /**
+     * setUp method
+     *
+     * @return void
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+        Configure::write('debug', true);
+        $this->enableRetainFlashMessages();
+    }
+
+    /**
      * Test index method
      *
      * @return void
@@ -42,8 +56,6 @@ class PolicyTest extends TestCase
      */
     public function testIndex(): void
     {
-        Configure::write('debug', true);
-
         // not logged in
         $this->get('/qr-codes');
         $this->assertResponseOk();
@@ -53,7 +65,6 @@ class PolicyTest extends TestCase
         // test with admin
         $this->loginUserAdmin();
         $this->get('/qr-codes');
-
         $this->assertResponseOk();
         $this->assertResponseContains('<div class="qrCodes index content">');
         $this->assertResponseContains('<h3>Qr Codes</h3>');
@@ -61,7 +72,6 @@ class PolicyTest extends TestCase
         // test with reqular
         $this->loginUserRegular();
         $this->get('/qr-codes');
-
         $this->assertResponseOk();
         $this->assertResponseContains('<div class="qrCodes index content">');
         $this->assertResponseContains('<h3>Qr Codes</h3>');
@@ -75,8 +85,6 @@ class PolicyTest extends TestCase
      */
     public function testView(): void
     {
-        Configure::write('debug', true);
-
         // not logged in
         $this->get('/qr-codes/view/1');
         $this->assertResponseOk();
@@ -119,9 +127,6 @@ class PolicyTest extends TestCase
      */
     public function testAdd(): void
     {
-        Configure::write('debug', true);
-        $this->enableRetainFlashMessages();
-
         // not logged in, so should redirect
         $this->get('/qr-codes/add');
         $this->assertRedirect();
@@ -153,9 +158,6 @@ class PolicyTest extends TestCase
      */
     public function testEdit(): void
     {
-        Configure::write('debug', true);
-        $this->enableRetainFlashMessages();
-
         // not logged in, so should redirect
         $this->get('/qr-codes/edit');
         $this->assertRedirect();
@@ -191,10 +193,8 @@ class PolicyTest extends TestCase
      */
     public function testDelete(): void
     {
-        Configure::write('debug', true); // needed for the Csrf/Security to properly mock.
         $this->enableCsrfToken();
         $this->enableSecurityToken();
-        $this->enableRetainFlashMessages();
 
         // not logged in, so should redirect
         $this->get('/qr-codes/delete');

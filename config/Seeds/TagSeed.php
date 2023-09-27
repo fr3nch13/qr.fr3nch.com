@@ -41,25 +41,25 @@ class TagSeed extends AbstractSeed
             [
                 'id' => 1,
                 'name' => 'Notebook',
-                'created' => new DateTime(),
+                'created' => (new DateTime())->format('Y-m-d H:i:s'),
                 'user_id' => 1,
             ],
             [
                 'id' => 2,
                 'name' => 'Journal',
-                'created' => new DateTime(),
+                'created' => (new DateTime())->format('Y-m-d H:i:s'),
                 'user_id' => 1,
             ],
             [
                 'id' => 3,
                 'name' => 'Amazon',
-                'created' => new DateTime(),
+                'created' => (new DateTime())->format('Y-m-d H:i:s'),
                 'user_id' => 1,
             ],
             [
                 'id' => 4,
                 'name' => 'Pig',
-                'created' => new DateTime(),
+                'created' => (new DateTime())->format('Y-m-d H:i:s'),
                 'user_id' => 1,
             ],
         ];

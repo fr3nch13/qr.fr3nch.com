@@ -11,6 +11,8 @@ use Cake\TestSuite\TestCase;
 /**
  * App\Controller\UsersController Test Case
  *
+ * Tests the the policies are correct, and are being properly applied.
+ *
  * @uses \App\Controller\UsersController
  */
 class PolicyTest extends TestCase
@@ -35,6 +37,18 @@ class PolicyTest extends TestCase
     ];
 
     /**
+     * setUp method
+     *
+     * @return void
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+        Configure::write('debug', true);
+        $this->enableRetainFlashMessages();
+    }
+
+    /**
      * Test login method
      *
      * @return void
@@ -42,12 +56,9 @@ class PolicyTest extends TestCase
      */
     public function testLogin(): void
     {
-        Configure::write('debug', true);
-
         // not logged in
         $this->get('/users/login');
         $this->assertResponseOk();
-        //debug((string)$this->_response->getBody());
         $this->assertResponseContains('<!-- START: App.Users/login -->');
         $this->assertResponseContains('<!-- END: App.Users/login -->');
 
@@ -78,8 +89,6 @@ class PolicyTest extends TestCase
      */
     public function testLogout(): void
     {
-        Configure::write('debug', true);
-
         // not logged in
         $this->get('/users/logout');
         $this->assertRedirect();
@@ -124,8 +133,6 @@ class PolicyTest extends TestCase
      */
     public function testIndex(): void
     {
-        Configure::write('debug', true);
-
         // not logged in
         $this->get('/users');
         $this->assertRedirect();
@@ -155,8 +162,6 @@ class PolicyTest extends TestCase
      */
     public function testView(): void
     {
-        Configure::write('debug', true);
-
         // not logged in
         $this->get('/users/view/3');
         $this->assertRedirect();
@@ -199,9 +204,6 @@ class PolicyTest extends TestCase
      */
     public function testAdd(): void
     {
-        Configure::write('debug', true);
-        $this->enableRetainFlashMessages();
-
         // not logged in, so should redirect
         $this->get('/users/add');
         $this->assertRedirect();
@@ -231,9 +233,6 @@ class PolicyTest extends TestCase
      */
     public function testEdit(): void
     {
-        Configure::write('debug', true);
-        $this->enableRetainFlashMessages();
-
         // not logged in, so should redirect
         $this->get('/users/edit');
         $this->assertRedirect();
@@ -269,10 +268,8 @@ class PolicyTest extends TestCase
      */
     public function testDelete(): void
     {
-        Configure::write('debug', true); // needed for the Csrf/Security to properly mock.
         $this->enableCsrfToken();
         $this->enableSecurityToken();
-        $this->enableRetainFlashMessages();
 
         // not logged in, so should redirect
         $this->get('/users/delete');

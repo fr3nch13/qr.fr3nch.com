@@ -194,6 +194,7 @@ class PagesControllerTest extends TestCase
      */
     public function testCsrfAppliedOk()
     {
+        Configure::write('debug', true);
         $this->enableCsrfToken();
 
         $this->post('/pages/home', ['hello' => 'world']);

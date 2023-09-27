@@ -38,7 +38,8 @@ class CategoriesController extends AppController
         $categories = $this->paginate($query);
 
         $this->set(compact('categories'));
-        $this->set('_serialize', ['categories']);
+        $this->viewBuilder()
+            ->setOption('serialize', ['categories']);
     }
 
     /**
@@ -56,7 +57,8 @@ class CategoriesController extends AppController
         $category = $this->Categories->get((int)$id, contain: ['ParentCategories', 'QrCodes', 'ChildCategories']);
 
         $this->set(compact('category'));
-        $this->set('_serialize', ['category']);
+        $this->viewBuilder()
+            ->setOption('serialize', ['category']);
     }
 
     /**
@@ -85,7 +87,8 @@ class CategoriesController extends AppController
         $parentCategories = $this->Categories->ParentCategories->find('list', limit: 200)->all();
 
         $this->set(compact('category', 'parentCategories'));
-        $this->set('_serialize', ['category', 'parentCategories']);
+        $this->viewBuilder()
+            ->setOption('serialize', ['category', 'parentCategories']);
     }
 
     /**
@@ -115,7 +118,8 @@ class CategoriesController extends AppController
         $parentCategories = $this->Categories->ParentCategories->find('list', limit: 200)->all();
 
         $this->set(compact('category', 'parentCategories'));
-        $this->set('_serialize', ['category', 'parentCategories']);
+        $this->viewBuilder()
+            ->setOption('serialize', ['category', 'parentCategories']);
     }
 
     /**

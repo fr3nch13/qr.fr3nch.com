@@ -11,6 +11,8 @@ use Cake\TestSuite\TestCase;
 /**
  * App\Controller\TagsController Test Case
  *
+ * Tests that the proper http method is being used.
+ *
  * @uses \App\Controller\TagsController
  */
 class CrudTest extends TestCase
@@ -33,6 +35,21 @@ class CrudTest extends TestCase
         'app.Tags',
         'app.QrCodesTags',
     ];
+
+    /**
+     * setUp method
+     *
+     * @return void
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+        Configure::write('debug', true);
+        $this->enableRetainFlashMessages();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->loginUserAdmin();
+    }
 
     /**
      * Test index method

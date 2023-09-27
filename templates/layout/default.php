@@ -17,6 +17,9 @@
 $cakeDescription = 'CakePHP: the rapid development php framework';
 ?>
 <!DOCTYPE html>
+
+<!-- START: App.layout/default -->
+
 <html>
 <head>
     <?= $this->Html->charset() ?>
@@ -53,3 +56,5 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     </footer>
 </body>
 </html>
+
+<!-- END: App.layout/default -->

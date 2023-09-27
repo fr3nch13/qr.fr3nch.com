@@ -27,7 +27,8 @@ class SourcesController extends AppController
         $sources = $this->paginate($query);
 
         $this->set(compact('sources'));
-        $this->set('_serialize', ['sources']);
+        $this->viewBuilder()
+            ->setOption('serialize', ['sources']);
     }
 
     /**
@@ -45,7 +46,8 @@ class SourcesController extends AppController
         $this->Authorization->authorize($source);
 
         $this->set(compact('source'));
-        $this->set('_serialize', ['source']);
+        $this->viewBuilder()
+            ->setOption('serialize', ['source']);
     }
 
     /**
@@ -72,7 +74,8 @@ class SourcesController extends AppController
         }
 
         $this->set(compact('source'));
-        $this->set('_serialize', ['source']);
+        $this->viewBuilder()
+            ->setOption('serialize', ['source']);
     }
 
     /**
@@ -100,7 +103,8 @@ class SourcesController extends AppController
         }
 
         $this->set(compact('source'));
-        $this->set('_serialize', ['source']);
+        $this->viewBuilder()
+            ->setOption('serialize', ['source']);
     }
 
     /**

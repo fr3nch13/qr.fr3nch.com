@@ -11,6 +11,10 @@ use Cake\TestSuite\TestCase;
 /**
  * App\Controller\UsersController Test Case
  *
+ * Tests that the forms are working properly,
+ * and displaying the proper information to the end user.
+ * Especially on an error.
+ *
  * @uses \App\Controller\UsersController
  */
 class FormsTest extends TestCase
@@ -35,6 +39,20 @@ class FormsTest extends TestCase
     ];
 
     /**
+     * setUp method
+     *
+     * @return void
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+        Configure::write('debug', true);
+        $this->enableRetainFlashMessages();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+    }
+
+    /**
      * Test login method
      *
      * @return void
@@ -42,10 +60,6 @@ class FormsTest extends TestCase
      */
     public function testLogin(): void
     {
-        Configure::write('debug', true);
-        $this->enableRetainFlashMessages();
-        $this->enableCsrfToken();
-        $this->enableSecurityToken();
         //$this->loginUserAdmin();
         // not logged in, that is tested in the PolicyTest
 
@@ -89,10 +103,6 @@ class FormsTest extends TestCase
      */
     public function testAdd(): void
     {
-        Configure::write('debug', true);
-        $this->enableRetainFlashMessages();
-        $this->enableCsrfToken();
-        $this->enableSecurityToken();
         $this->loginUserAdmin();
 
         // test failed
@@ -158,10 +168,6 @@ class FormsTest extends TestCase
      */
     public function testEdit(): void
     {
-        Configure::write('debug', true);
-        $this->enableRetainFlashMessages();
-        $this->enableCsrfToken();
-        $this->enableSecurityToken();
         $this->loginUserAdmin();
 
         // test fail
