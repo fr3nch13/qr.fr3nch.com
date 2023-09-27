@@ -3,8 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller;
 
-use App\Test\TestCase\Controller\LoggedInTrait;
-use Cake\Core\Configure;
+use App\Model\Table\UsersTable;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
@@ -40,7 +39,7 @@ class BaseControllerTest extends TestCase
     public function loginUser(int $id): void
     {
         if (!$this->Users) {
-            $config = $this->getTableLocator()->exists('Users') ? [] : ['className' => \App\Model\Table\UsersTable::class];
+            $config = $this->getTableLocator()->exists('Users') ? [] : ['className' => UsersTable::class];
             /** @var \App\Model\Table\UsersTable $Users */
             $Users = $this->getTableLocator()->get('Users', $config);
             $this->Users = $Users;
@@ -86,6 +85,21 @@ class BaseControllerTest extends TestCase
     }
 
     /**
+     * Sets HTTP headers for the *next* request to be identified as AJAX request.
+     *
+     * @return void
+     */
+    public function requestAsAjax(): void
+    {
+        $this->configRequest([
+            'headers' => [
+                'Accept' => 'text/html',
+                'X-Requested-With' => 'XMLHttpRequest',
+            ],
+        ]);
+    }
+
+    /**
      * Tests the Layout is there.
      *
      * @return void
@@ -95,20 +109,36 @@ class BaseControllerTest extends TestCase
         $content = (string)$this->_response->getBody();
         $this->assertSame(1, substr_count($content, '<!-- START: App.layout/default -->'));
         $this->assertSame(1, substr_count($content, '<!-- END: App.layout/default -->'));
+        $this->assertSame(1, substr_count($content, '<html>'));
+        $this->assertSame(1, substr_count($content, '<head>'));
+        $this->assertSame(1, substr_count($content, '</head>'));
+        $this->assertSame(1, substr_count($content, '<body>'));
+
+        // test top navigation
+        // test main section
+
+        $this->assertSame(1, substr_count($content, '</body>'));
+        $this->assertSame(1, substr_count($content, '</html>'));
     }
 
     /**
      * Tests the Layout when an Ajax request is made.
      *
-     * @param string $content The html content to test.
      * @return void
      */
-    public function helperTestLayoutAjax(string $content): void
+    public function helperTestLayoutAjax(): void
     {
+        $content = (string)$this->_response->getBody();
         $this->assertSame(0, substr_count($content, '<!-- START: App.layout/default -->'));
         $this->assertSame(0, substr_count($content, '<!-- END: App.layout/default -->'));
 
         $this->assertSame(1, substr_count($content, '<!-- START: App.layout/ajax -->'));
         $this->assertSame(1, substr_count($content, '<!-- END: App.layout/ajax -->'));
+        $this->assertSame(0, substr_count($content, '<html>'));
+        $this->assertSame(0, substr_count($content, '<head>'));
+        $this->assertSame(0, substr_count($content, '</head>'));
+        $this->assertSame(0, substr_count($content, '<body>'));
+        $this->assertSame(0, substr_count($content, '</body>'));
+        $this->assertSame(0, substr_count($content, '</html>'));
     }
 }
