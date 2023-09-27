@@ -63,10 +63,17 @@ class AppController extends Controller
          */
         $this->loadComponent('Authorization.Authorization');
 
+        $viewClass = \App\View\AppView::class;
+
         // determine which view class to use
         if ($this->request->is('ajax')) {
-            $this->viewBuilder()->setClassName(AjaxView::class);
+            $viewClass = \App\View\AjaxView::class;
         }
+        if ($this->request->is('json')) {
+            $viewClass = \Cake\View\JsonView::class;
+        }
+
+        $this->viewBuilder()->setClassName($viewClass);
     }
 
     /**
