@@ -37,7 +37,9 @@ class AppViewTest extends TestCase
         $Request = new ServerRequest();
         $this->QrCodesController = new QrCodesController($Request);
         $this->QrCodesController->viewBuilder()->setClassName(AppView::class);
-        $this->View = $this->QrCodesController->createView();
+        /** @var \App\View\AppView $View */
+        $View = $this->QrCodesController->createView();
+        $this->View = $View;
     }
 
     /**

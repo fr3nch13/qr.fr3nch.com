@@ -8,3 +8,7 @@ parameters:
 	paths:
 		- src/
 		- tests/
+	ignoreErrors:
+		-
+			message: '#Cannot call method getBody\(\) on Psr\\Http\\Message\\ResponseInterface\|null\.#'
+			path: tests/TestCase/Controller/*

@@ -128,7 +128,7 @@ class QrCodesController extends AppController
      * Delete method
      *
      * @param string|null $id Qr Code id.
-     * @return \Cake\Http\Response|null Redirects to index.
+     * @return \Cake\Http\Response|null|void Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete(?string $id = null)

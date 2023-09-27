@@ -59,7 +59,10 @@ class UsersController extends AppController
             $this->Flash->error(__('Invalid email or password'));
         }
 
-        $errors = $result->getErrors();
+        $errors = [];
+        if ($result) {
+            $errors = $result->getErrors();
+        }
 
         $this->set(compact('result', 'errors'));
         $this->viewBuilder()->setOption('serialize', ['result', 'errors']);
@@ -195,7 +198,7 @@ class UsersController extends AppController
      * Delete method
      *
      * @param string|null $id User id.
-     * @return \Cake\Http\Response|null Redirects to index.
+     * @return \Cake\Http\Response|null|void Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete(?string $id = null)

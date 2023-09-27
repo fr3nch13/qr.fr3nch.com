@@ -37,7 +37,9 @@ class AjaxViewTest extends TestCase
         $Request = new ServerRequest();
         $this->QrCodesController = new QrCodesController($Request);
         $this->QrCodesController->viewBuilder()->setClassName(AjaxView::class);
-        $this->View = $this->QrCodesController->createView();
+        /** @var \App\View\AjaxView $View */
+        $View = $this->QrCodesController->createView();
+        $this->View = $View;
     }
 
     /**
