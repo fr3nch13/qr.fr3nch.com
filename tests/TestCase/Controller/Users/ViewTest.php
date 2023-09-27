@@ -47,13 +47,13 @@ class ViewTest extends BaseControllerTest
         $this->loginUserRegular();
         $this->get('/users/login');
         $this->assertResponseCode(302);
-        $this->assertRedirectContains('/qr-codes');
+        $this->assertRedirectContains('/');
 
         // test with admin
         $this->loginUserAdmin();
         $this->get('/users/login');
         $this->assertResponseCode(302);
-        $this->assertRedirectContains('/qr-codes');
+        $this->assertRedirectContains('/');
     }
 
     /**
@@ -75,14 +75,14 @@ class ViewTest extends BaseControllerTest
         $this->loginUserRegular();
         $this->get('/users/login');
         $this->assertResponseCode(302);
-        $this->assertRedirectContains('/qr-codes');
+        $this->assertRedirectContains('/');
 
         // test with admin
         $this->requestAsAjax();
         $this->loginUserAdmin();
         $this->get('/users/login');
         $this->assertResponseCode(302);
-        $this->assertRedirectContains('/qr-codes');
+        $this->assertRedirectContains('/');
     }
 
     /**

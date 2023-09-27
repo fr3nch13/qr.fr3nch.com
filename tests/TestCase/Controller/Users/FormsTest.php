@@ -69,7 +69,18 @@ class FormsTest extends BaseControllerTest
         ]);
         $this->assertRedirect();
         $this->assertResponseCode(302);
-        $this->assertRedirectContains('/qr-codes');
+        $this->assertRedirectContains('/');
+        $this->assertFlashMessage('Welcome back Admin', 'flash');
+        $this->assertFlashElement('flash/success');
+
+        // test success redirect
+        $this->post('/users/login?redirect=%2Fcategories', [
+            'email' => 'admin@example.com',
+            'password' => 'admin',
+        ]);
+        $this->assertRedirect();
+        $this->assertResponseCode(302);
+        $this->assertRedirectContains('/categories');
         $this->assertFlashMessage('Welcome back Admin', 'flash');
         $this->assertFlashElement('flash/success');
     }

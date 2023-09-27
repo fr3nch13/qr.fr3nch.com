@@ -69,7 +69,7 @@ class FormsTest extends BaseControllerTest
         ]);
         $this->assertRedirect();
         $this->assertResponseCode(302);
-        $this->assertRedirectContains('/qr-codes');
+        $this->assertRedirectContains('/');
         $this->assertFlashMessage('The qr code has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -112,7 +112,7 @@ class FormsTest extends BaseControllerTest
         ]);
         $this->assertRedirect();
         $this->assertResponseCode(302);
-        $this->assertRedirectContains('/qr-codes');
+        $this->assertRedirectContains('/');
         $this->assertFlashMessage('The qr code has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }

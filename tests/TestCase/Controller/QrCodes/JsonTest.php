@@ -159,7 +159,7 @@ class JsonTest extends BaseControllerTest
             'source_id' => 1,
         ]);
         $this->assertResponseCode(302);
-        $this->assertRedirect('/qr-codes');
+        $this->assertRedirect('/');
         $this->assertFlashMessage('The qr code has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -202,7 +202,7 @@ class JsonTest extends BaseControllerTest
             'source_id' => 1,
         ]);
         $this->assertResponseCode(302);
-        $this->assertRedirect('/qr-codes');
+        $this->assertRedirect('/');
         $this->assertFlashMessage('The qr code has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }

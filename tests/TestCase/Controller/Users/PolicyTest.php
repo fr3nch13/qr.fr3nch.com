@@ -45,13 +45,13 @@ class PolicyTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('/users/login');
         $this->assertResponseCode(302);
-        $this->assertRedirectContains('/qr-codes');
+        $this->assertRedirectContains('/');
 
         // test with reqular
         $this->loginUserRegular();
         $this->get('/users/login');
         $this->assertResponseCode(302);
-        $this->assertRedirectContains('/qr-codes');
+        $this->assertRedirectContains('/');
 
         // just test redirect
         $this->loginUserRegular();

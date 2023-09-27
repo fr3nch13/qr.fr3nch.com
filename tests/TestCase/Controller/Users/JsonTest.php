@@ -101,7 +101,7 @@ class JsonTest extends BaseControllerTest
             'password' => 'admin',
         ]);
         $this->assertResponseCode(302);
-        $this->assertRedirect('/qr-codes');
+        $this->assertRedirect('/');
         $this->assertFlashMessage('Welcome back Admin', 'flash');
         $this->assertFlashElement('flash/success');
 

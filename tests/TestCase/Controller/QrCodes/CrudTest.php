@@ -127,7 +127,7 @@ class CrudTest extends BaseControllerTest
         ]);
         $this->assertRedirect();
         $this->assertResponseCode(302);
-        $this->assertRedirectContains('/qr-codes');
+        $this->assertRedirectContains('/');
         $this->assertFlashMessage('The qr code has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
@@ -191,7 +191,7 @@ class CrudTest extends BaseControllerTest
         ]);
         $this->assertRedirect();
         $this->assertResponseCode(302);
-        $this->assertRedirectContains('/qr-codes');
+        $this->assertRedirectContains('/');
         $this->assertFlashMessage('The qr code has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
@@ -242,6 +242,6 @@ class CrudTest extends BaseControllerTest
         $this->assertFlashElement('flash/success');
         $this->assertRedirect();
         $this->assertResponseCode(302);
-        $this->assertRedirectContains('/qr-codes');
+        $this->assertRedirectContains('/');
     }
 }

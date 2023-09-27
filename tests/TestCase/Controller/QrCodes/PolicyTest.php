@@ -218,6 +218,6 @@ class PolicyTest extends BaseControllerTest
         $this->assertFlashElement('flash/success');
         $this->assertRedirect();
         $this->assertResponseCode(302);
-        $this->assertRedirectContains('/qr-codes');
+        $this->assertRedirectContains('/');
     }
 }
