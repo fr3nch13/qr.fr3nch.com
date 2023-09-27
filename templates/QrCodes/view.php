@@ -8,10 +8,10 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('Edit Qr Code'), ['action' => 'edit', $qrCode->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->Form->postLink(__('Delete Qr Code'), ['action' => 'delete', $qrCode->id], ['confirm' => __('Are you sure you want to delete # {0}?', $qrCode->id), 'class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('List Qr Codes'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('New Qr Code'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__('Edit QR Code'), ['action' => 'edit', $qrCode->id], ['class' => 'side-nav-item']) ?>
+            <?= $this->Form->postLink(__('Delete QR Code'), ['action' => 'delete', $qrCode->id], ['confirm' => __('Are you sure you want to delete # {0}?', $qrCode->id), 'class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__('List QR Codes'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__('New QR Code'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
     <div class="column column-80">

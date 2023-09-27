@@ -46,7 +46,7 @@
                 </blockquote>
             </div>
             <div class="related">
-                <h4><?= __('Related Qr Codes') ?></h4>
+                <h4><?= __('Related QR Codes') ?></h4>
                 <?php if (!empty($category->qr_codes)) : ?>
                 <div class="table-responsive">
                     <table>

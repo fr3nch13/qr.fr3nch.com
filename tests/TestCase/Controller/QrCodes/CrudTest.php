@@ -42,7 +42,7 @@ class CrudTest extends BaseControllerTest
         $this->get('/qr-codes');
         $this->assertResponseOk();
         $this->assertResponseContains('<div class="qrCodes index content">');
-        $this->assertResponseContains('<h3>Qr Codes</h3>');
+        $this->assertResponseContains('<h3>QR Codes</h3>');
 
         // post
         $this->post('/qr-codes');
@@ -113,7 +113,7 @@ class CrudTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->assertResponseContains('<div class="qrCodes form content">');
         $this->assertResponseContains('<form method="post" accept-charset="utf-8" action="/qr-codes/add">');
-        $this->assertResponseContains('<legend>Add Qr Code</legend>');
+        $this->assertResponseContains('<legend>Add QR Code</legend>');
 
         // post
         $this->post('/qr-codes/add', [
@@ -176,7 +176,7 @@ class CrudTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->assertResponseContains('<div class="qrCodes form content">');
         $this->assertResponseContains('<form method="patch" accept-charset="utf-8" action="/qr-codes/edit/1">');
-        $this->assertResponseContains('<legend>Edit Qr Code</legend>');
+        $this->assertResponseContains('<legend>Edit QR Code</legend>');
 
         // post
         $this->post('/qr-codes/edit/1', [

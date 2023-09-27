@@ -47,7 +47,7 @@ class FormsTest extends BaseControllerTest
         $this->assertResponseContains('<div class="message error" onclick="this.classList.add(\'hidden\');">The qr code could not be saved. Please, try again.</div>');
         $this->assertResponseContains('<div class="qrCodes form content">');
         $this->assertResponseContains('<form method="post" accept-charset="utf-8" action="/qr-codes/add">');
-        $this->assertResponseContains('<legend>Add Qr Code</legend>');
+        $this->assertResponseContains('<legend>Add QR Code</legend>');
         // test to make sure the fields that are required are actually tagged as so.
         $this->assertResponseContains('id="qrkey-error"');
         $this->assertResponseContains('id="name-error"');
@@ -90,7 +90,7 @@ class FormsTest extends BaseControllerTest
         $this->assertResponseContains('<div class="message error" onclick="this.classList.add(\'hidden\');">The qr code could not be saved. Please, try again.</div>');
         $this->assertResponseContains('<div class="qrCodes form content">');
         $this->assertResponseContains('<form method="patch" accept-charset="utf-8" action="/qr-codes/edit/1">');
-        $this->assertResponseContains('<legend>Edit Qr Code</legend>');
+        $this->assertResponseContains('<legend>Edit QR Code</legend>');
         $this->assertResponseContains('<div class="error-message" id="qrkey-error">This Key already exists.</div>');
 
         // a bad key
@@ -101,7 +101,7 @@ class FormsTest extends BaseControllerTest
         $this->assertResponseContains('<div class="message error" onclick="this.classList.add(\'hidden\');">The qr code could not be saved. Please, try again.</div>');
         $this->assertResponseContains('<div class="qrCodes form content">');
         $this->assertResponseContains('<form method="patch" accept-charset="utf-8" action="/qr-codes/edit/1">');
-        $this->assertResponseContains('<legend>Edit Qr Code</legend>');
+        $this->assertResponseContains('<legend>Edit QR Code</legend>');
         // test to make sure the fields that are required are actually tagged as so.
         $this->assertResponseContains('<div class="error-message" id="qrkey-error">Value cannot have a space in it.</div>');
 

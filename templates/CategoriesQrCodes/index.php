@@ -5,8 +5,8 @@
  */
 ?>
 <div class="categoriesQrCodes index content">
-    <?= $this->Html->link(__('New Categories Qr Code'), ['action' => 'add'], ['class' => 'button float-right']) ?>
-    <h3><?= __('Categories Qr Codes') ?></h3>
+    <?= $this->Html->link(__('New Categories QR Code'), ['action' => 'add'], ['class' => 'button float-right']) ?>
+    <h3><?= __('Categories QR Codes') ?></h3>
     <div class="table-responsive">
         <table>
             <thead>

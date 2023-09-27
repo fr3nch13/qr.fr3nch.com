@@ -36,7 +36,7 @@
                 </tr>
             </table>
             <div class="related">
-                <h4><?= __('Related Qr Codes') ?></h4>
+                <h4><?= __('Related QR Codes') ?></h4>
                 <?php if (!empty($tag->qr_codes)) : ?>
                 <div class="table-responsive">
                     <table>

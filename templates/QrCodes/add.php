@@ -12,14 +12,14 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('List Qr Codes'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__('List QR Codes'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
     <div class="column column-80">
         <div class="qrCodes form content">
             <?= $this->Form->create($qrCode) ?>
             <fieldset>
-                <legend><?= __('Add Qr Code') ?></legend>
+                <legend><?= __('Add QR Code') ?></legend>
 
                 <?= $this->Form->control('qrkey'); ?>
 

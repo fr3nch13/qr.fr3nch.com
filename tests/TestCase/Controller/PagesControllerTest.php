@@ -54,7 +54,7 @@ class PagesControllerTest extends BaseControllerTest
         $this->get('/');
 
         $this->assertResponseOk();
-        $this->assertResponseContains('CakePHP');
+        $this->assertResponseContains('QR Codes');
         $this->assertResponseContains('<html>');
     }
 

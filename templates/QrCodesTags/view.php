@@ -8,10 +8,10 @@
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('Edit Qr Codes Tag'), ['action' => 'edit', $qrCodesTag->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->Form->postLink(__('Delete Qr Codes Tag'), ['action' => 'delete', $qrCodesTag->id], ['confirm' => __('Are you sure you want to delete # {0}?', $qrCodesTag->id), 'class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('List Qr Codes Tags'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('New Qr Codes Tag'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__('Edit QR Codes Tag'), ['action' => 'edit', $qrCodesTag->id], ['class' => 'side-nav-item']) ?>
+            <?= $this->Form->postLink(__('Delete QR Codes Tag'), ['action' => 'delete', $qrCodesTag->id], ['confirm' => __('Are you sure you want to delete # {0}?', $qrCodesTag->id), 'class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__('List QR Codes Tags'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__('New QR Codes Tag'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
     </aside>
     <div class="column column-80">
@@ -23,7 +23,7 @@
                     <td><?= $qrCodesTag->hasValue('tag') ? $this->Html->link($qrCodesTag->tag->name, ['controller' => 'Tags', 'action' => 'view', $qrCodesTag->tag->id]) : '' ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Qr Code') ?></th>
+                    <th><?= __('QR Code') ?></th>
                     <td><?= $qrCodesTag->hasValue('qr_code') ? $this->Html->link($qrCodesTag->qr_code->name, ['controller' => 'QrCodes', 'action' => 'view', $qrCodesTag->qr_code->id]) : '' ?></td>
                 </tr>
                 <tr>
