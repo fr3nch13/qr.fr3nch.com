@@ -40,8 +40,8 @@ class ViewTest extends BaseControllerTest
     {
         // not logged in
         $this->get('/tags');
-        $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->assertResponseCode(302);
+        $this->assertRedirectContains('/users/login?redirect=%2Ftags');
 
         // test with reqular
         $this->loginUserRegular();
@@ -67,8 +67,8 @@ class ViewTest extends BaseControllerTest
         // not logged in
         $this->requestAsAjax();
         $this->get('/tags');
-        $this->assertResponseOk();
-        $this->helperTestLayoutAjax();
+        $this->assertResponseCode(302);
+        $this->assertRedirectContains('/users/login?redirect=%2Ftags');
 
         // test with reqular
         $this->requestAsAjax();
@@ -95,8 +95,8 @@ class ViewTest extends BaseControllerTest
     {
         // not logged in
         $this->get('/tags/view/1');
-        $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->assertResponseCode(302);
+        $this->assertRedirectContains('/users/login?redirect=%2Ftags%2Fview%2F1');
 
         // test with reqular
         $this->loginUserRegular();
@@ -122,8 +122,8 @@ class ViewTest extends BaseControllerTest
         // not logged in
         $this->requestAsAjax();
         $this->get('/tags/view/1');
-        $this->assertResponseOk();
-        $this->helperTestLayoutAjax();
+        $this->assertResponseCode(302);
+        $this->assertRedirectContains('/users/login?redirect=%2Ftags%2Fview%2F1');
 
         // test with reqular
         $this->requestAsAjax();
@@ -195,15 +195,14 @@ class ViewTest extends BaseControllerTest
         // test with reqular, get
         $this->loginUserRegular();
         $this->get('/tags/edit/1');
-        $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->assertResponseCode(403);
+        $this->assertResponseContains('Error: Identity is not authorized to perform `edit` on `App\Model\Entity\Tag`.');
 
         // test with admin, get
         $this->loginUserAdmin();
         $this->get('/tags/edit/1');
         $this->assertResponseOk();
         $this->helperTestLayoutNormal();
-
     }
 
     /**
@@ -218,8 +217,8 @@ class ViewTest extends BaseControllerTest
         $this->requestAsAjax();
         $this->loginUserRegular();
         $this->get('/tags/edit/1');
-        $this->assertResponseOk();
-        $this->helperTestLayoutAjax();
+        $this->assertResponseCode(403);
+        $this->assertResponseContains('Error: Identity is not authorized to perform `edit` on `App\Model\Entity\Tag`.');
 
         // test with admin, get
         $this->requestAsAjax();
