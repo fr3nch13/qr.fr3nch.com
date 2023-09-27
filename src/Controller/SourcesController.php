@@ -27,8 +27,7 @@ class SourcesController extends AppController
         $sources = $this->paginate($query);
 
         $this->set(compact('sources'));
-        $this->viewBuilder()
-            ->setOption('serialize', ['sources']);
+        $this->viewBuilder()->setOption('serialize', ['sources']);
     }
 
     /**
@@ -46,8 +45,7 @@ class SourcesController extends AppController
         $this->Authorization->authorize($source);
 
         $this->set(compact('source'));
-        $this->viewBuilder()
-            ->setOption('serialize', ['source']);
+        $this->viewBuilder()->setOption('serialize', ['source']);
     }
 
     /**
@@ -73,9 +71,9 @@ class SourcesController extends AppController
             $this->Flash->error(__('The source could not be saved. Please, try again.'));
         }
 
+        $errors = $source->getErrors();
         $this->set(compact('source'));
-        $this->viewBuilder()
-            ->setOption('serialize', ['source']);
+        $this->viewBuilder()->setOption('serialize', ['source']);
     }
 
     /**
@@ -102,9 +100,10 @@ class SourcesController extends AppController
             $this->Flash->error(__('The source could not be saved. Please, try again.'));
         }
 
-        $this->set(compact('source'));
-        $this->viewBuilder()
-            ->setOption('serialize', ['source']);
+        $errors = $source->getErrors();
+
+        $this->set(compact('source', 'errors'));
+        $this->viewBuilder()->setOption('serialize', ['source', 'errors']);
     }
 
     /**

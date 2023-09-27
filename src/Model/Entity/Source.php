@@ -38,4 +38,14 @@ class Source extends Entity
         'qr_codes' => true,
         'user' => true,
     ];
+
+    /**
+     * Fields that are excluded from JSON versions of the entity.
+     *
+     * @var array<string>
+     */
+    protected array $_hidden = [
+        'user_id',
+        'user',
+    ];
 }

@@ -27,8 +27,7 @@ class TagsController extends AppController
         $tags = $this->paginate($query);
 
         $this->set(compact('tags'));
-        $this->viewBuilder()
-            ->setOption('serialize', ['tags']);
+        $this->viewBuilder()->setOption('serialize', ['tags']);
     }
 
     /**
@@ -46,8 +45,7 @@ class TagsController extends AppController
         $this->Authorization->authorize($tag);
 
         $this->set(compact('tag'));
-        $this->viewBuilder()
-            ->setOption('serialize', ['tag']);
+        $this->viewBuilder()->setOption('serialize', ['tag']);
     }
 
     /**
@@ -73,10 +71,11 @@ class TagsController extends AppController
             $this->Flash->error(__('The tag could not be saved. Please, try again.'));
         }
 
+        $errors = $tag->getErrors();
         $qrCodes = $this->Tags->QrCodes->find('list', limit: 200)->all();
-        $this->set(compact('tag', 'qrCodes'));
-        $this->viewBuilder()
-            ->setOption('serialize', ['tag', 'qrCodes']);
+
+        $this->set(compact('tag', 'qrCodes', 'errors'));
+        $this->viewBuilder()->setOption('serialize', ['tag', 'qrCodes', 'errors']);
     }
 
     /**
@@ -103,10 +102,11 @@ class TagsController extends AppController
             $this->Flash->error(__('The tag could not be saved. Please, try again.'));
         }
 
+        $errors = $tag->getErrors();
         $qrCodes = $this->Tags->QrCodes->find('list', limit: 200)->all();
-        $this->set(compact('tag', 'qrCodes'));
-        $this->viewBuilder()
-            ->setOption('serialize', ['tag', 'qrCodes']);
+
+        $this->set(compact('tag', 'qrCodes', 'errors'));
+        $this->viewBuilder()->setOption('serialize', ['tag', 'qrCodes', 'errors']);
     }
 
     /**

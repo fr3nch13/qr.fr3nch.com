@@ -38,8 +38,7 @@ class CategoriesController extends AppController
         $categories = $this->paginate($query);
 
         $this->set(compact('categories'));
-        $this->viewBuilder()
-            ->setOption('serialize', ['categories']);
+        $this->viewBuilder()->setOption('serialize', ['categories']);
     }
 
     /**
@@ -57,8 +56,7 @@ class CategoriesController extends AppController
         $category = $this->Categories->get((int)$id, contain: ['ParentCategories', 'QrCodes', 'ChildCategories']);
 
         $this->set(compact('category'));
-        $this->viewBuilder()
-            ->setOption('serialize', ['category']);
+        $this->viewBuilder()->setOption('serialize', ['category']);
     }
 
     /**
@@ -84,11 +82,11 @@ class CategoriesController extends AppController
             $this->Flash->error(__('The category could not be saved. Please, try again.'));
         }
 
+        $errors = $category->getErrors();
         $parentCategories = $this->Categories->ParentCategories->find('list', limit: 200)->all();
 
-        $this->set(compact('category', 'parentCategories'));
-        $this->viewBuilder()
-            ->setOption('serialize', ['category', 'parentCategories']);
+        $this->set(compact('category', 'parentCategories', 'errors'));
+        $this->viewBuilder()->setOption('serialize', ['category', 'parentCategories', 'errors']);
     }
 
     /**
@@ -115,11 +113,11 @@ class CategoriesController extends AppController
             $this->Flash->error(__('The category could not be saved. Please, try again.'));
         }
 
+        $errors = $category->getErrors();
         $parentCategories = $this->Categories->ParentCategories->find('list', limit: 200)->all();
 
-        $this->set(compact('category', 'parentCategories'));
-        $this->viewBuilder()
-            ->setOption('serialize', ['category', 'parentCategories']);
+        $this->set(compact('category', 'parentCategories', 'errors'));
+        $this->viewBuilder()->setOption('serialize', ['category', 'parentCategories', 'errors']);
     }
 
     /**

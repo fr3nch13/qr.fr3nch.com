@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f0fc816d5193dfbb604054e7943bee63",
+    "content-hash": "24f29d91a8b6fcdc393f1ab395ad253e",
     "packages": [
         {
             "name": "cakephp/authentication",
@@ -142,20 +142,20 @@
         },
         {
             "name": "cakephp/cakephp",
-            "version": "5.0.0",
+            "version": "5.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/cakephp.git",
-                "reference": "2da6ed819f520e472ea12b011a9c7a7f39310a4a"
+                "reference": "223d268f2232bc2b0d3fc3ed01a7fbdb06b059e3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/2da6ed819f520e472ea12b011a9c7a7f39310a4a",
-                "reference": "2da6ed819f520e472ea12b011a9c7a7f39310a4a",
+                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/223d268f2232bc2b0d3fc3ed01a7fbdb06b059e3",
+                "reference": "223d268f2232bc2b0d3fc3ed01a7fbdb06b059e3",
                 "shasum": ""
             },
             "require": {
-                "cakephp/chronos": "^3.0",
+                "cakephp/chronos": "3.x-dev",
                 "composer/ca-bundle": "^1.2",
                 "ext-intl": "*",
                 "ext-json": "*",
@@ -211,6 +211,7 @@
                 "lib-ICU": "To use locale-aware features in the I18n and Database packages",
                 "paragonie/csp-builder": "CSP builder, to use the CSP Middleware"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "files": [
@@ -255,20 +256,20 @@
                 "issues": "https://github.com/cakephp/cakephp/issues",
                 "source": "https://github.com/cakephp/cakephp"
             },
-            "time": "2023-09-10T02:50:02+00:00"
+            "time": "2023-09-24T03:43:37+00:00"
         },
         {
             "name": "cakephp/chronos",
-            "version": "3.0.1",
+            "version": "3.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/chronos.git",
-                "reference": "a89857afd81938e0f67ec6eb01197c2bdac66719"
+                "reference": "900cfbdb4fab109b0c0f1197e3557a3138a285a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/chronos/zipball/a89857afd81938e0f67ec6eb01197c2bdac66719",
-                "reference": "a89857afd81938e0f67ec6eb01197c2bdac66719",
+                "url": "https://api.github.com/repos/cakephp/chronos/zipball/900cfbdb4fab109b0c0f1197e3557a3138a285a4",
+                "reference": "900cfbdb4fab109b0c0f1197e3557a3138a285a4",
                 "shasum": ""
             },
             "require": {
@@ -278,6 +279,7 @@
                 "cakephp/cakephp-codesniffer": "^5.0",
                 "phpunit/phpunit": "^10.1.0"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -310,7 +312,7 @@
                 "issues": "https://github.com/cakephp/chronos/issues",
                 "source": "https://github.com/cakephp/chronos"
             },
-            "time": "2023-09-09T03:47:34+00:00"
+            "time": "2023-09-25T03:07:05+00:00"
         },
         {
             "name": "cakephp/migrations",
@@ -3187,16 +3189,16 @@
         },
         {
             "name": "justinrainbow/json-schema",
-            "version": "5.2.12",
+            "version": "v5.2.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/justinrainbow/json-schema.git",
-                "reference": "ad87d5a5ca981228e0e205c2bc7dfb8e24559b60"
+                "reference": "fbbe7e5d79f618997bc3332a6f49246036c45793"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/ad87d5a5ca981228e0e205c2bc7dfb8e24559b60",
-                "reference": "ad87d5a5ca981228e0e205c2bc7dfb8e24559b60",
+                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/fbbe7e5d79f618997bc3332a6f49246036c45793",
+                "reference": "fbbe7e5d79f618997bc3332a6f49246036c45793",
                 "shasum": ""
             },
             "require": {
@@ -3251,9 +3253,9 @@
             ],
             "support": {
                 "issues": "https://github.com/justinrainbow/json-schema/issues",
-                "source": "https://github.com/justinrainbow/json-schema/tree/5.2.12"
+                "source": "https://github.com/justinrainbow/json-schema/tree/v5.2.13"
             },
-            "time": "2022-04-13T08:02:27+00:00"
+            "time": "2023-09-26T02:20:38+00:00"
         },
         {
             "name": "m1/env",
@@ -5913,9 +5915,18 @@
             "time": "2023-08-28T11:09:02+00:00"
         }
     ],
-    "aliases": [],
-    "minimum-stability": "stable",
-    "stability-flags": [],
+    "aliases": [
+        {
+            "package": "cakephp/cakephp",
+            "version": "5.9999999.9999999.9999999-dev",
+            "alias": "5.0.1",
+            "alias_normalized": "5.0.1.0"
+        }
+    ],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "cakephp/cakephp": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

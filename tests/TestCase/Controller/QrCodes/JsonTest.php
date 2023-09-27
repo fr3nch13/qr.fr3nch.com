@@ -47,6 +47,9 @@ class JsonTest extends TestCase
     {
         parent::setUp();
         Configure::write('debug', true);
+        $this->enableRetainFlashMessages();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
         $this->requestAsJson();
         $this->loginUserAdmin();
     }
@@ -62,10 +65,19 @@ class JsonTest extends TestCase
         $this->get('/qr-codes');
         $this->assertResponseOk();
         $content = (string)$this->_response->getBody();
-        $content = json_decode($content);
-        debug($content);
-        $this->assertResponseContains('<div class="qrCodes index content">');
-        $this->assertResponseContains('<h3>Qr Codes</h3>');
+        $content = json_decode($content, true);
+
+        $this->assertTrue(isset($content['qrCodes']));
+        $this->assertCount(2, $content['qrCodes']);
+
+        $first = reset($content['qrCodes']);
+        $this->assertSame(1, $first['id']);
+        $this->assertTrue(isset($first['tags']));
+        $this->assertTrue(isset($first['categories']));
+        $this->assertTrue(isset($first['source']));
+        $this->assertFalse(isset($first['user_id']));
+        $this->assertFalse(isset($first['user']));
+
     }
 
     /**
@@ -79,9 +91,16 @@ class JsonTest extends TestCase
         $this->get('/qr-codes/view/1');
         $this->assertResponseOk();
         $content = (string)$this->_response->getBody();
-        //debug($content);
-        $this->assertResponseContains('<div class="qrCodes view content">');
-        $this->assertResponseContains('<h3>Sow &amp; Scribe</h3>');
+        $content = json_decode($content, true);
+
+        $this->assertTrue(isset($content['qrCode']));
+
+        $this->assertSame(1, $content['qrCode']['id']);
+        $this->assertTrue(isset($content['qrCode']['tags']));
+        $this->assertTrue(isset($content['qrCode']['categories']));
+        $this->assertTrue(isset($content['qrCode']['source']));
+        $this->assertFalse(isset($content['qrCode']['user_id']));
+        $this->assertFalse(isset($content['qrCode']['user']));
     }
 
     /**
@@ -92,13 +111,84 @@ class JsonTest extends TestCase
      */
     public function testAdd(): void
     {
+        // a get
         $this->get('/qr-codes/add');
         $this->assertResponseOk();
         $content = (string)$this->_response->getBody();
-        debug($content);
-        $this->assertResponseContains('<div class="qrCodes form content">');
-        $this->assertResponseContains('<form method="post" accept-charset="utf-8" action="/qr-codes/add">');
-        $this->assertResponseContains('<legend>Add Qr Code</legend>');
+        $content = json_decode($content, true);
+
+        $this->assertTrue(isset($content['qrCode']));
+        $this->assertTrue(empty($content['qrCode']));
+
+        $this->assertTrue(isset($content['errors']));
+        $this->assertFalse(empty($content['errors']));
+
+        $expected = [
+            'qrkey' => [
+                '_required' => 'This field is required'
+            ],
+            'name' => [
+                '_required' => 'This field is required'
+            ],
+            'description' => [
+                '_required' => 'This field is required'
+            ],
+            'url' => [
+                '_required' => 'This field is required'
+            ],
+            'bitly_id' => [
+                '_required' => 'This field is required'
+            ],
+            'source_id' => [
+                '_required' => 'This field is required'
+            ],
+            'user_id' => [
+                '_required' => 'This field is required'
+            ]
+        ];
+        $this->assertSame($expected, $content['errors']);
+
+        $this->assertTrue(isset($content['sources']));
+        $this->assertCount(2, $content['sources']);
+        $this->assertTrue(isset($content['categories']));
+        $this->assertCount(3, $content['categories']);
+        $this->assertTrue(isset($content['tags']));
+        $this->assertCount(4, $content['tags']);
+
+        // a post fail
+        $this->post('/qr-codes/add.json', [
+            'name' => 'New JSON QR Code',
+            'description' => 'Description of the code',
+        ]);
+        $this->assertResponseOk();
+        $content = (string)$this->_response->getBody();
+        $content = json_decode($content, true);
+
+        $this->assertTrue(isset($content['qrCode']));
+        $this->assertFalse(empty($content['qrCode']));
+        $this->assertTrue(isset($content['errors']));
+        $this->assertFalse(empty($content['errors']));
+
+        $this->assertTrue(isset($content['sources']));
+        $this->assertCount(2, $content['sources']);
+        $this->assertTrue(isset($content['categories']));
+        $this->assertCount(3, $content['categories']);
+        $this->assertTrue(isset($content['tags']));
+        $this->assertCount(4, $content['tags']);
+
+        // a post success
+        $this->post('/qr-codes/add.json', [
+            'qrkey' => 'newjsonkey',
+            'name' => 'New JSON QR Code',
+            'description' => 'Description of the code',
+            'url' => 'https://amazon.com/path/to/forward',
+            'bitly_id' => 'bitly_id',
+            'source_id' => 1,
+        ]);
+        $this->assertResponseCode(302);
+        $this->assertRedirect('/qr-codes');
+        $this->assertFlashMessage('The qr code has been saved.', 'flash');
+        $this->assertFlashElement('flash/success');
     }
 
     /**
@@ -114,9 +204,33 @@ class JsonTest extends TestCase
         $this->get('/qr-codes/edit/1');
         $this->assertResponseOk();
         $content = (string)$this->_response->getBody();
-        //debug($content);
-        $this->assertResponseContains('<div class="qrCodes form content">');
-        $this->assertResponseContains('<form method="patch" accept-charset="utf-8" action="/qr-codes/edit/1">');
-        $this->assertResponseContains('<legend>Edit Qr Code</legend>');
+        $content = json_decode($content, true);
+
+        $this->assertTrue(isset($content['qrCode']));
+        $this->assertFalse(empty($content['qrCode']));
+
+        $this->assertTrue(isset($content['errors']));
+        $this->assertTrue(empty($content['errors']));
+
+        $this->assertTrue(isset($content['sources']));
+        $this->assertCount(2, $content['sources']);
+        $this->assertTrue(isset($content['categories']));
+        $this->assertCount(3, $content['categories']);
+        $this->assertTrue(isset($content['tags']));
+        $this->assertCount(4, $content['tags']);
+
+        // a patch success
+        $this->patch('/qr-codes/edit/1.json', [
+            'qrkey' => 'newjsonkey',
+            'name' => 'New JSON QR Code',
+            'description' => 'Description of the code',
+            'url' => 'https://amazon.com/path/to/forward',
+            'bitly_id' => 'bitly_id',
+            'source_id' => 1,
+        ]);
+        $this->assertResponseCode(302);
+        $this->assertRedirect('/qr-codes');
+        $this->assertFlashMessage('The qr code has been saved.', 'flash');
+        $this->assertFlashElement('flash/success');
     }
 }

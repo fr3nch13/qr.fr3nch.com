@@ -107,8 +107,7 @@ class UsersController extends AppController
         $users = $this->paginate($query);
 
         $this->set(compact('users'));
-        $this->viewBuilder()
-            ->setOption('serialize', ['users']);
+        $this->viewBuilder()->setOption('serialize', ['users']);
     }
 
     /**
@@ -126,8 +125,7 @@ class UsersController extends AppController
         $this->Authorization->authorize($user);
 
         $this->set(compact('user'));
-        $this->viewBuilder()
-            ->setOption('serialize', ['user']);
+        $this->viewBuilder()->setOption('serialize', ['user']);
     }
 
     /**
@@ -151,9 +149,11 @@ class UsersController extends AppController
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
-        $this->set(compact('user'));
-        $this->viewBuilder()
-            ->setOption('serialize', ['user']);
+
+        $errors = $user->getErrors();
+
+        $this->set(compact('user', 'errors'));
+        $this->viewBuilder()->setOption('serialize', ['user', 'errors']);
     }
 
     /**
@@ -179,9 +179,11 @@ class UsersController extends AppController
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
-        $this->set(compact('user'));
-        $this->viewBuilder()
-            ->setOption('serialize', ['user']);
+
+        $errors = $user->getErrors();
+
+        $this->set(compact('user', 'errors'));
+        $this->viewBuilder()->setOption('serialize', ['user', 'errors']);
     }
 
     /**

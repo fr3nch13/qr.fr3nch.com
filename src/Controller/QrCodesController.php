@@ -82,12 +82,13 @@ class QrCodesController extends AppController
             $this->Flash->error(__('The qr code could not be saved. Please, try again.'));
         }
 
+        $errors = $qrCode->getErrors();
         $sources = $this->QrCodes->Sources->find('list', limit: 200)->all();
         $categories = $this->QrCodes->Categories->find('list', limit: 200)->all();
         $tags = $this->QrCodes->Tags->find('list', limit: 200)->all();
 
-        $this->set(compact('qrCode', 'sources', 'categories', 'tags'));
-        $this->viewBuilder()->setOption('serialize', ['qrCode', 'sources', 'categories', 'tags']);
+        $this->set(compact('qrCode', 'sources', 'categories', 'tags', 'errors'));
+        $this->viewBuilder()->setOption('serialize', ['qrCode', 'sources', 'categories', 'tags', 'errors']);
     }
 
     /**
@@ -114,13 +115,13 @@ class QrCodesController extends AppController
             $this->Flash->error(__('The qr code could not be saved. Please, try again.'));
         }
 
+        $errors = $qrCode->getErrors();
         $sources = $this->QrCodes->Sources->find('list', limit: 200)->all();
         $categories = $this->QrCodes->Categories->find('list', limit: 200)->all();
         $tags = $this->QrCodes->Tags->find('list', limit: 200)->all();
 
-        $this->set(compact('qrCode', 'sources', 'categories', 'tags'));
-        $this->viewBuilder()
-            ->setOption('serialize', ['qrCode', 'sources', 'categories', 'tags']);
+        $this->set(compact('qrCode', 'sources', 'categories', 'tags', 'errors'));
+        $this->viewBuilder()->setOption('serialize', ['qrCode', 'sources', 'categories', 'tags', 'errors']);
     }
 
     /**
