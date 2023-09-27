@@ -195,8 +195,8 @@ class ViewTest extends BaseControllerTest
         // test with reqular, get
         $this->loginUserRegular();
         $this->get('/qr-codes/edit/1');
-        $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->assertResponseCode(403);
+        $this->assertResponseContains('Error: Identity is not authorized to perform `edit` on `App\Model\Entity\QrCode`.');
 
         // test with admin, get
         $this->loginUserAdmin();
@@ -217,8 +217,8 @@ class ViewTest extends BaseControllerTest
         $this->requestAsAjax();
         $this->loginUserRegular();
         $this->get('/qr-codes/edit/1');
-        $this->assertResponseOk();
-        $this->helperTestLayoutAjax();
+        $this->assertResponseCode(403);
+        $this->assertResponseContains('Error: Identity is not authorized to perform `edit` on `App\Model\Entity\QrCode`.');
 
         // test with admin, get
         $this->requestAsAjax();
