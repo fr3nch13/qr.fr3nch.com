@@ -50,11 +50,13 @@ class PhpQrGenerator
             'logoPath' => WWW_ROOT . 'img' . DS . 'qr_logo.png',
             'positivecolor' => [0, 0, 0],
             'negativecolor' => [255, 255, 255],
+            'scale' => 5,
         ];
 
         $this->config = Configure::read('QrCode', $defaults);
 
         // check some of the config options
+        $this->config['scale'] = $this->config['scale'] ?? 5;
         $this->config['positivecolor'] = $this->config['positivecolor'] ?? [0, 0, 0];
         $this->config['negativecolor'] = $this->config['negativecolor'] ?? [255, 255, 255];
         $this->config['logoPath'] = $this->config['logoPath'] ?? WWW_ROOT . 'img' . DS . 'qr_logo.png';
@@ -67,7 +69,7 @@ class PhpQrGenerator
         $this->options->imageBase64 = false;
         $this->options->logoSpaceWidth = 13; // this is the max
         $this->options->logoSpaceHeight = 13; // this is the max
-        $this->options->scale = 15;
+        $this->options->scale = $this->config['scale'];
         $this->options->imageTransparent = false;
         $this->options->moduleValues = [
             // @link https://github.com/chillerlan/php-qrcode/blob/4.3.4/examples/image.php#L25
