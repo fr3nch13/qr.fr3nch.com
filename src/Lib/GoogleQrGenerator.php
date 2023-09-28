@@ -57,8 +57,6 @@ class GoogleQrGenerator
     {
         $defaults = [
             'logoPath' => WWW_ROOT . 'img' . DS . 'qr_logo.png',
-            'positivecolor' => [0, 0, 0],
-            'negativecolor' => [255, 255, 255],
         ];
         $config = Configure::read('QrCode', $defaults);
         $this->config = array_merge($this->config, $config);
