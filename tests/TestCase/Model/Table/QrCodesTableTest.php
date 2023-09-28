@@ -465,7 +465,7 @@ class QrCodesTableTest extends TestCase
 
         $QR = new GoogleQrGenerator($entity);
         $this->assertSame('http://localhost/f/sownscribe', $QR->data);
-        $this->assertSame('https://chart.googleapis.com/chart?cht=qr&chld=H|1&chs=400x400&chl=http%3A%2F%2Flocalhost%2Ff%2Fsownscribe', $QR->compileUrl());
+        $this->assertSame('https://chart.googleapis.com/chart?cht=qr&chld=H|1&chs=200x200&chl=http%3A%2F%2Flocalhost%2Ff%2Fsownscribe', $QR->compileUrl());
         $this->assertTrue($QR->save());
         $this->assertTrue(is_readable($path));
     }

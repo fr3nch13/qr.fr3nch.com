@@ -46,11 +46,18 @@ class PhpQrGenerator
     public function __construct(QrCode $qrCode)
     {
         $this->qrCode = $qrCode;
-        $this->config = Configure::read('QrCode');
+        $defaults = [
+            'logoPath' => WWW_ROOT . 'img' . DS . 'qr_logo.png',
+            'positivecolor' => [0, 0, 0],
+            'negativecolor' => [255, 255, 255],
+        ];
+
+        $this->config = Configure::read('QrCode', $defaults);
+
         // check some of the config options
-        $this->config['positivecolor'] ?? [0, 0, 0];
-        $this->config['negativecolor'] ?? [255, 255, 255];
-        $this->config['logoPath'] ?? WWW_ROOT . 'img' . DS . 'qr_logo.png';
+        $this->config['positivecolor'] = $this->config['positivecolor'] ?? [0, 0, 0];
+        $this->config['negativecolor'] = $this->config['negativecolor'] ?? [255, 255, 255];
+        $this->config['logoPath'] = $this->config['logoPath'] ?? WWW_ROOT . 'img' . DS . 'qr_logo.png';
 
         $this->options = new LogoOptions();
 
