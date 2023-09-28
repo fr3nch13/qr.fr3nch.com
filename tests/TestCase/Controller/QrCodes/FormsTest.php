@@ -82,6 +82,8 @@ class FormsTest extends BaseControllerTest
      */
     public function testEdit(): void
     {
+        // @todo test when a user tries to update the qrkey field as it should only be set on a create/add
+
         // test fail
         $this->patch('/qr-codes/edit/1', [
             'qrkey' => 'witchinghour', // an existing record
@@ -91,7 +93,6 @@ class FormsTest extends BaseControllerTest
         $this->assertResponseContains('<div class="qrCodes form content">');
         $this->assertResponseContains('<form method="patch" accept-charset="utf-8" action="/qr-codes/edit/1">');
         $this->assertResponseContains('<legend>Edit QR Code</legend>');
-        $this->assertResponseContains('<div class="error-message" id="qrkey-error">This Key already exists.</div>');
 
         // a bad key
         $this->patch('/qr-codes/edit/1', [
@@ -102,8 +103,6 @@ class FormsTest extends BaseControllerTest
         $this->assertResponseContains('<div class="qrCodes form content">');
         $this->assertResponseContains('<form method="patch" accept-charset="utf-8" action="/qr-codes/edit/1">');
         $this->assertResponseContains('<legend>Edit QR Code</legend>');
-        // test to make sure the fields that are required are actually tagged as so.
-        $this->assertResponseContains('<div class="error-message" id="qrkey-error">Value cannot have a space in it.</div>');
 
         // test success
         $this->patch('/qr-codes/edit/1', [

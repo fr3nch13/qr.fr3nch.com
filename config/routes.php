@@ -58,6 +58,9 @@ return function (RouteBuilder $routes): void {
          */
         $builder->connect('/', ['controller' => 'QrCodes', 'action' => 'index']);
 
+        // the forward shorthand
+        $builder->connect('/f/*', ['controller' => 'QrCodes', 'action' => 'forward']);
+
         /*
          * ...and connect the rest of 'Pages' controller's URLs.
          */

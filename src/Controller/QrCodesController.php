@@ -21,7 +21,7 @@ class QrCodesController extends AppController
         parent::beforeFilter($event);
         // Configure the login action to not require authentication, preventing
         // the infinite redirect loop issue
-        $this->Authentication->addUnauthenticatedActions(['forward', 'index', 'view']);
+        $this->Authentication->addUnauthenticatedActions(['forward', 'show', 'index', 'view']);
     }
 
     /**
@@ -55,6 +55,27 @@ class QrCodesController extends AppController
         }
 
         return $this->redirect($qrCode->url);
+    }
+
+    /**
+     * Show method
+     *
+     * Shows the actual QR Code.
+     *
+     * @param string|null $id QR Code id.
+     * @return \Cake\Http\Response|null|void Renders view
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function show(?string $id = null)
+    {
+        $this->request->allowMethod(['get']);
+        $this->Authorization->skipAuthorization();
+
+        $qrCodeImagePath = $this->QrCodes->getQrImagePath((int)$id);
+        $response = $this->response->withFile($qrCodeImagePath);
+        // Return the response to prevent controller from trying to render
+        // a view.
+        return $response;
     }
 
     /**

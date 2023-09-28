@@ -60,7 +60,7 @@ class ViewTest extends BaseControllerTest
         $this->assertResponseOk();
         $content = (string)$this->_response->getBody();
         $this->assertSame(1, substr_count($content, '<a href="/qr-codes/view/1">View</a>'));
-        $this->assertSame(1, substr_count($content, '<a href="/qr-codes/forward/sownscribe">Follow</a>'));
+        $this->assertSame(1, substr_count($content, '<a href="/f/sownscribe">Follow</a>'));
     }
 
     /**
@@ -122,7 +122,7 @@ class ViewTest extends BaseControllerTest
         $this->assertResponseOk();
         $content = (string)$this->_response->getBody();
         $this->assertSame(1, substr_count($content, '<h3>Sow &amp; Scribe</h3>'));
-        $this->assertSame(1, substr_count($content, '<a href="/qr-codes/forward/sownscribe" class="side-nav-item">Follow</a>'));
+        $this->assertSame(1, substr_count($content, '<a href="/f/sownscribe" class="side-nav-item">Follow</a>'));
     }
 
     /**
