@@ -3,15 +3,23 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Model\Table;
 
+use App\Lib\GoogleQrGenerator;
+use App\Lib\LogoOptions;
+use App\Lib\PhpQrGenerator;
+use App\Lib\QRImageWithLogo;
 use App\Model\Table\CategoriesTable;
 use App\Model\Table\QrCodesTable;
 use App\Model\Table\SourcesTable;
 use App\Model\Table\TagsTable;
 use App\Model\Table\UsersTable;
+use Cake\Core\Configure;
+use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\ORM\Association\BelongsTo;
 use Cake\ORM\Association\BelongsToMany;
 use Cake\ORM\Behavior\TimestampBehavior;
 use Cake\TestSuite\TestCase;
+use chillerlan\QRCode\Output\QRCodeOutputException;
+use chillerlan\QRCode\QRCode as ChillerlanQRCode;
 
 /**
  * App\Model\Table\QrCodesTable Test Case
@@ -336,7 +344,7 @@ class QrCodesTableTest extends TestCase
 
         // check that we are passing the rules.
         $entity = $this->QrCodes->newEntity([
-            'qrkey' => 'newsource',
+            'qrkey' => 'newentity',
             'name' => 'new name',
             'description' => 'description',
             'url' => 'https://www.amazon.com/path/to/product',
@@ -364,5 +372,169 @@ class QrCodesTableTest extends TestCase
         // test getting a non-existant record
         $qrCode = $this->QrCodes->find('key', key: 'dontexist') ->first();
         $this->assertNull($qrCode);
+    }
+
+    /**
+     * Test Implemented Generator
+     *
+     * @return void
+     */
+    public function testImplementedGenerator(): void
+    {
+        $this->loadRoutes();
+        Configure::write('debug', true);
+
+        // existing entity
+        $path = TMP . 'qr_codes' . DS . '1.png';
+        if (file_exists($path)) {
+            unlink($path);
+        }
+
+        // test when trying to get the image path.
+        $this->assertFalse(is_readable($path));
+        $qrCodeImagePath = $this->QrCodes->getQrImagePath(1);
+        $this->assertTrue(is_readable($path));
+        $this->assertSame($path, $qrCodeImagePath);
+        // test not regenerating it.
+        $qrCodeImagePath = $this->QrCodes->getQrImagePath(1);
+        $this->assertSame($path, $qrCodeImagePath);
+
+        $entity = $this->QrCodes->get(1);
+
+        // test the AfterSave and regenerate
+        unlink($path);
+        $this->assertFalse(is_readable($path));
+        $entity->name = 'Updated Name';
+        $this->QrCodes->save($entity);
+        $this->assertTrue(is_readable($path));
+
+        // new entity, check that it gets generated on a new save.
+        $path = TMP . 'qr_codes' . DS . '3.png';
+        if (file_exists($path)) {
+            unlink($path);
+        }
+        $this->assertFalse(is_readable($path));
+        $entity = $this->QrCodes->newEntity([
+            'qrkey' => 'newentity',
+            'name' => 'new name',
+            'description' => 'description',
+            'url' => 'https://www.amazon.com/path/to/product',
+            'bitly_id' => 'bitly_id',
+            'source_id' => 1,
+            'user_id' => 1,
+        ]);
+        $result = $this->QrCodes->checkRules($entity);
+        $this->assertTrue($result);
+        $expected = [];
+        $this->assertSame($expected, $entity->getErrors());
+
+        // save the new entity
+        $this->QrCodes->save($entity);
+        $this->assertTrue(is_readable($path));
+
+        // test nonexistant entity
+        $this->expectException(RecordNotFoundException::class);
+        $path = TMP . 'qr_codes' . DS . '10.png';
+        if (file_exists($path)) {
+            unlink($path);
+        }
+        $this->assertFalse(is_readable($path));
+        $qrCodeImagePath = $this->QrCodes->getQrImagePath(10);
+        $this->assertTrue(is_readable($path));
+        $this->assertSame($path, $qrCodeImagePath);
+    }
+
+    /**
+     * Test GoogleQrGenerator
+     *
+     * @return void
+     */
+    public function testGoogleQrGenerator(): void
+    {
+        $this->loadRoutes();
+        Configure::write('debug', true);
+
+        // existing entity
+        $path = TMP . 'qr_codes' . DS . '1.png';
+        if (file_exists($path)) {
+            unlink($path);
+        }
+        $this->assertFalse(is_readable($path));
+        // test the Generator Directly
+        $entity = $this->QrCodes->get(1);
+
+        $QR = new GoogleQrGenerator($entity);
+        $this->assertSame('http://localhost/f/sownscribe', $QR->data);
+        $this->assertSame('https://chart.googleapis.com/chart?cht=qr&chld=H|1&chs=200x200&chl=http%3A%2F%2Flocalhost%2Ff%2Fsownscribe', $QR->compileUrl());
+        $this->assertTrue($QR->save());
+        $this->assertTrue(is_readable($path));
+    }
+
+    /**
+     * Tests the PhpQrGenerator Library.
+     *
+     * @return void
+     */
+    public function testPhpQrGenerator(): void
+    {
+        $this->loadRoutes();
+        Configure::write('debug', true);
+
+        // test the Generator Directly
+        $path = TMP . 'qr_codes' . DS . '2.png';
+        if (file_exists($path)) {
+            unlink($path);
+        }
+        $this->assertFalse(is_readable($path));
+        $entity = $this->QrCodes->get(2);
+        $QR = new PhpQrGenerator($entity);
+        $QR->generate();
+        $this->assertTrue(is_readable($path));
+    }
+
+    /**
+     * Tests the QRImageWithLogo Library.
+     *
+     * @return void
+     */
+    public function testQRImageWithLogoBadPaths(): void
+    {
+        $this->loadRoutes();
+        Configure::write('debug', true);
+
+        // test the QRImageWithLogo itself
+        $this->expectException(QRCodeOutputException::class);
+        $this->expectExceptionMessage('invalid logo');
+
+        $options = new LogoOptions();
+        $QR = new ChillerlanQRCode($options);
+        $qrOutputInterface = new QRImageWithLogo($options, $QR->getMatrix('dataishere'));
+        $qrOutputInterface->dump(
+            '/bad/file/path',
+            '/bar/logo/path'
+        );
+    }
+
+    /**
+     * Tests the QRImageWithLogo Library.
+     *
+     * @return void
+     */
+    public function testQRImageWithLogoNullPaths(): void
+    {
+        $this->loadRoutes();
+        Configure::write('debug', true);
+
+        // test the QRImageWithLogo itself
+        $this->expectException(QRCodeOutputException::class);
+        $this->expectExceptionMessage('logo is not set');
+
+        $options = new LogoOptions();
+        $QR = new ChillerlanQRCode($options);
+        $qrOutputInterface = new QRImageWithLogo($options, $QR->getMatrix('dataishere'));
+        $qrOutputInterface->dump(
+            null,
+            null
+        );
     }
 }

@@ -3,6 +3,10 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Lib\PhpQrGenerator;
+use App\Model\Entity\QrCode;
+use ArrayObject;
+use Cake\Event\Event;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -91,6 +95,7 @@ class QrCodesTable extends Table
                 'rule' => 'characters',
                 'provider' => 'key',
             ]);
+            // @todo Validate that this fields isn't set or changed on an update.
 
         $validator
             ->scalar('name')
@@ -154,10 +159,44 @@ class QrCodesTable extends Table
     }
 
     /**
+     * AfterSave callback
+     *
+     * @return void
+     */
+    public function afterSave(Event $event, QrCode $entity, ArrayObject $options): void
+    {
+        // use the qrCodeImagePath method to generate the image
+        $this->getQrImagePath($entity->id, true);
+    }
+
+    /**
      * Custom finder
      */
     public function findKey(SelectQuery $query, string $key): SelectQuery
     {
         return $query->where(['qrkey' => $key]);
+    }
+
+    /**
+     * Gets the Path to the Generated QR Code Image.
+     * If it's not created, try to create it.
+     *
+     * @param int $id The id of the QR Code Entity
+     * @return string The absolute path to the generated QR code Image.
+     * @throws \Cake\Http\Exception\NotFoundException If the entity isn't found, or we can't create the image.
+     */
+    public function getQrImagePath(int $id, bool $renerate = false): string
+    {
+        $qrCode = $this->get($id); // throws a NotFoundException if it doesn't exist.
+        $path = TMP . 'qr_codes' . DS . $id . '.png';
+        if (!file_exists($path) || $renerate) {
+            $QR = new PhpQrGenerator($qrCode);
+            $QR->generate();
+            if (is_readable($path)) {
+                return $path;
+            }
+        }
+
+        return $path;
     }
 }

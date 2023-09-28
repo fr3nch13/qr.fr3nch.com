@@ -26,8 +26,6 @@
             <fieldset>
                 <legend><?= __('Edit QR Code') ?></legend>
 
-                <?= $this->Form->control('qrkey'); ?>
-
                 <?= $this->Form->control('name'); ?>
 
                 <?= $this->Form->control('description'); ?>
