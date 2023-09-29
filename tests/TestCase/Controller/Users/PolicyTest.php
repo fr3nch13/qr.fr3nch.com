@@ -182,6 +182,7 @@ class PolicyTest extends BaseControllerTest
         // TODO: This should apply a check `/users/view`
         // Should also throw a 404, instead of a 500
         // labels: policy, response code
+        // milestone: 1
         $this->assertResponseContains('The request to `/users/view` did not apply any authorization checks.');
         Configure::write('debug', true); // turn it back on
     }
@@ -245,6 +246,7 @@ class PolicyTest extends BaseControllerTest
         // TODO: This should apply a check `/users/edit`
         // Should also throw a 404, instead of a 500
         // labels: policy, response code
+        // milestone: 1
         $this->assertResponseContains('The request to `/users/edit` did not apply any authorization checks.');
         Configure::write('debug', true); // turn it back on
 
