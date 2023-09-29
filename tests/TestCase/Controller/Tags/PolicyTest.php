@@ -95,7 +95,9 @@ class PolicyTest extends BaseControllerTest
         $this->loginUserRegular();
         $this->get('/tags/view');
         $this->assertResponseCode(500);
-        // TODO(policy): This should apply a check `/tags/view`
+        // TODO: This should apply a check `/tags/view`
+        // Should also throw a 404, instead of a 500
+        // labels: policy, response code
         $this->assertResponseContains('The request to `/tags/view` did not apply any authorization checks.');
         Configure::write('debug', true); // turn it back on
     }
@@ -155,7 +157,9 @@ class PolicyTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('/tags/edit');
         $this->assertResponseCode(500);
-        // TODO(policy): This should apply a check `/tags/edit`
+        // TODO: This should apply a check `/tags/edit`
+        // Should also throw a 404, instead of a 500
+        // labels: policy, response code
         $this->assertResponseContains('The request to `/tags/edit` did not apply any authorization checks.');
         Configure::write('debug', true); // turn it back on
 
