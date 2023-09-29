@@ -34,6 +34,11 @@ class PhpQrGenerator
     public QrCode $qrCode;
 
     /**
+     * @var string the absolute path to the generated QR code Image
+     */
+    protected string $qrImagePath;
+
+    /**
      * @var \chillerlan\QRCode\QRCode The generated QR Code Image
      */
     public ChillerlanQRCode $QR;
@@ -53,6 +58,7 @@ class PhpQrGenerator
             'scale' => 5,
         ];
 
+
         $this->config = Configure::read('QrCode', $defaults);
 
         // check some of the config options
@@ -60,6 +66,8 @@ class PhpQrGenerator
         $this->config['positivecolor'] = $this->config['positivecolor'] ?? [0, 0, 0];
         $this->config['negativecolor'] = $this->config['negativecolor'] ?? [255, 255, 255];
         $this->config['logoPath'] = $this->config['logoPath'] ?? WWW_ROOT . 'img' . DS . 'qr_logo.png';
+
+        $this->qrImagePath = TMP . 'qr_codes' . DS . $this->qrCode->id . '.png';
 
         $this->options = new LogoOptions();
 
@@ -131,8 +139,48 @@ class PhpQrGenerator
 
         $qrOutputInterface = new QRImageWithLogo($this->options, $this->QR->getMatrix($this->data));
         $qrOutputInterface->dump(
-            TMP . 'qr_codes' . DS . $this->qrCode->id . '.png',
+            $this->qrImagePath,
             $this->config['logoPath']
         );
+
+        // now that the qr code is generated, see if we want to add a border.
+        if (isset($this->config['use_border']) && $this->config['use_border']) {
+            $this->addBorder();
+        }
     }
+
+    /**
+     * Add a border around the QR Code
+     *
+     * @return void
+     */
+    public function addBorder(): void
+    {
+
+        // defaults
+        $this->config['border_width'] = $this->config['border_width'] ?? 5;
+        $this->config['border_color'] = $this->config['border_color'] ?? [0, 0, 0];
+
+        $img = imagecreatefrompng($this->qrImagePath);
+        $border_color = imagecolorallocate(
+            $img,
+            $this->config['border_color'][0],
+            $this->config['border_color'][1],
+            $this->config['border_color'][2]
+        );
+
+        $x1 = 0;
+        $y1 = 0;
+        $x2 = imagesx($img) - 1;
+        $y2 = imagesy($img) - 1;
+
+        for($i = 0; $i < $this->config['border_width']; $i++)
+        {
+            imagerectangle($img, $x1++, $y1++, $x2--, $y2--, $border_color);
+        }
+
+        $result = imagepng($img, $this->qrImagePath);
+        imagedestroy($img);
+    }
+
 }
