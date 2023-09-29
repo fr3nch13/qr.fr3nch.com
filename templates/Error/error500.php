@@ -9,7 +9,11 @@ use Cake\Core\Configure;
 use Cake\Error\Debugger;
 
 $this->layout = 'error';
+?>
 
+<!-- START: App.Error/error500 -->
+
+<?php
 if (Configure::read('debug')) :
     $this->layout = 'dev_error';
 
@@ -18,6 +22,7 @@ if (Configure::read('debug')) :
 
     $this->start('file');
 ?>
+
 <?php if (!empty($error->queryString)) : ?>
     <p class="notice">
         <strong>SQL Query: </strong>
@@ -45,3 +50,5 @@ endif;
     <strong><?= __d('cake', 'Error') ?>: </strong>
     <?= h($message) ?>
 </p>
+
+<!-- END: App.Error/error500 -->
