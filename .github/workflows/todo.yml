@@ -16,16 +16,13 @@ on:
         description: "By default, the commit entered above is compared to the one directly before it; to go back further, enter an earlier SHA here"
         required: false
 
-permissions:
-  contents: read
-
 jobs:
   build:
     runs-on: "ubuntu-latest"
+    permissions:
+      contents: read
+      issues: write
     steps:
       - uses: "actions/checkout@v3"
       - name: "TODO to Issue"
         uses: "alstr/todo-to-issue-action@v4"
-        with:
-          # ignore the vendor folder.
-          IGNORE: "/^vendor/*"
