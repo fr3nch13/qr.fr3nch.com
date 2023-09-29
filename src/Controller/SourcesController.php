@@ -61,8 +61,7 @@ class SourcesController extends AppController
             }
         }
 
-        // default is allow.
-        return true;
+        return parent::isAuthorized($user);
     }
 
     /**

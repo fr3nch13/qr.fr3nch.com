@@ -77,6 +77,18 @@ class AppController extends Controller
     }
 
     /**
+     * The default policy
+     *
+     * @param \App\Model\Entity\User|null $user The logged in user
+     * @return bool If they're allowed or not.
+     */
+    public function isAuthorized(?User $user): bool
+    {
+        // default is allow.
+        return true;
+    }
+
+    /**
      * Gets the active/logged in user from the session.
      *
      * @param string|null $field If the user exists, return this field

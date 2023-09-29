@@ -9,6 +9,12 @@ use Cake\Controller\Controller;
 
 class ControllerResolver implements ResolverInterface
 {
+    /**
+     * Calls the ControllerHookPolicy to check controller actions.
+     *
+     * @param mixed $resource Namelt the Controller to check
+     * @return mixed Mainly a bool if the authorization succedded or failed.
+     */
     public function getPolicy(mixed $resource): mixed
     {
         if ($resource instanceof Controller) {

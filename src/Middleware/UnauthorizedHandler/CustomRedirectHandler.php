@@ -13,8 +13,19 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class CustomRedirectHandler extends RedirectHandler
 {
-    public function handle(Exception $exception, ServerRequestInterface $request, array $options = []): ResponseInterface
-    {
+    /**
+     * Handles the exceptions thrown by the Authorization middleware
+     *
+     * @param \Authorization\Exception\Exception $exception The thrown exception to handle
+     * @param \Cake\Http\ServerRequest $request the incoming request.
+     * @param array<string, mixed> $options The related options to check/manipulate
+     * @return \Psr\Http\Message\ResponseInterface The response object.
+     */
+    public function handle(
+        Exception $exception,
+        ServerRequestInterface $request,
+        array $options = []
+    ): ResponseInterface {
         if (isset($options['url'])) {
             if (!$request->getAttribute('identity')) {
                 $options['url'] = '/users/login';

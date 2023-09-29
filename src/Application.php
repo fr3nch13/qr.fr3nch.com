@@ -97,7 +97,6 @@ class Application extends BaseApplication implements
      */
     public function middleware(MiddlewareQueue $middlewareQueue): MiddlewareQueue
     {
-
         $middlewareQueue
             // Catch any exceptions in the lower layers,
             // and make an error page/response

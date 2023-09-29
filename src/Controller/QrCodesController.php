@@ -56,8 +56,7 @@ class QrCodesController extends AppController
             }
         }
 
-        // default is allow.
-        return true;
+        return parent::isAuthorized($user);
     }
 
     /**

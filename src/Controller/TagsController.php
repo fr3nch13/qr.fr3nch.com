@@ -50,7 +50,7 @@ class TagsController extends AppController
         // all logged in users to can access the actions.
         // the object authorization is then done.
         // default is allow.
-        return true;
+        return parent::isAuthorized($user);
     }
 
     /**

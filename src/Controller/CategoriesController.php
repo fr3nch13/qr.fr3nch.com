@@ -57,8 +57,7 @@ class CategoriesController extends AppController
             return $user->isAdmin();
         }
 
-        // default is allow.
-        return true;
+        return parent::isAuthorized($user);
     }
 
     /**

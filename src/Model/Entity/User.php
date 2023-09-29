@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
-use ArrayAccess;
 use Authentication\IdentityInterface as AuthenticationIdentity;
 use Authentication\PasswordHasher\DefaultPasswordHasher;
 use Authorization\AuthorizationServiceInterface;
@@ -21,6 +20,8 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\DateTime|null $created
  * @property \Cake\I18n\DateTime|null $modified
  * @property bool $is_admin
+ *
+ * @property \Authorization\AuthorizationServiceInterface $authorization
  */
 class User extends Entity implements AuthorizationIdentity, AuthenticationIdentity
 {
@@ -131,9 +132,9 @@ class User extends Entity implements AuthorizationIdentity, AuthenticationIdenti
      * If the decorated identity implements `getOriginalData()`
      * that method should be invoked to expose the original data.
      *
-     * @return \ArrayAccess|array
+     * @return self
      */
-    public function getOriginalData(): ArrayAccess|array
+    public function getOriginalData(): self
     {
         return $this;
     }
@@ -150,8 +151,11 @@ class User extends Entity implements AuthorizationIdentity, AuthenticationIdenti
 
     /**
      * Setter to be used by the middleware.
+     *
+     * @param \Authorization\AuthorizationServiceInterface $service The service to attach this eneity to as the identifier.
+     * @return self
      */
-    public function setAuthorization(AuthorizationServiceInterface $service)
+    public function setAuthorization(AuthorizationServiceInterface $service): self
     {
         $this->authorization = $service;
 
