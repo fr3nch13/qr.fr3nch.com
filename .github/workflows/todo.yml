@@ -4,11 +4,6 @@ name: "Run TODO to Issue"
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - '*'
   workflow_dispatch:
     inputs:
       MANUAL_COMMIT_REF:
