@@ -178,7 +178,7 @@ class PolicyTest extends BaseControllerTest
         $this->loginUserRegular();
         $this->get('/users/view');
         $this->assertResponseCode(500);
-        // TODO: This should apply a check `/users/view`
+        // TODO(policy): This should apply a check `/users/view`
         $this->assertResponseContains('The request to `/users/view` did not apply any authorization checks.');
         Configure::write('debug', true); // turn it back on
     }
@@ -239,7 +239,7 @@ class PolicyTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('/users/edit');
         $this->assertResponseCode(500);
-        // TODO: This should apply a check `/users/edit`
+        // TODO(policy): This should apply a check `/users/edit`
         $this->assertResponseContains('The request to `/users/edit` did not apply any authorization checks.');
         Configure::write('debug', true); // turn it back on
 
