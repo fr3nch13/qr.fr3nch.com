@@ -100,10 +100,11 @@ return function (RouteBuilder $routes): void {
 
      /*
     // TODO: Create the controllers for the api
-    // TODO: Figure out why the redirect for the login is going here
+    // Figure out why the redirect for the login is going here
     // commented out until this is resolved.
-    // i mean it's not that i need an api interface at the moment.
+    // I mean it's not that I need an api interface at the moment.
     // @link https://book.cakephp.org/5/en/development/routing.html#restful-routing
+    // milestone: 4
     $routes->scope('/api', function (RouteBuilder $routes) {
         $routes->resources('Categories');
         $routes->resources('QrCodes');

@@ -61,8 +61,6 @@ class QrCodesTagsTable extends Table
      */
     public function validationDefault(Validator $validator): Validator
     {
-        // TODO: Check to make sure the combination of tag_id and qr_code_id are unique,
-        //      So we're not tagging the same QR with the same Tag multiple times.
         $validator
             ->integer('tag_id')
             ->notEmptyString('tag_id')
