@@ -7,6 +7,7 @@ use App\Model\Entity\QrCode;
 use Cake\Core\Configure;
 use Cake\Routing\Router;
 use chillerlan\QRCode\QRCode as ChillerlanQRCode;
+use GdImage;
 
 /**
  * Library for generating QR codes with chillerlan/QRCode.
@@ -57,7 +58,6 @@ class PhpQrGenerator
             'negativecolor' => [255, 255, 255],
             'scale' => 5,
         ];
-
 
         $this->config = Configure::read('QrCode', $defaults);
 
@@ -156,31 +156,31 @@ class PhpQrGenerator
      */
     public function addBorder(): void
     {
-
         // defaults
         $this->config['border_width'] = $this->config['border_width'] ?? 5;
         $this->config['border_color'] = $this->config['border_color'] ?? [0, 0, 0];
 
         $img = imagecreatefrompng($this->qrImagePath);
-        $border_color = imagecolorallocate(
-            $img,
-            $this->config['border_color'][0],
-            $this->config['border_color'][1],
-            $this->config['border_color'][2]
-        );
+        if ($img instanceof GdImage) {
+            $border_color = imagecolorallocate(
+                $img,
+                $this->config['border_color'][0],
+                $this->config['border_color'][1],
+                $this->config['border_color'][2]
+            );
+            if (is_int($border_color)) {
+                $x1 = 0;
+                $y1 = 0;
+                $x2 = imagesx($img) - 1;
+                $y2 = imagesy($img) - 1;
 
-        $x1 = 0;
-        $y1 = 0;
-        $x2 = imagesx($img) - 1;
-        $y2 = imagesy($img) - 1;
+                for ($i = 0; $i < $this->config['border_width']; $i++) {
+                    imagerectangle($img, $x1++, $y1++, $x2--, $y2--, $border_color);
+                }
+            }
 
-        for($i = 0; $i < $this->config['border_width']; $i++)
-        {
-            imagerectangle($img, $x1++, $y1++, $x2--, $y2--, $border_color);
+            imagepng($img, $this->qrImagePath);
+            imagedestroy($img);
         }
-
-        $result = imagepng($img, $this->qrImagePath);
-        imagedestroy($img);
     }
-
 }
