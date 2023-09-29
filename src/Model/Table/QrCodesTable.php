@@ -155,6 +155,14 @@ class QrCodesTable extends Table
             'message' => __('Unknown User'),
         ]);
 
+        // ensures the 'qrkey' field can't be updated through the entity.
+        $rules->addUpdate(function ($entity, $options) {
+            return !$entity->isDirty('qrkey');
+        }, 'update', [
+            'errorField' => 'qrkey',
+            'message' => __('QR Key can not be updated.'),
+        ]);
+
         return $rules;
     }
 

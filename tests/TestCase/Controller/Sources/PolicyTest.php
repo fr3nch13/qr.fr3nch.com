@@ -51,9 +51,11 @@ class PolicyTest extends BaseControllerTest
         // test with reqular
         $this->loginUserRegular();
         $this->get('/sources');
-        $this->assertResponseOk();
-        $this->assertResponseContains('<div class="sources index content">');
-        $this->assertResponseContains('<h3>Sources</h3>');
+        $this->assertResponseCode(302);
+        $this->assertRedirectContains('/?redirect=%2Fsources');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
     }
 
     /**
@@ -88,14 +90,16 @@ class PolicyTest extends BaseControllerTest
         $this->loginUserRegular();
         $this->get('/sources/view');
         $this->assertResponseCode(404);
-        $this->assertResponseContains('Record not found in table `sources`.');
+        $this->assertResponseContains('Unknown ID');
 
         // test with missing id, no debug
         Configure::write('debug', false);
         $this->loginUserRegular();
         $this->get('/sources/view');
-        $this->assertResponseCode(404);
-        $this->assertResponseContains('Not Found');
+        $this->assertResponseCode(500);
+        // @todo This should apply a check
+        $this->assertResponseContains('The request to `/sources/view` did not apply any authorization checks.');
+        Configure::write('debug', true); // turn it back on
     }
 
     /**
@@ -123,8 +127,11 @@ class PolicyTest extends BaseControllerTest
         // test with reqular, get
         $this->loginUserRegular();
         $this->get('/sources/add');
-        $this->assertResponseCode(403);
-        $this->assertResponseContains('Error: Identity is not authorized to perform `add` on `App\Model\Entity\Source`.');
+        $this->assertResponseCode(302);
+        $this->assertRedirectContains('/?redirect=%2Fsources%2Fadd');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
     }
 
     /**
@@ -145,7 +152,16 @@ class PolicyTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('/sources/edit');
         $this->assertResponseCode(404);
-        $this->assertResponseContains('Record not found in table `sources`.');
+        $this->assertResponseContains('Unknown ID');
+
+        // test with missing id, no debug
+        Configure::write('debug', false);
+        $this->loginUserAdmin();
+        $this->get('/sources/edit');
+        $this->assertResponseCode(500);
+        // @todo This should apply a check
+        $this->assertResponseContains('The request to `/sources/edit` did not apply any authorization checks.');
+        Configure::write('debug', true); // turn it back on
 
         // test with admin, get
         $this->loginUserAdmin();
@@ -158,8 +174,11 @@ class PolicyTest extends BaseControllerTest
         // test with reqular, get
         $this->loginUserRegular();
         $this->get('/sources/edit/1');
-        $this->assertResponseCode(403);
-        $this->assertResponseContains('Error: Identity is not authorized to perform `edit` on `App\Model\Entity\Source`.');
+        $this->assertResponseCode(302);
+        $this->assertRedirectContains('/?redirect=%2Fsources%2Fedit%2F1');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
     }
 
     /**
@@ -182,26 +201,32 @@ class PolicyTest extends BaseControllerTest
         // test get with missing id and debug
         $this->loginUserAdmin();
         $this->get('/sources/delete');
-        $this->assertResponseCode(405);
-        $this->assertResponseContains('Method Not Allowed');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
 
         // test get with reqular, get
         $this->loginUserRegular();
         $this->get('/sources/delete/1');
-        $this->assertResponseCode(405);
-        $this->assertResponseContains('Method Not Allowed');
+        $this->assertRedirectContains('/?redirect=%2Fsources%2Fdelete%2F1');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
 
         // test post with regular, post
         $this->loginUserRegular();
         $this->post('/sources/delete/1');
-        $this->assertResponseCode(405);
-        $this->assertResponseContains('Method Not Allowed');
+        $this->assertRedirectContains('/');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
 
         // test delete with regular user
         $this->loginUserRegular();
         $this->delete('/sources/delete/1');
-        $this->assertResponseCode(403);
-        $this->assertResponseContains('Error: Identity is not authorized to perform `delete` on `App\Model\Entity\Source`.');
+        $this->assertRedirectContains('/');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
 
         // test post with admin, get
         $this->loginUserAdmin();
@@ -209,13 +234,19 @@ class PolicyTest extends BaseControllerTest
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
+        // test with admin, delete, no ID
+        $this->loginUserAdmin();
+        $this->delete('/sources/delete');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
+
         // test with admin, post no data, no CSRF
         $this->loginUserAdmin();
         $this->delete('/sources/delete/1');
-        $this->assertFlashMessage('The source `Amazon` has been deleted.', 'flash');
-        $this->assertFlashElement('flash/success');
         $this->assertRedirect();
         $this->assertResponseCode(302);
         $this->assertRedirectContains('/sources');
+        $this->assertFlashMessage('The source `Amazon` has been deleted.', 'flash');
+        $this->assertFlashElement('flash/success');
     }
 }

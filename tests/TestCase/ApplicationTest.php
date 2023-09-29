@@ -17,8 +17,15 @@ declare(strict_types=1);
 namespace App\Test\TestCase;
 
 use App\Application;
+use Authentication\Middleware\AuthenticationMiddleware;
+use Authorization\Middleware\AuthorizationMiddleware;
 use Cake\Core\Configure;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
+use Cake\Http\Middleware\BodyParserMiddleware;
+use Cake\Http\Middleware\CspMiddleware;
+use Cake\Http\Middleware\CsrfProtectionMiddleware;
+use Cake\Http\Middleware\HttpsEnforcerMiddleware;
+use Cake\Http\Middleware\SecurityHeadersMiddleware;
 use Cake\Http\MiddlewareQueue;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
@@ -101,6 +108,20 @@ class ApplicationTest extends TestCase
         $middleware->seek(1);
         $this->assertInstanceOf(AssetMiddleware::class, $middleware->current());
         $middleware->seek(2);
+        $this->assertInstanceOf(CspMiddleware::class, $middleware->current());
+        $middleware->seek(3);
         $this->assertInstanceOf(RoutingMiddleware::class, $middleware->current());
+        $middleware->seek(4);
+        $this->assertInstanceOf(BodyParserMiddleware::class, $middleware->current());
+        $middleware->seek(5);
+        $this->assertInstanceOf(CsrfProtectionMiddleware::class, $middleware->current());
+        $middleware->seek(6);
+        $this->assertInstanceOf(AuthenticationMiddleware::class, $middleware->current());
+        $middleware->seek(7);
+        $this->assertInstanceOf(AuthorizationMiddleware::class, $middleware->current());
+        $middleware->seek(8);
+        $this->assertInstanceOf(SecurityHeadersMiddleware::class, $middleware->current());
+        $middleware->seek(9);
+        $this->assertInstanceOf(HttpsEnforcerMiddleware::class, $middleware->current());
     }
 }

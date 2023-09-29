@@ -117,6 +117,9 @@ class PolicyTest extends BaseControllerTest
         $this->assertRedirect();
         $this->assertResponseCode(302);
         $this->assertRedirectContains('/users/login?redirect=%2Fusers');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
 
         // test with admin
         $this->loginUserAdmin();
@@ -125,12 +128,14 @@ class PolicyTest extends BaseControllerTest
         $this->assertResponseContains('<div class="users index content">');
         $this->assertResponseContains('<h3>Users</h3>');
 
-        // test with reqular
+        // test with reqular, should not allow a regular user to the list
         $this->loginUserRegular();
         $this->get('/users');
-        $this->assertResponseOk();
-        $this->assertResponseContains('<div class="users index content">');
-        $this->assertResponseContains('<h3>Users</h3>');
+        $this->assertResponseCode(302);
+        $this->assertRedirectContains('/?redirect=%2Fusers');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
     }
 
     /**
@@ -146,6 +151,7 @@ class PolicyTest extends BaseControllerTest
         $this->assertRedirect();
         $this->assertResponseCode(302);
         $this->assertRedirectContains('/users/login?redirect=%2Fusers%2Fview%2F3');
+        // @todo add a flash message for unauthenticated requests.
 
         // test with admin
         $this->loginUserAdmin();
@@ -165,14 +171,16 @@ class PolicyTest extends BaseControllerTest
         $this->loginUserRegular();
         $this->get('/users/view');
         $this->assertResponseCode(404);
-        $this->assertResponseContains('Record not found in table `users`.');
+        $this->assertResponseContains('Unknown ID');
 
         // test with missing id, no debug
         Configure::write('debug', false);
         $this->loginUserRegular();
         $this->get('/users/view');
-        $this->assertResponseCode(404);
-        $this->assertResponseContains('Not Found');
+        $this->assertResponseCode(500);
+        // @todo This should apply a check
+        $this->assertResponseContains('The request to `/users/view` did not apply any authorization checks.');
+        Configure::write('debug', true); // turn it back on
     }
 
     /**
@@ -200,8 +208,11 @@ class PolicyTest extends BaseControllerTest
         // test with reqular, get
         $this->loginUserRegular();
         $this->get('/users/add');
-        $this->assertResponseCode(403);
-        $this->assertResponseContains('Error: Identity is not authorized to perform `add` on `App\Model\Entity\User`.');
+        $this->assertResponseCode(302);
+        $this->assertRedirectContains('/?redirect=%2Fusers');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
     }
 
     /**
@@ -214,7 +225,6 @@ class PolicyTest extends BaseControllerTest
     {
         // not logged in, so should redirect
         $this->get('/users/edit');
-        $this->assertRedirect();
         $this->assertResponseCode(302);
         $this->assertRedirectContains('/users/login?redirect=%2Fusers%2Fedit');
 
@@ -222,7 +232,16 @@ class PolicyTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('/users/edit');
         $this->assertResponseCode(404);
-        $this->assertResponseContains('Record not found in table `users`.');
+        $this->assertResponseContains('Unknown ID');
+
+        // test with missing id, no debug
+        Configure::write('debug', false);
+        $this->loginUserAdmin();
+        $this->get('/users/edit');
+        $this->assertResponseCode(500);
+        // @todo This should apply a check
+        $this->assertResponseContains('The request to `/users/edit` did not apply any authorization checks.');
+        Configure::write('debug', true); // turn it back on
 
         // test with admin, get
         $this->loginUserAdmin();
@@ -235,8 +254,11 @@ class PolicyTest extends BaseControllerTest
         // test with reqular, get
         $this->loginUserRegular();
         $this->get('/users/edit/3');
-        $this->assertResponseCode(403);
-        $this->assertResponseContains('Error: Identity is not authorized to perform `edit` on `App\Model\Entity\User`.');
+        $this->assertResponseCode(302);
+        $this->assertRedirectContains('/?redirect=%2Fusers');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
     }
 
     /**
@@ -259,26 +281,35 @@ class PolicyTest extends BaseControllerTest
         // test get with missing id and debug
         $this->loginUserAdmin();
         $this->get('/users/delete');
-        $this->assertResponseCode(405);
-        $this->assertResponseContains('Method Not Allowed');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
 
         // test get with reqular, get
         $this->loginUserRegular();
         $this->get('/users/delete/3');
-        $this->assertResponseCode(405);
-        $this->assertResponseContains('Method Not Allowed');
+        $this->assertResponseCode(302);
+        $this->assertRedirectContains('/?redirect=%2Fusers');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
 
         // test post with regular, post
         $this->loginUserRegular();
         $this->post('/users/delete/3');
-        $this->assertResponseCode(405);
-        $this->assertResponseContains('Method Not Allowed');
+        $this->assertResponseCode(302);
+        $this->assertRedirectContains('/');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
 
         // test delete with regular user
         $this->loginUserRegular();
         $this->delete('/users/delete/3');
-        $this->assertResponseCode(403);
-        $this->assertResponseContains('Error: Identity is not authorized to perform `delete` on `App\Model\Entity\User`.');
+        $this->assertResponseCode(302);
+        $this->assertRedirectContains('/');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
 
         // test post with admin, get
         $this->loginUserAdmin();
@@ -286,13 +317,19 @@ class PolicyTest extends BaseControllerTest
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
+        // test with admin, delete, no ID
+        $this->loginUserAdmin();
+        $this->delete('/users/delete');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
+
         // test with admin, post no data, no CSRF
         $this->loginUserAdmin();
         $this->delete('/users/delete/3');
-        $this->assertFlashMessage('The user `Delete Me` has been deleted.', 'flash');
-        $this->assertFlashElement('flash/success');
         $this->assertRedirect();
         $this->assertResponseCode(302);
         $this->assertRedirectContains('/users');
+        $this->assertFlashMessage('The user `Delete Me` has been deleted.', 'flash');
+        $this->assertFlashElement('flash/success');
     }
 }

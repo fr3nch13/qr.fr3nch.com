@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Model\Entity\User;
 use Cake\Event\EventInterface;
+use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
 
 /**
@@ -22,6 +24,40 @@ class QrCodesController extends AppController
         // Configure the login action to not require authentication, preventing
         // the infinite redirect loop issue
         $this->Authentication->addUnauthenticatedActions(['forward', 'show', 'index', 'view']);
+
+        $this->Authorization->authorize($this);
+
+        // make sure we have an ID where needed.
+        $action = $this->request->getParam('action');
+        // admin actions
+        if (in_array($action, ['view', 'edit', 'delete'])) {
+            $pass = $this->request->getParam('pass');
+            if (empty($pass) || !isset($pass['0'])) {
+                throw new NotFoundException('Unknown ID');
+            }
+        }
+    }
+
+    /**
+     * Use the below to check if the user can access the called action.
+     * This is a general check, and should return true at the end,
+     * as the Authorization->authorize() will handle the specific authorization in each action.
+     *
+     * @param \App\Model\Entity\User|null $user The logged in user
+     * @return bool If they're allowed or not.
+     */
+    public function isAuthorized(?User $user): bool
+    {
+        $action = $this->request->getParam('action');
+        // admin actions
+        if (in_array($action, ['add', 'edit', 'delete'])) {
+            if (!$user) {
+                return false;
+            }
+        }
+
+        // default is allow.
+        return true;
     }
 
     /**
@@ -33,7 +69,6 @@ class QrCodesController extends AppController
     public function forward(?string $key = null): ?Response
     {
         $this->request->allowMethod(['get']);
-        $this->Authorization->skipAuthorization();
 
         // if no key given, redirect them to the index page.
         if (!$key) {
@@ -69,7 +104,6 @@ class QrCodesController extends AppController
     public function show(?string $id = null)
     {
         $this->request->allowMethod(['get']);
-        $this->Authorization->skipAuthorization();
 
         $qrCodeImagePath = $this->QrCodes->getQrImagePath((int)$id);
         $response = $this->response->withFile($qrCodeImagePath);
@@ -86,7 +120,6 @@ class QrCodesController extends AppController
     public function index()
     {
         $this->request->allowMethod(['get']);
-        $this->Authorization->skipAuthorization();
 
         // look for an incoming key int the query,
         // and redirect it to the forward action.
@@ -115,7 +148,6 @@ class QrCodesController extends AppController
     public function view(?string $id = null)
     {
         $this->request->allowMethod(['get']);
-        $this->Authorization->skipAuthorization();
 
         $qrCode = $this->QrCodes->get((int)$id, contain: ['Sources', 'Users', 'Categories', 'Tags']);
 

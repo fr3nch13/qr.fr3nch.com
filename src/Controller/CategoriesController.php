@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Model\Entity\User;
 use Cake\Event\EventInterface;
+use Cake\Http\Exception\NotFoundException;
 
 /**
  * Categories Controller
@@ -21,6 +23,42 @@ class CategoriesController extends AppController
 
         //Allow anyone to view the list of categories, and their details page.
         $this->Authentication->addUnauthenticatedActions(['index', 'view']);
+
+        $this->Authorization->authorize($this);
+
+        // make sure we have an ID where needed.
+        $action = $this->request->getParam('action');
+        // admin actions
+        if (in_array($action, ['view', 'edit', 'delete'])) {
+            $pass = $this->request->getParam('pass');
+            if (empty($pass) || !isset($pass['0'])) {
+                throw new NotFoundException('Unknown ID');
+            }
+        }
+    }
+
+    /**
+     * Use the below to check if the user can access the called action.
+     * This is a general check, and should return true at the end,
+     * as the Authorization->authorize() will handle the specific authorization in each action.
+     *
+     * @param \App\Model\Entity\User|null $user The logged in user
+     * @return bool If they're allowed or not.
+     */
+    public function isAuthorized(?User $user): bool
+    {
+        $action = $this->request->getParam('action');
+        // admin actions
+        if (in_array($action, ['add', 'edit', 'delete'])) {
+            if (!$user) {
+                return false;
+            }
+
+            return $user->isAdmin();
+        }
+
+        // default is allow.
+        return true;
     }
 
     /**
@@ -31,7 +69,6 @@ class CategoriesController extends AppController
     public function index()
     {
         $this->request->allowMethod(['get']);
-        $this->Authorization->skipAuthorization();
 
         $query = $this->Categories->find('all')
             ->contain(['QrCodes', 'ParentCategories']);
@@ -51,7 +88,6 @@ class CategoriesController extends AppController
     public function view(?string $id = null)
     {
         $this->request->allowMethod(['get']);
-        $this->Authorization->skipAuthorization();
 
         $category = $this->Categories->get((int)$id, contain: ['ParentCategories', 'QrCodes', 'ChildCategories']);
 

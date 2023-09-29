@@ -49,19 +49,6 @@ class TagPolicy
     }
 
     /**
-     * Check if $user can view Tag
-     *
-     * @param \Authorization\Identity $identity The identity object.
-     * @param \App\Model\Entity\Tag $Tag
-     * @return bool
-     */
-    public function canView(IdentityInterface $identity, Tag $Tag): bool
-    {
-        // All logged in users can view a qr code.
-        return true;
-    }
-
-    /**
      * Check if $user created the Tag
      *
      * @param \Authorization\Identity $identity The identity object.

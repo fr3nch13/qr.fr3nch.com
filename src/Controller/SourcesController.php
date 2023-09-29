@@ -3,6 +3,10 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Model\Entity\User;
+use Cake\Event\EventInterface;
+use Cake\Http\Exception\NotFoundException;
+
 /**
  * Sources Controller
  *
@@ -11,6 +15,57 @@ namespace App\Controller;
 class SourcesController extends AppController
 {
     /**
+     * Runs before the code in the actions
+     */
+    public function beforeFilter(EventInterface $event): void
+    {
+        parent::beforeFilter($event);
+
+        $this->Authorization->authorize($this);
+
+        // make sure we have an ID where needed.
+        $action = $this->request->getParam('action');
+        // admin actions
+        if (in_array($action, ['view', 'edit', 'delete'])) {
+            $pass = $this->request->getParam('pass');
+            if (empty($pass) || !isset($pass['0'])) {
+                throw new NotFoundException('Unknown ID');
+            }
+        }
+    }
+
+    /**
+     * Use the below to check if the user can access the called action.
+     * This is a general check, and should return true at the end,
+     * as the Authorization->authorize() will handle the specific authorization in each action.
+     *
+     * @param \App\Model\Entity\User|null $user The logged in user
+     * @return bool If they're allowed or not.
+     */
+    public function isAuthorized(?User $user): bool
+    {
+        $action = $this->request->getParam('action');
+
+        // all actions require an admin
+
+        // admin actions
+        if (in_array($action, ['index', 'add', 'edit', 'delete'])) {
+            if (!$user) {
+                return false;
+            }
+
+            return $user->isAdmin();
+        } elseif (in_array($action, ['view'])) {
+            if (!$user) {
+                return false;
+            }
+        }
+
+        // default is allow.
+        return true;
+    }
+
+    /**
      * Index method
      *
      * @return \Cake\Http\Response|null|void Renders view
@@ -18,12 +73,8 @@ class SourcesController extends AppController
     public function index()
     {
         $this->request->allowMethod(['get']);
-        // @todo Figure out how to do authorization on a logged-in index page
-        // seems like i need to make a Policy for the Model
-        $this->Authorization->skipAuthorization();
 
         $query = $this->Sources->find('all');
-
         $sources = $this->paginate($query);
 
         $this->set(compact('sources'));

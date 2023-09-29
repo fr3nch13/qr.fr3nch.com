@@ -16,6 +16,7 @@ declare(strict_types=1);
  */
 namespace App;
 
+use App\Policy\ControllerResolver;
 use Authentication\AuthenticationService;
 use Authentication\AuthenticationServiceInterface;
 use Authentication\AuthenticationServiceProviderInterface;
@@ -23,15 +24,21 @@ use Authentication\Middleware\AuthenticationMiddleware;
 use Authorization\AuthorizationService;
 use Authorization\AuthorizationServiceInterface;
 use Authorization\AuthorizationServiceProviderInterface;
+use Authorization\Exception\ForbiddenException;
+use Authorization\Exception\MissingIdentityException;
 use Authorization\Middleware\AuthorizationMiddleware;
 use Authorization\Policy\OrmResolver;
+use Authorization\Policy\ResolverCollection;
 use Cake\Core\Configure;
 use Cake\Core\ContainerInterface;
 use Cake\Datasource\FactoryLocator;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\BaseApplication;
 use Cake\Http\Middleware\BodyParserMiddleware;
+use Cake\Http\Middleware\CspMiddleware;
 use Cake\Http\Middleware\CsrfProtectionMiddleware;
+use Cake\Http\Middleware\HttpsEnforcerMiddleware;
+use Cake\Http\Middleware\SecurityHeadersMiddleware;
 use Cake\Http\MiddlewareQueue;
 use Cake\ORM\Locator\TableLocator;
 use Cake\Routing\Middleware\AssetMiddleware;
@@ -90,6 +97,7 @@ class Application extends BaseApplication implements
      */
     public function middleware(MiddlewareQueue $middlewareQueue): MiddlewareQueue
     {
+
         $middlewareQueue
             // Catch any exceptions in the lower layers,
             // and make an error page/response
@@ -98,6 +106,25 @@ class Application extends BaseApplication implements
             // Handle plugin/theme assets like CakePHP normally does.
             ->add(new AssetMiddleware([
                 'cacheTime' => Configure::read('Asset.cacheTime'),
+            ]))
+
+            // Content Security Policy
+            // @link https://book.cakephp.org/5/en/security/content-security-policy.html#content-security-policy-middleware
+            ->add(new CspMiddleware([
+                'script-src' => [
+                    'allow' => [
+                        // external domains that can load/run javascript.
+                        'https://www.google-analytics.com',
+                    ],
+                    'self' => true,
+                    'unsafe-inline' => false,
+                    'unsafe-eval' => false,
+                    'script-src' => [],
+                    'style-src' => [],
+                ],
+            ], [
+                'scriptNonce' => true,
+                'styleNonce' => true,
             ]))
 
             // Add routing middleware.
@@ -121,7 +148,45 @@ class Application extends BaseApplication implements
             ->add(new AuthenticationMiddleware($this))
 
             // @link https://book.cakephp.org/5/en/tutorials-and-examples/cms/authorization.html
-            ->add(new AuthorizationMiddleware($this));
+            ->add(new AuthorizationMiddleware($this, [
+                'identityDecorator' => function ($auth, $user) {
+                    return $user->setAuthorization($auth);
+                },
+                'unauthorizedHandler' => [
+                    'className' => 'CustomRedirect', // <--- see here
+                    'url' => '/',
+                    'queryParam' => 'redirect',
+                    'exceptions' => [
+                        MissingIdentityException::class,
+                        ForbiddenException::class,
+                    ],
+                    'custom_param' => true,
+                ],
+            ]));
+
+        // @link https://book.cakephp.org/5/en/security/security-headers.html
+        $securityHeaders = new SecurityHeadersMiddleware();
+        $securityHeaders
+            ->setReferrerPolicy()
+            ->setXFrameOptions()
+            ->noOpen()
+            ->noSniff();
+        $middlewareQueue->add($securityHeaders);
+
+        $https = new HttpsEnforcerMiddleware([
+            'redirect' => true,
+            'statusCode' => 302,
+            'hsts' => [
+                // How long the header value should be cached for.
+                'maxAge' => 60 * 60 * 24 * 365,
+                // should this policy apply to subdomains?
+                'includeSubDomains' => true,
+                // Should the header value be cacheable in google's HSTS preload
+                // service? While not part of the spec it is widely implemented.
+                'preload' => true,
+            ],
+        ]);
+        $middlewareQueue->add($https);
 
         return $middlewareQueue;
     }
@@ -217,7 +282,16 @@ class Application extends BaseApplication implements
      */
     public function getAuthorizationService(ServerRequestInterface $request): AuthorizationServiceInterface
     {
-        $resolver = new OrmResolver();
+        // make controller authorization backwards compatible
+        // @link https://book.cakephp.org/authorization/3/en/policy-resolvers.html#creating-a-resolver
+        $controllerResolver = new ControllerResolver();
+        $ormResolver = new OrmResolver();
+
+        // @link https://book.cakephp.org/authorization/3/en/policy-resolvers.html#using-multiple-resolvers
+        $resolver = new ResolverCollection([
+            $controllerResolver,
+            $ormResolver,
+        ]);
 
         return new AuthorizationService($resolver);
     }

@@ -48,7 +48,7 @@ class UserPolicy
     }
 
     /**
-     * Check if $user can view User
+     * Check if $identity can view User
      *
      * @param \Authorization\Identity $identity The identity object.
      * @param \App\Model\Entity\User $User
@@ -56,12 +56,12 @@ class UserPolicy
      */
     public function canView(IdentityInterface $identity, User $User): bool
     {
-        // All logged in users can view a qr code.
+        // All logged in users can view a user
         return true;
     }
 
     /**
-     * Check if $user created the User
+     * Check if $identity is the User
      *
      * @param \Authorization\Identity $identity The identity object.
      * @param \App\Model\Entity\User $User
@@ -73,7 +73,7 @@ class UserPolicy
     }
 
     /**
-     * Check if $user is an Admin
+     * Check if $identity is an Admin
      *
      * @param \Authorization\Identity $identity The identity object.
      * @param \App\Model\Entity\User $User

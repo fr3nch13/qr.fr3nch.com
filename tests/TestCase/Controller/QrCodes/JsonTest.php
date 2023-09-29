@@ -192,9 +192,36 @@ class JsonTest extends BaseControllerTest
         $this->assertTrue(isset($content['tags']));
         $this->assertCount(4, $content['tags']);
 
-        // a patch success
+        // a fail as qrkey can't be updated via forms/entities
         $this->patch('/qr-codes/edit/1.json', [
             'qrkey' => 'newjsonkey',
+            'name' => 'New JSON QR Code',
+            'description' => 'Description of the code',
+            'url' => 'https://amazon.com/path/to/forward',
+            'bitly_id' => 'bitly_id',
+            'source_id' => 1,
+        ]);
+        $this->assertResponseOk();
+        $content = (string)$this->_response->getBody();
+        $content = json_decode($content, true);
+
+        $this->assertTrue(isset($content['qrCode']));
+        $this->assertFalse(empty($content['qrCode']));
+
+        $this->assertTrue(isset($content['errors']));
+        $this->assertFalse(empty($content['errors']));
+
+        $this->assertSame('QR Key can not be updated.', $content['errors']['qrkey']['update']);
+
+        $this->assertTrue(isset($content['sources']));
+        $this->assertCount(2, $content['sources']);
+        $this->assertTrue(isset($content['categories']));
+        $this->assertCount(3, $content['categories']);
+        $this->assertTrue(isset($content['tags']));
+        $this->assertCount(4, $content['tags']);
+
+        // a patch success
+        $this->patch('/qr-codes/edit/1.json', [
             'name' => 'New JSON QR Code',
             'description' => 'Description of the code',
             'url' => 'https://amazon.com/path/to/forward',

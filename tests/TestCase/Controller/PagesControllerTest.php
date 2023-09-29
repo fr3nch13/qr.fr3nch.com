@@ -119,7 +119,7 @@ class PagesControllerTest extends BaseControllerTest
 
         $this->get('/pages/not_existing');
 
-        $this->assertResponseError();
+        $this->assertResponseCode(500);
         $this->assertResponseContains('Error');
     }
 

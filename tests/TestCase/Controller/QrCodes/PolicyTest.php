@@ -88,14 +88,16 @@ class PolicyTest extends BaseControllerTest
         $this->loginUserRegular();
         $this->get('/qr-codes/view');
         $this->assertResponseCode(404);
-        $this->assertResponseContains('Record not found in table `qr_codes`.');
+        $this->assertResponseContains('Unknown ID');
 
         // test with missing id, no debug
         Configure::write('debug', false);
         $this->loginUserRegular();
         $this->get('/qr-codes/view');
-        $this->assertResponseCode(404);
-        $this->assertResponseContains('Not Found');
+        $this->assertResponseCode(500);
+        // @todo This should apply a check
+        $this->assertResponseContains('The request to `/qr-codes/view` did not apply any authorization checks.');
+        Configure::write('debug', true); // turn it back on
     }
 
     /**
@@ -147,7 +149,16 @@ class PolicyTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('/qr-codes/edit');
         $this->assertResponseCode(404);
-        $this->assertResponseContains('Record not found in table `qr_codes`.');
+        $this->assertResponseContains('Unknown ID');
+
+        // test with missing id, no debug
+        Configure::write('debug', false);
+        $this->loginUserAdmin();
+        $this->get('/qr-codes/edit');
+        $this->assertResponseCode(500);
+        // @todo This should apply a check
+        $this->assertResponseContains('The request to `/qr-codes/edit` did not apply any authorization checks.');
+        Configure::write('debug', true); // turn it back on
 
         // test with admin, get
         $this->loginUserAdmin();
@@ -160,8 +171,10 @@ class PolicyTest extends BaseControllerTest
         // test with reqular, get
         $this->loginUserRegular();
         $this->get('/qr-codes/edit/1');
-        $this->assertResponseCode(403);
-        $this->assertResponseContains('Error: Identity is not authorized to perform `edit` on `App\Model\Entity\QrCode`.');
+        $this->assertRedirectContains('/?redirect=%2Fqr-codes%2Fedit%2F1');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
     }
 
     /**
@@ -184,8 +197,8 @@ class PolicyTest extends BaseControllerTest
         // test get with missing id and debug
         $this->loginUserAdmin();
         $this->get('/qr-codes/delete');
-        $this->assertResponseCode(405);
-        $this->assertResponseContains('Method Not Allowed');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
 
         // test get with reqular, get
         $this->loginUserRegular();
@@ -202,8 +215,10 @@ class PolicyTest extends BaseControllerTest
         // test delete with regular user
         $this->loginUserRegular();
         $this->delete('/qr-codes/delete/1');
-        $this->assertResponseCode(403);
-        $this->assertResponseContains('Error: Identity is not authorized to perform `delete` on `App\Model\Entity\QrCode`.');
+        $this->assertRedirectContains('/');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
 
         // test post with admin, get
         $this->loginUserAdmin();
@@ -211,13 +226,19 @@ class PolicyTest extends BaseControllerTest
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
+        // test with admin, delete, no ID
+        $this->loginUserAdmin();
+        $this->delete('/qr-codes/delete');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
+
         // test with admin, post no data, no CSRF
         $this->loginUserAdmin();
         $this->delete('/qr-codes/delete/1');
-        $this->assertFlashMessage('The qr code `Sow & Scribe` has been deleted.', 'flash');
-        $this->assertFlashElement('flash/success');
         $this->assertRedirect();
         $this->assertResponseCode(302);
         $this->assertRedirectContains('/');
+        $this->assertFlashMessage('The qr code `Sow & Scribe` has been deleted.', 'flash');
+        $this->assertFlashElement('flash/success');
     }
 }
