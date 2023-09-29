@@ -95,7 +95,7 @@ class QrCodesTable extends Table
                 'rule' => 'characters',
                 'provider' => 'key',
             ]);
-            // @todo Validate that this fields isn't set or changed on an update.
+            // TODO: Validate that this fields isn't set or changed on an update.
 
         $validator
             ->scalar('name')

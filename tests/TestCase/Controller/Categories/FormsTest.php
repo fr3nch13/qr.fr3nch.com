@@ -84,7 +84,7 @@ class FormsTest extends BaseControllerTest
         $this->assertResponseContains('<legend>Edit Category</legend>');
         // test to make sure the fields that are required are actually tagged as so.
         $this->assertResponseContains('id="name-error"');
-        // @todo Figure out why this is allowed to pass.
+        // TODO: Figure out why this is allowed to pass.
         //$this->assertResponseContains('id="parent-id-error"');
 
         // test success

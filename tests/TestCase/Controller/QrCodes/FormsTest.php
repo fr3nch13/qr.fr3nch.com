@@ -82,7 +82,7 @@ class FormsTest extends BaseControllerTest
      */
     public function testEdit(): void
     {
-        // @todo test when a user tries to update the qrkey field as it should only be set on a create/add
+        // TODO: test when a user tries to update the qrkey field as it should only be set on a create/add
 
         // test fail
         $this->patch('/qr-codes/edit/1', [

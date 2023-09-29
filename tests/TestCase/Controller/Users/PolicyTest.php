@@ -151,7 +151,7 @@ class PolicyTest extends BaseControllerTest
         $this->assertRedirect();
         $this->assertResponseCode(302);
         $this->assertRedirectContains('/users/login?redirect=%2Fusers%2Fview%2F3');
-        // @todo add a flash message for unauthenticated requests.
+        // TODO: add a flash message for unauthenticated requests.
 
         // test with admin
         $this->loginUserAdmin();
@@ -178,7 +178,7 @@ class PolicyTest extends BaseControllerTest
         $this->loginUserRegular();
         $this->get('/users/view');
         $this->assertResponseCode(500);
-        // @todo This should apply a check
+        // TODO: This should apply a check
         $this->assertResponseContains('The request to `/users/view` did not apply any authorization checks.');
         Configure::write('debug', true); // turn it back on
     }
@@ -239,7 +239,7 @@ class PolicyTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('/users/edit');
         $this->assertResponseCode(500);
-        // @todo This should apply a check
+        // TODO: This should apply a check
         $this->assertResponseContains('The request to `/users/edit` did not apply any authorization checks.');
         Configure::write('debug', true); // turn it back on
 

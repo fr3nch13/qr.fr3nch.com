@@ -54,7 +54,6 @@ class CategoryPolicy
      * @param \Authorization\Identity $identity The identity object.
      * @param \App\Model\Entity\Category $Category
      * @return bool
-     * @todo I think their policy stuff doesn't match their documentation. Going with how it's working right now.
      */
     protected function isAdmin(IdentityInterface $identity, Category $Category): bool
     {
