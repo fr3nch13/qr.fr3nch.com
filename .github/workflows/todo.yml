@@ -1,13 +1,9 @@
 name: "Run TODO to Issue"
 # https://github.com/alstr/todo-to-issue-action
+# TODO: Test the todo action.
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - '*'
   workflow_dispatch:
     inputs:
       MANUAL_COMMIT_REF:
