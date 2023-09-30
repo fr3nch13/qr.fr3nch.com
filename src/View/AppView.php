@@ -36,7 +36,7 @@ class AppView extends View
      *
      * @var string
      */
-    protected string $layout = 'default';
+    protected string $layout = 'cube_default';
 
     /**
      * Get content type for this view.
