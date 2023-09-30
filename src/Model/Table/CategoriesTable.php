@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Entity\Category;
+use Cake\ORM\Rule\ExistsIn;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -92,7 +94,12 @@ class CategoriesTable extends Table
 
         $validator
             ->integer('parent_id')
-            ->allowEmptyString('parent_id');
+            ->allowEmptyString('parent_id')
+            ->add('parent_id', '_existsIn', [
+                'rule' => 'validateParent',
+                'provider' => 'table',
+                'message' => __('This Parent Category doesn\'t exist.'),
+            ]);
 
         $validator
             ->integer('user_id')
@@ -122,5 +129,50 @@ class CategoriesTable extends Table
         ]);
 
         return $rules;
+    }
+
+    /**
+     * Used to check that the parent_id does indeed exist in the table, before the buildRules.
+     * This is because, if the validationDefault fails, build Rules won't trigger.
+     * In this case, if the parent_id doesn't exist, and the name does, only the error for the name will show.
+     * With this, the parent_id error will also show.
+     * Blatently solen from:
+     *
+     * @param mixed $value The value of parent_id to check if the category exists.
+     * @param array<string, mixed> $options The options array.
+     *   May also be the validation context, if there are no options.
+     * @param array<string, mixed>|null $context Either the validation context or null.
+     * @return bool True if the category exists, or false if not.
+     * @link https://github.com/cakephp/cakephp/blob/5.x/src/ORM/Table.php#L3119
+     */
+    public function validateParent(mixed $value, array $options, ?array $context = null): bool
+    {
+        if ($context === null) {
+            $context = $options;
+        }
+        $entity = new Category(
+            $context['data'],
+            [
+                'useSetters' => false,
+                'markNew' => $context['newRecord'],
+                'source' => $this->getRegistryAlias(),
+            ]
+        );
+        $fields = array_merge(
+            [$context['field']],
+            isset($options['scope']) ? (array)$options['scope'] : []
+        );
+        $values = $entity->extract($fields);
+        foreach ($values as $field) {
+            if ($field !== null && !is_scalar($field)) {
+                return false;
+            }
+        }
+        $rule = new ExistsIn($fields, 'ParentCategories', [
+            'errorField' => 'parent_id',
+            'message' => __('Unknown Parent Category'),
+        ]);
+
+        return $rule($entity, ['repository' => $this]);
     }
 }

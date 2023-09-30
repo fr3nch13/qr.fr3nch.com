@@ -240,7 +240,7 @@ class CategoriesTableTest extends TestCase
         $this->assertFalse($result);
         $expected = [
             'parent_id' => [
-                '_existsIn' => 'Unknown Parent Category',
+                '_existsIn' => 'This Parent Category doesn\'t exist.',
             ],
             'user_id' => [
                 '_existsIn' => 'Unknown User',

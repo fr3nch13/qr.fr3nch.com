@@ -72,7 +72,7 @@ class FormsTest extends BaseControllerTest
      */
     public function testEdit(): void
     {
-        // test fail
+        // test fail validationDefault
         $this->patch('/categories/edit/1', [
             'name' => 'Journals', // an existing record
             'parent_id' => 4, // this doesn't exist
@@ -84,13 +84,14 @@ class FormsTest extends BaseControllerTest
         $this->assertResponseContains('<legend>Edit Category</legend>');
         // test to make sure the fields that are required are actually tagged as so.
         $this->assertResponseContains('id="name-error"');
-        // @todo Figure out why this is allowed to pass.
-        //$this->assertResponseContains('id="parent-id-error"');
+        // this should be here, but if validation fails for, the buildRules doesn't even seem to get called.
+        $this->assertResponseContains('id="parent-id-error"');
 
         // test success
         $this->patch('/categories/edit/1', [
             'name' => 'New Category',
             'description' => 'The Description',
+            'parent_id' => 3, // this doesn't exist
         ]);
         $this->assertRedirect();
         $this->assertResponseCode(302);

@@ -40,8 +40,8 @@ class ViewTest extends BaseControllerTest
     {
         // not logged in
         $this->get('/tags');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/users/login?redirect=%2Ftags');
+        $this->assertResponseOk();
+        $this->helperTestLayoutNormal();
 
         // test with reqular
         $this->loginUserRegular();
@@ -67,8 +67,8 @@ class ViewTest extends BaseControllerTest
         // not logged in
         $this->requestAsAjax();
         $this->get('/tags');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/users/login?redirect=%2Ftags');
+        $this->assertResponseOk();
+        $this->helperTestLayoutAjax();
 
         // test with reqular
         $this->requestAsAjax();
@@ -95,8 +95,8 @@ class ViewTest extends BaseControllerTest
     {
         // not logged in
         $this->get('/tags/view/1');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/users/login?redirect=%2Ftags%2Fview%2F1');
+        $this->assertResponseOk();
+        $this->helperTestLayoutNormal();
 
         // test with reqular
         $this->loginUserRegular();
@@ -122,8 +122,8 @@ class ViewTest extends BaseControllerTest
         // not logged in
         $this->requestAsAjax();
         $this->get('/tags/view/1');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/users/login?redirect=%2Ftags%2Fview%2F1');
+        $this->assertResponseOk();
+        $this->helperTestLayoutAjax();
 
         // test with reqular
         $this->requestAsAjax();
@@ -195,8 +195,11 @@ class ViewTest extends BaseControllerTest
         // test with reqular, get
         $this->loginUserRegular();
         $this->get('/tags/edit/1');
-        $this->assertResponseCode(403);
-        $this->assertResponseContains('Error: Identity is not authorized to perform `edit` on `App\Model\Entity\Tag`.');
+        $this->assertResponseCode(302);
+        $this->assertRedirectContains('/?redirect=%2Ftags%2Fedit%2F1');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
 
         // test with admin, get
         $this->loginUserAdmin();
@@ -217,8 +220,11 @@ class ViewTest extends BaseControllerTest
         $this->requestAsAjax();
         $this->loginUserRegular();
         $this->get('/tags/edit/1');
-        $this->assertResponseCode(403);
-        $this->assertResponseContains('Error: Identity is not authorized to perform `edit` on `App\Model\Entity\Tag`.');
+        $this->assertResponseCode(302);
+        $this->assertRedirectContains('/?redirect=%2Ftags%2Fedit%2F1');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
 
         // test with admin, get
         $this->requestAsAjax();

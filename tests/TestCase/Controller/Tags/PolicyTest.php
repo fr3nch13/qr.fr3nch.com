@@ -5,6 +5,7 @@ namespace App\Test\TestCase\Controller\Tags;
 
 use App\Test\TestCase\Controller\BaseControllerTest;
 use Cake\Core\Configure;
+use Cake\Routing\Router;
 
 /**
  * App\Controller\TagsController Test Case
@@ -37,9 +38,9 @@ class PolicyTest extends BaseControllerTest
     {
         // not logged in
         $this->get('/tags');
-        $this->assertRedirect();
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/users/login?redirect=%2Ftags');
+        $this->assertResponseOk();
+        $this->assertResponseContains('<div class="tags index content">');
+        $this->assertResponseContains('<h3>Tags</h3>');
 
         // test with admin
         $this->loginUserAdmin();
@@ -66,9 +67,9 @@ class PolicyTest extends BaseControllerTest
     {
         // not logged in
         $this->get('/tags/view/1');
-        $this->assertRedirect();
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/users/login?redirect=%2Ftags%2Fview%2F1');
+        $this->assertResponseOk();
+        $this->assertResponseContains('<div class="tags view content">');
+        $this->assertResponseContains('<h3>Notebook</h3>');
 
         // test with admin
         $this->loginUserAdmin();
@@ -88,14 +89,19 @@ class PolicyTest extends BaseControllerTest
         $this->loginUserRegular();
         $this->get('/tags/view');
         $this->assertResponseCode(404);
-        $this->assertResponseContains('Record not found in table `tags`.');
+        $this->assertResponseContains('Unknown ID');
 
         // test with missing id, no debug
         Configure::write('debug', false);
         $this->loginUserRegular();
-        $this->get('/tags/view');
+        $this->get(Router::url([
+            '_https' => true,
+            'controller' => 'Tags',
+            'action' => 'view',
+        ]));
         $this->assertResponseCode(404);
-        $this->assertResponseContains('Not Found');
+        $this->assertResponseContains('Unknown ID');
+        Configure::write('debug', true); // turn it back on
     }
 
     /**
@@ -108,7 +114,6 @@ class PolicyTest extends BaseControllerTest
     {
         // not logged in, so should redirect
         $this->get('/tags/add');
-        $this->assertRedirect();
         $this->assertResponseCode(302);
         $this->assertRedirectContains('/users/login?redirect=%2Ftags%2Fadd');
 
@@ -139,15 +144,28 @@ class PolicyTest extends BaseControllerTest
     {
         // not logged in, so should redirect
         $this->get('/tags/edit');
-        $this->assertRedirect();
         $this->assertResponseCode(302);
         $this->assertRedirectContains('/users/login?redirect=%2Ftags%2Fedit');
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
 
         // test with missing id and debug
         $this->loginUserAdmin();
         $this->get('/tags/edit');
         $this->assertResponseCode(404);
-        $this->assertResponseContains('Record not found in table `tags`.');
+        $this->assertResponseContains('Unknown ID');
+
+        // test with missing id, no debug
+        Configure::write('debug', false);
+        $this->loginUserAdmin();
+        $this->get(Router::url([
+            '_https' => true,
+            'controller' => 'Tags',
+            'action' => 'edit',
+        ]));
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
+        Configure::write('debug', true); // turn it back on
 
         // test with admin, get
         $this->loginUserAdmin();
@@ -160,8 +178,10 @@ class PolicyTest extends BaseControllerTest
         // test with reqular, get
         $this->loginUserRegular();
         $this->get('/tags/edit/1');
-        $this->assertResponseCode(403);
-        $this->assertResponseContains('Error: Identity is not authorized to perform `edit` on `App\Model\Entity\Tag`.');
+        $this->assertRedirectContains('/?redirect=%2Ftags%2Fedit%2F1');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
     }
 
     /**
@@ -177,15 +197,27 @@ class PolicyTest extends BaseControllerTest
 
         // not logged in, so should redirect
         $this->get('/tags/delete');
-        $this->assertRedirect();
-        $this->assertResponseCode(302);
         $this->assertRedirectContains('/users/login?redirect=%2Ftags%2Fdelete');
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
 
         // test get with missing id and debug
         $this->loginUserAdmin();
         $this->get('/tags/delete');
-        $this->assertResponseCode(405);
-        $this->assertResponseContains('Method Not Allowed');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
+
+        // test with missing id, no debug
+        Configure::write('debug', false);
+        $this->loginUserAdmin();
+        $this->get(Router::url([
+            '_https' => true,
+            'controller' => 'Tags',
+            'action' => 'delete',
+        ]));
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
+        Configure::write('debug', true); // turn it back on
 
         // test get with reqular, get
         $this->loginUserRegular();
@@ -202,8 +234,10 @@ class PolicyTest extends BaseControllerTest
         // test delete with regular user
         $this->loginUserRegular();
         $this->delete('/tags/delete/1');
-        $this->assertResponseCode(403);
-        $this->assertResponseContains('Error: Identity is not authorized to perform `delete` on `App\Model\Entity\Tag`.');
+        $this->assertRedirectContains('/');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
 
         // test post with admin, get
         $this->loginUserAdmin();
@@ -214,10 +248,10 @@ class PolicyTest extends BaseControllerTest
         // test with admin, post no data, no CSRF
         $this->loginUserAdmin();
         $this->delete('/tags/delete/1');
-        $this->assertFlashMessage('The tag `Notebook` has been deleted.', 'flash');
-        $this->assertFlashElement('flash/success');
         $this->assertRedirect();
         $this->assertResponseCode(302);
         $this->assertRedirectContains('/tags');
+        $this->assertFlashMessage('The tag `Notebook` has been deleted.', 'flash');
+        $this->assertFlashElement('flash/success');
     }
 }

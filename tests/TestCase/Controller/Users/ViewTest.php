@@ -101,8 +101,11 @@ class ViewTest extends BaseControllerTest
         // test with reqular
         $this->loginUserRegular();
         $this->get('/users');
-        $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->assertResponseCode(302);
+        $this->assertRedirectContains('/?redirect=%2Fusers');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
 
         // test with admin
         $this->loginUserAdmin();
@@ -129,8 +132,11 @@ class ViewTest extends BaseControllerTest
         $this->requestAsAjax();
         $this->loginUserRegular();
         $this->get('/users');
-        $this->assertResponseOk();
-        $this->helperTestLayoutAjax();
+        $this->assertResponseCode(302);
+        $this->assertRedirectContains('/?redirect=%2Fusers');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
 
         // test with admin
         $this->requestAsAjax();
@@ -206,8 +212,11 @@ class ViewTest extends BaseControllerTest
         // test with reqular, get
         $this->loginUserRegular();
         $this->get('/users/add');
-        $this->assertResponseCode(403);
-        $this->assertResponseContains('Error: Identity is not authorized to perform `add` on `App\Model\Entity\User`.');
+        $this->assertResponseCode(302);
+        $this->assertRedirectContains('/?redirect=%2Fusers');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
 
         // test with admin, get
         $this->loginUserAdmin();
@@ -228,8 +237,11 @@ class ViewTest extends BaseControllerTest
         $this->requestAsAjax();
         $this->loginUserRegular();
         $this->get('/users/add');
-        $this->assertResponseCode(403);
-        $this->assertResponseContains('Error: Identity is not authorized to perform `add` on `App\Model\Entity\User`.');
+        $this->assertResponseCode(302);
+        $this->assertRedirectContains('/?redirect=%2Fusers');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
 
         // test with admin, get
         $this->requestAsAjax();
@@ -250,8 +262,11 @@ class ViewTest extends BaseControllerTest
         // test with reqular, get
         $this->loginUserRegular();
         $this->get('/users/edit/1');
-        $this->assertResponseCode(403);
-        $this->assertResponseContains('Error: Identity is not authorized to perform `edit` on `App\Model\Entity\User`.');
+        $this->assertResponseCode(302);
+        $this->assertRedirectContains('/?redirect=%2Fusers');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
 
         // test with admin, get
         $this->loginUserAdmin();
@@ -272,8 +287,11 @@ class ViewTest extends BaseControllerTest
         $this->requestAsAjax();
         $this->loginUserRegular();
         $this->get('/users/edit/1');
-        $this->assertResponseCode(403);
-        $this->assertResponseContains('Error: Identity is not authorized to perform `edit` on `App\Model\Entity\User`.');
+        $this->assertResponseCode(302);
+        $this->assertRedirectContains('/?redirect=%2Fusers');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
 
         // test with admin, get
         $this->requestAsAjax();

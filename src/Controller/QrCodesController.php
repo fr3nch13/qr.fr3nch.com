@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Event\EventInterface;
+use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
 
 /**
@@ -22,6 +23,19 @@ class QrCodesController extends AppController
         // Configure the login action to not require authentication, preventing
         // the infinite redirect loop issue
         $this->Authentication->addUnauthenticatedActions(['forward', 'show', 'index', 'view']);
+
+        $this->Authorization->authorize($this);
+
+        // make sure we have an ID where needed.
+        $action = $this->request->getParam('action');
+        // admin actions
+        if (in_array($action, ['view', 'edit', 'delete'])) {
+            $pass = $this->request->getParam('pass');
+            if (empty($pass) || !isset($pass['0'])) {
+                $event->stopPropagation();
+                throw new NotFoundException('Unknown ID');
+            }
+        }
     }
 
     /**
@@ -33,7 +47,6 @@ class QrCodesController extends AppController
     public function forward(?string $key = null): ?Response
     {
         $this->request->allowMethod(['get']);
-        $this->Authorization->skipAuthorization();
 
         // if no key given, redirect them to the index page.
         if (!$key) {
@@ -69,7 +82,6 @@ class QrCodesController extends AppController
     public function show(?string $id = null)
     {
         $this->request->allowMethod(['get']);
-        $this->Authorization->skipAuthorization();
 
         $qrCodeImagePath = $this->QrCodes->getQrImagePath((int)$id);
         $response = $this->response->withFile($qrCodeImagePath);
@@ -86,7 +98,6 @@ class QrCodesController extends AppController
     public function index()
     {
         $this->request->allowMethod(['get']);
-        $this->Authorization->skipAuthorization();
 
         // look for an incoming key int the query,
         // and redirect it to the forward action.
@@ -115,9 +126,9 @@ class QrCodesController extends AppController
     public function view(?string $id = null)
     {
         $this->request->allowMethod(['get']);
-        $this->Authorization->skipAuthorization();
 
         $qrCode = $this->QrCodes->get((int)$id, contain: ['Sources', 'Users', 'Categories', 'Tags']);
+        $this->Authorization->authorize($qrCode);
 
         $this->set(compact('qrCode'));
         $this->viewBuilder()->setOption('serialize', ['qrCode']);

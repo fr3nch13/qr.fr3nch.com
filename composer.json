@@ -12,7 +12,8 @@
         "cakephp/migrations": "^4.1",
         "cakephp/plugin-installer": "^2.0.1",
         "chillerlan/php-qrcode": "^4.3",
-        "mobiledetect/mobiledetectlib": "^3.74"
+        "mobiledetect/mobiledetectlib": "^3.74",
+        "paragonie/csp-builder": "^2.9"
     },
     "require-dev": {
         "cakephp/cakephp": "5.x-dev as 5.0.1",
@@ -66,7 +67,7 @@
         "cs-checkstyle": "@cs-check -- --report=checkstyle",
         "phpstan": "php -d memory_limit=-1 ./vendor/bin/phpstan --no-progress -vvv",
         "phpstan-github": "php -d memory_limit=-1 ./vendor/bin/phpstan --no-progress -vvv --error-format=github",
-        "coverage": "php -d memory_limit=-1 -d xdebug.mode=coverage ./vendor/bin/phpunit --coverage-html tmp/coverage",
+        "coverage": "php -d memory_limit=-1 -d xdebug.mode=coverage ./vendor/bin/phpunit --coverage-html tmp/coverage --coverage-clover=tmp/cov.xml",
         "coverage-clover": "php -d memory_limit=-1 -d xdebug.mode=coverage ./vendor/bin/phpunit --coverage-clover=tmp/coverage.xml",
         "coverage-text": "php -d memory_limit=-1 -d xdebug.mode=coverage ./vendor/bin/phpunit --coverage-text --colors=never"
     },

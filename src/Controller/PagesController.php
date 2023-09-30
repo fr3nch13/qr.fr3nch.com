@@ -41,6 +41,8 @@ class PagesController extends AppController
         // Configure the login action to not require authentication, preventing
         // the infinite redirect loop issue
         $this->Authentication->addUnauthenticatedActions(['display']);
+
+        $this->Authorization->authorize($this);
     }
 
     /**
@@ -57,7 +59,6 @@ class PagesController extends AppController
      */
     public function display(string ...$path): ?Response
     {
-        $this->Authorization->skipAuthorization();
         $activeUser = $this->getActiveUser();
 
         if (!$path) {

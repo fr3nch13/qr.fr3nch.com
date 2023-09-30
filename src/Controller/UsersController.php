@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Event\EventInterface;
+use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
 
 /**
@@ -22,6 +23,18 @@ class UsersController extends AppController
         // Configure the login action to not require authentication, preventing
         // the infinite redirect loop issue
         $this->Authentication->addUnauthenticatedActions(['login', 'logout']);
+
+        $this->Authorization->authorize($this);
+
+        // make sure we have an ID where needed.
+        $action = $this->request->getParam('action');
+        if (in_array($action, ['view', 'edit', 'delete'])) {
+            $pass = $this->request->getParam('pass');
+            if (empty($pass) || !isset($pass['0'])) {
+                $event->stopPropagation();
+                throw new NotFoundException('Unknown ID');
+            }
+        }
     }
 
     /**
@@ -32,7 +45,6 @@ class UsersController extends AppController
     public function login()
     {
         $this->request->allowMethod(['get', 'post']);
-        $this->Authorization->skipAuthorization();
 
         /** @var \Authentication\Authenticator\Result|null $result */
         $result = $this->Authentication->getResult();
@@ -76,7 +88,6 @@ class UsersController extends AppController
     public function logout(): ?Response
     {
         $this->request->allowMethod(['get', 'post']);
-        $this->Authorization->skipAuthorization();
 
         /** @var \Authentication\Authenticator\Result|null $result */
         $result = $this->Authentication->getResult();
@@ -105,13 +116,8 @@ class UsersController extends AppController
     public function index()
     {
         $this->request->allowMethod(['get']);
-        // @todo Figure out how to do authorization on a logged-in index page
-        // seems like i need to make a Policy for the Model
-        // Specifically here, make sure only admin can see the list.
-        $this->Authorization->skipAuthorization();
 
         $query = $this->Users->find('all');
-
         $users = $this->paginate($query);
 
         $this->set(compact('users'));

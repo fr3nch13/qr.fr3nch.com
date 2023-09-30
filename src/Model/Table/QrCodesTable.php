@@ -95,7 +95,6 @@ class QrCodesTable extends Table
                 'rule' => 'characters',
                 'provider' => 'key',
             ]);
-            // @todo Validate that this fields isn't set or changed on an update.
 
         $validator
             ->scalar('name')
@@ -153,6 +152,14 @@ class QrCodesTable extends Table
         $rules->add($rules->existsIn('user_id', 'Users'), [
             'errorField' => 'user_id',
             'message' => __('Unknown User'),
+        ]);
+
+        // ensures the 'qrkey' field can't be updated through the entity.
+        $rules->addUpdate(function ($entity, $options) {
+            return !$entity->isDirty('qrkey');
+        }, 'update', [
+            'errorField' => 'qrkey',
+            'message' => __('QR Key can not be updated.'),
         ]);
 
         return $rules;

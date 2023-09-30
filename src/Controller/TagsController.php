@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Event\EventInterface;
+use Cake\Http\Exception\NotFoundException;
+
 /**
  * Tags Controller
  *
@@ -11,6 +14,30 @@ namespace App\Controller;
 class TagsController extends AppController
 {
     /**
+     * Runs before the code in the actions
+     */
+    public function beforeFilter(EventInterface $event): void
+    {
+        parent::beforeFilter($event);
+
+        //Allow anyone to view the list of tags, and their details page.
+        $this->Authentication->addUnauthenticatedActions(['index', 'view']);
+
+        $this->Authorization->authorize($this);
+
+        // make sure we have an ID where needed.
+        $action = $this->request->getParam('action');
+        // admin actions
+        if (in_array($action, ['view', 'edit', 'delete'])) {
+            $pass = $this->request->getParam('pass');
+            if (empty($pass) || !isset($pass['0'])) {
+                $event->stopPropagation();
+                throw new NotFoundException('Unknown ID');
+            }
+        }
+    }
+
+    /**
      * Index method
      *
      * @return \Cake\Http\Response|null|void Renders view
@@ -18,12 +45,8 @@ class TagsController extends AppController
     public function index()
     {
         $this->request->allowMethod(['get']);
-        // @todo Figure out how to do authorization on a logged-in index page
-        // seems like i need to make a Policy for the Model
-        $this->Authorization->skipAuthorization();
 
         $query = $this->Tags->find('all');
-
         $tags = $this->paginate($query);
 
         $this->set(compact('tags'));

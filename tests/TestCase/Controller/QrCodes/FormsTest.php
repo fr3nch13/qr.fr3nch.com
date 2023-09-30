@@ -82,9 +82,19 @@ class FormsTest extends BaseControllerTest
      */
     public function testEdit(): void
     {
-        // @todo test when a user tries to update the qrkey field as it should only be set on a create/add
+        // test fail, can't edit qrkey
+        $this->patch('/qr-codes/edit/1', [
+            'qrkey' => 'blahblah', // changed key
+        ]);
+        $this->assertResponseOk();
+        $this->assertResponseContains('<div class="message error" onclick="this.classList.add(\'hidden\');">The qr code could not be saved. Please, try again.</div>');
+        $this->assertResponseContains('<div class="qrCodes form content">');
+        $this->assertResponseContains('<form method="patch" accept-charset="utf-8" action="/qr-codes/edit/1">');
+        $this->assertResponseContains('<legend>Edit QR Code</legend>');
+        // don't show the frontend an error as this shouldn't happen.
+        // if it does, it's someone trying to be nefarious, don't give them more info.
 
-        // test fail
+        // a test fail existing key
         $this->patch('/qr-codes/edit/1', [
             'qrkey' => 'witchinghour', // an existing record
         ]);
@@ -93,16 +103,8 @@ class FormsTest extends BaseControllerTest
         $this->assertResponseContains('<div class="qrCodes form content">');
         $this->assertResponseContains('<form method="patch" accept-charset="utf-8" action="/qr-codes/edit/1">');
         $this->assertResponseContains('<legend>Edit QR Code</legend>');
-
-        // a bad key
-        $this->patch('/qr-codes/edit/1', [
-            'qrkey' => 'witching hour', // an existing record
-        ]);
-        $this->assertResponseOk();
-        $this->assertResponseContains('<div class="message error" onclick="this.classList.add(\'hidden\');">The qr code could not be saved. Please, try again.</div>');
-        $this->assertResponseContains('<div class="qrCodes form content">');
-        $this->assertResponseContains('<form method="patch" accept-charset="utf-8" action="/qr-codes/edit/1">');
-        $this->assertResponseContains('<legend>Edit QR Code</legend>');
+        // don't show the frontend an error as this shouldn't happen.
+        // if it does, it's someone trying to be nefarious, don't give them more info.
 
         // test success
         $this->patch('/qr-codes/edit/1', [
@@ -111,7 +113,7 @@ class FormsTest extends BaseControllerTest
         ]);
         $this->assertRedirect();
         $this->assertResponseCode(302);
-        $this->assertRedirectContains('/');
+        $this->assertRedirect('/');
         $this->assertFlashMessage('The qr code has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Policy;
 
 use App\Model\Entity\Source;
-use Authorization\IdentityInterface;
+use App\Model\Entity\User;
 
 /**
  * Source policy
@@ -12,67 +12,50 @@ use Authorization\IdentityInterface;
 class SourcePolicy
 {
     /**
-     * Check if $user can add Source
+     * All Users can view Source
      *
-     * @param \Authorization\Identity $identity The identity object.
+     * @param \App\Model\Entity\User $identity The identity object.
      * @param \App\Model\Entity\Source $Source
      * @return bool
      */
-    public function canAdd(IdentityInterface $identity, Source $Source): bool
+    public function canView(User $identity, Source $Source): bool
     {
-        // All logged in users can create qr codes.
-        return $this->isAdmin($identity, $Source);
-    }
-
-    /**
-     * Check if $user can edit Source
-     *
-     * @param \Authorization\Identity $identity The identity object.
-     * @param \App\Model\Entity\Source $Source
-     * @return bool
-     */
-    public function canEdit(IdentityInterface $identity, Source $Source): bool
-    {
-        return $this->isAdmin($identity, $Source);
-    }
-
-    /**
-     * Check if $user can delete Source
-     *
-     * @param \Authorization\Identity $identity The identity object.
-     * @param \App\Model\Entity\Source $Source
-     * @return bool
-     */
-    public function canDelete(IdentityInterface $identity, Source $Source): bool
-    {
-        return $this->isAdmin($identity, $Source);
-    }
-
-    /**
-     * Check if $user can view Source
-     *
-     * @param \Authorization\Identity $identity The identity object.
-     * @param \App\Model\Entity\Source $Source
-     * @return bool
-     */
-    public function canView(IdentityInterface $identity, Source $Source): bool
-    {
-        // All logged in users can view a qr code.
         return true;
     }
 
     /**
-     * Check if $user is an Admin
+     * Only Admins can add Source
      *
-     * @param \Authorization\Identity $identity The identity object.
+     * @param \App\Model\Entity\User $identity The identity object.
      * @param \App\Model\Entity\Source $Source
      * @return bool
      */
-    protected function isAdmin(IdentityInterface $identity, Source $Source): bool
+    public function canAdd(User $identity, Source $Source): bool
     {
-        /** @var \App\Model\Entity\User $entity */
-        $entity = $identity->getOriginalData();
+        return $identity->isAdmin();
+    }
 
-        return $entity->is_admin ? true : false;
+    /**
+     * Only Admins can edit Source
+     *
+     * @param \App\Model\Entity\User $identity The identity object.
+     * @param \App\Model\Entity\Source $Source
+     * @return bool
+     */
+    public function canEdit(User $identity, Source $Source): bool
+    {
+        return $identity->isAdmin();
+    }
+
+    /**
+     * Only Admins can delete Source
+     *
+     * @param \App\Model\Entity\User $identity The identity object.
+     * @param \App\Model\Entity\Source $Source
+     * @return bool
+     */
+    public function canDelete(User $identity, Source $Source): bool
+    {
+        return $identity->isAdmin();
     }
 }

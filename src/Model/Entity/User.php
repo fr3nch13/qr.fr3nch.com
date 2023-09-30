@@ -3,7 +3,11 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use Authentication\IdentityInterface as AuthenticationIdentity;
 use Authentication\PasswordHasher\DefaultPasswordHasher;
+use Authorization\AuthorizationServiceInterface;
+use Authorization\IdentityInterface as AuthorizationIdentity;
+use Authorization\Policy\ResultInterface;
 use Cake\ORM\Entity;
 
 /**
@@ -16,8 +20,10 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\DateTime|null $created
  * @property \Cake\I18n\DateTime|null $modified
  * @property bool $is_admin
+ *
+ * @property \Authorization\AuthorizationServiceInterface $authorization
  */
-class User extends Entity
+class User extends Entity implements AuthorizationIdentity, AuthenticationIdentity
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -60,5 +66,99 @@ class User extends Entity
         // if this Entity is being created directly, it should throw a runtime error
         // when the password is anything but a sting.
         return (new DefaultPasswordHasher())->hash($password);
+    }
+
+    /**
+     * Check if $identity is the User
+     *
+     * @param mixed $resource The resource being operated on.
+     * @return bool
+     */
+    public function isMe(mixed $resource): bool
+    {
+        return $this->id === $resource->user_id;
+    }
+
+    /**
+     * Check if I am an Admin
+     *
+     * @return bool
+     */
+    public function isAdmin(): bool
+    {
+        return $this->is_admin ? true : false;
+    }
+
+    /**
+     * Authorization\IdentityInterface method
+     *
+     * @param string $action The action/operation being performed.
+     * @param mixed $resource The resource being operated on.
+     * @return bool
+     */
+    public function can(string $action, mixed $resource): bool
+    {
+        return $this->authorization->can($this, $action, $resource);
+    }
+
+    /**
+     * Authorization\IdentityInterface method
+     *
+     * @param string $action The action/operation being performed.
+     * @param mixed $resource The resource being operated on.
+     * @return \Authorization\Policy\ResultInterface
+     */
+    public function canResult(string $action, mixed $resource): ResultInterface
+    {
+        return $this->authorization->canResult($this, $action, $resource);
+    }
+
+    /**
+     * Authorization\IdentityInterface method
+     *
+     * @param string $action The action/operation being performed.
+     * @param mixed $resource The resource being operated on.
+     * @param mixed $optionalArgs Multiple additional arguments which are passed to the scope
+     * @return mixed The modified resource.
+     */
+    public function applyScope(string $action, mixed $resource, mixed ...$optionalArgs): mixed
+    {
+        return $this->authorization->applyScope($this, $action, $resource);
+    }
+
+    /**
+     * Authorization\IdentityInterface method
+     *
+     * If the decorated identity implements `getOriginalData()`
+     * that method should be invoked to expose the original data.
+     *
+     * @return self
+     */
+    public function getOriginalData(): self
+    {
+        return $this;
+    }
+
+    /**
+     * Get the primary key/id field for the identity.
+     *
+     * @return int
+     */
+    public function getIdentifier(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * Setter to be used by the middleware.
+     *
+     * @param \Authorization\AuthorizationServiceInterface $service The service to attach this eneity to as the identifier.
+     * @return self
+     */
+    public function setAuthorization(AuthorizationServiceInterface $service): self
+    {
+        $this->authorization = $service;
+
+        return $this;
     }
 }
