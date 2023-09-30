@@ -149,9 +149,10 @@ class PolicyTest extends BaseControllerTest
     {
         // not logged in
         $this->get('/users/view/3');
-        $this->assertRedirect();
         $this->assertResponseCode(302);
         $this->assertRedirectContains('/users/login?redirect=%2Fusers%2Fview%2F3');
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
         // TODO: add a flash message for unauthenticated requests.
         // labels: flash
 
@@ -162,12 +163,20 @@ class PolicyTest extends BaseControllerTest
         $this->assertResponseContains('<div class="users view content">');
         $this->assertResponseContains('<h3>Delete Me</h3>');
 
-        // test with reqular
+        // test with reqular viewing self
         $this->loginUserRegular();
-        $this->get('/users/view/3');
+        $this->get('/users/view/2');
         $this->assertResponseOk();
         $this->assertResponseContains('<div class="users view content">');
-        $this->assertResponseContains('<h3>Delete Me</h3>');
+        $this->assertResponseContains('<h3>Regular</h3>');
+
+        // regular user trying to view another user private profile
+        $this->loginUserRegular();
+        $this->get('/users/view/3');
+        $this->assertResponseCode(302);
+        $this->assertRedirectContains('/?redirect=%2Fusers%2Fview%2F3');
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
 
         // test with missing id and debug
         $this->loginUserRegular();
