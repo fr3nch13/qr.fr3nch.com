@@ -19,10 +19,6 @@
             <h3><?= h($source->name) ?></h3>
             <table>
                 <tr>
-                    <th><?= __('Key') ?></th>
-                    <td><?= h($source->key) ?></td>
-                </tr>
-                <tr>
                     <th><?= __('Name') ?></th>
                     <td><?= h($source->name) ?></td>
                 </tr>
@@ -65,7 +61,7 @@
                         <?php foreach ($source->qr_codes as $qrCodes) : ?>
                         <tr>
                             <td><?= h($qrCodes->id) ?></td>
-                            <td><?= h($qrCodes->key) ?></td>
+                            <td><?= h($qrCodes->qrkey) ?></td>
                             <td><?= h($qrCodes->name) ?></td>
                             <td><?= h($qrCodes->description) ?></td>
                             <td><?= h($qrCodes->created) ?></td>
