@@ -126,7 +126,7 @@ class PolicyTest extends BaseControllerTest
         $this->get('/categories/add');
         $this->assertResponseOk();
         $this->assertResponseContains('<div class="categories form content">');
-        $this->assertResponseContains('<form method="post" accept-charset="utf-8" action="/categories/add">');
+        $this->assertResponseContains('<form method="post" accept-charset="utf-8" role="form" action="/categories/add">');
         $this->assertResponseContains('<legend>Add Category</legend>');
 
         // test with reqular, get
@@ -175,7 +175,7 @@ class PolicyTest extends BaseControllerTest
         $this->get('/categories/edit/1');
         $this->assertResponseOk();
         $this->assertResponseContains('<div class="categories form content">');
-        $this->assertResponseContains('<form method="patch" accept-charset="utf-8" action="/categories/edit/1">');
+        $this->assertResponseContains('<form method="patch" accept-charset="utf-8" role="form" action="/categories/edit/1">');
         $this->assertResponseContains('<legend>Edit Category</legend>');
 
         // test with reqular, get

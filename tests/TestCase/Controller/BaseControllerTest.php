@@ -157,4 +157,42 @@ class BaseControllerTest extends TestCase
         $this->assertSame(0, substr_count($content, '</body>'));
         $this->assertSame(0, substr_count($content, '</html>'));
     }
+
+    /**
+     * Tests alerts
+     *
+     * @param string $message The alert message.
+     * @param string $type The alert type
+     * @return void
+     */
+    public function helperTestAlert(string $message, string $type): void
+    {
+        $content = (string)$this->_response->getBody();
+        // container
+        $this->assertSame(1, substr_count($content, '<div role="alert" class="alert alert-dismissible ' .
+            'fade show d-flex align-items-center alert-' . $type . '">'));
+        // icon
+        $this->assertSame(1, substr_count($content, '<i class="me-2 bi bi-exclamation-triangle-fill bi-xl"></i>'));
+        // message
+        $this->assertSame(1, substr_count($content, '<div>' . $message . '</div>'));
+        // button
+        $this->assertSame(1, substr_count($content, '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'));
+    }
+
+    /**
+     * Tests form errors
+     *
+     * @param string $message The error message.
+     * @param string $id The field id
+     * @return void
+     */
+    public function helperTestFormFieldError(string $message, string $id): void
+    {
+        $content = (string)$this->_response->getBody();
+
+        // message
+        $needle = '<div id="' . $id . '" class="ms-0 invalid-feedback">' . $message . '</div>';
+
+        $this->assertSame(1, substr_count($content, $needle));
+    }
 }

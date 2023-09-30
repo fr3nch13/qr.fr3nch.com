@@ -44,9 +44,9 @@ class FormsTest extends BaseControllerTest
         $this->post('/tags/add', [
         ]);
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="message error" onclick="this.classList.add(\'hidden\');">The tag could not be saved. Please, try again.</div>');
+        $this->helperTestAlert('The tag could not be saved. Please, try again.', 'danger');
         $this->assertResponseContains('<div class="tags form content">');
-        $this->assertResponseContains('<form method="post" accept-charset="utf-8" action="/tags/add">');
+        $this->assertResponseContains('<form method="post" accept-charset="utf-8" role="form" action="/tags/add">');
         $this->assertResponseContains('<legend>Add Tag</legend>');
         // test to make sure the fields that are required are actually tagged as so.
         $this->assertResponseContains('id="name-error"');
@@ -75,9 +75,9 @@ class FormsTest extends BaseControllerTest
             'name' => 'Amazon', // an existing record
         ]);
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="message error" onclick="this.classList.add(\'hidden\');">The tag could not be saved. Please, try again.</div>');
+        $this->helperTestAlert('The tag could not be saved. Please, try again.', 'danger');
         $this->assertResponseContains('<div class="tags form content">');
-        $this->assertResponseContains('<form method="patch" accept-charset="utf-8" action="/tags/edit/1">');
+        $this->assertResponseContains('<form method="patch" accept-charset="utf-8" role="form" action="/tags/edit/1">');
         $this->assertResponseContains('<legend>Edit Tag</legend>');
         // test to make sure the fields that are required are actually tagged as so.
         $this->assertResponseContains('id="name-error"');
