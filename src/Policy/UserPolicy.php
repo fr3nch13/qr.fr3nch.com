@@ -47,13 +47,25 @@ class UserPolicy
     }
 
     /**
-     * Any logged in User view User
+     * Any User view a User's public profile.
      *
      * @param \App\Model\Entity\User $identity The identity object.
      * @param \App\Model\Entity\User $User
      * @return bool
      */
     public function canView(User $identity, User $User): bool
+    {
+        return $this->isMe($identity, $User) || $identity->isAdmin();
+    }
+
+    /**
+     * Any User view a User's public profile.
+     *
+     * @param \App\Model\Entity\User|null $identity The identity object.
+     * @param \App\Model\Entity\User $User
+     * @return bool
+     */
+    public function canProfile(?User $identity, User $User): bool
     {
         return true;
     }

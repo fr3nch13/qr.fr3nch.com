@@ -182,6 +182,43 @@ class CrudTest extends BaseControllerTest
     }
 
     /**
+     * Test profile method
+     *
+     * @return void
+     * @uses \App\Controller\UsersController::profile()
+     */
+    public function testProfile(): void
+    {
+        $this->loginUserAdmin();
+
+        // test get
+        $this->get('/users/profile/3');
+        $this->assertResponseOk();
+        $this->assertResponseContains('<div class="users view content">');
+        $this->assertResponseContains('<h3>Delete Me</h3>');
+
+        // post
+        $this->post('/users/profile/3');
+        $this->assertResponseCode(405);
+        $this->assertResponseContains('Method Not Allowed');
+
+        // patch
+        $this->patch('/users/profile/3');
+        $this->assertResponseCode(405);
+        $this->assertResponseContains('Method Not Allowed');
+
+        // put
+        $this->put('/users/profile/3');
+        $this->assertResponseCode(405);
+        $this->assertResponseContains('Method Not Allowed');
+
+        // delete
+        $this->delete('/users/profile/3');
+        $this->assertResponseCode(405);
+        $this->assertResponseContains('Method Not Allowed');
+    }
+
+    /**
      * Test add method
      *
      * @return void

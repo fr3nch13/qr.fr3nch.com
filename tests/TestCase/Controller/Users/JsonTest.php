@@ -162,6 +162,26 @@ class JsonTest extends BaseControllerTest
     }
 
     /**
+     * Test profile method
+     *
+     * @return void
+     * @uses \App\Controller\UsersController::profile()
+     */
+    public function testProfile(): void
+    {
+        $this->loginUserAdmin();
+        $this->get('/users/profile/2');
+        $this->assertResponseOk();
+
+        $content = (string)$this->_response->getBody();
+        $content = json_decode($content, true);
+
+        $this->assertTrue(isset($content['user']));
+        $this->assertSame(2, $content['user']['id']);
+        $this->assertFalse(isset($content['user']['password']));
+    }
+
+    /**
      * Test add method
      *
      * @return void

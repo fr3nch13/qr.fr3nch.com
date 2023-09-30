@@ -22,13 +22,13 @@ class UsersController extends AppController
         parent::beforeFilter($event);
         // Configure the login action to not require authentication, preventing
         // the infinite redirect loop issue
-        $this->Authentication->addUnauthenticatedActions(['login', 'logout']);
+        $this->Authentication->addUnauthenticatedActions(['login', 'logout', 'profile']);
 
         $this->Authorization->authorize($this);
 
         // make sure we have an ID where needed.
         $action = $this->request->getParam('action');
-        if (in_array($action, ['view', 'edit', 'delete'])) {
+        if (in_array($action, ['view', 'profile', 'edit', 'delete'])) {
             $pass = $this->request->getParam('pass');
             if (empty($pass) || !isset($pass['0'])) {
                 $event->stopPropagation();
@@ -132,6 +132,24 @@ class UsersController extends AppController
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view(?string $id = null)
+    {
+        $this->request->allowMethod(['get']);
+
+        $user = $this->Users->get((int)$id, contain: []);
+        $this->Authorization->authorize($user);
+
+        $this->set(compact('user'));
+        $this->viewBuilder()->setOption('serialize', ['user']);
+    }
+
+    /**
+     * Profile method
+     *
+     * @param string|null $id User id.
+     * @return \Cake\Http\Response|null|void Renders view
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function profile(?string $id = null)
     {
         $this->request->allowMethod(['get']);
 

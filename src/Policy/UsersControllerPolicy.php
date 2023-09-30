@@ -53,13 +53,29 @@ class UsersControllerPolicy
     }
 
     /**
-     * Anyone can view a user.
+     * Only admins and Me can view the private profile page.
      *
      * @param \App\Model\Entity\User|null $identity The identity object.
      * @param \App\Controller\UsersController $UsersController
      * @return bool
      */
     public function canView(?User $identity, UsersController $UsersController): bool
+    {
+        if (!$identity) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Anyone can view a User's public profile.
+     *
+     * @param \App\Model\Entity\User|null $identity The identity object.
+     * @param \App\Controller\UsersController $UsersController
+     * @return bool
+     */
+    public function canProfile(?User $identity, UsersController $UsersController): bool
     {
         return true;
     }
