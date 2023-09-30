@@ -1,4 +1,5 @@
 <?php
+use Cake\Routing\Router;
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\QrCode $qrCode
@@ -18,36 +19,47 @@
     <div class="column column-80">
         <div class="qrCodes view content">
             <h3><?= h($qrCode->name) ?></h3>
-            <table>
-                <tr>
-                    <th><?= __('Key') ?></th>
-                    <td><?= h($qrCode->qrkey) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Name') ?></th>
-                    <td><?= h($qrCode->name) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Source') ?></th>
-                    <td><?= $qrCode->hasValue('source') ? $this->Html->link($qrCode->source->name, ['controller' => 'Sources', 'action' => 'view', $qrCode->source->id]) : '' ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('User') ?></th>
-                    <td><?= $qrCode->hasValue('user') ? $this->Html->link($qrCode->user->name, ['controller' => 'Users', 'action' => 'view', $qrCode->user->id]) : '' ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($qrCode->id) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created') ?></th>
-                    <td><?= h($qrCode->created) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified') ?></th>
-                    <td><?= h($qrCode->modified) ?></td>
-                </tr>
-            </table>
+            <div class="row">
+                <div class="column column-50">
+                    <table>
+                        <tr>
+                            <th><?= __('Key') ?></th>
+                            <td><?= h($qrCode->qrkey) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Name') ?></th>
+                            <td><?= h($qrCode->name) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Source') ?></th>
+                            <td><?= $qrCode->hasValue('source') ? $this->Html->link($qrCode->source->name, ['controller' => 'Sources', 'action' => 'view', $qrCode->source->id]) : '' ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('User') ?></th>
+                            <td><?= $qrCode->hasValue('user') ? $this->Html->link($qrCode->user->name, ['controller' => 'Users', 'action' => 'view', $qrCode->user->id]) : '' ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Id') ?></th>
+                            <td><?= $this->Number->format($qrCode->id) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Created') ?></th>
+                            <td><?= h($qrCode->created) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Modified') ?></th>
+                            <td><?= h($qrCode->modified) ?></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="column column-50">
+                    <img src="<?= Router::url([
+                        'controller' => 'QrCodes',
+                        'action' => 'show',
+                        $qrCode->id,
+                    ]) ?>">
+                </div>
+            </div>
             <div class="text">
                 <strong><?= __('Description') ?></strong>
                 <blockquote>
