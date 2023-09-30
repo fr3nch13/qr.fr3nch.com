@@ -42,7 +42,6 @@ class QrCode extends Entity
         'modified' => true,
         'url' => true,
         'source_id' => true,
-        // TODO: Remove user_id as accessible
         'user_id' => true,
         'source' => true,
         'user' => true,
