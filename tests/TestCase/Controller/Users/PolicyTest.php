@@ -5,6 +5,7 @@ namespace App\Test\TestCase\Controller\Users;
 
 use App\Test\TestCase\Controller\BaseControllerTest;
 use Cake\Core\Configure;
+use Cake\Routing\Router;
 
 /**
  * App\Controller\UsersController Test Case
@@ -177,13 +178,13 @@ class PolicyTest extends BaseControllerTest
         // test with missing id, no debug
         Configure::write('debug', false);
         $this->loginUserRegular();
-        $this->get('/users/view');
-        $this->assertResponseCode(500);
-        // TODO: This should apply a check `/users/view`
-        // Should also throw a 404, instead of a 500
-        // labels: policy, response code
-        // milestone: 1
-        $this->assertResponseContains('The request to `/users/view` did not apply any authorization checks.');
+        $this->get(Router::url([
+            '_https' => true,
+            'controller' => 'Users',
+            'action' => 'view',
+        ]));
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
         Configure::write('debug', true); // turn it back on
     }
 
@@ -241,13 +242,13 @@ class PolicyTest extends BaseControllerTest
         // test with missing id, no debug
         Configure::write('debug', false);
         $this->loginUserAdmin();
-        $this->get('/users/edit');
-        $this->assertResponseCode(500);
-        // TODO: This should apply a check `/users/edit`
-        // Should also throw a 404, instead of a 500
-        // labels: policy, response code
-        // milestone: 1
-        $this->assertResponseContains('The request to `/users/edit` did not apply any authorization checks.');
+        $this->get(Router::url([
+            '_https' => true,
+            'controller' => 'Users',
+            'action' => 'edit',
+        ]));
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
         Configure::write('debug', true); // turn it back on
 
         // test with admin, get
@@ -281,7 +282,6 @@ class PolicyTest extends BaseControllerTest
 
         // not logged in, so should redirect
         $this->get('/users/delete');
-        $this->assertRedirect();
         $this->assertResponseCode(302);
         $this->assertRedirectContains('/users/login?redirect=%2Fusers%2Fdelete');
 
@@ -290,6 +290,18 @@ class PolicyTest extends BaseControllerTest
         $this->get('/users/delete');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
+
+        // test with missing id, no debug
+        Configure::write('debug', false);
+        $this->loginUserAdmin();
+        $this->get(Router::url([
+            '_https' => true,
+            'controller' => 'Users',
+            'action' => 'delete',
+        ]));
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
+        Configure::write('debug', true); // turn it back on
 
         // test get with reqular, get
         $this->loginUserRegular();
@@ -323,12 +335,6 @@ class PolicyTest extends BaseControllerTest
         $this->post('/users/delete/3');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
-
-        // test with admin, delete, no ID
-        $this->loginUserAdmin();
-        $this->delete('/users/delete');
-        $this->assertResponseCode(404);
-        $this->assertResponseContains('Unknown ID');
 
         // test with admin, post no data, no CSRF
         $this->loginUserAdmin();

@@ -5,6 +5,7 @@ namespace App\Test\TestCase\Controller\Categories;
 
 use App\Test\TestCase\Controller\BaseControllerTest;
 use Cake\Core\Configure;
+use Cake\Routing\Router;
 
 /**
  * App\Controller\CategoriesController Test Case
@@ -25,6 +26,8 @@ class PolicyTest extends BaseControllerTest
         parent::setUp();
         Configure::write('debug', true);
         $this->enableRetainFlashMessages();
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
     }
 
     /**
@@ -44,7 +47,6 @@ class PolicyTest extends BaseControllerTest
         // test with admin
         $this->loginUserAdmin();
         $this->get('/categories');
-
         $this->assertResponseOk();
         $this->assertResponseContains('<div class="categories index content">');
         $this->assertResponseContains('<h3>Categories</h3>');
@@ -52,7 +54,6 @@ class PolicyTest extends BaseControllerTest
         // test with reqular
         $this->loginUserRegular();
         $this->get('/categories');
-
         $this->assertResponseOk();
         $this->assertResponseContains('<div class="categories index content">');
         $this->assertResponseContains('<h3>Categories</h3>');
@@ -95,14 +96,13 @@ class PolicyTest extends BaseControllerTest
         // test with missing id, no debug
         Configure::write('debug', false);
         $this->loginUserRegular();
-        $this->get('/categories/view');
-        $this->assertResponseCode(500);
-        // TODO: This should apply a check `/categories/view`
-        // Should also throw a 404, instead of a 500
-        // labels: policy, response code
-        // milestone: 1
-        $this->assertResponseContains('The request to `/categories/view` did not apply any authorization checks.');
-        Configure::write('debug', true); // turn it back on
+        $this->get(Router::url([
+            '_https' => true,
+            'controller' => 'Categories',
+            'action' => 'view',
+        ]));
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
     }
 
     /**
@@ -118,6 +118,8 @@ class PolicyTest extends BaseControllerTest
         $this->assertRedirect();
         $this->assertResponseCode(302);
         $this->assertRedirectContains('/users/login?redirect=%2Fcategories%2Fadd');
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
 
         // test with admin, get
         $this->loginUserAdmin();
@@ -147,7 +149,6 @@ class PolicyTest extends BaseControllerTest
     {
         // not logged in, so should redirect
         $this->get('/categories/edit');
-        $this->assertRedirect();
         $this->assertResponseCode(302);
         $this->assertRedirectContains('/users/login?redirect=%2Fcategories%2Fedit');
 
@@ -160,13 +161,13 @@ class PolicyTest extends BaseControllerTest
         // test with missing id, no debug
         Configure::write('debug', false);
         $this->loginUserAdmin();
-        $this->get('/categories/edit');
-        $this->assertResponseCode(500);
-        // TODO: This should apply a check `/categories/edit`
-        // Should also throw a 404, instead of a 500
-        // labels: policy, response code
-        // milestone: 1
-        $this->assertResponseContains('The request to `/categories/edit` did not apply any authorization checks.');
+        $this->get(Router::url([
+            '_https' => true,
+            'controller' => 'Categories',
+            'action' => 'edit',
+        ]));
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
         Configure::write('debug', true); // turn it back on
 
         // test with admin, get
@@ -210,6 +211,18 @@ class PolicyTest extends BaseControllerTest
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
 
+        // test with missing id, no debug
+        Configure::write('debug', false);
+        $this->loginUserAdmin();
+        $this->get(Router::url([
+            '_https' => true,
+            'controller' => 'Categories',
+            'action' => 'delete',
+        ]));
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
+        Configure::write('debug', true); // turn it back on
+
         // test get with reqular, get
         $this->loginUserRegular();
         $this->get('/categories/delete/3');
@@ -242,12 +255,6 @@ class PolicyTest extends BaseControllerTest
         $this->post('/categories/delete/3');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
-
-        // test with admin, delete, no ID
-        $this->loginUserAdmin();
-        $this->delete('/categories/delete');
-        $this->assertResponseCode(404);
-        $this->assertResponseContains('Unknown ID');
 
         // test with admin, delete
         $this->loginUserAdmin();

@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Model\Entity\User;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
 
@@ -32,25 +31,10 @@ class TagsController extends AppController
         if (in_array($action, ['view', 'edit', 'delete'])) {
             $pass = $this->request->getParam('pass');
             if (empty($pass) || !isset($pass['0'])) {
+                $event->stopPropagation();
                 throw new NotFoundException('Unknown ID');
             }
         }
-    }
-
-    /**
-     * Use the below to check if the user can access the called action.
-     * This is a general check, and should return true at the end,
-     * as the Authorization->authorize() will handle the specific authorization in each action.
-     *
-     * @param \App\Model\Entity\User|null $user The logged in user
-     * @return bool If they're allowed or not.
-     */
-    public function isAuthorized(?User $user): bool
-    {
-        // all logged in users to can access the actions.
-        // the object authorization is then done.
-        // default is allow.
-        return parent::isAuthorized($user);
     }
 
     /**
@@ -81,6 +65,7 @@ class TagsController extends AppController
         $this->request->allowMethod(['get']);
 
         $tag = $this->Tags->get((int)$id, contain: ['QrCodes']);
+        $this->Authorization->authorize($tag);
 
         $this->set(compact('tag'));
         $this->viewBuilder()->setOption('serialize', ['tag']);

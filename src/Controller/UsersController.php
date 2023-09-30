@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Model\Entity\User;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
@@ -32,36 +31,10 @@ class UsersController extends AppController
         if (in_array($action, ['view', 'edit', 'delete'])) {
             $pass = $this->request->getParam('pass');
             if (empty($pass) || !isset($pass['0'])) {
+                $event->stopPropagation();
                 throw new NotFoundException('Unknown ID');
             }
         }
-    }
-
-    /**
-     * Use the below to check if the user can access the called action.
-     * This is a general check, and should return true at the end,
-     * as the Authorization->authorize() will handle the specific authorization in each action.
-     *
-     * @param \App\Model\Entity\User|null $user The logged in user
-     * @return bool If they're allowed or not.
-     */
-    public function isAuthorized(?User $user): bool
-    {
-        $action = $this->request->getParam('action');
-        // admin actions
-        if (in_array($action, ['index', 'add', 'delete'])) {
-            if (!$user) {
-                return false;
-            }
-
-            return $user->isAdmin();
-        } elseif (in_array($action, ['view', 'edit'])) {
-            if (!$user) {
-                return false;
-            }
-        }
-
-        return parent::isAuthorized($user);
     }
 
     /**

@@ -5,6 +5,7 @@ namespace App\Test\TestCase\Controller\QrCodes;
 
 use App\Test\TestCase\Controller\BaseControllerTest;
 use Cake\Core\Configure;
+use Cake\Routing\Router;
 
 /**
  * App\Controller\QrCodesController Test Case
@@ -93,13 +94,14 @@ class PolicyTest extends BaseControllerTest
         // test with missing id, no debug
         Configure::write('debug', false);
         $this->loginUserRegular();
-        $this->get('/qr-codes/view');
-        $this->assertResponseCode(500);
-        // TODO: This should apply a check `/qr-codes/view`
-        // Should also throw a 404, instead of a 500
-        // labels: policy, response code
-        // milestone: 1
-        $this->assertResponseContains('The request to `/qr-codes/view` did not apply any authorization checks.');
+        $this->loginUserAdmin();
+        $this->get(Router::url([
+            '_https' => true,
+            'controller' => 'QrCodes',
+            'action' => 'view',
+        ]));
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
         Configure::write('debug', true); // turn it back on
     }
 
@@ -157,13 +159,13 @@ class PolicyTest extends BaseControllerTest
         // test with missing id, no debug
         Configure::write('debug', false);
         $this->loginUserAdmin();
-        $this->get('/qr-codes/edit');
-        $this->assertResponseCode(500);
-        // TODO: This should apply a check `/qr-codes/edit`
-        // Should also throw a 404, instead of a 500
-        // labels: policy, response code
-        // milestone: 1
-        $this->assertResponseContains('The request to `/qr-codes/edit` did not apply any authorization checks.');
+        $this->get(Router::url([
+            '_https' => true,
+            'controller' => 'QrCodes',
+            'action' => 'edit',
+        ]));
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
         Configure::write('debug', true); // turn it back on
 
         // test with admin, get
@@ -206,6 +208,18 @@ class PolicyTest extends BaseControllerTest
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
 
+        // test with missing id, no debug
+        Configure::write('debug', false);
+        $this->loginUserAdmin();
+        $this->get(Router::url([
+            '_https' => true,
+            'controller' => 'QrCodes',
+            'action' => 'delete',
+        ]));
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
+        Configure::write('debug', true); // turn it back on
+
         // test get with reqular, get
         $this->loginUserRegular();
         $this->get('/qr-codes/delete/1');
@@ -231,12 +245,6 @@ class PolicyTest extends BaseControllerTest
         $this->post('/qr-codes/delete/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
-
-        // test with admin, delete, no ID
-        $this->loginUserAdmin();
-        $this->delete('/qr-codes/delete');
-        $this->assertResponseCode(404);
-        $this->assertResponseContains('Unknown ID');
 
         // test with admin, post no data, no CSRF
         $this->loginUserAdmin();

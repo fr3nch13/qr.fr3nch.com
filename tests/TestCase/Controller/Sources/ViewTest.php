@@ -46,11 +46,10 @@ class ViewTest extends BaseControllerTest
         // test with reqular
         $this->loginUserRegular();
         $this->get('/sources');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/?redirect=%2Fsources');
-        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
-        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
-        $this->assertFlashElement('flash/error');
+        $this->assertResponseOk();
+        $this->helperTestLayoutNormal();
+        $this->assertResponseContains('<div class="sources index content">');
+        $this->assertResponseContains('<h3>Sources</h3>');
 
         // test with admin
         $this->loginUserAdmin();
@@ -77,11 +76,10 @@ class ViewTest extends BaseControllerTest
         $this->requestAsAjax();
         $this->loginUserRegular();
         $this->get('/sources');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/?redirect=%2Fsources');
-        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
-        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
-        $this->assertFlashElement('flash/error');
+        $this->assertResponseOk();
+        $this->helperTestLayoutAjax();
+        $this->assertResponseContains('<div class="sources index content">');
+        $this->assertResponseContains('<h3>Sources</h3>');
 
         // test with admin
         $this->requestAsAjax();

@@ -16,7 +16,18 @@ declare(strict_types=1);
  */
 namespace App;
 
-use App\Policy\ControllerResolver;
+use App\Controller\CategoriesController;
+use App\Controller\PagesController;
+use App\Controller\QrCodesController;
+use App\Controller\SourcesController;
+use App\Controller\TagsController;
+use App\Controller\UsersController;
+use App\Policy\CategoriesControllerPolicy;
+use App\Policy\PagesControllerPolicy;
+use App\Policy\QrCodesControllerPolicy;
+use App\Policy\SourcesControllerPolicy;
+use App\Policy\TagsControllerPolicy;
+use App\Policy\UsersControllerPolicy;
 use Authentication\AuthenticationService;
 use Authentication\AuthenticationServiceInterface;
 use Authentication\AuthenticationServiceProviderInterface;
@@ -27,6 +38,7 @@ use Authorization\AuthorizationServiceProviderInterface;
 use Authorization\Exception\ForbiddenException;
 use Authorization\Exception\MissingIdentityException;
 use Authorization\Middleware\AuthorizationMiddleware;
+use Authorization\Policy\MapResolver;
 use Authorization\Policy\OrmResolver;
 use Authorization\Policy\ResolverCollection;
 use Cake\Core\Configure;
@@ -148,6 +160,7 @@ class Application extends BaseApplication implements
 
             // @link https://book.cakephp.org/5/en/tutorials-and-examples/cms/authorization.html
             ->add(new AuthorizationMiddleware($this, [
+                'requireAuthorizationCheck' => Configure::read('debug'),
                 'identityDecorator' => function ($auth, $user) {
                     return $user->setAuthorization($auth);
                 },
@@ -281,14 +294,22 @@ class Application extends BaseApplication implements
      */
     public function getAuthorizationService(ServerRequestInterface $request): AuthorizationServiceInterface
     {
-        // make controller authorization backwards compatible
-        // @link https://book.cakephp.org/authorization/3/en/policy-resolvers.html#creating-a-resolver
-        $controllerResolver = new ControllerResolver();
+        // Use the Map Resolver to map controllers to a policy.
+        $mapResolver = new MapResolver();
+
+        // map the controllers
+        $mapResolver->map(CategoriesController::class, CategoriesControllerPolicy::class);
+        $mapResolver->map(QrCodesController::class, QrCodesControllerPolicy::class);
+        $mapResolver->map(SourcesController::class, SourcesControllerPolicy::class);
+        $mapResolver->map(TagsController::class, TagsControllerPolicy::class);
+        $mapResolver->map(UsersController::class, UsersControllerPolicy::class);
+        $mapResolver->map(PagesController::class, PagesControllerPolicy::class);
+
         $ormResolver = new OrmResolver();
 
         // @link https://book.cakephp.org/authorization/3/en/policy-resolvers.html#using-multiple-resolvers
         $resolver = new ResolverCollection([
-            $controllerResolver,
+            $mapResolver, // make sure this one is first.
             $ormResolver,
         ]);
 

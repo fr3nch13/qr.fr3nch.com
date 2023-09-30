@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Policy;
 
 use App\Model\Entity\Category;
-use Authorization\IdentityInterface;
+use App\Model\Entity\User;
 
 /**
  * Category policy
@@ -12,54 +12,51 @@ use Authorization\IdentityInterface;
 class CategoryPolicy
 {
     /**
-     * Check if $user can add Category
+     * Check if $user can view qr codes
      *
-     * @param \Authorization\Identity $identity The identity object.
+     * @param \App\Model\Entity\User|null $identity The identity object.
      * @param \App\Model\Entity\Category $Category
      * @return bool
      */
-    public function canAdd(IdentityInterface $identity, Category $Category): bool
+    public function canView(?User $identity, Category $Category): bool
     {
-        // All logged in users can create qr codes.
-        return $this->isAdmin($identity, $Category);
+        // All users can view a category.
+        return true;
     }
 
     /**
-     * Check if $user can edit Category
+     * Only Admins can add a Category
      *
-     * @param \Authorization\Identity $identity The identity object.
+     * @param \App\Model\Entity\User $identity The identity object.
      * @param \App\Model\Entity\Category $Category
      * @return bool
      */
-    public function canEdit(IdentityInterface $identity, Category $Category): bool
+    public function canAdd(User $identity, Category $Category): bool
     {
-        return $this->isAdmin($identity, $Category);
+        return $identity->isAdmin();
     }
 
     /**
-     * Check if $user can delete Category
+     * Only Admins can edit a Category
      *
-     * @param \Authorization\Identity $identity The identity object.
+     * @param \App\Model\Entity\User $identity The identity object.
      * @param \App\Model\Entity\Category $Category
      * @return bool
      */
-    public function canDelete(IdentityInterface $identity, Category $Category): bool
+    public function canEdit(User $identity, Category $Category): bool
     {
-        return $this->isAdmin($identity, $Category);
+        return $identity->isAdmin();
     }
 
     /**
-     * Check if $user is an Admin
+     * Only Admins can delete a Category
      *
-     * @param \Authorization\Identity $identity The identity object.
+     * @param \App\Model\Entity\User $identity The identity object.
      * @param \App\Model\Entity\Category $Category
      * @return bool
      */
-    protected function isAdmin(IdentityInterface $identity, Category $Category): bool
+    public function canDelete(User $identity, Category $Category): bool
     {
-        /** @var \App\Model\Entity\User $entity */
-        $entity = $identity->getOriginalData();
-
-        return $entity->is_admin ? true : false;
+        return $identity->isAdmin();
     }
 }

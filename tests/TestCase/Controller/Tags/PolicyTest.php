@@ -5,6 +5,7 @@ namespace App\Test\TestCase\Controller\Tags;
 
 use App\Test\TestCase\Controller\BaseControllerTest;
 use Cake\Core\Configure;
+use Cake\Routing\Router;
 
 /**
  * App\Controller\TagsController Test Case
@@ -93,13 +94,13 @@ class PolicyTest extends BaseControllerTest
         // test with missing id, no debug
         Configure::write('debug', false);
         $this->loginUserRegular();
-        $this->get('/tags/view');
-        $this->assertResponseCode(500);
-        // TODO: This should apply a check `/tags/view`
-        // Should also throw a 404, instead of a 500
-        // labels: policy, response code
-        // milestone: 1
-        $this->assertResponseContains('The request to `/tags/view` did not apply any authorization checks.');
+        $this->get(Router::url([
+            '_https' => true,
+            'controller' => 'Tags',
+            'action' => 'view',
+        ]));
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
         Configure::write('debug', true); // turn it back on
     }
 
@@ -113,7 +114,6 @@ class PolicyTest extends BaseControllerTest
     {
         // not logged in, so should redirect
         $this->get('/tags/add');
-        $this->assertRedirect();
         $this->assertResponseCode(302);
         $this->assertRedirectContains('/users/login?redirect=%2Ftags%2Fadd');
 
@@ -144,8 +144,10 @@ class PolicyTest extends BaseControllerTest
     {
         // not logged in, so should redirect
         $this->get('/tags/edit');
-        $this->assertResponseCode(404);
-        $this->assertResponseContains('Unknown ID');
+        $this->assertResponseCode(302);
+        $this->assertRedirectContains('/users/login?redirect=%2Ftags%2Fedit');
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
 
         // test with missing id and debug
         $this->loginUserAdmin();
@@ -156,13 +158,13 @@ class PolicyTest extends BaseControllerTest
         // test with missing id, no debug
         Configure::write('debug', false);
         $this->loginUserAdmin();
-        $this->get('/tags/edit');
-        $this->assertResponseCode(500);
-        // TODO: This should apply a check `/tags/edit`
-        // Should also throw a 404, instead of a 500
-        // labels: policy, response code
-        // milestone: 1
-        $this->assertResponseContains('The request to `/tags/edit` did not apply any authorization checks.');
+        $this->get(Router::url([
+            '_https' => true,
+            'controller' => 'Tags',
+            'action' => 'edit',
+        ]));
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
         Configure::write('debug', true); // turn it back on
 
         // test with admin, get
@@ -195,14 +197,27 @@ class PolicyTest extends BaseControllerTest
 
         // not logged in, so should redirect
         $this->get('/tags/delete');
-        $this->assertResponseCode(404);
-        $this->assertResponseContains('Unknown ID');
+        $this->assertRedirectContains('/users/login?redirect=%2Ftags%2Fdelete');
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
 
         // test get with missing id and debug
         $this->loginUserAdmin();
         $this->get('/tags/delete');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
+
+        // test with missing id, no debug
+        Configure::write('debug', false);
+        $this->loginUserAdmin();
+        $this->get(Router::url([
+            '_https' => true,
+            'controller' => 'Tags',
+            'action' => 'delete',
+        ]));
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
+        Configure::write('debug', true); // turn it back on
 
         // test get with reqular, get
         $this->loginUserRegular();
@@ -229,12 +244,6 @@ class PolicyTest extends BaseControllerTest
         $this->post('/tags/delete/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
-
-        // test with admin, delete, no ID
-        $this->loginUserAdmin();
-        $this->delete('/tags/delete');
-        $this->assertResponseCode(404);
-        $this->assertResponseContains('Unknown ID');
 
         // test with admin, post no data, no CSRF
         $this->loginUserAdmin();

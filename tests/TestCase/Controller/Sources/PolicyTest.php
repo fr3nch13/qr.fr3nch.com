@@ -5,6 +5,7 @@ namespace App\Test\TestCase\Controller\Sources;
 
 use App\Test\TestCase\Controller\BaseControllerTest;
 use Cake\Core\Configure;
+use Cake\Routing\Router;
 
 /**
  * App\Controller\SourcesController Test Case
@@ -51,11 +52,9 @@ class PolicyTest extends BaseControllerTest
         // test with reqular
         $this->loginUserRegular();
         $this->get('/sources');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/?redirect=%2Fsources');
-        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
-        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
-        $this->assertFlashElement('flash/error');
+        $this->assertResponseOk();
+        $this->assertResponseContains('<div class="sources index content">');
+        $this->assertResponseContains('<h3>Sources</h3>');
     }
 
     /**
@@ -95,13 +94,13 @@ class PolicyTest extends BaseControllerTest
         // test with missing id, no debug
         Configure::write('debug', false);
         $this->loginUserRegular();
-        $this->get('/sources/view');
-        $this->assertResponseCode(500);
-        // TODO: This should apply a check `/sources/view`
-        // Should also throw a 404, instead of a 500
-        // labels: policy, response code
-        // milestone: 1
-        $this->assertResponseContains('The request to `/sources/view` did not apply any authorization checks.');
+        $this->get(Router::url([
+            '_https' => true,
+            'controller' => 'Sources',
+            'action' => 'view',
+        ]));
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
         Configure::write('debug', true); // turn it back on
     }
 
@@ -161,12 +160,13 @@ class PolicyTest extends BaseControllerTest
         Configure::write('debug', false);
         $this->loginUserAdmin();
         $this->get('/sources/edit');
-        $this->assertResponseCode(500);
-        // TODO: This should apply a check `/sources/edit`
-        // Should also throw a 404, instead of a 500
-        // labels: policy, response code
-        // milestone: 1
-        $this->assertResponseContains('The request to `/sources/edit` did not apply any authorization checks.');
+        $this->get(Router::url([
+            '_https' => true,
+            'controller' => 'Sources',
+            'action' => 'edit',
+        ]));
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
         Configure::write('debug', true); // turn it back on
 
         // test with admin, get
@@ -210,6 +210,18 @@ class PolicyTest extends BaseControllerTest
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
 
+        // test with missing id, no debug
+        Configure::write('debug', false);
+        $this->loginUserAdmin();
+        $this->get(Router::url([
+            '_https' => true,
+            'controller' => 'Sources',
+            'action' => 'delete',
+        ]));
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
+        Configure::write('debug', true); // turn it back on
+
         // test get with reqular, get
         $this->loginUserRegular();
         $this->get('/sources/delete/1');
@@ -239,12 +251,6 @@ class PolicyTest extends BaseControllerTest
         $this->post('/sources/delete/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
-
-        // test with admin, delete, no ID
-        $this->loginUserAdmin();
-        $this->delete('/sources/delete');
-        $this->assertResponseCode(404);
-        $this->assertResponseContains('Unknown ID');
 
         // test with admin, post no data, no CSRF
         $this->loginUserAdmin();

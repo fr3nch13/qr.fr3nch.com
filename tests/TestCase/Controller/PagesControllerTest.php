@@ -117,10 +117,15 @@ class PagesControllerTest extends BaseControllerTest
     {
         Configure::write('debug', false);
 
-        $this->get('/pages/not_existing');
+        $this->get('https://localhost/pages/not_existing');
 
-        $this->assertResponseCode(500);
-        $this->assertResponseContains('Error');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('<h2>Not Found</h2>');
+        $this->assertResponseContains('The requested address <strong>\'/pages/not_existing\'</strong> was not found on this server.');
+        $this->assertResponseContains('<!-- START: App.layout/error -->');
+        $this->assertResponseContains('<!-- START: App.Error/error400 -->');
+        $this->assertResponseContains('<!-- END: App.Error/error400 -->');
+        $this->assertResponseContains('<!-- END: App.layout/error -->');
     }
 
     /**
@@ -147,7 +152,7 @@ class PagesControllerTest extends BaseControllerTest
      */
     public function testDirectoryTraversalProtection()
     {
-        $this->get('/pages/../Layout/ajax');
+        $this->get('https://localhost/pages/../Layout/ajax');
 
         $this->assertResponseCode(403);
         $this->assertResponseContains('Forbidden');
