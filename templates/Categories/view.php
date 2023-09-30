@@ -64,7 +64,7 @@
                         <?php foreach ($category->qr_codes as $qrCodes) : ?>
                         <tr>
                             <td><?= h($qrCodes->id) ?></td>
-                            <td><?= h($qrCodes->key) ?></td>
+                            <td><?= h($qrCodes->qrkey) ?></td>
                             <td><?= h($qrCodes->name) ?></td>
                             <td><?= h($qrCodes->description) ?></td>
                             <td><?= h($qrCodes->created) ?></td>

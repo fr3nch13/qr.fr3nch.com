@@ -21,7 +21,7 @@
             <table>
                 <tr>
                     <th><?= __('Key') ?></th>
-                    <td><?= h($qrCode->key) ?></td>
+                    <td><?= h($qrCode->qrkey) ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Name') ?></th>
