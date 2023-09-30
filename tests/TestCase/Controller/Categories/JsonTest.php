@@ -135,7 +135,6 @@ class JsonTest extends BaseControllerTest
             'name' => 'New JSON QR Code',
             'description' => 'Description of the code',
             'url' => 'https://amazon.com/path/to/forward',
-            'bitly_id' => 'bitly_id',
             'source_id' => 1,
         ]);
         $this->assertResponseCode(302);

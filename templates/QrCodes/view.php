@@ -28,10 +28,6 @@
                     <td><?= h($qrCode->name) ?></td>
                 </tr>
                 <tr>
-                    <th><?= __('Bitly Id') ?></th>
-                    <td><?= h($qrCode->bitly_id) ?></td>
-                </tr>
-                <tr>
                     <th><?= __('Source') ?></th>
                     <td><?= $qrCode->hasValue('source') ? $this->Html->link($qrCode->source->name, ['controller' => 'Sources', 'action' => 'view', $qrCode->source->id]) : '' ?></td>
                 </tr>

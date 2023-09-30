@@ -133,9 +133,6 @@ class JsonTest extends BaseControllerTest
             'url' => [
                 '_required' => 'This field is required',
             ],
-            'bitly_id' => [
-                '_required' => 'This field is required',
-            ],
             'source_id' => [
                 '_required' => 'This field is required',
             ],
@@ -155,7 +152,6 @@ class JsonTest extends BaseControllerTest
             'name' => 'New JSON QR Code',
             'description' => 'Description of the code',
             'url' => 'https://amazon.com/path/to/forward',
-            'bitly_id' => 'bitly_id',
             'source_id' => 1,
         ]);
         $this->assertResponseCode(302);
@@ -198,7 +194,6 @@ class JsonTest extends BaseControllerTest
             'name' => 'New JSON QR Code',
             'description' => 'Description of the code',
             'url' => 'https://amazon.com/path/to/forward',
-            'bitly_id' => 'bitly_id',
             'source_id' => 1,
         ]);
         $this->assertResponseOk();
@@ -225,7 +220,6 @@ class JsonTest extends BaseControllerTest
             'name' => 'New JSON QR Code',
             'description' => 'Description of the code',
             'url' => 'https://amazon.com/path/to/forward',
-            'bitly_id' => 'bitly_id',
             'source_id' => 1,
         ]);
         $this->assertResponseCode(302);

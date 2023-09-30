@@ -16,7 +16,6 @@
                     <th><?= $this->Paginator->sort('name') ?></th>
                     <th><?= $this->Paginator->sort('created') ?></th>
                     <th><?= $this->Paginator->sort('modified') ?></th>
-                    <th><?= $this->Paginator->sort('bitly_id') ?></th>
                     <th><?= $this->Paginator->sort('source_id') ?></th>
                     <th><?= $this->Paginator->sort('user_id') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
@@ -30,7 +29,6 @@
                     <td><?= h($qrCode->name) ?></td>
                     <td><?= h($qrCode->created) ?></td>
                     <td><?= h($qrCode->modified) ?></td>
-                    <td><?= h($qrCode->bitly_id) ?></td>
                     <td><?= $qrCode->hasValue('source') ? $this->Html->link($qrCode->source->name, ['controller' => 'Sources', 'action' => 'view', $qrCode->source->id]) : '' ?></td>
                     <td><?= $qrCode->hasValue('user') ? $this->Html->link($qrCode->user->name, ['controller' => 'Users', 'action' => 'view', $qrCode->user->id]) : '' ?></td>
                     <td class="actions">

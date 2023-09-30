@@ -117,12 +117,6 @@ class QrCodesTable extends Table
             ]);
 
         $validator
-            ->scalar('bitly_id')
-            ->maxLength('bitly_id', 255)
-            ->notEmptyString('bitly_id')
-            ->requirePresence('bitly_id', Validator::WHEN_CREATE);
-
-        $validator
             ->integer('source_id')
             ->notEmptyString('source_id')
             ->requirePresence('source_id', Validator::WHEN_CREATE);
