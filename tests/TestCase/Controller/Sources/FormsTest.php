@@ -44,9 +44,9 @@ class FormsTest extends BaseControllerTest
         $this->post('/sources/add', [
         ]);
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="message error" onclick="this.classList.add(\'hidden\');">The source could not be saved. Please, try again.</div>');
+        $this->helperTestAlert('The source could not be saved. Please, try again.', 'danger');
         $this->assertResponseContains('<div class="sources form content">');
-        $this->assertResponseContains('<form method="post" accept-charset="utf-8" action="/sources/add">');
+        $this->assertResponseContains('<form method="post" accept-charset="utf-8" role="form" action="/sources/add">');
         $this->assertResponseContains('<legend>Add Source</legend>');
         // test to make sure the fields that are required are actually tagged as so.
         $this->assertResponseContains('id="name-error"');
@@ -58,12 +58,12 @@ class FormsTest extends BaseControllerTest
             'description' => 'description',
         ]);
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="message error" onclick="this.classList.add(\'hidden\');">The source could not be saved. Please, try again.</div>');
+        $this->helperTestAlert('The source could not be saved. Please, try again.', 'danger');
         $this->assertResponseContains('<div class="sources form content">');
-        $this->assertResponseContains('<form method="post" accept-charset="utf-8" action="/sources/add">');
+        $this->assertResponseContains('<form method="post" accept-charset="utf-8" role="form" action="/sources/add">');
         $this->assertResponseContains('<legend>Add Source</legend>');
         // test to make sure the fields that are required are actually tagged as so.
-        $this->assertResponseContains('<div class="error-message" id="name-error">This Name already exists.</div>');
+        $this->helperTestFormFieldError('This Name already exists.', 'name-error');
 
         // test success
         $this->post('/sources/add', [
@@ -90,9 +90,9 @@ class FormsTest extends BaseControllerTest
             'name' => 'Etsy', // an existing record
         ]);
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="message error" onclick="this.classList.add(\'hidden\');">The source could not be saved. Please, try again.</div>');
+        $this->helperTestAlert('The source could not be saved. Please, try again.', 'danger');
         $this->assertResponseContains('<div class="sources form content">');
-        $this->assertResponseContains('<form method="patch" accept-charset="utf-8" action="/sources/edit/1">');
+        $this->assertResponseContains('<form method="patch" accept-charset="utf-8" role="form" action="/sources/edit/1">');
         $this->assertResponseContains('<legend>Edit Source</legend>');
         // test to make sure the fields that are required are actually tagged as so.
         $this->assertResponseContains('id="name-error"');

@@ -232,7 +232,7 @@ class CrudTest extends BaseControllerTest
         $this->get('/users/add');
         $this->assertResponseOk();
         $this->assertResponseContains('<div class="users form content">');
-        $this->assertResponseContains('<form method="post" accept-charset="utf-8" action="/users/add">');
+        $this->assertResponseContains('<form method="post" accept-charset="utf-8" role="form" action="/users/add">');
         $this->assertResponseContains('<legend>Add User</legend>');
 
         // post
@@ -285,7 +285,7 @@ class CrudTest extends BaseControllerTest
         $this->get('/users/edit/3');
         $this->assertResponseOk();
         $this->assertResponseContains('<div class="users form content">');
-        $this->assertResponseContains('<form method="patch" accept-charset="utf-8" action="/users/edit/3">');
+        $this->assertResponseContains('<form method="patch" accept-charset="utf-8" role="form" action="/users/edit/3">');
         $this->assertResponseContains('<legend>Edit User</legend>');
 
         // post

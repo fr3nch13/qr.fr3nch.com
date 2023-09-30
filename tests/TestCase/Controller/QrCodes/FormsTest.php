@@ -44,9 +44,9 @@ class FormsTest extends BaseControllerTest
         $this->post('/qr-codes/add', [
         ]);
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="message error" onclick="this.classList.add(\'hidden\');">The qr code could not be saved. Please, try again.</div>');
+        $this->helperTestAlert('The qr code could not be saved. Please, try again.', 'danger');
         $this->assertResponseContains('<div class="qrCodes form content">');
-        $this->assertResponseContains('<form method="post" accept-charset="utf-8" action="/qr-codes/add">');
+        $this->assertResponseContains('<form method="post" accept-charset="utf-8" role="form" action="/qr-codes/add">');
         $this->assertResponseContains('<legend>Add QR Code</legend>');
         // test to make sure the fields that are required are actually tagged as so.
         $this->assertResponseContains('id="qrkey-error"');
@@ -85,9 +85,9 @@ class FormsTest extends BaseControllerTest
             'qrkey' => 'blahblah', // changed key
         ]);
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="message error" onclick="this.classList.add(\'hidden\');">The qr code could not be saved. Please, try again.</div>');
+        $this->helperTestAlert('The qr code could not be saved. Please, try again.', 'danger');
         $this->assertResponseContains('<div class="qrCodes form content">');
-        $this->assertResponseContains('<form method="patch" accept-charset="utf-8" action="/qr-codes/edit/1">');
+        $this->assertResponseContains('<form method="patch" accept-charset="utf-8" role="form" action="/qr-codes/edit/1">');
         $this->assertResponseContains('<legend>Edit QR Code</legend>');
         // don't show the frontend an error as this shouldn't happen.
         // if it does, it's someone trying to be nefarious, don't give them more info.
@@ -97,9 +97,9 @@ class FormsTest extends BaseControllerTest
             'qrkey' => 'witchinghour', // an existing record
         ]);
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="message error" onclick="this.classList.add(\'hidden\');">The qr code could not be saved. Please, try again.</div>');
+        $this->helperTestAlert('The qr code could not be saved. Please, try again.', 'danger');
         $this->assertResponseContains('<div class="qrCodes form content">');
-        $this->assertResponseContains('<form method="patch" accept-charset="utf-8" action="/qr-codes/edit/1">');
+        $this->assertResponseContains('<form method="patch" accept-charset="utf-8" role="form" action="/qr-codes/edit/1">');
         $this->assertResponseContains('<legend>Edit QR Code</legend>');
         // don't show the frontend an error as this shouldn't happen.
         // if it does, it's someone trying to be nefarious, don't give them more info.

@@ -99,6 +99,9 @@ class Application extends BaseApplication implements
         // Load more plugins here
         // CakePHP's Authorizatio Plugin.
         $this->addPlugin('Authorization');
+
+        // the bootstrapui plugin.
+        $this->addPlugin('BootstrapUI');
     }
 
     /**

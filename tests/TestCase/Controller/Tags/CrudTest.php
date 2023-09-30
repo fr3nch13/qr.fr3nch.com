@@ -130,7 +130,7 @@ class CrudTest extends BaseControllerTest
         $this->get('/tags/add');
         $this->assertResponseOk();
         $this->assertResponseContains('<div class="tags form content">');
-        $this->assertResponseContains('<form method="post" accept-charset="utf-8" action="/tags/add">');
+        $this->assertResponseContains('<form method="post" accept-charset="utf-8" role="form" action="/tags/add">');
         $this->assertResponseContains('<legend>Add Tag</legend>');
 
         // post
@@ -181,7 +181,7 @@ class CrudTest extends BaseControllerTest
         $this->get('/tags/edit/1');
         $this->assertResponseOk();
         $this->assertResponseContains('<div class="tags form content">');
-        $this->assertResponseContains('<form method="patch" accept-charset="utf-8" action="/tags/edit/1">');
+        $this->assertResponseContains('<form method="patch" accept-charset="utf-8" role="form" action="/tags/edit/1">');
         $this->assertResponseContains('<legend>Edit Tag</legend>');
 
         // post

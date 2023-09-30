@@ -15,6 +15,7 @@ declare(strict_types=1);
  */
 namespace App\View;
 
+use BootstrapUI\View\UIViewTrait;
 use Cake\View\View;
 
 /**
@@ -26,6 +27,8 @@ use Cake\View\View;
  */
 class AppView extends View
 {
+    use UIViewTrait;
+
     /**
      * The name of the layout file to render the view inside of. The name
      * specified is the filename of the layout in /templates/Layout without
@@ -56,8 +59,6 @@ class AppView extends View
      */
     public function initialize(): void
     {
-        $this->addHelper('Flash');
-        $this->addHelper('Form');
-        $this->addHelper('Html');
+        $this->initializeUI(['layout' => false]);
     }
 }
