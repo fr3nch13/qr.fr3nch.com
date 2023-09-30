@@ -162,8 +162,8 @@ class ViewTest extends BaseControllerTest
         // test with reqular
         $this->loginUserRegular();
         $this->get('/users/view/1');
-        $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->assertResponseCode(302);
+        $this->assertRedirectContains('/?redirect=%2Fusers%2Fview%2F1');
 
         // test with admin
         $this->loginUserAdmin();
@@ -186,17 +186,72 @@ class ViewTest extends BaseControllerTest
         $this->assertResponseCode(302);
         $this->assertRedirectContains('/users/login?redirect=%2Fusers%2Fview%2F1');
 
-        // test with reqular
+        // test with reqular, can't view other user's private profile page
         $this->requestAsAjax();
         $this->loginUserRegular();
         $this->get('/users/view/1');
+        $this->assertResponseCode(302);
+        $this->assertRedirectContains('/?redirect=%2Fusers%2Fview%2F1');
+
+        // test with admin
+        $this->requestAsAjax();
+        $this->loginUserAdmin();
+        $this->get('/users/view/1');
+        $this->assertResponseOk();
+        $this->helperTestLayoutAjax();
+    }
+
+    /**
+     * Test profile method
+     *
+     * @return void
+     * @uses \App\Controller\UsersController::profile()
+     */
+    public function testProfileNormal(): void
+    {
+        // not logged in
+        $this->get('/users/profile/1');
+        $this->assertResponseOk();
+        $this->helperTestLayoutNormal();
+
+        // test with reqular
+        $this->loginUserRegular();
+        $this->get('/users/profile/1');
+        $this->assertResponseOk();
+        $this->helperTestLayoutNormal();
+
+        // test with admin
+        $this->loginUserAdmin();
+        $this->get('/users/profile/1');
+        $this->assertResponseOk();
+        $this->helperTestLayoutNormal();
+    }
+
+    /**
+     * Test profile method
+     *
+     * @return void
+     * @uses \App\Controller\UsersController::profile()
+     */
+    public function testProfileAjax(): void
+    {
+        // not logged in
+        $this->requestAsAjax();
+        $this->get('/users/profile/1');
+        $this->assertResponseOk();
+        $this->helperTestLayoutAjax();
+
+        // test with reqular
+        $this->requestAsAjax();
+        $this->loginUserRegular();
+        $this->get('/users/profile/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
 
         // test with admin
         $this->requestAsAjax();
         $this->loginUserAdmin();
-        $this->get('/users/view/1');
+        $this->get('/users/profile/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
     }

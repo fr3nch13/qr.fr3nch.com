@@ -198,6 +198,60 @@ class PolicyTest extends BaseControllerTest
     }
 
     /**
+     * Test view method
+     *
+     * @return void
+     * @uses \App\Controller\UsersController::profile()
+     */
+    public function testProfile(): void
+    {
+        // not logged in
+        $this->get('/users/profile/3');
+        $this->assertResponseOk();
+        $this->assertResponseContains('<div class="users view content">');
+        $this->assertResponseContains('<h3>Delete Me</h3>');
+
+        // test with admin
+        $this->loginUserAdmin();
+        $this->get('/users/profile/3');
+        $this->assertResponseOk();
+        $this->assertResponseContains('<div class="users view content">');
+        $this->assertResponseContains('<h3>Delete Me</h3>');
+
+        // test with reqular viewing self
+        $this->loginUserRegular();
+        $this->get('/users/profile/2');
+        $this->assertResponseOk();
+        $this->assertResponseContains('<div class="users view content">');
+        $this->assertResponseContains('<h3>Regular</h3>');
+
+        // regular user trying to view another user private profile
+        $this->loginUserRegular();
+        $this->get('/users/profile/3');
+        $this->assertResponseOk();
+        $this->assertResponseContains('<div class="users view content">');
+        $this->assertResponseContains('<h3>Delete Me</h3>');
+
+        // test with missing id and debug
+        $this->loginUserRegular();
+        $this->get('/users/profile');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
+
+        // test with missing id, no debug
+        Configure::write('debug', false);
+        $this->loginUserRegular();
+        $this->get(Router::url([
+            '_https' => true,
+            'controller' => 'Users',
+            'action' => 'profile',
+        ]));
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
+        Configure::write('debug', true); // turn it back on
+    }
+
+    /**
      * Test add method
      *
      * @return void
