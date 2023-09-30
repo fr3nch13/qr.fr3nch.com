@@ -15,7 +15,6 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\DateTime|null $created
  * @property \Cake\I18n\DateTime|null $modified
  * @property string $url
- * @property string|null $bitly_id
  * @property int|null $source_id
  * @property int|null $user_id
  *
@@ -42,8 +41,8 @@ class QrCode extends Entity
         'created' => true,
         'modified' => true,
         'url' => true,
-        'bitly_id' => true,
         'source_id' => true,
+        // TODO: Remove user_id as accessible
         'user_id' => true,
         'source' => true,
         'user' => true,

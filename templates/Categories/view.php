@@ -58,7 +58,6 @@
                             <th><?= __('Created') ?></th>
                             <th><?= __('Modified') ?></th>
                             <th><?= __('Url') ?></th>
-                            <th><?= __('Bitly Id') ?></th>
                             <th><?= __('Source Id') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
@@ -71,7 +70,6 @@
                             <td><?= h($qrCodes->created) ?></td>
                             <td><?= h($qrCodes->modified) ?></td>
                             <td><?= h($qrCodes->url) ?></td>
-                            <td><?= h($qrCodes->bitly_id) ?></td>
                             <td><?= h($qrCodes->source_id) ?></td>
                             <td class="actions">
                                 <?= $this->Html->link(__('View'), ['controller' => 'QrCodes', 'action' => 'view', $qrCodes->id]) ?>

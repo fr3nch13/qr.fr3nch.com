@@ -191,9 +191,6 @@ class QrCodesTableTest extends TestCase
             'url' => [
                 '_required' => 'This field is required',
             ],
-            'bitly_id' => [
-                '_required' => 'This field is required',
-            ],
             'source_id' => [
                 '_required' => 'This field is required',
             ],
@@ -208,7 +205,6 @@ class QrCodesTableTest extends TestCase
         $entity->set('name', 'name');
         $entity->set('description', 'description');
         $entity->set('url', 'url');
-        $entity->set('bitly_id', '1');
         $entity->set('source_id', '1');
         $entity->set('user_id', '1');
 
@@ -220,7 +216,6 @@ class QrCodesTableTest extends TestCase
             'name' => 'Sow & Scribe',
             'description' => 'description',
             'url' => 'https://www.amazon.com/path/to/product',
-            'bitly_id' => '1',
             'source_id' => '1',
             'user_id' => '1',
         ]);
@@ -239,7 +234,6 @@ class QrCodesTableTest extends TestCase
             'name' => str_repeat('a', 256),
             'description' => 'description',
             'url' => 'https://www.amazon.com/path/to/product',
-            'bitly_id' => str_repeat('a', 256),
             'source_id' => 1, // int instead of a string, like above.
             'user_id' => 1, // int instead of a string, like above.
         ]);
@@ -249,9 +243,6 @@ class QrCodesTableTest extends TestCase
                 'maxLength' => 'The provided value must be at most `255` characters long',
             ],
             'name' => [
-                'maxLength' => 'The provided value must be at most `255` characters long',
-            ],
-            'bitly_id' => [
                 'maxLength' => 'The provided value must be at most `255` characters long',
             ],
         ];
@@ -264,7 +255,6 @@ class QrCodesTableTest extends TestCase
             'name' => 'Sow & Scribe',
             'description' => 'description',
             'url' => 'https://www.amazon.com/path/to/product',
-            'bitly_id' => 'bitly_id',
             'source_id' => '1',
             'user_id' => '1',
         ]);
@@ -283,7 +273,6 @@ class QrCodesTableTest extends TestCase
             'name' => 'New Name',
             'description' => 'description',
             'url' => 'Not a URL',
-            'bitly_id' => 'bitly_id',
             'source_id' => '1',
             'user_id' => '1',
         ]);
@@ -302,7 +291,6 @@ class QrCodesTableTest extends TestCase
             'name' => 'new name',
             'description' => 'description',
             'url' => 'https://www.amazon.com/path/to/product',
-            'bitly_id' => 'bitly_id',
             'source_id' => 1, // int instead of a string, like above.
             'user_id' => 1, // int instead of a string, like above.
         ]);
@@ -326,7 +314,6 @@ class QrCodesTableTest extends TestCase
             'name' => 'new name',
             'description' => 'description',
             'url' => 'https://www.amazon.com/path/to/product',
-            'bitly_id' => 'bitly_id',
             'source_id' => 999,
             'user_id' => 999,
         ]);
@@ -348,7 +335,6 @@ class QrCodesTableTest extends TestCase
             'name' => 'new name',
             'description' => 'description',
             'url' => 'https://www.amazon.com/path/to/product',
-            'bitly_id' => 'bitly_id',
             'source_id' => 1,
             'user_id' => 1,
         ]);
@@ -419,7 +405,6 @@ class QrCodesTableTest extends TestCase
             'name' => 'new name',
             'description' => 'description',
             'url' => 'https://www.amazon.com/path/to/product',
-            'bitly_id' => 'bitly_id',
             'source_id' => 1,
             'user_id' => 1,
         ]);

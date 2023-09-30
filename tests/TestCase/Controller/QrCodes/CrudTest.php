@@ -121,7 +121,6 @@ class CrudTest extends BaseControllerTest
             'name' => 'New QrCode',
             'description' => 'The Description',
             'url' => 'https://amazon.com/path/to/details/page/newqrcode',
-            'bitly_id' => 'newqrcode',
             'source_id' => 1,
             'user_id' => 1,
         ]);
@@ -137,7 +136,6 @@ class CrudTest extends BaseControllerTest
             'name' => 'New QrCode',
             'description' => 'The Description',
             'url' => 'https://amazon.com/path/to/details/page/newqrcode',
-            'bitly_id' => 'newqrcode',
             'source_id' => 1,
             'user_id' => 1,
         ]);
@@ -150,7 +148,6 @@ class CrudTest extends BaseControllerTest
             'name' => 'New QrCode',
             'description' => 'The Description',
             'url' => 'https://amazon.com/path/to/details/page/newqrcode',
-            'bitly_id' => 'newqrcode',
             'source_id' => 1,
             'user_id' => 1,
         ]);

@@ -151,11 +151,6 @@ class Initial extends AbstractMigration
             'default' => null,
             'null' => false,
         ]);
-        $table->addColumn('bitly_id', 'string', [
-            'default' => null,
-            'limit' => 255,
-            'null' => true,
-        ]);
         $table->addColumn('source_id', 'integer', [
             'default' => null,
             'null' => true,

@@ -32,10 +32,6 @@
 
                 <?= $this->Form->control('url'); ?>
 
-                <?= $this->Form->control('bitly_id', [
-                    'type' => 'text,'
-                ]); ?>
-
                 <?= $this->Form->control('source_id', ['options' => $sources]); ?>
 
                 <?= $this->Form->control('categories._ids', ['options' => $categories]); ?>

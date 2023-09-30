@@ -48,7 +48,6 @@
                             <th><?= __('Created') ?></th>
                             <th><?= __('Modified') ?></th>
                             <th><?= __('Url') ?></th>
-                            <th><?= __('Bitly Id') ?></th>
                             <th><?= __('Source Id') ?></th>
                             <th><?= __('User Id') ?></th>
                             <th class="actions"><?= __('Actions') ?></th>
@@ -56,13 +55,13 @@
                         <?php foreach ($tag->qr_codes as $qrCodes) : ?>
                         <tr>
                             <td><?= h($qrCodes->id) ?></td>
+                            <?php // TODO: track down all $qrCodes->key ?>
                             <td><?= h($qrCodes->key) ?></td>
                             <td><?= h($qrCodes->name) ?></td>
                             <td><?= h($qrCodes->description) ?></td>
                             <td><?= h($qrCodes->created) ?></td>
                             <td><?= h($qrCodes->modified) ?></td>
                             <td><?= h($qrCodes->url) ?></td>
-                            <td><?= h($qrCodes->bitly_id) ?></td>
                             <td><?= h($qrCodes->source_id) ?></td>
                             <td><?= h($qrCodes->user_id) ?></td>
                             <td class="actions">

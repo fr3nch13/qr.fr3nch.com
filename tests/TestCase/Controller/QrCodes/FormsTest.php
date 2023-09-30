@@ -53,7 +53,6 @@ class FormsTest extends BaseControllerTest
         $this->assertResponseContains('id="name-error"');
         $this->assertResponseContains('id="description-error"');
         $this->assertResponseContains('id="url-error"');
-        $this->assertResponseContains('id="bitly-id-error"');
         $this->assertResponseContains('id="source-id-error"');
         // user is added in the controller, so no form element for it.
 
@@ -63,7 +62,6 @@ class FormsTest extends BaseControllerTest
             'name' => 'New QrCode',
             'description' => 'The Description',
             'url' => 'https://amazon.com/path/to/details/page/newqrcode',
-            'bitly_id' => 'newqrcode',
             'source_id' => 1,
             'user_id' => 1,
         ]);
