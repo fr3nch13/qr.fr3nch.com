@@ -53,6 +53,9 @@ $this->start('card_body');
                     ]); ?>
                   </div>
                   <div class="col text-end">
+                    <?php
+                    // TODO: Add logic for forgetting passwords.
+                    ?>
                     <?= $this->Html->link('Forgot Password?', [
                         'controller' => 'Users',
                         'action' => 'forgot_password',
