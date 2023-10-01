@@ -7,7 +7,7 @@
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <nav id="mainNav" class="navbar navbar-expand-lg navbar-sticky navbar-light bg-light border-bottom">
     <div class="container">
-      <?= $this->Html->link($this->Html->image('logo.png'), '/', ['escape' => false]); ?>
+      <?= $this->Html->link($this->Html->image('logo_dark.svg'), '/', ['escape' => false]); ?>
       <?= $this->element('nav/top_right'); ?>
       <?= $this->element('nav/top_main'); ?>
       <?= $this->element('nav/top_mobile'); ?>
