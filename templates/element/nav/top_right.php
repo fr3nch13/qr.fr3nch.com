@@ -34,10 +34,5 @@
             <span class="bi bi-list"></span>
           </a>
         </li>
-        <li class="nav-item d-none d-lg-block">
-          <a href="" class="btn btn-primary rounded-pill ms-2">
-            Buy Cube
-          </a>
-        </li>
       </ul>
 <?= $this->Template->templateComment(false, __FILE__); ?>
