@@ -11,7 +11,7 @@
           <li><?= $this->Html->link(__('QR Codes'), [
             'controller' => 'QrCodes',
             'action' => 'index'
-          ], ['class' => 'nav-item']); ?></li>
+          ], ['class' => 'nav-link']); ?></li>
           <li class="nav-item dropdown dropdown-hover">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown-1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Landings
