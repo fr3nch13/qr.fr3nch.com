@@ -39,21 +39,17 @@ $this->start('card_body');
                     ]) ?>
 
                 </fieldset>
-                <?= $this->Form->submit(__('Login')); ?>
+                <?= $this->Form->submit(__('Sign In'), [
+                    'class' => 'btn btn-lg btn-primary',
+                ]); ?>
                 <?= $this->Form->end() ?>
               </div>
 
               <!--
-                <div class="mb-3 form-group email required">
-                    <label class="form-label" for="email">Email</label>
-                    <input type="email" name="email" required="required" id="email" aria-required="true" class="form-control">
+                <div class="d-grid mb-2">
+                  <a href="" class="btn btn-lg btn-primary">Sign In</a>
                 </div>
-
-                <div class="form-floating mb-2">
-                  <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-                  <label for="floatingInput">Email address</label>
-                </div>
-
+                <div class="submit"><input type="submit" class="btn-primary btn" value="Login"></div>
 
 
               <form action="#">
