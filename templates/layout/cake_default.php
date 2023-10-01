@@ -18,7 +18,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 ?>
 <!DOCTYPE html>
 
-<!-- START: App.layout/cube_default -->
+<!-- START: App.layout/default -->
 
 <html>
 <head>
@@ -61,4 +61,4 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 </body>
 </html>
 
-<!-- END: App.layout/cube_default -->
+<!-- END: App.layout/default -->

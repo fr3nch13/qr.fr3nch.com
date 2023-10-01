@@ -117,6 +117,7 @@ class BaseControllerTest extends TestCase
     public function helperTestLayoutNormal(): void
     {
         $content = (string)$this->_response->getBody();
+        debug($content);
         $this->assertSame(1, substr_count($content, '<!-- START: App.layout/default -->'));
         $this->assertSame(1, substr_count($content, '<!-- END: App.layout/default -->'));
         $this->assertSame(1, substr_count($content, '<html>'));
