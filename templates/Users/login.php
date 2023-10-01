@@ -41,6 +41,7 @@ $this->start('card_body');
                 </fieldset>
                 <?= $this->Form->submit(__('Sign In'), [
                     'class' => 'btn btn-lg btn-primary',
+                    'spacing' => 'mb-2',
                 ]); ?>
                 <?= $this->Form->end() ?>
               </div>
