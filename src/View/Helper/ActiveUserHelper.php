@@ -6,7 +6,6 @@ declare(strict_types=1);
  */
 namespace App\View\Helper;
 
-use App\Model\Entity\User;
 use Cake\View\Helper;
 
 /**
@@ -19,7 +18,7 @@ class ActiveUserHelper extends Helper
     /**
      * helpers
      *
-     * @var array
+     * @var array<int, string>
      */
     protected array $helpers = ['Identity'];
 
@@ -29,7 +28,7 @@ class ActiveUserHelper extends Helper
      * @param string|null $key Key of something you want to get from the user
      * @return mixed
      */
-    public function getUser(?string $key = null)
+    public function getUser(?string $key = null): mixed
     {
         return $this->Identity->get($key);
     }

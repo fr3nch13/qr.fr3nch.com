@@ -18,7 +18,7 @@ class TemplateHelper extends Helper
     /**
      * helpers
      *
-     * @var array
+     * @var array<int, string>
      */
     protected array $helpers = ['Html'];
 
@@ -32,7 +32,7 @@ class TemplateHelper extends Helper
      */
     public function templateComment(bool $start, string $path, string $prefix = 'App'): string
     {
-        $comment = "\n\n" . '<!-- ' . ($start ? 'START' : 'END') . ':' . $prefix . '.';
+        $comment = "\n\n" . '<!-- ' . ($start ? 'START' : 'END') . ': ' . $prefix . '.';
 
         $path = str_replace(ROOT . DS . 'templates' . DS, '', $path);
         $path = str_replace('.php', '', $path);

@@ -6,7 +6,7 @@
 <div class="content">
     <div class="row">
         <div class="column">
-            <h1>About: Staff</h1>
+            <h1>About</h1>
         </div>
     </div>
 </div>

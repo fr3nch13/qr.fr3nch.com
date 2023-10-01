@@ -35,15 +35,17 @@ class PagesControllerTest extends BaseControllerTest
     {
         Configure::write('debug', true);
 
-        $this->get('/pages/home');
+        $this->get('/pages/about');
 
         $this->assertResponseOk();
-        $this->assertResponseContains('CakePHP');
-        $this->assertResponseContains('<html>');
+        $this->assertResponseContains('About');
+        $this->assertResponseContains('<html lang="en">');
     }
 
     /**
      * testDisplay method
+     *
+     * / routes to QrCodesController::index()
      *
      * @return void
      */
@@ -55,7 +57,7 @@ class PagesControllerTest extends BaseControllerTest
 
         $this->assertResponseOk();
         $this->assertResponseContains('QR Codes');
-        $this->assertResponseContains('<html>');
+        $this->assertResponseContains('<html lang="en">');
     }
 
     /**
@@ -70,9 +72,9 @@ class PagesControllerTest extends BaseControllerTest
         $this->get('/pages/about/staff');
 
         $this->assertResponseOk();
-        $this->assertResponseContains('CakePHP');
-        $this->assertResponseContains('<html>');
-        $this->assertResponseContains('<h1>Staff</h1>');
+        $this->assertResponseContains('Staff');
+        $this->assertResponseContains('<html lang="en">');
+        $this->assertResponseContains('<h1>About: Staff</h1>');
     }
 
     /**
@@ -101,11 +103,11 @@ class PagesControllerTest extends BaseControllerTest
         Configure::write('debug', true);
         $this->loginUserAdmin();
 
-        $this->get('/pages/home');
+        $this->get('/pages/index');
 
         $this->assertResponseOk();
-        $this->assertResponseContains('CakePHP');
-        $this->assertResponseContains('<html>');
+        $this->assertResponseContains('Index');
+        $this->assertResponseContains('<html lang="en">');
     }
 
     /**
