@@ -10,21 +10,32 @@ if (!$this->getRequest()->is('ajax')) {
     $this->setLayout('login');
 }
 
-$this->assign('login_title', __('Sign In'));
+$this->assign('card_title', __('Sign In'));
+$this->start('card_body');
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
-
-          <div class="card">
-            <div class="card-header bg-white text-center pb-0">
-              <h5 class="fs-4 mb-1"><?= $this->fetch('login_title'); ?></h5>
-            </div>
-            <div class="card-body bg-white">
-
+                <!--
               <div class="d-grid">
                 <a href="" class="btn btn-outline-red btn-with-icon text-white-hover">Sign In with Google <i
                     class="bi bi-google"></i></a>
               </div>
               <div class="text-muted text-center small py-2">or use your email</div>
+              -->
+              <div class="users form">
+                <?= $this->Form->create() ?>
+                <fieldset>
+                    <legend class="text-muted text-center small py-2"><?= __('Please enter your email and password') ?></legend>
+
+                    <?= $this->Form->control('email', ['required' => true]) ?>
+
+                    <?= $this->Form->control('password', ['required' => true]) ?>
+
+                </fieldset>
+                <?= $this->Form->submit(__('Login')); ?>
+                <?= $this->Form->end() ?>
+              </div>
+
+              <!--
               <form action="#">
                 <div class="form-floating mb-2">
                   <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
@@ -51,27 +62,10 @@ $this->assign('login_title', __('Sign In'));
                   </div>
                 </div>
               </form>
-            </div>
-            <!--
-            <div class="card-footer bg-opaque-black inverted text-center">
-              <p class="text-secondary">Don't have an account yet? <a href="register.html"
-                  class="underline">Register</a>
-              </p>
-            </div>
-            -->
-          </div>
+              -->
 
-<div class="users form">
-    <?= $this->Form->create() ?>
-    <fieldset>
-        <legend><?= __('Please enter your email and password') ?></legend>
 
-        <?= $this->Form->control('email', ['required' => true]) ?>
-
-        <?= $this->Form->control('password', ['required' => true]) ?>
-
-    </fieldset>
-    <?= $this->Form->submit(__('Login')); ?>
-    <?= $this->Form->end() ?>
-</div>
 <?= $this->Template->templateComment(false, __FILE__); ?>
+<?php
+$this->end();
+echo $this->element('card');
