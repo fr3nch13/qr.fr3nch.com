@@ -41,7 +41,7 @@ class ViewTest extends BaseControllerTest
         // not logged in
         $this->get('/users/login');
         $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->helperTestLayoutLogin();
 
         // test with reqular
         $this->loginUserRegular();
@@ -111,7 +111,7 @@ class ViewTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('/users');
         $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->helperTestLayoutDefault();
     }
 
     /**
@@ -169,7 +169,7 @@ class ViewTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('/users/view/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->helperTestLayoutDefault();
     }
 
     /**
@@ -212,19 +212,19 @@ class ViewTest extends BaseControllerTest
         // not logged in
         $this->get('/users/profile/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->helperTestLayoutDefault();
 
         // test with reqular
         $this->loginUserRegular();
         $this->get('/users/profile/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->helperTestLayoutDefault();
 
         // test with admin
         $this->loginUserAdmin();
         $this->get('/users/profile/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->helperTestLayoutDefault();
     }
 
     /**
@@ -277,7 +277,7 @@ class ViewTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('/users/add');
         $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->helperTestLayoutDefault();
     }
 
     /**
@@ -327,7 +327,7 @@ class ViewTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('/users/edit/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->helperTestLayoutDefault();
     }
 
     /**

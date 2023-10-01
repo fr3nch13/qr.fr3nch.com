@@ -41,19 +41,19 @@ class ViewTest extends BaseControllerTest
         // not logged in
         $this->get('/tags');
         $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->helperTestLayoutDefault();
 
         // test with reqular
         $this->loginUserRegular();
         $this->get('/tags');
         $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->helperTestLayoutDefault();
 
         // test with admin
         $this->loginUserAdmin();
         $this->get('/tags');
         $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->helperTestLayoutDefault();
     }
 
     /**
@@ -96,19 +96,19 @@ class ViewTest extends BaseControllerTest
         // not logged in
         $this->get('/tags/view/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->helperTestLayoutDefault();
 
         // test with reqular
         $this->loginUserRegular();
         $this->get('/tags/view/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->helperTestLayoutDefault();
 
         // test with admin
         $this->loginUserAdmin();
         $this->get('/tags/view/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->helperTestLayoutDefault();
     }
 
     /**
@@ -152,13 +152,13 @@ class ViewTest extends BaseControllerTest
         $this->loginUserRegular();
         $this->get('/tags/add');
         $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->helperTestLayoutDefault();
 
         // test with admin, get
         $this->loginUserAdmin();
         $this->get('/tags/add');
         $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->helperTestLayoutDefault();
     }
 
     /**
@@ -205,7 +205,7 @@ class ViewTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('/tags/edit/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->helperTestLayoutDefault();
     }
 
     /**

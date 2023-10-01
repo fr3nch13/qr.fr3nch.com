@@ -22,6 +22,7 @@ use Cake\View\View;
  * @property \BootstrapUI\View\Helper\PaginatorHelper $Paginator
  * @property \BootstrapUI\View\Helper\BreadcrumbsHelper $Breadcrumbs
  * @property \Authentication\View\Helper\IdentityHelper $Identity
+ * @property \Cake\View\Helper\UrlHelper $Url
  */
 class AppView extends View
 {
@@ -55,13 +56,16 @@ class AppView extends View
      */
     public function initialize(): void
     {
-        $this->addHelper('Template');
-        $this->loadHelper('Authentication.Identity');
+        parent::initialize();
+
         $this->loadHelper('ActiveUser');
-        $this->loadHelper('Html');
-        $this->loadHelper('Form');
-        $this->loadHelper('Flash', ['className' => 'BootstrapUI.Flash']);
-        $this->loadHelper('Paginator', ['className' => 'BootstrapUI.Paginator']);
         $this->loadHelper('Breadcrumbs', ['className' => 'BootstrapUI.Breadcrumbs']);
+        $this->loadHelper('Html');
+        $this->loadHelper('Flash', ['className' => 'BootstrapUI.Flash']);
+        $this->loadHelper('Form');
+        $this->loadHelper('Authentication.Identity');
+        $this->loadHelper('Paginator', ['className' => 'BootstrapUI.Paginator']);
+        $this->addHelper('Template');
+        $this->addHelper('Url');
     }
 }

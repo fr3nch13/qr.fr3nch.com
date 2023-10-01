@@ -114,28 +114,57 @@ class BaseControllerTest extends TestCase
      *
      * @return void
      */
-    public function helperTestLayoutNormal(): void
+    public function helperTestLayoutBase(): void
     {
         $content = (string)$this->_response->getBody();
-        $this->assertSame(1, substr_count($content, '<!-- START: App.layout/default -->'));
-        $this->assertSame(1, substr_count($content, '<!-- END: App.layout/default -->'));
+        $this->assertSame(1, substr_count($content, '<!-- START: App.layout/base -->'));
+        $this->assertSame(1, substr_count($content, '<!-- END: App.layout/base -->'));
         $this->assertSame(1, substr_count($content, '<html lang="en">'));
         $this->assertSame(1, substr_count($content, '<head>'));
         $this->assertSame(1, substr_count($content, '</head>'));
         $this->assertSame(1, substr_count($content, '<body class="bg-light">'));
 
         // favicons
-        $this->assertSame(1, substr_count($content, '<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />'));
+        $this->assertSame(1, substr_count($content, '<link href="/favicon.ico" type="image/x-icon" rel="icon"><link href="/favicon.ico" type="image/x-icon" rel="shortcut icon">'));
         $this->assertSame(1, substr_count($content, '<link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">'));
         $this->assertSame(1, substr_count($content, '<link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">'));
         $this->assertSame(1, substr_count($content, '<link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">'));
         $this->assertSame(1, substr_count($content, '<link rel="manifest" href="/img/site.webmanifest">'));
 
-        // test top navigation
-        // test main section
-
         $this->assertSame(1, substr_count($content, '</body>'));
         $this->assertSame(1, substr_count($content, '</html>'));
+    }
+
+    /**
+     * Tests the Layout is there.
+     *
+     * @return void
+     */
+    public function helperTestLayoutDefault(): void
+    {
+        $this->helperTestLayoutBase();
+        $content = (string)$this->_response->getBody();
+        debug($content);
+        $this->assertSame(1, substr_count($content, '<!-- START: App.layout/default -->'));
+        $this->assertSame(1, substr_count($content, '<!-- END: App.layout/default -->'));
+
+        // test other default specific layouts.
+    }
+
+    /**
+     * Tests the Layout is there.
+     *
+     * @return void
+     */
+    public function helperTestLayoutLogin(): void
+    {
+        $this->helperTestLayoutBase();
+        $content = (string)$this->_response->getBody();
+        debug($content);
+        $this->assertSame(1, substr_count($content, '<!-- START: App.layout/login -->'));
+        $this->assertSame(1, substr_count($content, '<!-- END: App.layout/login -->'));
+
+        // test other login specific layouts.
     }
 
     /**

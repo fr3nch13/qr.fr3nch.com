@@ -31,6 +31,8 @@
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
 </head>
+<body class="<?= $this->fetch('body_class', 'bg-light'); ?>">
 <?= $this->fetch('layout'); ?>
+<?= $this->Html->script(['libs.bundle', 'index.bundle']) ?></body>
 <?= $this->Template->templateComment(false, __FILE__); ?>
 </html>

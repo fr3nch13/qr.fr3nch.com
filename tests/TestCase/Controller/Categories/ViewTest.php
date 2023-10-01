@@ -41,19 +41,19 @@ class ViewTest extends BaseControllerTest
         // not logged in
         $this->get('/categories');
         $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->helperTestLayoutDefault();
 
         // test with reqular
         $this->loginUserRegular();
         $this->get('/categories');
         $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->helperTestLayoutDefault();
 
         // test with admin
         $this->loginUserAdmin();
         $this->get('/categories');
         $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->helperTestLayoutDefault();
     }
 
     /**
@@ -96,19 +96,19 @@ class ViewTest extends BaseControllerTest
         // not logged in
         $this->get('/categories/view/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->helperTestLayoutDefault();
 
         // test with reqular
         $this->loginUserRegular();
         $this->get('/categories/view/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->helperTestLayoutDefault();
 
         // test with admin
         $this->loginUserAdmin();
         $this->get('/categories/view/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->helperTestLayoutDefault();
     }
 
     /**
@@ -161,7 +161,7 @@ class ViewTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('/categories/add');
         $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->helperTestLayoutDefault();
     }
 
     /**
@@ -211,7 +211,7 @@ class ViewTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('/categories/edit/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->helperTestLayoutDefault();
     }
 
     /**

@@ -47,7 +47,7 @@ class ViewTest extends BaseControllerTest
         $this->loginUserRegular();
         $this->get('/sources');
         $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->helperTestLayoutDefault();
         $this->assertResponseContains('<div class="sources index content">');
         $this->assertResponseContains('<h3>Sources</h3>');
 
@@ -55,7 +55,7 @@ class ViewTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('/sources');
         $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->helperTestLayoutDefault();
     }
 
     /**
@@ -106,13 +106,13 @@ class ViewTest extends BaseControllerTest
         $this->loginUserRegular();
         $this->get('/sources/view/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->helperTestLayoutDefault();
 
         // test with admin
         $this->loginUserAdmin();
         $this->get('/sources/view/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->helperTestLayoutDefault();
     }
 
     /**
@@ -165,7 +165,7 @@ class ViewTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('/sources/add');
         $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->helperTestLayoutDefault();
     }
 
     /**
@@ -215,7 +215,7 @@ class ViewTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('/sources/edit/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->helperTestLayoutDefault();
     }
 
     /**

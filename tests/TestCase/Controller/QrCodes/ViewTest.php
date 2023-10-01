@@ -41,19 +41,19 @@ class ViewTest extends BaseControllerTest
         // not logged in
         $this->get('/qr-codes');
         $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->helperTestLayoutDefault();
 
         // test with admin
         $this->loginUserAdmin();
         $this->get('/qr-codes');
         $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->helperTestLayoutDefault();
 
         // test with reqular
         $this->loginUserRegular();
         $this->get('/qr-codes');
         $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->helperTestLayoutDefault();
 
         // test html content.
         $this->get('/qr-codes');
@@ -103,19 +103,19 @@ class ViewTest extends BaseControllerTest
         // not logged in
         $this->get('/qr-codes/view/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->helperTestLayoutDefault();
 
         // test with admin
         $this->loginUserAdmin();
         $this->get('/qr-codes/view/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->helperTestLayoutDefault();
 
         // test with reqular
         $this->loginUserRegular();
         $this->get('/qr-codes/view/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->helperTestLayoutDefault();
 
         // test html content.
         $this->get('/qr-codes/view/1');
@@ -166,13 +166,13 @@ class ViewTest extends BaseControllerTest
         $this->loginUserRegular();
         $this->get('/qr-codes/add');
         $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->helperTestLayoutDefault();
 
         // test with admin, get
         $this->loginUserAdmin();
         $this->get('/qr-codes/add');
         $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->helperTestLayoutDefault();
     }
 
     /**
@@ -218,7 +218,7 @@ class ViewTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('/qr-codes/edit/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutNormal();
+        $this->helperTestLayoutDefault();
     }
 
     /**

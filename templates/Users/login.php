@@ -6,11 +6,19 @@ declare(strict_types=1);
  * @var \App\View\AppView $this
  */
 
-$this->setLayout('login');
+if (!$this->getRequest()->is('ajax')) {
+    $this->setLayout('login');
+}
 
 $this->assign('login_title', __('Sign In'));
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
+
+          <div class="card">
+            <div class="card-header bg-white text-center pb-0">
+              <h5 class="fs-4 mb-1"><?= $this->fetch('login_title'); ?></h5>
+            </div>
+            <div class="card-body bg-white">
 
               <div class="d-grid">
                 <a href="" class="btn btn-outline-red btn-with-icon text-white-hover">Sign In with Google <i
@@ -43,6 +51,15 @@ $this->assign('login_title', __('Sign In'));
                   </div>
                 </div>
               </form>
+            </div>
+            <!--
+            <div class="card-footer bg-opaque-black inverted text-center">
+              <p class="text-secondary">Don't have an account yet? <a href="register.html"
+                  class="underline">Register</a>
+              </p>
+            </div>
+            -->
+          </div>
 
 <div class="users form">
     <?= $this->Form->create() ?>
