@@ -119,16 +119,17 @@ class BaseControllerTest extends TestCase
         $content = (string)$this->_response->getBody();
         $this->assertSame(1, substr_count($content, '<!-- START: App.layout/default -->'));
         $this->assertSame(1, substr_count($content, '<!-- END: App.layout/default -->'));
-        $this->assertSame(1, substr_count($content, '<html>'));
+        $this->assertSame(1, substr_count($content, '<html lang="en">'));
         $this->assertSame(1, substr_count($content, '<head>'));
         $this->assertSame(1, substr_count($content, '</head>'));
-        $this->assertSame(1, substr_count($content, '<body>'));
+        $this->assertSame(1, substr_count($content, '<body class="bg-light">'));
 
         // favicons
-        $this->assertSame(1, substr_count($content, '<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">'));
-        $this->assertSame(1, substr_count($content, '<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">'));
-        $this->assertSame(1, substr_count($content, '<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">'));
-        $this->assertSame(1, substr_count($content, '<link rel="manifest" href="/site.webmanifest">'));
+        $this->assertSame(1, substr_count($content, '<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />'));
+        $this->assertSame(1, substr_count($content, '<link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">'));
+        $this->assertSame(1, substr_count($content, '<link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">'));
+        $this->assertSame(1, substr_count($content, '<link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">'));
+        $this->assertSame(1, substr_count($content, '<link rel="manifest" href="/img/site.webmanifest">'));
 
         // test top navigation
         // test main section
