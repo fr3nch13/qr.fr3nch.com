@@ -3,5 +3,6 @@
  * Template overrides
  */
 return [
-    'inputSubmit' => '<button type="{{type}}"{{attrs}}></button>',
+    //'inputSubmit' => '<input type="{{type}}"{{attrs}}>',
+    'inputSubmit' => '<button type="{{type}}"{{attrs}}>{{content}}</button>',
 ];
