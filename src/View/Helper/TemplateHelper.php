@@ -10,6 +10,8 @@ use Cake\View\Helper;
 
 /**
  * Template helper library.
+ *
+ * @property \BootstrapUI\View\Helper\HtmlHelper $Html
  */
 class TemplateHelper extends Helper
 {

@@ -12,6 +12,7 @@
             <i class="bi bi-cart2"></i>
           </a>
         </li>
+        <?php if ($this->ActiveUser->getUser()): ?>
         <li class="nav-item d-lg-none">
           <a class="nav-link nav-icon" href="" role="button" data-bs-toggle="collapse" data-bs-target="#userNav" aria-expanded="false">
             <i class="bi bi-person"></i>
@@ -34,5 +35,8 @@
             <span class="bi bi-list"></span>
           </a>
         </li>
+        <?php else: ?>
+            Login
+        <?php endif; ?>
       </ul>
 <?= $this->Template->templateComment(false, __FILE__); ?>

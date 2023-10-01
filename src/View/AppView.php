@@ -15,12 +15,14 @@ use Cake\View\View;
  * Your application's default view class
  *
  * @link https://book.cakephp.org/4/en/views.html#the-app-view
+ * @property \App\View\Helper\ActiveUserHelper $ActiveUser
  * @property \App\View\Helper\TemplateHelper $Template
  * @property \BootstrapUI\View\Helper\FlashHelper $Flash
  * @property \BootstrapUI\View\Helper\FormHelper $Form
  * @property \BootstrapUI\View\Helper\HtmlHelper $Html
  * @property \BootstrapUI\View\Helper\PaginatorHelper $Paginator
  * @property \BootstrapUI\View\Helper\BreadcrumbsHelper $Breadcrumbs
+ * @property \Authentication\View\Helper\IdentityHelper $Identity
  */
 class AppView extends View
 {
@@ -58,5 +60,7 @@ class AppView extends View
     {
         $this->initializeUI(['layout' => false]);
         $this->addHelper('Template');
+        $this->loadHelper('Authentication.Identity');
+        $this->loadHelper('ActiveUser');
     }
 }
