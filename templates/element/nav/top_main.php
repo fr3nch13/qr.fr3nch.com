@@ -8,6 +8,10 @@
       <!-- primary -->
       <div class="collapse navbar-collapse" id="navbar" data-bs-parent="#mainNav">
         <ul class="navbar-nav">
+          <li><?= $this->Html->link(__('QR Codes'), [
+            'controller' => 'QrCodes',
+            'action' => 'index'
+          ], ['class' => 'nav-item']); ?></li>
           <li class="nav-item dropdown dropdown-hover">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown-1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Landings
