@@ -14,7 +14,7 @@ use Cake\View\Helper;
  *
  * @property \Authentication\View\Helper\IdentityHelper $Identity
  */
-class ActiveUserHelperHelper extends Helper
+class ActiveUserHelper extends Helper
 {
     /**
      * helpers
