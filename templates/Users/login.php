@@ -53,7 +53,7 @@ $this->start('card_body');
                     ]); ?>
                   </div>
                   <div class="col text-end">
-                    <?= $this->Html->link('Forgit Password?', [
+                    <?= $this->Html->link('Forgot Password?', [
                         'controller' => 'Users',
                         'action' => 'forgot_password',
                     ]); ?>
