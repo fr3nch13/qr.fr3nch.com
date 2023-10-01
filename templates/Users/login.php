@@ -39,9 +39,9 @@ $this->start('card_body');
                     ]) ?>
 
                 </fieldset>
-                <?= $this->Form->submit(__('Sign In'), [
+                <?= $this->Form->button('Sign In', [
+                    'type' => 'submit',
                     'class' => 'mb-2 btn btn-lg btn-primary btn-block',
-                    'templateVars' => ['content' => __('Sign In')],
                 ]); ?>
                 <?= $this->Form->end() ?>
               </div>

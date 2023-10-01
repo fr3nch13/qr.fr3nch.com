@@ -4,5 +4,5 @@
  */
 return [
     //'inputSubmit' => '<input type="{{type}}"{{attrs}}>',
-    'inputSubmit' => '<button type="{{type}}"{{attrs}}>{{content}}</button>',
+    'inputSubmit' => '<button type="{{type}}"{{attrs}}>{{value}}</button>',
 ];
