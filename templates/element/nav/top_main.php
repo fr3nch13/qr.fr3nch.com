@@ -18,11 +18,6 @@
             'action' => 'index'
           ], ['class' => 'nav-link']); ?></li>
 
-          <li><?= $this->Html->link(__('Sources'), [
-            'controller' => 'Categories',
-            'action' => 'index'
-          ], ['class' => 'nav-link']); ?></li>
-
           <li><?= $this->Html->link(__('Tags'), [
             'controller' => 'Tags',
             'action' => 'index'
