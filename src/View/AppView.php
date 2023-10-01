@@ -26,6 +26,8 @@ use Cake\View\View;
  */
 class AppView extends View
 {
+    use LoadAppHelpersTrait;
+
     /**
      * The name of the layout file to render the view inside of. The name
      * specified is the filename of the layout in /templates/Layout without
@@ -58,14 +60,6 @@ class AppView extends View
     {
         parent::initialize();
 
-        $this->loadHelper('ActiveUser');
-        $this->loadHelper('Breadcrumbs', ['className' => 'BootstrapUI.Breadcrumbs']);
-        $this->loadHelper('Html');
-        $this->loadHelper('Flash', ['className' => 'BootstrapUI.Flash']);
-        $this->loadHelper('Form');
-        $this->loadHelper('Authentication.Identity');
-        $this->loadHelper('Paginator', ['className' => 'BootstrapUI.Paginator']);
-        $this->addHelper('Template');
-        $this->addHelper('Url');
+        $this->loadAppHelpers();
     }
 }
