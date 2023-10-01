@@ -12,6 +12,23 @@
             'controller' => 'QrCodes',
             'action' => 'index'
           ], ['class' => 'nav-link']); ?></li>
+
+          <li><?= $this->Html->link(__('Categories'), [
+            'controller' => 'Categories',
+            'action' => 'index'
+          ], ['class' => 'nav-link']); ?></li>
+
+          <li><?= $this->Html->link(__('Sources'), [
+            'controller' => 'Categories',
+            'action' => 'index'
+          ], ['class' => 'nav-link']); ?></li>
+
+          <li><?= $this->Html->link(__('Tags'), [
+            'controller' => 'Tags',
+            'action' => 'index'
+          ], ['class' => 'nav-link']); ?></li>
+
+          <!-- Sample dropdown menu
           <li class="nav-item dropdown dropdown-hover">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown-1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Landings
@@ -143,6 +160,7 @@
           <li class="nav-item d-lg-none">
             <a href="https://themes.getbootstrap.com/product/cube-multipurpose-template-ui-kit/" class="nav-link text-primary">Buy Cube</a>
           </li>
+          -->
         </ul>
       </div>
 <?= $this->Template->templateComment(false, __FILE__); ?>
