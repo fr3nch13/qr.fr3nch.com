@@ -21,7 +21,13 @@
     </title>
     <?= $this->Html->meta('icon') ?>
 
-    <?= $this->Html->css(['libs.bundle', 'index.bundle']) ?>
+    <?= $this->Html->css([
+        'libs.bundle',
+        'libs.bundle.css.map',
+        'index.bundle',
+        'index.bundle.css.map',
+        'qr.css'
+        ]) ?>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
