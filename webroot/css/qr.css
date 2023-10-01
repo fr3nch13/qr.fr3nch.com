@@ -1,3 +1,7 @@
-.navbar.navbar-light img.top-logo {
+.navbar.navbar-light img.logo-top {
+    max-width: 200px;
+}
+footer img.logo-bottom {
     max-width: 150px;
+
 }
