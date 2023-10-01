@@ -26,9 +26,17 @@ $this->start('card_body');
                 <fieldset>
                     <legend class="text-muted text-center small py-2"><?= __('Please enter your email and password') ?></legend>
 
-                    <?= $this->Form->control('email', ['required' => true]) ?>
+                    <?= $this->Form->control('email', [
+                        'required' => true,
+                        'spacing' => 'mb-2',
+                        'label' => ['floating' => true],
+                    ]) ?>
 
-                    <?= $this->Form->control('password', ['required' => true]) ?>
+                    <?= $this->Form->control('password', [
+                        'required' => true,
+                        'spacing' => 'mb-2',
+                        'label' => ['floating' => true],
+                    ]) ?>
 
                 </fieldset>
                 <?= $this->Form->submit(__('Login')); ?>
@@ -36,7 +44,20 @@ $this->start('card_body');
               </div>
 
               <!--
+                <div class="mb-3 form-group email required">
+                    <label class="form-label" for="email">Email</label>
+                    <input type="email" name="email" required="required" id="email" aria-required="true" class="form-control">
+                </div>
+
+                <div class="form-floating mb-2">
+                  <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                  <label for="floatingInput">Email address</label>
+                </div>
+
+
+
               <form action="#">
+
                 <div class="form-floating mb-2">
                   <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
                   <label for="floatingInput">Email address</label>
