@@ -39,10 +39,12 @@ $this->start('card_body');
                     ]) ?>
 
                 </fieldset>
-                <?= $this->Form->button('Sign In', [
-                    'type' => 'submit',
-                    'class' => 'mb-2 btn btn-lg btn-primary btn-block',
-                ]); ?>
+                <div class="d-grid mb-2">
+                    <?= $this->Form->button('Sign In', [
+                        'type' => 'submit',
+                        'class' => 'btn btn-lg btn-primary btn-block',
+                    ]); ?>
+                </div>
                 <?= $this->Form->end() ?>
               </div>
 
