@@ -39,10 +39,12 @@
           </a>
         </li>
         <?php else: ?>
+        <!-- Signup Link -->
         <li class="nav-item d-none d-lg-block">
-          <a href="https://themes.getbootstrap.com/product/cube-multipurpose-template-ui-kit/" class="btn btn-primary rounded-pill ms-2">
-            Buy Cube
-          </a>
+          <?= $this->Html->link(__('Sign In'), [
+            'controller' => 'Users',
+            'action' => 'login'
+          ], ['class' => 'btn btn-primary rounded-pill ms-2']); ?>
         </li>
         <?php endif; ?>
       </ul>
