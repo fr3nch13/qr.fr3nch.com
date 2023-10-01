@@ -44,10 +44,10 @@
             </ul>
           </div>
           <div class="col-md-6 col-lg-4 text-center text-md-end order-lg-3">
-            <span class="small">5th Avenue, New York USA 10255</span>
+            <span class="small">Henderson, NV 89002</span>
           </div>
           <div class="col-lg-3 order-lg-1 text-center text-md-start">
-            <p class="small">Copyrights © 2021</p>
+            <p class="small">Copyrights © <?= date('Y'); ?></p>
           </div>
         </div>
       </div>
