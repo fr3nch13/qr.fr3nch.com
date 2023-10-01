@@ -40,7 +40,7 @@ $this->start('card_body');
 
                 </fieldset>
                 <?= $this->Form->submit(__('Sign In'), [
-                    'class' => 'mb-2 btn btn-lg btn-primary',
+                    'class' => 'mb-2 btn btn-lg btn-primary btn-block',
                 ]); ?>
                 <?= $this->Form->end() ?>
               </div>
