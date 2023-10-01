@@ -4,9 +4,9 @@
  *
  */
 
-$navClasses = 'navbar navbar-expand-lg navbar-sticky navbar-light bg-light border-bottom';
+$navClasses = 'navbar navbar-top navbar-expand-lg navbar-sticky navbar-light bg-light border-bottom';
 if ($this->getLayout() === 'login') {
-    $navClasses = 'navbar navbar-expand-lg navbar-sticky navbar-dark';
+    $navClasses = 'navbar navbar-top navbar-expand-lg navbar-sticky navbar-dark';
 }
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
