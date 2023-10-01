@@ -241,6 +241,11 @@ class Application extends BaseApplication implements
      */
     public function getAuthenticationService(ServerRequestInterface $request): AuthenticationServiceInterface
     {
+        $fields = [
+            IdentifierInterface::CREDENTIAL_USERNAME => 'email',
+            IdentifierInterface::CREDENTIAL_PASSWORD => 'password',
+        ];
+
         $authenticationService = new AuthenticationService([
             'unauthenticatedRedirect' => Router::url([
                 'prefix' => false,
@@ -253,10 +258,7 @@ class Application extends BaseApplication implements
 
         // Load identifiers, ensure we check email and password fields
         $authenticationService->loadIdentifier('Authentication.Password', [
-            'fields' => [
-                'username' => 'email',
-                'password' => 'password',
-            ],
+            'fields' => $fields,
         ]);
 
         // Load the authenticators, you want session first
@@ -264,10 +266,28 @@ class Application extends BaseApplication implements
 
         // Configure form data check to pick email and password
         $authenticationService->loadAuthenticator('Authentication.Form', [
-            'fields' => [
-                'username' => 'email',
-                'password' => 'password',
+            'fields' => $fields,
+            'loginUrl' => [
+                Router::url([
+                    'prefix' => false,
+                    'plugin' => false,
+                    'controller' => 'Users',
+                    'action' => 'login',
+                    '_ext' => null,
+                ]),
+                Router::url([
+                    'prefix' => false,
+                    'plugin' => false,
+                    'controller' => 'Users',
+                    'action' => 'login',
+                    '_ext' => 'json',
+                ]),
             ],
+        ]);
+
+        // Used for Remember me
+        $authenticationService->loadAuthenticator('Authentication.Cookie', [
+            'fields' => $fields,
             'loginUrl' => [
                 Router::url([
                     'prefix' => false,
