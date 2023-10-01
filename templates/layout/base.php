@@ -5,6 +5,13 @@
  * @var \App\View\AppView $this
  */
 
+$body_options = [
+    'class' => 'bg-light',
+];
+if ($this->get('body_options')) {
+    $body_options = $this->get('body_options');
+}
+
 ?>
 <!DOCTYPE html>
 <?= $this->Template->templateComment(true, __FILE__); ?>
@@ -31,7 +38,8 @@
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
 </head>
-<body class="<?= $this->fetch('body_class', 'bg-light'); ?>">
+<?= $this->Html->tag('body', null, $body_options); ?>
+
 <?= $this->fetch('layout'); ?>
 <?= $this->Html->script(['libs.bundle', 'index.bundle']) ?></body>
 <?= $this->Template->templateComment(false, __FILE__); ?>
