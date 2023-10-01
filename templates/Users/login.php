@@ -8,9 +8,7 @@ declare(strict_types=1);
 
 $this->setLayout('login');
 ?>
-
-<!-- START: App.Users/login -->
-
+<?= $this->Template->templateComment(true, __FILE__); ?>
 <div class="users form">
     <?= $this->Flash->render() ?>
     <h3>Login</h3>
@@ -26,6 +24,4 @@ $this->setLayout('login');
     <?= $this->Form->submit(__('Login')); ?>
     <?= $this->Form->end() ?>
 </div>
-
-
-<!-- END: App.Users/login -->
+<?= $this->Template->templateComment(false, __FILE__); ?>

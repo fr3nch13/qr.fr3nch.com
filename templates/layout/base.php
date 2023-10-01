@@ -31,8 +31,6 @@
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
 </head>
-
 <?= $this->fetch('layout'); ?>
-
 <?= $this->Template->templateComment(false, __FILE__); ?>
 </html>
