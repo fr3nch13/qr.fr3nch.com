@@ -45,6 +45,20 @@ $this->start('card_body');
                         'class' => 'btn btn-lg btn-primary btn-block',
                     ]); ?>
                 </div>
+                <div class="row">
+                  <div class="col">
+                    <?= $this->Form->control('remember_me', [
+                        'type' => 'checkbox',
+                        'label' => __('Remember Me?'),
+                    ]); ?>
+                  </div>
+                  <div class="col text-end">
+                    <?= $this->Html->link('Forgit Password?', [
+                        'controller' => 'Users',
+                        'action' => 'forgot_password',
+                    ]); ?>
+                  </div>
+                </div>
                 <?= $this->Form->end() ?>
               </div>
 
