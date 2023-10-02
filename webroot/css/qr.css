@@ -5,3 +5,8 @@ footer img.logo-bottom {
     max-width: 150px;
 
 }
+
+/* Product listing page */
+.product .product-title {
+    font-size: 130%;
+}
