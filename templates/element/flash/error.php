@@ -8,9 +8,8 @@ if (!isset($params['escape']) || $params['escape'] !== false) {
     $message = h($message);
 }
 ?>
-
-<!-- START: App.element/flash/error -->
-
-<div class="message error" onclick="this.classList.add('hidden');"><?= $message ?></div>
-
-<!-- END: App.element/flash/error -->
+<?= $this->Template->templateComment(true, __FILE__); ?>
+<section class="flash-message py-15 py-xl-15" onclick="this.classList.add('hidden');">
+    <div class="message error"><?= $message ?></div>
+</section>
+<?= $this->Template->templateComment(false, __FILE__); ?>
