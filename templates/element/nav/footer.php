@@ -20,7 +20,7 @@
                 'about'
               ], [
                 'class' => 'text-reset text-primary-hover',
-              ]) ?><</li>
+              ]) ?></li>
             </ul>
           </div>
           <div class="col-md-5 col-lg-4">
