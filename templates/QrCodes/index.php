@@ -37,7 +37,7 @@ use Cake\Routing\Router;
 
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                             <li><?= $this->Paginator->sort(
-                                'name',
+                                'QrCodes.name',
                                 [
                                     'asc' => __('Name') . ' <i class="bi bi-chevron-down"></i>',
                                     'desc' => __('Name') . ' <i class="bi bi-chevron-up"></i>',
@@ -45,7 +45,7 @@ use Cake\Routing\Router;
                                 ['class' => 'dropdown-item', 'escape' => false]
                             ); ?></li>
                             <li><?= $this->Paginator->sort(
-                                'created',
+                                'QrCodes.created',
                                 [
                                     'asc' => __('Created') . ' <i class="bi bi-chevron-down"></i>',
                                     'desc' => __('Created') . ' <i class="bi bi-chevron-up"></i>',
