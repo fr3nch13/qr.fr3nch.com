@@ -6,19 +6,19 @@
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
     <!-- footer -->
-    <footer class="py-15 py-xl-20 bg-black inverted">
+    <footer class="py-15 py-xl-15 bg-black inverted">
         <div class="container">
             <div class="row align-items-center g-1 g-lg-6 text-muted">
                 <div class="col-md-6 col-lg-5 order-lg-2 text-center text-md-start">
                     <ul class="list-inline small">
-                        <li class="mb-1"><?= $this->Html->link('About', [
+                        <li class="list-inline-item mb-1"><?= $this->Html->link('About', [
                             'controller' => 'Pages',
                             'action' => 'display',
                             'about'
                         ], [
                             'class' => 'text-reset text-primary-hover',
                         ]) ?></li>
-                        <li class="list-inline-item ms-1"><a href="https://twitter.com/Fr3nchLLC" class="text-reset text-primary-hover">twitter</a></li>
+                        <li class="list-inline-item mb-1"><a href="https://twitter.com/Fr3nchLLC" class="text-reset text-primary-hover">twitter</a></li>
                     </ul>
                 </div>
                 <div class="col-md-6 col-lg-4 text-center text-md-end order-lg-3">
