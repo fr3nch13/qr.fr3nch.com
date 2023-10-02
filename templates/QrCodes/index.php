@@ -26,41 +26,56 @@ if (!$this->getRequest()->is('ajax')) {
                     -->
                 </div>
 
+                <?php
+                // TODO: Create a page options element to generate page options.
+                ?>
                 <div class="col-md-6 text-md-end">
                     <ul class="list-inline">
-                    <li class="list-inline-item">
-                        <div class="dropdown">
-                        <a class="underline text-black" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Sort <i class="bi bi-chevron-down"></i>
-                        </a>
+                        <?php if ($this->ActiveUser->getUser()): ?>
+                        <li class="list-inline-item ms-2">
+                            <?= $this->Html->link(__('Add QR Code'), [
+                                'controller' => 'QrCodes',
+                                'action' => 'add',
+                            ], [
+                                'class' => 'underline text-black',
+                            ]); ?>
+                        </li>
+                        <?php endif; ?>
+                        <li class="list-inline-item">
+                            <div class="dropdown">
+                                <a class="underline text-black" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    Sort <i class="bi bi-chevron-down"></i>
+                                </a>
 
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <li><?= $this->Html->fixPaginatorSort($this->Paginator->sort(
-                                'QrCodes.name',
-                                [
-                                    'asc' => __('Name') . ' <i class="bi bi-chevron-down"></i>',
-                                    'desc' => __('Name') . ' <i class="bi bi-chevron-up"></i>',
-                                ],
-                                ['escape' => false]
-                            )); ?></li>
-                            <li><?= $this->Html->fixPaginatorSort($this->Paginator->sort(
-                                'QrCodes.created',
-                                [
-                                    'asc' => __('Created') . ' <i class="bi bi-chevron-down"></i>',
-                                    'desc' => __('Created') . ' <i class="bi bi-chevron-up"></i>',
-                                ],
-                                ['escape' => false]
-                            )); ?></li>
-                        </ul>
-                        </div>
-                    </li>
-                    <li class="list-inline-item ms-2">
-                        <a class=" underline text-black" data-bs-toggle="offcanvas" href="#offcanvasFilter" role="button"
-                        aria-controls="offcanvasFilter">
-                        Filters
-                        </a>
-                    </li>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <li><?= $this->Html->fixPaginatorSort($this->Paginator->sort(
+                                        'QrCodes.name',
+                                        [
+                                            'asc' => __('Name') . ' <i class="bi bi-chevron-down"></i>',
+                                            'desc' => __('Name') . ' <i class="bi bi-chevron-up"></i>',
+                                        ],
+                                        ['escape' => false]
+                                    )); ?></li>
+                                    <li><?= $this->Html->fixPaginatorSort($this->Paginator->sort(
+                                        'QrCodes.created',
+                                        [
+                                            'asc' => __('Created') . ' <i class="bi bi-chevron-down"></i>',
+                                            'desc' => __('Created') . ' <i class="bi bi-chevron-up"></i>',
+                                        ],
+                                        ['escape' => false]
+                                    )); ?></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <!-- Will add back when I include friendsofcake/search
+                        <li class="list-inline-item ms-2">
+                            <a class=" underline text-black" data-bs-toggle="offcanvas" href="#offcanvasFilter" role="button"
+                            aria-controls="offcanvasFilter">
+                            Filters
+                            </a>
+                        </li>
+                        -->
                     </ul>
                 </div>
             </div>
@@ -124,6 +139,7 @@ if (!$this->getRequest()->is('ajax')) {
         </div>
 
   <!-- offcanvas - filters -->
+  <!-- Will add back when I include friendsofcake/search
   <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasFilter" aria-labelledby="offcanvasFilterLabel">
     <div class="offcanvas-header">
       <h5 class="offcanvas-title" id="offcanvasFilterLabel">Filters</h5>
@@ -210,4 +226,5 @@ if (!$this->getRequest()->is('ajax')) {
 
     </div>
   </div>
+  -->
 <?= $this->Template->templateComment(false, __FILE__); ?>
