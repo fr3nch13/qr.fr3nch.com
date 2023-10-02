@@ -58,11 +58,6 @@ use Cake\Routing\Router;
             <?php foreach ($qrCodes as $qrCode): ?>
                 <div class="col-md-6 col-lg-4">
                     <div class="product">
-                        <figure class="product-image">
-                            <a href="<?= Router::url(['action' => 'view', $qrCode->id]) ?>">
-                                <img src="<?= Router::url(['action' => 'show', $qrCode->id]) ?>">
-                            </a>
-                        </figure>
                         <div class="product-title">
                             <?= $this->Html->link(
                                 $qrCode->name,
@@ -70,16 +65,21 @@ use Cake\Routing\Router;
                                 ['class' => 'product-title']
                             ); ?>
                         </div>
+                        <figure class="product-image">
+                            <a href="<?= Router::url(['action' => 'view', $qrCode->id]) ?>">
+                                <img src="<?= Router::url(['action' => 'show', $qrCode->id]) ?>">
+                            </a>
+                        </figure>
                         <div class="btn-group product-options" role="group" aria-label="Product Options">
                             <?= $this->Html->link(
                                 __('Follow'),
                                 ['action' => 'forward', $qrCode->qrkey],
-                                ['class' => 'btn btn-secondary']
+                                ['class' => 'btn btn-light']
                             ); ?>
                             <?= $this->Html->link(
                                 __('View'),
                                 ['action' => 'view', $qrCode->id],
-                                ['class' => 'btn btn-secondary']
+                                ['class' => 'btn btn-light']
                             ) ?>
                         </div>
                         <!--
