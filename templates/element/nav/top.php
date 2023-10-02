@@ -37,7 +37,7 @@ if ($this->getLayout() === 'login') {
                     <li><a class="dropdown-item " href="./account-billing.html">Billing</a></li>
                     <li><?= $this->Html->link('Sign Out', [
                         'controller' => 'Users',
-                        'logout',
+                        'action' => 'logout',
                     ], ['class' => 'dropdown-item text-red']); ?></li>
                 </ul>
             </li>
@@ -102,7 +102,7 @@ if ($this->getLayout() === 'login') {
                 <li class="nav-item">
                     <?= $this->Html->link('Sign Out', [
                         'controller' => 'Users',
-                        'logout',
+                        'action' => 'logout',
                     ], ['class' => 'nav-link text-red']); ?>
                 </li>
                 <?php else: ?>
