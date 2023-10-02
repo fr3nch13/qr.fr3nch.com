@@ -97,7 +97,10 @@ if ($this->getLayout() === 'login') {
                     <a class="nav-link " href="#">Billing</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-red" href="#">Log Out</a>
+                    <?= $this->Html->link('Sign Out', [
+                        'controller' => 'Users',
+                        'logout',
+                    ], ['class' => 'nav-link text-red']); ?>
                 </li>
                 <?php else: ?>
                 <li class="nav-item">
