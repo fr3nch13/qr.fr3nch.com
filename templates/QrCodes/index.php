@@ -36,22 +36,22 @@ use Cake\Routing\Router;
                         </a>
 
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <li><?= $this->Paginator->sort(
+                            <li><?= $this->Html->fixPaginatorSort($this->Paginator->sort(
                                 'QrCodes.name',
                                 [
                                     'asc' => __('Name') . ' <i class="bi bi-chevron-down"></i>',
                                     'desc' => __('Name') . ' <i class="bi bi-chevron-up"></i>',
                                 ],
-                                ['class' => 'dropdown-item', 'escape' => false]
-                            ); ?></li>
-                            <li><?= $this->Paginator->sort(
+                                ['escape' => false]
+                            )); ?></li>
+                            <li><?= $this->Html->fixPaginatorSort($this->Paginator->sort(
                                 'QrCodes.created',
                                 [
                                     'asc' => __('Created') . ' <i class="bi bi-chevron-down"></i>',
                                     'desc' => __('Created') . ' <i class="bi bi-chevron-up"></i>',
                                 ],
-                                ['class' => 'dropdown-item', 'escape' => false]
-                            ); ?></li>
+                                ['escape' => false]
+                            )); ?></li>
                         </ul>
                         </div>
                     </li>
