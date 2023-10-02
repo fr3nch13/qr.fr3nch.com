@@ -55,19 +55,19 @@ if (!$this->getRequest()->is('ajax')) {
                     <div
                         data-carousel='{"mouseDrag": true, "navContainer": "#nav-images", "gutter": 8, "loop": true, "items": 1}'>
                         <div class="item">
-                            <img src="./assets/images/products/product-9.jpg" alt="Image">
+                            <img class="img-fluid" src="./assets/images/products/product-9.jpg" alt="Image">
                         </div>
 
                         <div class="item">
-                            <img src="./assets/images/products/product-9-2.jpg" alt="Image">
+                            <img class="img-fluid" src="./assets/images/products/product-9-2.jpg" alt="Image">
                         </div>
 
                         <div class="item">
-                            <img src="./assets/images/products/product-9-3.jpg" alt="Image">
+                            <img class="img-fluid" src="./assets/images/products/product-9-3.jpg" alt="Image">
                         </div>
 
                         <div class="item">
-                            <img src="<?= $this->Url->build(['action' => 'show', $qrCode->id]) ?>" alt="<?= __('The QR Code'); ?>">
+                            <img class="img-fluid" src="<?= $this->Url->build(['action' => 'show', $qrCode->id]) ?>" alt="<?= __('The QR Code'); ?>">
                         </div>
 
                     </div>
