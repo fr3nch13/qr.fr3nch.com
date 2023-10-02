@@ -70,7 +70,7 @@ use Cake\Routing\Router;
                                 <img src="<?= Router::url(['action' => 'show', $qrCode->id]) ?>">
                             </a>
                         </figure>
-                        <div class="btn-group product-options" role="group" aria-label="Product Options">
+                        <div class="btn-group btn-block product-options" role="group" aria-label="Product Options">
                             <?= $this->Html->link(
                                 __('Follow'),
                                 ['action' => 'forward', $qrCode->qrkey],
