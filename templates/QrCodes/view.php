@@ -55,15 +55,19 @@ if (!$this->getRequest()->is('ajax')) {
                     <div
                         data-carousel='{"mouseDrag": true, "navContainer": "#nav-images", "gutter": 8, "loop": true, "items": 1}'>
                         <div class="item">
-                        <img src="./assets/images/products/product-9.jpg" alt="Image">
+                            <img src="./assets/images/products/product-9.jpg" alt="Image">
                         </div>
 
                         <div class="item">
-                        <img src="./assets/images/products/product-9-2.jpg" alt="Image">
+                            <img src="./assets/images/products/product-9-2.jpg" alt="Image">
                         </div>
 
                         <div class="item">
-                        <img src="./assets/images/products/product-9-3.jpg" alt="Image">
+                            <img src="./assets/images/products/product-9-3.jpg" alt="Image">
+                        </div>
+
+                        <div class="item">
+                            <img src="<?= $this->Url->build(['action' => 'show', $qrCode->id]) ?>" alt="<?= __('The QR Code'); ?>">
                         </div>
 
                     </div>
@@ -71,15 +75,19 @@ if (!$this->getRequest()->is('ajax')) {
                 </div>
                 <div class="col-md-2 order-md-1">
                     <div class="carousel-thumbs d-flex flex-row flex-md-column" id="nav-images">
-                    <div>
-                        <img class="img-fluid" src="./assets/images/products/product-9.jpg" alt="Image">
-                    </div>
-                    <div>
-                        <img class="img-fluid" src="./assets/images/products/product-9-2.jpg" alt="Image">
-                    </div>
-                    <div>
-                        <img class="img-fluid" src="./assets/images/products/product-9-3.jpg" alt="Image">
-                    </div>
+                        <div>
+                            <img class="img-fluid" src="./assets/images/products/product-9.jpg" alt="Image">
+                        </div>
+                        <div>
+                            <img class="img-fluid" src="./assets/images/products/product-9-2.jpg" alt="Image">
+                        </div>
+                        <div>
+                            <img class="img-fluid" src="./assets/images/products/product-9-3.jpg" alt="Image">
+                        </div>
+                        <div>
+                            <img src="<?= $this->Url->build(['action' => 'show', $qrCode->id]) ?>" alt="<?= __('The QR Code'); ?>">
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -121,17 +129,12 @@ if (!$this->getRequest()->is('ajax')) {
 
             <!-- Action Items -->
             <div class="row g-1 align-items-center">
-                <div class="btn-group btn-block product-options" role="group" aria-label="Product Options">
+                <div class="col" aria-label="QR Code Options">
                     <?= $this->Html->link(
                         __('Follow'),
                         ['action' => 'forward', $qrCode->qrkey],
-                        ['class' => 'btn btn-light rounded-pill']
+                        ['class' => 'btn btn-primary rounded-pill']
                     ); ?>
-                    <?= $this->Html->link(
-                        __('View'),
-                        ['action' => 'view', $qrCode->id],
-                        ['class' => 'btn btn-light rounded-pill']
-                    ) ?>
                 </div>
             </div>
 
