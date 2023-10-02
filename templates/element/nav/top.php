@@ -14,7 +14,7 @@ if ($this->getLayout() === 'login') {
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <nav id="mainNav" class="<?= $navClasses; ?>">
     <div class="container">
-      <?= $this->Html->link($this->Html->image($logoImage, ['class' => 'logo-top']), '/', ['escape' => false]); ?>
+      <?= $this->Html->link($this->Html->image($logoImage, ['class' => 'logo-top']), '/', ['class' => 'navbar-brand', 'escape' => false]); ?>
       <?= $this->element('nav/top_right'); ?>
       <?= $this->element('nav/top_main'); ?>
       <?= $this->element('nav/top_mobile'); ?>
