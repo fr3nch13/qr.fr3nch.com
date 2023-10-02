@@ -52,8 +52,7 @@ use Cake\Routing\Router;
         </div>
 
         <div class="container">
-            <div class="row g-3 g-lg-5 justify-content-between">
-
+            <div class="row g-3 g-lg-5 justify-content-between products">
 
             <?php foreach ($qrCodes as $qrCode): ?>
                 <div class="col-md-6 col-lg-4">
