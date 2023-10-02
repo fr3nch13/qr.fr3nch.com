@@ -10,7 +10,7 @@
       <div class="container">
         <div class="row g-4 g-lg-5 mb-10">
           <div class="col-md-3 text-center text-md-start">
-            <?= $this->Html->link($this->Html->image('logo_dark.png', ['class' => 'logo-bottom']), '/', ['escape' => false]); ?>
+            <?= $this->Html->link($this->Html->image('logo_light.png', ['class' => 'logo-bottom']), '/', ['escape' => false]); ?>
           </div>
           <div class="col-md-4 col-lg-5 text-center text-md-start">
             <ul class="list-unstyled">
