@@ -63,11 +63,25 @@ use Cake\Routing\Router;
                                 <img src="<?= Router::url(['action' => 'show', $qrCode->id]) ?>">
                             </a>
                         </figure>
-                        <?= $this->Html->link(
-                            $qrCode->name,
-                            ['action' => 'view', $qrCode->id],
-                            ['class' => 'product-title']
-                        ); ?>
+                        <div class="product-title">
+                            <?= $this->Html->link(
+                                $qrCode->name,
+                                ['action' => 'view', $qrCode->id],
+                                ['class' => 'product-title']
+                            ); ?>
+                        </div>
+                        <div class="btn-group product-options" role="group" aria-label="Product Options">
+                            <?= $this->Html->link(
+                                __('Follow'),
+                                ['action' => 'forward', $qrCode->qrkey],
+                                ['class' => 'btn btn-secondary']
+                            ); ?>
+                            <?= $this->Html->link(
+                                __('View'),
+                                ['action' => 'view', $qrCode->id],
+                                ['class' => 'btn btn-secondary']
+                            ) ?>
+                        </div>
                         <!--
                         <span class="product-price">$100 </span>
                         -->
@@ -81,11 +95,11 @@ use Cake\Routing\Router;
                 <div class="col text-center">
                     <nav aria-label="Pagination">
                         <ul class="pagination">
-                            <?= $this->Paginator->first('<< ' . __('First')) ?>
-                            <?= $this->Paginator->prev('< ' . __('Previous')) ?>
+                            <?= $this->Paginator->first('&laquo;', ['label' => 'First']) ?>
+                            <?= $this->Paginator->prev('<', ['label' => 'Previous']) ?>
                             <?= $this->Paginator->numbers() ?>
-                            <?= $this->Paginator->next(__('Next') . ' >') ?>
-                            <?= $this->Paginator->last(__('Last') . ' >>') ?>
+                            <?= $this->Paginator->next('>', ['label' => 'Next']) ?>
+                            <?= $this->Paginator->last('&laquo;', ['label' => 'Last']) ?>
                         </ul>
                         <!--
                             <p><?= $this->Paginator->counter(__('{{page}}/{{pages}}, {{current}} of {{count}}')) ?></p>
