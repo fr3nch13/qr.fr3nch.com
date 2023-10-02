@@ -87,7 +87,9 @@ use Cake\Routing\Router;
                             <?= $this->Paginator->next(__('Next') . ' >') ?>
                             <?= $this->Paginator->last(__('Last') . ' >>') ?>
                         </ul>
-                        <p><?= $this->Paginator->counter(__('{{page}}/{{pages}}, {{current}} of {{count}}')) ?></p>
+                        <!--
+                            <p><?= $this->Paginator->counter(__('{{page}}/{{pages}}, {{current}} of {{count}}')) ?></p>
+                        -->
                     </nav>
                 </div>
             </div>
