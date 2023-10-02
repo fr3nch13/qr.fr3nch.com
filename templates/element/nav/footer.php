@@ -14,11 +14,13 @@
           </div>
           <div class="col-md-4 col-lg-5 text-center text-md-start">
             <ul class="list-unstyled">
-              <li class="mb-1"><a href="" class="text-reset text-primary-hover">documentation</a></li>
-              <li class="mb-1"><a href="" class="text-reset text-primary-hover">components</a></li>
-              <li class="mb-1"><a href="" class="text-reset text-primary-hover">blocks</a></li>
-              <li class="mb-1"><a href="" class="text-reset text-primary-hover">changelog</a></li>
-              <li><a href="" class="text-reset text-primary-hover">roadmap</a></li>
+              <li class="mb-1"><?= $this->Html->link('About', [
+                'controller' => 'Pages',
+                'action' => 'display',
+                'about'
+              ], [
+                'class' => 'text-reset text-primary-hover',
+              ]) ?><</li>
             </ul>
           </div>
           <div class="col-md-5 col-lg-4">
@@ -39,8 +41,7 @@
           <div class="col-md-6 col-lg-5 order-lg-2 text-center text-md-start">
             <ul class="list-inline small">
               <li class="list-inline-item"><a href="" class="text-reset text-primary-hover">facebook</a></li>
-              <li class="list-inline-item ms-1"><a href="" class="text-reset text-primary-hover">twitter</a></li>
-              <li class="list-inline-item ms-1"><a href="" class="text-reset text-primary-hover">linkedin</a></li>
+              <li class="list-inline-item ms-1"><a href="https://twitter.com/Fr3nchLLC" class="text-reset text-primary-hover">twitter</a></li>
             </ul>
           </div>
           <div class="col-md-6 col-lg-4 text-center text-md-end order-lg-3">
