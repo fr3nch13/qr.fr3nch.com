@@ -9,87 +9,6 @@ use Cake\Routing\Router;
 
 ?>
 
-<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCart" aria-labelledby="offcanvasCart">
-    <div class="offcanvas-header">
-      <h5 class="offcanvas-title" id="offcanvasCartLabel">Shopping Cart</h5>
-      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body">
-      <ul class="list-unstyled">
-        <li>
-          <div class="row g-2 g-lg-3 align-items-center">
-            <a href="" class="col-3"><img class="img-fluid" src="./assets/images/products/product-1.jpg"
-                alt="Product"></a>
-            <div class="col">
-              <a href="" class="text-black text-primary-hover lead">Bluetooth Speaker</a>
-              <ul class="list-inline text-muted">
-                <li class="list-inline-item">Price: <span class="text-secondary">$90</span></li>
-                <li class="list-inline-item">Color: <span class="text-secondary">Blue</span></li>
-                <li class="list-inline-item">Qty:
-                  <div class="counter text-secondary" data-counter="qty-1">
-                    <span class="counter-minus bi bi-dash"></span>
-                    <input type="number" name="qty-1" class="counter-value" value="0" min="0" max="10">
-                    <span class="counter-plus bi bi-plus"></span>
-                  </div>
-                </li>
-              </ul>
-              <a href="" class="text-red underline">Remove</a>
-            </div>
-          </div>
-        </li>
-        <li class="mt-4">
-          <div class="row g-2 g-lg-3 align-items-center">
-            <a href="" class="col-3"><img class="img-fluid" src="./assets/images/products/product-2.jpg"
-                alt="Product"></a>
-            <div class="col">
-              <a href="" class="text-black text-primary-hover lead">Bluetooth Speaker</a>
-              <ul class="list-inline text-muted">
-                <li class="list-inline-item">Price: <span class="text-secondary">$90</span></li>
-                <li class="list-inline-item">Color: <span class="text-secondary">Blue</span></li>
-                <li class="list-inline-item">Qty:
-                  <div class="counter text-secondary" data-counter="qty-1">
-                    <span class="counter-minus bi bi-dash"></span>
-                    <input type="number" name="qty-1" class="counter-value" value="0" min="0" max="10">
-                    <span class="counter-plus bi bi-plus"></span>
-                  </div>
-                </li>
-              </ul>
-              <a href="" class="text-red underline">Remove</a>
-            </div>
-          </div>
-        </li>
-        <li class="mt-4">
-          <div class="row g-2 g-lg-3 align-items-center">
-            <a href="" class="col-3"><img class="img-fluid" src="./assets/images/products/product-3.jpg"
-                alt="Product"></a>
-            <div class="col">
-              <a href="" class="text-black text-primary-hover lead">Bluetooth Speaker</a>
-              <ul class="list-inline text-muted">
-                <li class="list-inline-item">Price: <span class="text-secondary">$90</span></li>
-                <li class="list-inline-item">Color: <span class="text-secondary">Blue</span></li>
-                <li class="list-inline-item">Qty:
-                  <div class="counter text-secondary" data-counter="qty-1">
-                    <span class="counter-minus bi bi-dash"></span>
-                    <input type="number" name="qty-1" class="counter-value" value="0" min="0" max="10">
-                    <span class="counter-plus bi bi-plus"></span>
-                  </div>
-                </li>
-              </ul>
-              <a href="" class="text-red underline">Remove</a>
-            </div>
-          </div>
-        </li>
-      </ul>
-    </div>
-    <div class="offcanvas-footer">
-      <div class="d-grid gap-1">
-        <a href="" class="btn btn-outline-light rounded-pill">View Cart</a>
-        <a href="" class="btn btn-primary rounded-pill">Proceed to Checkout</a>
-      </div>
-    </div>
-</div>
-
-
 <div class="offcanvas-wrap">
     <section class="py-15 py-xl-20">
         <div class="container mt-5">
@@ -161,6 +80,94 @@ use Cake\Routing\Router;
         </div>
     </section>
 </div>
+
+  <!-- offcanvas - filters -->
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasFilter" aria-labelledby="offcanvasFilterLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasFilterLabel">Filters</h5>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+
+      <div class="widget">
+        <span class="d-flex eyebrow text-muted mb-2">Brands</span>
+        <ul class="list-unstyled">
+          <li>
+            <div class="form-check form-check-minimal">
+              <input class="form-check-input" type="checkbox" value="" id="brand-1">
+              <label class="form-check-label" for="brand-1">
+                Vans
+              </label>
+            </div>
+          </li>
+          <li class="mt-1">
+            <div class="form-check form-check-minimal">
+              <input class="form-check-input" type="checkbox" value="" id="brand-2">
+              <label class="form-check-label" for="brand-2">
+                Carhart WIP
+              </label>
+            </div>
+          </li>
+          <li class="mt-1">
+            <div class="form-check form-check-minimal">
+              <input class="form-check-input" type="checkbox" value="" id="brand-3">
+              <label class="form-check-label" for="brand-3">
+                Carhart WIP
+              </label>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+
+      <div class="widget mt-5">
+        <span class="d-flex eyebrow text-muted mb-2">Color</span>
+        <ul class="list-unstyled">
+          <li>
+            <div class="form-check form-check-color">
+              <input class="form-check-input" type="checkbox" value="" id="color-1">
+              <label class="form-check-label" for="color-1">
+                <span class="bg-red"></span> Red
+              </label>
+            </div>
+          </li>
+          <li class="mt-1">
+            <div class="form-check form-check-color">
+              <input class="form-check-input" type="checkbox" value="" id="color-2">
+              <label class="form-check-label" for="color-2">
+                <span class="bg-blue"></span> Blue
+              </label>
+            </div>
+          </li>
+          <li class="mt-1">
+            <div class="form-check form-check-color">
+              <input class="form-check-input" type="checkbox" value="" id="color-3">
+              <label class="form-check-label" for="color-3">
+                <span class="bg-green"></span> Green
+              </label>
+            </div>
+          </li>
+          <li class="mt-1">
+            <div class="form-check form-check-color">
+              <input class="form-check-input" type="checkbox" value="" id="color-4">
+              <label class="form-check-label" for="color-4">
+                <span class="bg-yellow"></span> Yellow
+              </label>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="widget mt-5">
+        <span class="d-flex eyebrow text-muted mb-2">Price</span>
+        <div class="range-slider" data-range='{"decimals": 0,"step": 1,"connect": true, "start" : [20,80], "range" : {"min": 0, "max" :
+          100}}'></div>
+        <div class="range-slider-selection">Price: <span class="range-slider-value" id="range-min"></span>
+          &mdash; <span class="range-slider-value" id="range-max"></span></div>
+      </div>
+
+    </div>
+  </div>
 
 
 <!--
