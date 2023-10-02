@@ -48,25 +48,25 @@ if (!$this->getRequest()->is('ajax')) {
     <div class="row g-5 justify-content-center justify-content-lg-between">
 
         <!-- The QR Code's images -->
-        <div class="col-lg-7 position-relative">
+        <div class="col-lg-6 position-relative">
             <div class="row g-1">
                 <div class="col-md-10 order-md-2">
                     <div class="carousel">
                     <div
                         data-carousel='{"mouseDrag": true, "navContainer": "#nav-images", "gutter": 8, "loop": true, "items": 1}'>
-                        <div class="item">
+                        <div class="item text-center">
                             <img class="img-fluid" src="./assets/images/products/product-9.jpg" alt="Image">
                         </div>
 
-                        <div class="item">
+                        <div class="item text-center">
                             <img class="img-fluid" src="./assets/images/products/product-9-2.jpg" alt="Image">
                         </div>
 
-                        <div class="item">
+                        <div class="item text-center">
                             <img class="img-fluid" src="./assets/images/products/product-9-3.jpg" alt="Image">
                         </div>
 
-                        <div class="item">
+                        <div class="item text-center">
                             <img class="img-fluid" src="<?= $this->Url->build(['action' => 'show', $qrCode->id]) ?>" alt="<?= __('The QR Code'); ?>">
                         </div>
 
@@ -95,7 +95,7 @@ if (!$this->getRequest()->is('ajax')) {
 
         <!-- QR Code details -->
 
-        <div class="col-lg-5 col-xl-5">
+        <div class="col-lg-6 col-xl-5">
             <h1 class="mb-1"><?= h($qrCode->name) ?></h1>
 
             <p class="text-secondary mb-3"><?= $this->Text->autoParagraph(h($qrCode->description)); ?></p>
