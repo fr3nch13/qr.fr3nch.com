@@ -7,14 +7,6 @@
 
 $this->extend('base');
 
-$this->set('body_options', [
-    'class' => ['headroom'],
-    // headroom--not-bottom headroom--pinned headroom--top
-    'data-aos-easing' => 'ease',
-    'data-aos-duration' => '800',
-    'data-aos-delay' => '0',
-]);
-
 $this->start('layout');
 
 ?>
@@ -36,6 +28,5 @@ $this->start('layout');
     </figure>
   </section>
 
-<?= $this->element('nav/footer'); ?>
 <?= $this->Template->templateComment(false, __FILE__); ?>
 <?php $this->end() // layout ?>

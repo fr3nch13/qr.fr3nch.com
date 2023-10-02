@@ -6,7 +6,7 @@
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
     <!-- footer -->
-    <footer class="py-15 py-xl-20 border-top">
+    <footer class="py-15 py-xl-20 bg-black inverted">
       <div class="container">
         <div class="row g-4 g-lg-5 mb-10">
           <div class="col-md-3 text-center text-md-start">

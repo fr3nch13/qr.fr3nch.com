@@ -37,7 +37,6 @@ if ($this->get('body_options')) {
     <?= $this->fetch('script') ?>
 </head>
 <body>
-<?php //$this->Html->tag('body', null, $body_options); ?>
 
 <?= $this->fetch('layout'); ?>
 <?= $this->Html->script([
