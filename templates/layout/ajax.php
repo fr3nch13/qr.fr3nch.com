@@ -6,8 +6,6 @@
  */
 
 ?>
-<!-- START: App.layout/ajax -->
-
+<?= $this->Template->templateComment(true, __FILE__); ?>
 <?= $this->fetch('content'); ?>
-
-<!-- END: App.layout/ajax -->
+<?= $this->Template->templateComment(false, __FILE__); ?>

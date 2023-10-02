@@ -10,9 +10,7 @@ use Cake\Error\Debugger;
 
 $this->layout = 'error';
 ?>
-
-<!-- START: App.Error/error500 -->
-
+<?= $this->Template->templateComment(true, __FILE__); ?>
 <?php
 if (Configure::read('debug')) :
     $this->layout = 'dev_error';
@@ -50,5 +48,4 @@ endif;
     <strong><?= __d('cake', 'Error') ?>: </strong>
     <?= h($message) ?>
 </p>
-
-<!-- END: App.Error/error500 -->
+<?= $this->Template->templateComment(false, __FILE__); ?>

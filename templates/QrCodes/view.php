@@ -5,6 +5,7 @@ use Cake\Routing\Router;
  * @var \App\Model\Entity\QrCode $qrCode
  */
 ?>
+<?= $this->Template->templateComment(true, __FILE__); ?>
 <div class="row">
     <aside class="column">
         <div class="side-nav">
@@ -137,3 +138,4 @@ use Cake\Routing\Router;
         </div>
     </div>
 </div>
+<?= $this->Template->templateComment(false, __FILE__); ?>

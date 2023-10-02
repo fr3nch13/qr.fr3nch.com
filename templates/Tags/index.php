@@ -3,7 +3,11 @@
  * @var \App\View\AppView $this
  * @var iterable<\App\Model\Entity\Tag> $tags
  */
+if (!$this->getRequest()->is('ajax')) {
+    $this->setLayout('pages/index');
+}
 ?>
+<?= $this->Template->templateComment(true, __FILE__); ?>
 <div class="tags index content">
     <?= $this->Html->link(__('New Tag'), ['action' => 'add'], ['class' => 'button float-right']) ?>
     <h3><?= __('Tags') ?></h3>
@@ -46,3 +50,4 @@
         <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></p>
     </div>
 </div>
+<?= $this->Template->templateComment(false, __FILE__); ?>

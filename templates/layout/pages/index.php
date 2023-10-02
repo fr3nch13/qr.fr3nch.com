@@ -5,18 +5,19 @@
  * @var \App\View\AppView $this
  */
 
-$this->extend('default');
+$this->extend('base');
 
-$this->start('page_content');
+$this->start('layout');
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
-<section class="py-15 py-xl-20">
-    <div class="container mt-5">
-        <div class="row align-items-center justify-content-between">
+<?= $this->element('nav/top'); ?>
+
+    <div class="offcanvas-wrap">
+        <section class="py-15 py-xl-15">
             <?= $this->Flash->render() ?>
             <?= $this->fetch('content') ?>
-        </div>
+        </section>
     </div>
-</section>
+<?= $this->element('nav/footer'); ?>
 <?= $this->Template->templateComment(false, __FILE__); ?>
-<?php $this->end() // page_content ?>
+<?php $this->end() // layout ?>

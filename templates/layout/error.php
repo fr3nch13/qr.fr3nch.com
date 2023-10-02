@@ -15,10 +15,8 @@
  */
 ?>
 <!DOCTYPE html>
-
-<!-- START: App.layout/error -->
-
 <html>
+<?= $this->Template->templateComment(true, __FILE__); ?>
 <head>
     <?= $this->Html->charset() ?>
     <title>
@@ -39,6 +37,5 @@
         <?= $this->Html->link(__('Back'), 'javascript:history.back()') ?>
     </div>
 </body>
+<?= $this->Template->templateComment(false, __FILE__); ?>
 </html>
-
-<!-- END: App.layout/error -->

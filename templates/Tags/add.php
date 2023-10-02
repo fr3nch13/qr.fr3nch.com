@@ -5,6 +5,7 @@
  * @var \Cake\Collection\CollectionInterface|string[] $qrCodes
  */
 ?>
+<?= $this->Template->templateComment(true, __FILE__); ?>
 <div class="row">
     <aside class="column">
         <div class="side-nav">
@@ -28,3 +29,4 @@
         </div>
     </div>
 </div>
+<?= $this->Template->templateComment(false, __FILE__); ?>

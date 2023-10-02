@@ -6,10 +6,11 @@
 
 // TODO: Don;t use routing here, Wrap it with HtmlHelper::url()
 use Cake\Routing\Router;
-
+if (!$this->getRequest()->is('ajax')) {
+    $this->setLayout('pages/index');
+}
 ?>
-
-    <section class="py-15 py-xl-15">
+<?= $this->Template->templateComment(true, __FILE__); ?>
         <div class="container mt-5">
             <div class="row g-3 g-md-5 align-items-end mb-5">
                 <div class="col-md-6">
@@ -121,7 +122,6 @@ use Cake\Routing\Router;
                 </div>
             </div>
         </div>
-    </section>
 
   <!-- offcanvas - filters -->
   <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasFilter" aria-labelledby="offcanvasFilterLabel">
@@ -210,3 +210,4 @@ use Cake\Routing\Router;
 
     </div>
   </div>
+<?= $this->Template->templateComment(false, __FILE__); ?>

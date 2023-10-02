@@ -10,9 +10,7 @@ use Cake\Error\Debugger;
 
 $this->layout = 'error';
 ?>
-
-<!-- START: App.Error/error400 -->
-
+<?= $this->Template->templateComment(true, __FILE__); ?>
 <?php
 
 if (Configure::read('debug')) :
@@ -45,5 +43,4 @@ endif;
     <strong><?= __d('cake', 'Error') ?>: </strong>
     <?= __d('cake', 'The requested address {0} was not found on this server.', "<strong>'{$url}'</strong>") ?>
 </p>
-
-<!-- END: App.Error/error400 -->
+<?= $this->Template->templateComment(false, __FILE__); ?>

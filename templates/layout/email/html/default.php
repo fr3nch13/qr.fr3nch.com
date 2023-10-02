@@ -16,10 +16,12 @@
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
+<?= $this->Template->templateComment(true, __FILE__); ?>
 <head>
     <title><?= $this->fetch('title') ?></title>
 </head>
 <body>
     <?= $this->fetch('content') ?>
 </body>
+<?= $this->Template->templateComment(false, __FILE__); ?>
 </html>

@@ -10,14 +10,11 @@ $this->extend('base');
 $this->start('layout');
 
 ?>
-
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <?= $this->element('nav/top'); ?>
 
-    <div class="offcanvas-wrap">
-        <?= $this->Flash->render() ?>
-        <?= $this->fetch('content') ?>
-    </div>
+<?= $this->Flash->render() ?>
+<?= $this->fetch('content') ?>
 
 <?= $this->element('nav/footer'); ?>
 

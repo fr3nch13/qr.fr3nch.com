@@ -9,7 +9,5 @@ if (!isset($params['escape']) || $params['escape'] !== false) {
 }
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
-<section class="flash-message py-15 py-xl-15" onclick="this.classList.add('hidden');">
-    <div class="message warning"><?= $message ?></div>
-</section>
+<div class="message warning" onclick="this.classList.add('hidden');"><?= $message ?></div>
 <?= $this->Template->templateComment(false, __FILE__); ?>

@@ -15,8 +15,10 @@
  * @var string $content
  */
 
+echo $this->Template->templateComment(true, __FILE__);
 $lines = explode("\n", $content);
 
 foreach ($lines as $line) :
     echo '<p> ' . $line . "</p>\n";
 endforeach;
+echo $this->Template->templateComment(false, __FILE__);
