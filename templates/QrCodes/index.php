@@ -58,7 +58,7 @@ if (!$this->getRequest()->is('ajax')) {
                         </li>
                         <?php if ($this->ActiveUser->getUser()): ?>
                         <li class="list-inline-item ms-2">
-                            <?= $this->Html->link(__('Add QR Code'), [
+                            <?= $this->Html->link(__('Add a QR Code'), [
                                 'controller' => 'QrCodes',
                                 'action' => 'add',
                             ], [
