@@ -25,7 +25,6 @@
                     <span class="small">Henderson, NV 89002</span>
                 </div>
                 <div class="col-lg-3 order-lg-1 text-center text-md-start">
-                    <?= $this->Html->link($this->Html->image('logo_light.png', ['class' => 'logo-bottom']), '/', ['escape' => false]); ?>
                     <p class="small">Copyrights © <?= date('Y'); ?></p>
                 </div>
             </div>
