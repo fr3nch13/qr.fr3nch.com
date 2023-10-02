@@ -14,7 +14,9 @@ $this->start('layout');
 
     <div class="offcanvas-wrap">
         <section class="py-15 py-xl-15">
-            <?= $this->Flash->render() ?>
+            <div class="container mt-5">
+                <?= $this->Flash->render() ?>
+            </div>
             <?= $this->fetch('content') ?>
         </section>
     </div>
