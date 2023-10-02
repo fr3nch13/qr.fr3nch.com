@@ -13,24 +13,12 @@ if (!$this->getRequest()->is('ajax')) {
 
 <div class="row g-5 justify-content-center justify-content-lg-between">
 
-
-    <div class="col-md-6">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><?= $this->Html->link(__('QR Codes'), [
-                    'controller' => 'QrCodes',
-                    'action' => 'index',
-                ]); ?></li>
-            </ol>
-        </nav>
-    </div>
-
     <?php if (
         $this->ActiveUser->getUser() &&
         $this->ActiveUser->getUser('id') === $qrCode->user_id
     ): ?>
     <!-- Page Actions -->
-    <div class="col-md-6 text-md-end">
+    <div class="col-md-12 text-md-end">
         <ul class="list-inline">
             <li class="list-inline-item ms-2">
                 <?= $this->Html->link(__('Edit'), [
