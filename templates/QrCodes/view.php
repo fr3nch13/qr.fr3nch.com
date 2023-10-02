@@ -9,6 +9,43 @@ if (!$this->getRequest()->is('ajax')) {
 }
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
+
+
+<div class="row g-5 justify-content-center justify-content-lg-between">
+
+    <?php if (
+        $this->ActiveUser->getUser() &&
+        $this->ActiveUser->getUser('id') === $qrCode->user_id
+    ): ?>
+    <!-- Page Actions -->
+    <div class="col-md-6 text-md-end">
+        <ul class="list-inline">
+            <li class="list-inline-item ms-2">
+                <?= $this->Html->link(__('Edit'), [
+                    'controller' => 'QrCodes',
+                    'action' => 'edit',
+                    $qrCode->id,
+                ], [
+                    'class' => 'underline text-black',
+                ]); ?>
+            </li>
+            <li class="list-inline-item ms-2">
+                <?= $this->Form->postLink(__('Delete'), [
+                    'controller' => 'QrCodes',
+                    'action' => 'delete',
+                    $qrCode->id,
+                ], [
+                    'confirm' => __('Are you sure you want to delete # {0}?', $qrCode->id),
+                    'class' => 'underline text-red',
+                ]); ?>
+            </li>
+        </ul>
+    </div>
+    <?php endif; // Page Actions ?>
+</div>
+
+
+
 <div class="row">
     <aside class="column">
         <div class="side-nav">

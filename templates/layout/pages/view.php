@@ -18,9 +18,7 @@ $this->start('layout');
                 <?= $this->Flash->render() ?>
             </div>
             <div class="container mt-10">
-                <div class="row g-5 justify-content-center justify-content-lg-between">
                 <?= $this->fetch('content') ?>
-                </div>
             </div>
         </section>
     </div>
