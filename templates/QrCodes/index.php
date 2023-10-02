@@ -38,24 +38,19 @@ use Cake\Routing\Router;
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                             <li><?= $this->Paginator->sort(
                                 'name',
-                                __('Name') . ' <i class="bi bi-chevron-down"></i>',
-                                ['class' => 'dropdown-item', 'direction' => 'asc', 'escape' => false]
-                            ); ?></li>
-                            <li><?= $this->Paginator->sort(
-                                'name',
-                                __('Name') . ' <i class="bi bi-chevron-up"></i>',
-                                ['class' => 'dropdown-item', 'direction' => 'desc', 'escape' => false]
-                            ); ?></li>
-                            <div class="dropdown-divider"></div>
-                            <li><?= $this->Paginator->sort(
-                                'created',
-                                __('Created') . ' <i class="bi bi-chevron-down"></i>',
-                                ['class' => 'dropdown-item', 'direction' => 'asc', 'escape' => false]
+                                [
+                                    'asc' => __('Name') . ' <i class="bi bi-chevron-down"></i>',
+                                    'desc' => __('Name') . ' <i class="bi bi-chevron-up"></i>',
+                                ],
+                                ['class' => 'dropdown-item', 'escape' => false]
                             ); ?></li>
                             <li><?= $this->Paginator->sort(
                                 'created',
-                                __('Created') . ' <i class="bi bi-chevron-up"></i>',
-                                ['class' => 'dropdown-item', 'direction' => 'desc', 'escape' => false]
+                                [
+                                    'asc' => __('Created') . ' <i class="bi bi-chevron-down"></i>',
+                                    'desc' => __('Created') . ' <i class="bi bi-chevron-up"></i>',
+                                ],
+                                ['class' => 'dropdown-item', 'escape' => false]
                             ); ?></li>
                         </ul>
                         </div>

@@ -122,7 +122,7 @@ class BaseControllerTest extends TestCase
         $this->assertSame(1, substr_count($content, '<html lang="en">'));
         $this->assertSame(1, substr_count($content, '<head>'));
         $this->assertSame(1, substr_count($content, '</head>'));
-        $this->assertSame(1, substr_count($content, '<body class="bg-light">'));
+        $this->assertSame(1, substr_count($content, '<body>'));
 
         // favicons
         $this->assertSame(1, substr_count($content, '<link href="/favicon.ico" type="image/x-icon" rel="icon"><link href="/favicon.ico" type="image/x-icon" rel="shortcut icon">'));
@@ -144,7 +144,6 @@ class BaseControllerTest extends TestCase
     {
         $this->helperTestLayoutBase();
         $content = (string)$this->_response->getBody();
-        debug($content);
         $this->assertSame(1, substr_count($content, '<!-- START: App.layout/default -->'));
         $this->assertSame(1, substr_count($content, '<!-- END: App.layout/default -->'));
 

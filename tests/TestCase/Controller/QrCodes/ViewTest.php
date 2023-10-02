@@ -42,6 +42,8 @@ class ViewTest extends BaseControllerTest
         $this->get('/qr-codes');
         $this->assertResponseOk();
         $this->helperTestLayoutDefault();
+        $content = (string)$this->_response->getBody();
+        debug($content);
 
         // test with admin
         $this->loginUserAdmin();
