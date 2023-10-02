@@ -41,10 +41,15 @@
         <?php else: ?>
         <!-- Signup Link -->
         <li class="nav-item d-none d-lg-block">
-          <?= $this->Html->link(__('Sign In'), [
+          <?php
+            $classes = 'btn btn-primary rounded-pill ms-2';
+            if ($this->getLayout() === 'login') {
+                $classes = 'btn btn-outline-white rounded-pill ms-2';
+            }
+            echo $this->Html->link(__('Sign In'), [
             'controller' => 'Users',
             'action' => 'login'
-          ], ['class' => 'btn btn-primary rounded-pill ms-2']); ?>
+          ], ['class' => $classes]); ?>
         </li>
         <?php endif; ?>
       </ul>
