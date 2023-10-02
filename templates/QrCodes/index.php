@@ -15,6 +15,7 @@ use Cake\Routing\Router;
             <div class="row g-3 g-md-5 align-items-end mb-5">
                 <div class="col-md-6">
                     <h1><?= __('QR Codes') ?></h1>
+                    <!--
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#">Shop</a></li>
@@ -22,6 +23,7 @@ use Cake\Routing\Router;
                             <li class="breadcrumb-item active" aria-current="page">Equipment</li>
                         </ol>
                     </nav>
+                    -->
                 </div>
 
                 <div class="col-md-6 text-md-end">
@@ -30,13 +32,31 @@ use Cake\Routing\Router;
                         <div class="dropdown">
                         <a class="underline text-black" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
                             aria-expanded="false">
-                            Price high to low <i class="bi bi-chevron-down"></i>
+                            Sort <i class="bi bi-chevron-down"></i>
                         </a>
 
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            <li><?= $this->Paginator->sort(
+                                'name',
+                                __('Name') . '<i class="bi bi-chevron-down"></i>',
+                                ['direction' => 'asc', 'escape' => false]
+                            ); ?></li>
+                            <li><?= $this->Paginator->sort(
+                                'name',
+                                __('Name') . '<i class="bi bi-chevron-up"></i>',
+                                ['direction' => 'desc', 'escape' => false]
+                            ); ?></li>
+                            <div class="dropdown-divider"></div>
+                            <li><?= $this->Paginator->sort(
+                                'created',
+                                __('Created') . '<i class="bi bi-chevron-down"></i>',
+                                ['direction' => 'asc', 'escape' => false]
+                            ); ?></li>
+                            <li><?= $this->Paginator->sort(
+                                'created',
+                                __('Created') . '<i class="bi bi-chevron-up"></i>',
+                                ['direction' => 'desc', 'escape' => false]
+                            ); ?></li>
                         </ul>
                         </div>
                     </li>
