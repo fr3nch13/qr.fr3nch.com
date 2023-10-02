@@ -95,8 +95,8 @@ if (!$this->getRequest()->is('ajax')) {
                             ); ?>
                         </div>
                         <figure class="product-image">
-                            <a href="<?= Router::url(['action' => 'view', $qrCode->id]) ?>">
-                                <img src="<?= Router::url(['action' => 'show', $qrCode->id]) ?>">
+                            <a href="<?= $this->Html->url(['action' => 'view', $qrCode->id]) ?>">
+                                <img src="<?= $this->Html->url(['action' => 'show', $qrCode->id]) ?>">
                             </a>
                         </figure>
                         <div class="btn-group btn-block product-options" role="group" aria-label="Product Options">
