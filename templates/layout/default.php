@@ -14,8 +14,13 @@ $this->start('layout');
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <?= $this->element('nav/top'); ?>
 
-<?= $this->Flash->render() ?>
-<?= $this->fetch('content') ?>
+
+<section class="py-20">
+    <div class="container mt-10">
+        <?= $this->Flash->render() ?>
+        <?= $this->fetch('content') ?>
+    </div>
+</section>
 
 <?= $this->element('nav/footer'); ?>
 
