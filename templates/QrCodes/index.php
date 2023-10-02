@@ -77,6 +77,20 @@ use Cake\Routing\Router;
 
 
             </div>
+            <div class="row mt-6">
+                <div class="col text-center">
+                    <nav aria-label="Pagination">
+                        <ul class="pagination">
+                            <?= $this->Paginator->first('<< ' . __('First')) ?>
+                            <?= $this->Paginator->prev('< ' . __('Previous')) ?>
+                            <?= $this->Paginator->numbers() ?>
+                            <?= $this->Paginator->next(__('Next') . ' >') ?>
+                            <?= $this->Paginator->last(__('Last') . ' >>') ?>
+                        </ul>
+                        <p><?= $this->Paginator->counter(__('{{page}}/{{pages}}, {{current}} of {{count}}')) ?></p>
+                    </nav>
+                </div>
+            </div>
         </div>
     </section>
 </div>
