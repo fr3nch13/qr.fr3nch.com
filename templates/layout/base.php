@@ -39,7 +39,7 @@ if ($this->get('body_options')) {
     <?= $this->fetch('script') ?>
 </head>
 <body>
-<?= //$this->Html->tag('body', null, $body_options); ?>
+<?php //$this->Html->tag('body', null, $body_options); ?>
 
 <?= $this->fetch('layout'); ?>
 <?= $this->Html->script(['libs.bundle', 'index.bundle']) ?></body>
