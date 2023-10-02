@@ -120,7 +120,7 @@ use Cake\Routing\Router;
                             </a>
                         </figure>
                         <?= $this->Html->link(
-                            h($qrCode->name),
+                            $qrCode->name,
                             ['action' => 'view', $qrCode->id],
                             ['class' => 'product-title']
                         ); ?>
