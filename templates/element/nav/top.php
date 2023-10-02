@@ -24,6 +24,7 @@ if ($this->getLayout() === 'login') {
                     <i class="bi bi-person"></i>
                 </a>
             </li>
+            <?php if ($this->ActiveUser->getUser()): ?>
             <!-- The user icon and dropdown for user-specific pages -->
             <li class="nav-item dropdown dropdown-hover d-none d-lg-block">
                 <a class="nav-link nav-icon" role="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -37,6 +38,7 @@ if ($this->getLayout() === 'login') {
                     <li><a class="dropdown-item text-red" href="#">Log Out</a></li>
                 </ul>
             </li>
+            <?php endif; ?>
             <li class="nav-item d-lg-none">
                 <a class="nav-link nav-icon" href="" role="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="bi bi-list"></span>
