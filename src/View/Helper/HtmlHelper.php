@@ -21,7 +21,7 @@ class HtmlHelper extends BootstrapUiHtmlHelper
      */
     public function fixPaginatorSort(string $html): string
     {
-        $html = str_replace('<a href', '<a class="dropdown-item" href', $html);
+        $html = str_replace('<a ', '<a class="dropdown-item" ', $html);
         return $html;
     }
 }
