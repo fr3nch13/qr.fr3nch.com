@@ -160,7 +160,6 @@ class BaseControllerTest extends TestCase
     {
         $this->helperTestLayoutBase();
         $content = (string)$this->_response->getBody();
-        debug($content);
         $this->assertSame(1, substr_count($content, '<!-- START: App.layout/login -->'));
         $this->assertSame(1, substr_count($content, '<!-- END: App.layout/login -->'));
 
