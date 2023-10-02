@@ -35,7 +35,10 @@ if ($this->getLayout() === 'login') {
                     <li><a class="dropdown-item " href="./account-settings.html">Settings</a></li>
                     <li><a class="dropdown-item " href="./account-orders.html">Orders</a></li>
                     <li><a class="dropdown-item " href="./account-billing.html">Billing</a></li>
-                    <li><a class="dropdown-item text-red" href="#">Log Out</a></li>
+                    <li><?= $this->Html->link('Sign Out', [
+                        'controller' => 'Users',
+                        'logout',
+                    ], ['class' => 'dropdown-item text-red']); ?></li>
                 </ul>
             </li>
             <?php endif; ?>
