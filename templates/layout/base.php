@@ -28,9 +28,7 @@ if ($this->get('body_options')) {
 
     <?= $this->Html->css([
         'libs.bundle',
-        'libs.bundle.css.map',
         'index.bundle',
-        'index.bundle.css.map',
         'qr.css'
         ]) ?>
 
@@ -42,6 +40,9 @@ if ($this->get('body_options')) {
 <?php //$this->Html->tag('body', null, $body_options); ?>
 
 <?= $this->fetch('layout'); ?>
-<?= $this->Html->script(['libs.bundle', 'index.bundle']) ?></body>
+<?= $this->Html->script([
+    'vendor.bundle',
+    'index.bundle',
+    ]) ?></body>
 <?= $this->Template->templateComment(false, __FILE__); ?>
 </html>
