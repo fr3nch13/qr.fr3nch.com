@@ -104,6 +104,31 @@ use Cake\Routing\Router;
                         </ol>
                     </nav>
                 </div>
+
+                <div class="col-md-6 text-md-end">
+                    <ul class="list-inline">
+                    <li class="list-inline-item">
+                        <div class="dropdown">
+                        <a class="underline text-black" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Price high to low <i class="bi bi-chevron-down"></i>
+                        </a>
+
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
+                        </div>
+                    </li>
+                    <li class="list-inline-item ms-2">
+                        <a class=" underline text-black" data-bs-toggle="offcanvas" href="#offcanvasFilter" role="button"
+                        aria-controls="offcanvasFilter">
+                        Filters
+                        </a>
+                    </li>
+                    </ul>
+                </div>
             </div>
         </div>
 
