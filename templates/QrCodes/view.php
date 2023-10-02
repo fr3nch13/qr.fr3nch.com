@@ -18,7 +18,7 @@ if (!$this->getRequest()->is('ajax')) {
         $this->ActiveUser->getUser('id') === $qrCode->user_id
     ): ?>
     <!-- Page Actions -->
-    <div class="col-md-6 text-md-end">
+    <div class="col-md-12 text-md-end">
         <ul class="list-inline">
             <li class="list-inline-item ms-2">
                 <?= $this->Html->link(__('Edit'), [
