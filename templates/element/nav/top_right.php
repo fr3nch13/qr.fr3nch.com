@@ -7,13 +7,6 @@
 <?= $this->Template->templateComment(true, __FILE__); ?>
       <!-- secondary -->
       <ul class="navbar-nav navbar-nav-secondary order-lg-3">
-        <!-- Shopping cart Icon
-        <li class="nav-item">
-          <a class="nav-link nav-icon" data-bs-toggle="offcanvas" href="#offcanvasCart" role="button" aria-controls="offcanvasCart">
-            <i class="bi bi-cart2"></i>
-          </a>
-        </li>
-        -->
         <?php if ($this->ActiveUser->getUser()): ?>
         <li class="nav-item d-lg-none">
           <a class="nav-link nav-icon" href="" role="button" data-bs-toggle="collapse" data-bs-target="#userNav" aria-expanded="false">
