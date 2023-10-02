@@ -101,7 +101,15 @@ if ($this->getLayout() === 'login') {
                 </li>
                 <?php else: ?>
                 <li class="nav-item">
-                    <a class="nav-link text-red" href="#">Sign In ?</a>
+                    <?php
+                    $classes = 'btn btn-primary rounded-pill ms-2';
+                    if ($this->getLayout() === 'login') {
+                        $classes = 'btn btn-outline-white rounded-pill ms-2';
+                    }
+                    echo $this->Html->link(__('Sign In'), [
+                    'controller' => 'Users',
+                    'action' => 'login'
+                    ], ['class' => $classes]); ?>
                 </li>
                 <?php endif; ?>
             </ul>
