@@ -10,7 +10,7 @@ $this->extend('default');
 $this->start('page_content');
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
-<section class="py-15 py-xl-20">
+<section class="py-15 py-xl-20 pages-generic">
     <div class="container mt-5">
         <div class="row align-items-center justify-content-between">
             <?= $this->Flash->render() ?>

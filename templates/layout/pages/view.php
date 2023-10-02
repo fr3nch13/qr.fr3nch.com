@@ -13,11 +13,15 @@ $this->start('layout');
 <?= $this->element('nav/top'); ?>
 
     <div class="offcanvas-wrap">
-        <section class="py-15 py-xl-15 pages-index">
+        <section class="py-20 pages-view">
             <div class="container mt-5">
                 <?= $this->Flash->render() ?>
             </div>
-            <?= $this->fetch('content') ?>
+            <div class="container mt-10">
+                <div class="row g-5 justify-content-center justify-content-lg-between">
+                <?= $this->fetch('content') ?>
+                </div>
+            </div>
         </section>
     </div>
 <?= $this->element('nav/footer'); ?>

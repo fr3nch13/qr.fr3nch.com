@@ -4,8 +4,6 @@
  * @var iterable<\App\Model\Entity\QrCode> $qrCodes
  */
 
-// TODO: Don;t use routing here, Wrap it with HtmlHelper::url()
-use Cake\Routing\Router;
 if (!$this->getRequest()->is('ajax')) {
     $this->setLayout('pages/index');
 }
