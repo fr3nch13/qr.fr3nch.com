@@ -31,16 +31,6 @@ if (!$this->getRequest()->is('ajax')) {
                 ?>
                 <div class="col-md-6 text-md-end">
                     <ul class="list-inline">
-                        <?php if ($this->ActiveUser->getUser()): ?>
-                        <li class="list-inline-item ms-2">
-                            <?= $this->Html->link(__('Add QR Code'), [
-                                'controller' => 'QrCodes',
-                                'action' => 'add',
-                            ], [
-                                'class' => 'underline text-black',
-                            ]); ?>
-                        </li>
-                        <?php endif; ?>
                         <li class="list-inline-item">
                             <div class="dropdown">
                                 <a class="underline text-black" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
@@ -68,6 +58,16 @@ if (!$this->getRequest()->is('ajax')) {
                                 </ul>
                             </div>
                         </li>
+                        <?php if ($this->ActiveUser->getUser()): ?>
+                        <li class="list-inline-item ms-2">
+                            <?= $this->Html->link(__('Add QR Code'), [
+                                'controller' => 'QrCodes',
+                                'action' => 'add',
+                            ], [
+                                'class' => 'underline text-black',
+                            ]); ?>
+                        </li>
+                        <?php endif; ?>
                         <!-- Will add back when I include friendsofcake/search
                         <li class="list-inline-item ms-2">
                             <a class=" underline text-black" data-bs-toggle="offcanvas" href="#offcanvasFilter" role="button"
