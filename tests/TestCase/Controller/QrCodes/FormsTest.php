@@ -70,6 +70,8 @@ class FormsTest extends BaseControllerTest
         $this->assertRedirectContains('/');
         $this->assertFlashMessage('The qr code has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
+
+        // TODO: Fix adding a QR Code with selected Categories.
     }
 
     /**
