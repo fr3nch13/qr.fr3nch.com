@@ -109,9 +109,6 @@ if (!$this->getRequest()->is('ajax')) {
                                 ['class' => 'btn btn-light']
                             ) ?>
                         </div>
-                        <!--
-                        <span class="product-price">$100 </span>
-                        -->
                     </div>
                 </div>
             <?php endforeach; ?>
