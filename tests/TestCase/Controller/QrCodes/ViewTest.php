@@ -60,13 +60,19 @@ class ViewTest extends BaseControllerTest
         $this->assertSame(1, substr_count($content, '<!-- START: App.QrCodes/index -->'));
         $this->assertSame(1, substr_count($content, '<!-- END: App.QrCodes/index -->'));
         $this->assertSame(1, substr_count($content, '<h1>QR Codes</h1>'));
+        $this->assertSame(3, substr_count($content, '<div class="product">'));
+        $this->assertSame(3, substr_count($content, '<div class="product-title">'));
+        $this->assertSame(3, substr_count($content, '<figure class="product-image">'));
+
         // make sure the products are listed.
         // Sow & Scribe
         $this->assertSame(1, substr_count($content, '<a href="/qr-codes/view/1" class="product-title">Sow &amp; Scribe</a>'));
+        $this->assertSame(1, substr_count($content, '<img src="/qr-codes/show/1" alt="The QR Code>'));
         $this->assertSame(1, substr_count($content, '<a href="/f/sownscribe" class="btn btn-light">Follow</a>'));
         $this->assertSame(1, substr_count($content, '<a href="/qr-codes/view/1" class="btn btn-light">View</a>'));
         // Witching Hour
         $this->assertSame(1, substr_count($content, '<a href="/qr-codes/view/2" class="product-title">The Witching Hour</a>'));
+        $this->assertSame(1, substr_count($content, '<img src="/qr-codes/show/2" alt="The QR Code>'));
         $this->assertSame(1, substr_count($content, '<a href="/f/witchinghour" class="btn btn-light">Follow</a>'));
         $this->assertSame(1, substr_count($content, '<a href="/qr-codes/view/2" class="btn btn-light">View</a>'));
     }

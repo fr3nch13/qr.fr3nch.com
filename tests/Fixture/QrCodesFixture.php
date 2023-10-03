@@ -47,6 +47,16 @@ class QrCodesFixture extends CoreFixture
                 'source_id' => 1,
                 'user_id' => 1,
             ],
+            [
+                'id' => 3,
+                'qrkey' => '3dmericaflag',
+                'name' => 'American Flag Charm.',
+                'description' => 'The American flag 3D printed in TPU, so it\'s flexible.',
+                'created' => (new DateTime())->format('Y-m-d H:i:s'),
+                'url' => 'https://www.etsy.com/listing/1539113524/american-flag-3d-printed',
+                'source_id' => 2,
+                'user_id' => 1,
+            ],
         ];
         parent::init();
     }
