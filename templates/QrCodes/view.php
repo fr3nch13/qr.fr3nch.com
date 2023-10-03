@@ -133,7 +133,10 @@ if (!$this->getRequest()->is('ajax')) {
                     <?= $this->Html->link(
                         __('Follow'),
                         ['action' => 'forward', $qrCode->qrkey],
-                        ['class' => 'btn btn-primary btn-block rounded-pill']
+                        [
+                            'class' => 'btn btn-primary btn-block rounded-pill',
+                            'role' => 'button',
+                        ]
                     ); ?>
                 </div>
             </div>
