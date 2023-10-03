@@ -132,7 +132,7 @@ if (!$this->getRequest()->is('ajax')) {
                 <div class="col" aria-label="QR Code Options">
                     <div class="d-grid">
                         <?= $this->Html->link(
-                            __('Follow'),
+                            __('Follow Code'),
                             ['action' => 'forward', $qrCode->qrkey],
                             [
                                 'class' => 'btn btn-primary btn-block rounded-pill',

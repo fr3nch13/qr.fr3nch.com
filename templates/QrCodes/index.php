@@ -99,12 +99,12 @@ if (!$this->getRequest()->is('ajax')) {
                         </figure>
                         <div class="btn-group btn-block product-options" role="group" aria-label="Product Options">
                             <?= $this->Html->link(
-                                __('Follow'),
+                                __('Follow Code'),
                                 ['action' => 'forward', $qrCode->qrkey],
                                 ['class' => 'btn btn-light']
                             ); ?>
                             <?= $this->Html->link(
-                                __('View'),
+                                __('Details'),
                                 ['action' => 'view', $qrCode->id],
                                 ['class' => 'btn btn-light']
                             ) ?>
