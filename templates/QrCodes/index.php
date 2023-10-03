@@ -49,7 +49,7 @@ if (!$this->getRequest()->is('ajax')) {
                                         'QrCodes.created',
                                         [
                                             'asc' => '<i class="bi bi-chevron-down"></i> ' . __('Created'),
-                                            'desc' => '<i class="bi bi-chevron-up"></i> ' . __('NCreatedme'),
+                                            'desc' => '<i class="bi bi-chevron-up"></i> ' . __('Createdme'),
                                         ],
                                         ['escape' => false]
                                     )); ?></li>
