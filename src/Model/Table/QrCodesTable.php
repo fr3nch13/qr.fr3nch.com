@@ -60,6 +60,10 @@ class QrCodesTable extends Table
             ->setClassName('Sources')
             ->setForeignKey('source_id');
 
+        $this->hasMany('QrImages')
+            ->setClassName('QrImages')
+            ->setForeignKey('qr_code_id');
+
         $this->belongsToMany('Categories')
             ->setClassName('Categories')
             ->setForeignKey('qr_code_id')
@@ -115,6 +119,9 @@ class QrCodesTable extends Table
                 'rule' => 'url',
                 'message' => __('The URL is invalid.'),
             ]);
+
+        $validator
+            ->boolean('is_active');
 
         $validator
             ->integer('source_id')

@@ -197,6 +197,11 @@ class Initial extends AbstractMigration
             'limit' => 255,
             'null' => false,
         ]);
+        $table->addColumn('filename', 'string', [
+            'default' => null,
+            'limit' => 255,
+            'null' => false,
+        ]);
         $table->addColumn('created', 'datetime', [
             'default' => null,
             'null' => true,
