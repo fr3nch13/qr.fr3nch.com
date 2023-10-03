@@ -94,7 +94,7 @@ if (!$this->getRequest()->is('ajax')) {
                         </div>
                         <figure class="product-image">
                             <a href="<?= $this->Url->build(['action' => 'view', $qrCode->id]) ?>">
-                                <img src="<?= $this->Url->build(['action' => 'show', $qrCode->id]) ?>" alt="<?= __('The QR Code') ?>>
+                                <img class="img-fluid" src="<?= $this->Url->build(['action' => 'show', $qrCode->id]) ?>" alt="<?= __('The QR Code') ?>>
                             </a>
                         </figure>
                         <div class="btn-group btn-block product-options" role="group" aria-label="Product Options">
