@@ -33,7 +33,7 @@ class GeneralTest extends BaseControllerTest
      * Test index method
      *
      * @return void
-     * @uses \App\Controller\QrCodesController::index()
+     * @uses \App\Controller\QrCodesController::forward()
      */
     public function testForward(): void
     {
@@ -68,7 +68,7 @@ class GeneralTest extends BaseControllerTest
      * Test show method
      *
      * @return void
-     * @uses \App\Controller\QrCodesController::index()
+     * @uses \App\Controller\QrCodesController::show()
      */
     public function testShow(): void
     {
