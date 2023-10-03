@@ -4,6 +4,9 @@
  * @var \App\Model\Entity\Category $category
  * @var \Cake\Collection\CollectionInterface|string[] $parentCategories
  */
+if (!$this->getRequest()->is('ajax')) {
+    $this->setLayout('pages/form');
+}
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <div class="row">

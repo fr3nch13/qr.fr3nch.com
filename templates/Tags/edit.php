@@ -4,6 +4,9 @@
  * @var \App\Model\Entity\Tag $tag
  * @var string[]|\Cake\Collection\CollectionInterface $qrCodes
  */
+if (!$this->getRequest()->is('ajax')) {
+    $this->setLayout('pages/form');
+}
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <div class="row">

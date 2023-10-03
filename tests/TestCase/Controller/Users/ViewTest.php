@@ -111,7 +111,7 @@ class ViewTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('/users');
         $this->assertResponseOk();
-        $this->helperTestLayoutDefault();
+        $this->helperTestLayoutIndex();
     }
 
     /**
@@ -169,7 +169,7 @@ class ViewTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('/users/view/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutDefault();
+        $this->helperTestLayoutView();
     }
 
     /**
@@ -212,19 +212,19 @@ class ViewTest extends BaseControllerTest
         // not logged in
         $this->get('/users/profile/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutDefault();
+        $this->helperTestLayoutView();
 
         // test with reqular
         $this->loginUserRegular();
         $this->get('/users/profile/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutDefault();
+        $this->helperTestLayoutView();
 
         // test with admin
         $this->loginUserAdmin();
         $this->get('/users/profile/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutDefault();
+        $this->helperTestLayoutView();
     }
 
     /**
@@ -277,7 +277,7 @@ class ViewTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('/users/add');
         $this->assertResponseOk();
-        $this->helperTestLayoutDefault();
+        $this->helperTestLayoutForm();
     }
 
     /**
@@ -327,7 +327,7 @@ class ViewTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('/users/edit/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutDefault();
+        $this->helperTestLayoutForm();
     }
 
     /**

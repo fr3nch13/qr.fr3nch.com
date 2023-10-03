@@ -3,6 +3,9 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Category $category
  */
+if (!$this->getRequest()->is('ajax')) {
+    $this->setLayout('pages/view');
+}
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <div class="row">

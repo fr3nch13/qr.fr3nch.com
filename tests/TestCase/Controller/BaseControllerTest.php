@@ -147,7 +147,52 @@ class BaseControllerTest extends TestCase
         $this->assertSame(1, substr_count($content, '<!-- START: App.layout/default -->'));
         $this->assertSame(1, substr_count($content, '<!-- END: App.layout/default -->'));
 
-        // test other default specific layouts.
+        // test other specific to this layout.
+    }
+
+    /**
+     * Tests the Layout is there.
+     *
+     * @return void
+     */
+    public function helperTestLayoutIndex(): void
+    {
+        $this->helperTestLayoutBase();
+        $content = (string)$this->_response->getBody();
+        $this->assertSame(1, substr_count($content, '<!-- START: App.layout/pages/index -->'));
+        $this->assertSame(1, substr_count($content, '<!-- END: App.layout/pages/index -->'));
+
+        // test other specific to this layout.
+    }
+
+    /**
+     * Tests the Layout is there.
+     *
+     * @return void
+     */
+    public function helperTestLayoutView(): void
+    {
+        $this->helperTestLayoutBase();
+        $content = (string)$this->_response->getBody();
+        $this->assertSame(1, substr_count($content, '<!-- START: App.layout/pages/view -->'));
+        $this->assertSame(1, substr_count($content, '<!-- END: App.layout/pages/view -->'));
+
+        // test other specific to this layout.
+    }
+
+    /**
+     * Tests the Layout is there.
+     *
+     * @return void
+     */
+    public function helperTestLayoutForm(): void
+    {
+        $this->helperTestLayoutBase();
+        $content = (string)$this->_response->getBody();
+        $this->assertSame(1, substr_count($content, '<!-- START: App.layout/pages/form -->'));
+        $this->assertSame(1, substr_count($content, '<!-- END: App.layout/pages/form -->'));
+
+        // test other specific to this layout.
     }
 
     /**
@@ -162,7 +207,7 @@ class BaseControllerTest extends TestCase
         $this->assertSame(1, substr_count($content, '<!-- START: App.layout/login -->'));
         $this->assertSame(1, substr_count($content, '<!-- END: App.layout/login -->'));
 
-        // test other login specific layouts.
+        // test other specific to this layout.
     }
 
     /**

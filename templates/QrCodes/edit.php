@@ -7,6 +7,9 @@
  * @var string[]|\Cake\Collection\CollectionInterface $categories
  * @var string[]|\Cake\Collection\CollectionInterface $tags
  */
+if (!$this->getRequest()->is('ajax')) {
+    $this->setLayout('pages/form');
+}
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <div class="row">

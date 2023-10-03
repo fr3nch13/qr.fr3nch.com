@@ -41,28 +41,34 @@ class ViewTest extends BaseControllerTest
         // not logged in
         $this->get('/qr-codes');
         $content = (string)$this->_response->getBody();
-        debug($content);
         $this->assertResponseOk();
-        $this->helperTestLayoutDefault();
-
-        // test with admin
-        $this->loginUserAdmin();
-        $this->get('/qr-codes');
-        $this->assertResponseOk();
-        $this->helperTestLayoutDefault();
+        $this->helperTestLayoutIndex();
 
         // test with reqular
         $this->loginUserRegular();
         $this->get('/qr-codes');
         $this->assertResponseOk();
-        $this->helperTestLayoutDefault();
+        $this->helperTestLayoutIndex();
 
+        // test with admin
         // test html content.
+        $this->loginUserAdmin();
         $this->get('/qr-codes');
         $this->assertResponseOk();
         $content = (string)$this->_response->getBody();
-        $this->assertSame(1, substr_count($content, '<a href="/qr-codes/view/1">View</a>'));
-        $this->assertSame(1, substr_count($content, '<a href="/f/sownscribe">Follow</a>'));
+        debug($content);
+        $this->assertSame(1, substr_count($content, '<!-- START: App.QrCodes/index -->'));
+        $this->assertSame(1, substr_count($content, '<!-- END: App.QrCodes/index -->'));
+        $this->assertSame(1, substr_count($content, '<h1>QR Codes</h1>'));
+        // make sure the products are listed.
+        // Sow & Scribe
+        $this->assertSame(1, substr_count($content, '<a href="/qr-codes/view/1" class="product-title">Sow &amp; Scribe</a>'));
+        $this->assertSame(1, substr_count($content, '<a href="/f/sownscribe" class="btn btn-light">Follow</a>'));
+        $this->assertSame(1, substr_count($content, '<a href="/qr-codes/view/1" class="btn btn-light">View</a>'));
+        // Witching Hour
+        $this->assertSame(1, substr_count($content, '<a href="/qr-codes/view/2" class="product-title">The Witching Hour</a>'));
+        $this->assertSame(1, substr_count($content, '<a href="/f/witchinghour" class="btn btn-light">Follow</a>'));
+        $this->assertSame(1, substr_count($content, '<a href="/qr-codes/view/2" class="btn btn-light">View</a>'));
     }
 
     /**
@@ -105,26 +111,29 @@ class ViewTest extends BaseControllerTest
         // not logged in
         $this->get('/qr-codes/view/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutDefault();
+        $this->helperTestLayoutView();
 
         // test with admin
         $this->loginUserAdmin();
         $this->get('/qr-codes/view/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutDefault();
+        $this->helperTestLayoutView();
 
         // test with reqular
         $this->loginUserRegular();
         $this->get('/qr-codes/view/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutDefault();
+        $this->helperTestLayoutView();
 
         // test html content.
         $this->get('/qr-codes/view/1');
         $this->assertResponseOk();
         $content = (string)$this->_response->getBody();
-        $this->assertSame(1, substr_count($content, '<h3>Sow &amp; Scribe</h3>'));
-        $this->assertSame(1, substr_count($content, '<a href="/f/sownscribe" class="side-nav-item">Follow</a>'));
+        $this->assertSame(1, substr_count($content, '<!-- START: App.QrCodes/view -->'));
+        $this->assertSame(1, substr_count($content, '<!-- END: App.QrCodes/view -->'));
+        $this->assertSame(1, substr_count($content, '<h1 class="mb-1">Sow &amp; Scribe</h1>'));
+        $this->assertSame(2, substr_count($content, '<img class="img-fluid" src="/qr-codes/show/1" alt="The QR Code">'));
+        $this->assertSame(1, substr_count($content, '<a href="/f/sownscribe" class="btn btn-primary btn-block rounded-pill" role="button">Follow</a>'));
     }
 
     /**
@@ -168,13 +177,13 @@ class ViewTest extends BaseControllerTest
         $this->loginUserRegular();
         $this->get('/qr-codes/add');
         $this->assertResponseOk();
-        $this->helperTestLayoutDefault();
+        $this->helperTestLayoutForm();
 
         // test with admin, get
         $this->loginUserAdmin();
         $this->get('/qr-codes/add');
         $this->assertResponseOk();
-        $this->helperTestLayoutDefault();
+        $this->helperTestLayoutForm();
     }
 
     /**
@@ -220,7 +229,7 @@ class ViewTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('/qr-codes/edit/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutDefault();
+        $this->helperTestLayoutForm();
     }
 
     /**

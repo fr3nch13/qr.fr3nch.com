@@ -41,19 +41,19 @@ class ViewTest extends BaseControllerTest
         // not logged in
         $this->get('/tags');
         $this->assertResponseOk();
-        $this->helperTestLayoutDefault();
+        $this->helperTestLayoutIndex();
 
         // test with reqular
         $this->loginUserRegular();
         $this->get('/tags');
         $this->assertResponseOk();
-        $this->helperTestLayoutDefault();
+        $this->helperTestLayoutIndex();
 
         // test with admin
         $this->loginUserAdmin();
         $this->get('/tags');
         $this->assertResponseOk();
-        $this->helperTestLayoutDefault();
+        $this->helperTestLayoutIndex();
     }
 
     /**
@@ -96,19 +96,19 @@ class ViewTest extends BaseControllerTest
         // not logged in
         $this->get('/tags/view/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutDefault();
+        $this->helperTestLayoutView();
 
         // test with reqular
         $this->loginUserRegular();
         $this->get('/tags/view/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutDefault();
+        $this->helperTestLayoutView();
 
         // test with admin
         $this->loginUserAdmin();
         $this->get('/tags/view/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutDefault();
+        $this->helperTestLayoutView();
     }
 
     /**
@@ -152,13 +152,13 @@ class ViewTest extends BaseControllerTest
         $this->loginUserRegular();
         $this->get('/tags/add');
         $this->assertResponseOk();
-        $this->helperTestLayoutDefault();
+        $this->helperTestLayoutForm();
 
         // test with admin, get
         $this->loginUserAdmin();
         $this->get('/tags/add');
         $this->assertResponseOk();
-        $this->helperTestLayoutDefault();
+        $this->helperTestLayoutForm();
     }
 
     /**
@@ -205,7 +205,7 @@ class ViewTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('/tags/edit/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutDefault();
+        $this->helperTestLayoutForm();
     }
 
     /**
