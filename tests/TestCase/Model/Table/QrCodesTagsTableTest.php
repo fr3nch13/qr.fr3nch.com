@@ -6,7 +6,7 @@ namespace App\Test\TestCase\Model\Table;
 use App\Model\Table\QrCodesTable;
 use App\Model\Table\QrCodesTagsTable;
 use App\Model\Table\TagsTable;
-use Cake\ORM\Association\HasMany;
+use Cake\ORM\Association\BelongsTo;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -98,7 +98,7 @@ class QrCodesTagsTableTest extends TestCase
         ////// foreach association.
         // make sure the association exists
         $this->assertNotNull($Associations->get('Tags'));
-        $this->assertInstanceOf(HasMany::class, $Associations->get('Tags'));
+        $this->assertInstanceOf(BelongsTo::class, $Associations->get('Tags'));
         $this->assertInstanceOf(TagsTable::class, $Associations->get('Tags')->getTarget());
         $Association = $this->QrCodesTags->Tags;
         $this->assertSame('Tags', $Association->getName());
@@ -106,7 +106,7 @@ class QrCodesTagsTableTest extends TestCase
 
         // make sure the association exists
         $this->assertNotNull($Associations->get('QrCodes'));
-        $this->assertInstanceOf(HasMany::class, $Associations->get('QrCodes'));
+        $this->assertInstanceOf(BelongsTo::class, $Associations->get('QrCodes'));
         $this->assertInstanceOf(QrCodesTable::class, $Associations->get('QrCodes')->getTarget());
         $Association = $this->QrCodesTags->QrCodes;
         $this->assertSame('QrCodes', $Association->getName());

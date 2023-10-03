@@ -394,8 +394,20 @@ class QrCodesTableTest extends TestCase
         $this->QrCodes->save($entity);
         $this->assertTrue(is_readable($path));
 
-        // new entity, check that it gets generated on a new save.
+        // test existing qr_code with missing image
+        // test that it gets generated.
         $path = TMP . 'qr_codes' . DS . '3.png';
+        if (file_exists($path)) {
+            unlink($path);
+        }
+        $this->assertFalse(is_readable($path));
+
+        $entity = $this->QrCodes->get(3);
+        $this->assertSame($path, $entity->path);
+        $this->assertTrue(is_readable($path));
+
+        // new entity, check that it gets generated on a new save.
+        $path = TMP . 'qr_codes' . DS . '4.png';
         if (file_exists($path)) {
             unlink($path);
         }

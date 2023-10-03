@@ -61,15 +61,17 @@ class QrImagesTable extends Table
             ->notEmptyString('name')
             ->requirePresence('name', Validator::WHEN_CREATE);
 
-        // TODO: Add file upload fields, and upload logic.
+        $validator
+            ->boolean('is_active');
+
+        $validator
+            ->integer('imorder')
+            ->notEmptyString('imorder');
 
         $validator
             ->integer('qr_code_id')
             ->notEmptyString('qr_code_id')
             ->requirePresence('qr_code_id', Validator::WHEN_CREATE);
-
-        $validator
-            ->boolean('is_active');
 
         return $validator;
     }
@@ -89,5 +91,26 @@ class QrImagesTable extends Table
         ]);
 
         return $rules;
+    }
+
+    /**
+     * Gets the Path to the Image file.
+     *
+     * @param int $id The id of the QR Image Entity
+     * @return string The absolute path to the QR Image.
+     * @throws \Cake\Http\Exception\NotFoundException If the entity isn't found, or we can't find the image file.
+     */
+    public function getQrImagePath(int $id): string
+    {
+        $qrImage = $this->get($id, contain:['QrCodes']); // throws a NotFoundException if it doesn't exist.
+        $path = TMP . 'qr_images' . DS . $qrImage->qr_code_id . DS . $id;
+        if (!file_exists($path) || !is_readable($path)) {
+            throw new \Cake\Http\Exception\NotFoundException(__('Unable to find the Image {0} for QR Code {1}', [
+                $qrImage->name,
+                $qrImage->qr_code->name,
+            ]));
+        }
+
+        return $path;
     }
 }

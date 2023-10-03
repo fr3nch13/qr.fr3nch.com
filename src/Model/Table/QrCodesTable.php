@@ -193,18 +193,20 @@ class QrCodesTable extends Table
      * @return string The absolute path to the generated QR code Image.
      * @throws \Cake\Http\Exception\NotFoundException If the entity isn't found, or we can't create the image.
      */
-    public function getQrImagePath(int $id, bool $renerate = false): string
+    public function getQrImagePath(int $id, bool $regenerate = false): string
     {
         $qrCode = $this->get($id); // throws a NotFoundException if it doesn't exist.
-        $path = TMP . 'qr_codes' . DS . $id . '.png';
-        if (!file_exists($path) || $renerate) {
-            $QR = new PhpQrGenerator($qrCode);
-            $QR->generate();
-            if (is_readable($path)) {
-                return $path;
-            }
+
+        if ($regenerate === true) {
+            $qrCode->regenerate = true;
         }
 
-        return $path;
+        if (!$qrCode->path) {
+            throw new \Cake\Http\Exception\NotFoundException(__('Unable to find the QR Image for the QR Code {0}', [
+                $qrCode->name,
+            ]));
+        }
+
+        return $qrCode->path;
     }
 }

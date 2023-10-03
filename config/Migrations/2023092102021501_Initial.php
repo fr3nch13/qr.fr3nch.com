@@ -197,11 +197,6 @@ class Initial extends AbstractMigration
             'limit' => 255,
             'null' => false,
         ]);
-        $table->addColumn('filename', 'string', [
-            'default' => null,
-            'limit' => 255,
-            'null' => false,
-        ]);
         $table->addColumn('created', 'datetime', [
             'default' => null,
             'null' => true,
@@ -211,9 +206,13 @@ class Initial extends AbstractMigration
             'null' => true,
         ]);
         $table->addColumn('is_active', 'boolean', [
-            'default' => false,
+            'default' => 1,
             'null' => false,
         ])->addIndex(['is_active']);
+        $table->addColumn('imorder', 'integer', [
+            'default' => null,
+            'null' => true,
+        ])->addIndex(['imorder']);
         $table->addColumn('qr_code_id', 'integer', [
             'default' => null,
             'null' => false,
