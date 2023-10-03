@@ -16,6 +16,9 @@ use Cake\ORM\Entity;
  * @property int $imorder
  * @property int $qr_code_id
  *
+ * Virtual field
+ * @property string|null $path Path to the uploaded image.
+ *
  * @property \App\Model\Entity\QrCode $qr_code
  */
 class QrImage extends Entity

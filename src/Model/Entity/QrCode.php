@@ -22,7 +22,7 @@ use Cake\ORM\Entity;
  * @property int|null $user_id
  *
  * Virtual field
- * @property string|null $path
+ * @property string|null $path Path to the generated QR Code file.
  *
  * @property \App\Model\Entity\Source $source
  * @property \App\Model\Entity\User $user

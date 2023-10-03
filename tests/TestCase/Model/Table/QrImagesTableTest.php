@@ -5,6 +5,7 @@ namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\QrCodesTable;
 use App\Model\Table\QrImagesTable;
+use Cake\Core\Configure;
 use Cake\ORM\Association\BelongsTo;
 use Cake\TestSuite\TestCase;
 
@@ -178,12 +179,79 @@ class QrImagesTableTest extends TestCase
      *
      * @return void
      */
-    public function testImagePath(): void
+    public function testEntityImagePath(): void
     {
-        // move the assets into place
-        if (is_dir(TMP . 'qr_images')) {
-            
+        Configure::write('debug', true);
+
+        // backup the existing stuff.
+        $tmpdir = TMP . 'qr_images';
+        $moved = false;
+        if (is_dir($tmpdir)) {
+            // save the existing content
+            $moved = TMP . 'qr_images_bak';
+            rename($tmpdir, $moved);
         }
-        // one with an image.
+
+        // copy the assets in place
+        if (!is_dir($tmpdir)) {
+            mkdir($tmpdir);
+        }
+        $this->cpy(TESTS . 'assets' . DS . 'qr_images', $tmpdir);
+
+        // test the paths here.
+        // this one has an image file.
+        $entity = $this->QrImages->get(1);
+        $entityPath = $tmpdir . DS . $entity->qr_code_id . DS . $entity->id;
+        $this->assertTrue(is_file($entityPath));
+        $this->assertSame($entityPath, $entity->path);
+
+        // this one is missing an image file.
+        $entity = $this->QrImages->get(4);
+        $entityPath = $tmpdir . DS . $entity->qr_code_id . DS . $entity->id;
+        $this->assertFalse(is_file($entityPath));
+        $this->assertNull($entity->path);
+
+        // put the existing stuff back.
+        if ($moved) {
+            $this->rrmdir($tmpdir);
+            rename($moved, $tmpdir);
+        }
+    }
+
+    private function cpy($source, $dest){
+        if(is_dir($source)) {
+            $dir_handle = opendir($source);
+            while($file = readdir($dir_handle)){
+                if($file != "." && $file != ".."){
+                    if(is_dir($source."/".$file)){
+                        if(!is_dir($dest."/".$file)){
+                            mkdir($dest."/".$file);
+                        }
+                        $this->cpy($source."/".$file, $dest."/".$file);
+                    } else {
+                        copy($source."/".$file, $dest."/".$file);
+                    }
+                }
+            }
+            closedir($dir_handle);
+        } else {
+            copy($source, $dest);
+        }
+    }
+
+    private function rrmdir($dir)
+    {
+        if (is_dir($dir)) {
+            $objects = scandir($dir);
+            foreach ($objects as $object) {
+                if ($object != "." && $object != "..") {
+                    if (is_dir($dir. DIRECTORY_SEPARATOR .$object) && !is_link($dir."/".$object))
+                        $this->rrmdir($dir. DIRECTORY_SEPARATOR .$object);
+                    else
+                        unlink($dir. DIRECTORY_SEPARATOR .$object);
+                }
+            }
+            rmdir($dir);
+        }
     }
 }
