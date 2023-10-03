@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "050e30faffbdb857ce0916a5366e8d9c",
+    "content-hash": "2c5f51354d20f4caa4a6bf597a017061",
     "packages": [
         {
             "name": "cakephp/authentication",
@@ -146,12 +146,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/cakephp.git",
-                "reference": "7184efa1829f79428573b9c2d88232ee7c580d17"
+                "reference": "c3b31d4216c9cdbe3f57ba7cbed4e193d8a5663a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/7184efa1829f79428573b9c2d88232ee7c580d17",
-                "reference": "7184efa1829f79428573b9c2d88232ee7c580d17",
+                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/c3b31d4216c9cdbe3f57ba7cbed4e193d8a5663a",
+                "reference": "c3b31d4216c9cdbe3f57ba7cbed4e193d8a5663a",
                 "shasum": ""
             },
             "require": {
@@ -256,20 +256,20 @@
                 "issues": "https://github.com/cakephp/cakephp/issues",
                 "source": "https://github.com/cakephp/cakephp"
             },
-            "time": "2023-09-30T21:13:01+00:00"
+            "time": "2023-10-02T07:17:05+00:00"
         },
         {
             "name": "cakephp/chronos",
-            "version": "3.0.2",
+            "version": "3.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/chronos.git",
-                "reference": "635fa0cbb5c8cffcae224b8ef6d7ad2c77178382"
+                "reference": "54164f6775ae5c8a930583983d62c9ee0815fcf0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/chronos/zipball/635fa0cbb5c8cffcae224b8ef6d7ad2c77178382",
-                "reference": "635fa0cbb5c8cffcae224b8ef6d7ad2c77178382",
+                "url": "https://api.github.com/repos/cakephp/chronos/zipball/54164f6775ae5c8a930583983d62c9ee0815fcf0",
+                "reference": "54164f6775ae5c8a930583983d62c9ee0815fcf0",
                 "shasum": ""
             },
             "require": {
@@ -311,7 +311,7 @@
                 "issues": "https://github.com/cakephp/chronos/issues",
                 "source": "https://github.com/cakephp/chronos"
             },
-            "time": "2023-09-29T02:55:40+00:00"
+            "time": "2023-10-02T16:47:43+00:00"
         },
         {
             "name": "cakephp/migrations",
@@ -3390,120 +3390,50 @@
             "time": "2022-05-23T21:33:49+00:00"
         },
         {
-            "name": "foxy/foxy",
-            "version": "dev-main",
+            "name": "fr3nch13/pushover-bash",
+            "version": "1.0.4",
             "source": {
                 "type": "git",
-                "url": "https://github.com/fr3nch13/foxy.git",
-                "reference": "ccdb49550b7b56d79a0e8d5785d272517d429ca9"
+                "url": "https://github.com/fr3nch13/pushover-bash.git",
+                "reference": "8b47f7e658a291e8f81598f172da86e47c3c084f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fr3nch13/foxy/zipball/ccdb49550b7b56d79a0e8d5785d272517d429ca9",
-                "reference": "ccdb49550b7b56d79a0e8d5785d272517d429ca9",
+                "url": "https://api.github.com/repos/fr3nch13/pushover-bash/zipball/8b47f7e658a291e8f81598f172da86e47c3c084f",
+                "reference": "8b47f7e658a291e8f81598f172da86e47c3c084f",
                 "shasum": ""
             },
-            "require": {
-                "composer-plugin-api": "^1.1|^2.0",
-                "php": ">=7.3"
-            },
-            "require-dev": {
-                "composer/composer": "^2.5.5",
-                "phpstan/phpstan": "^1.10",
-                "phpunit/phpunit": "^9.0",
-                "squizlabs/php_codesniffer": "3.*",
-                "staabm/annotate-pull-request-from-checkstyle": "^1.8"
-            },
-            "default-branch": true,
-            "type": "composer-plugin",
-            "extra": {
-                "class": "Foxy\\Foxy",
-                "branch-alias": {
-                    "dev-main": "1.2-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Foxy\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "scripts": {
-                "ci": [
-                    "@check",
-                    "@coverage-text"
-                ],
-                "check": [
-                    "@test",
-                    "@cs-check",
-                    "@phpstan"
-                ],
-                "fix": [
-                    "@cs-fix",
-                    "@cs-check"
-                ],
-                "cs-check": [
-                    "./vendor/bin/phpcs --colors -p"
-                ],
-                "cs-fix": [
-                    "./vendor/bin/phpcbf --colors -p"
-                ],
-                "test": [
-                    "./vendor/bin/phpunit --colors=always"
-                ],
-                "cs-checkstyle": [
-                    "@cs-check -- --report=checkstyle"
-                ],
-                "phpstan": [
-                    "./vendor/bin/phpstan --no-progress -vvv"
-                ],
-                "phpstan-github": [
-                    "./vendor/bin/phpstan --no-progress -vvv --error-format=github"
-                ],
-                "coverage-clover": [
-                    "-d xdebug.mode=coverage ./vendor/bin/phpunit --coverage-clover=coverage.xml"
-                ],
-                "coverage": [
-                    "-d xdebug.mode=coverage ./vendor/bin/phpunit --coverage-text --colors=never"
-                ]
-            },
+            "bin": [
+                "pushover.sh"
+            ],
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "MIT"
+                "GPL-3.0-or-later"
             ],
             "authors": [
                 {
-                    "name": "François Pluchino",
-                    "email": "francois.pluchino@gmail.com"
-                }
-            ],
-            "description": "Fast, reliable, and secure NPM/Yarn/pnpm bridge for Composer",
-            "homepage": "https://github.com/fxpio/foxy",
-            "keywords": [
-                "asset",
-                "bridge",
-                "composer",
-                "dependency manager",
-                "nodejs",
-                "npm",
-                "package",
-                "yarn"
-            ],
-            "support": {
-                "source": "https://github.com/fr3nch13/foxy/tree/main"
-            },
-            "funding": [
-                {
-                    "type": "github",
-                    "url": "https://github.com/francoispluchino"
+                    "name": "akusei",
+                    "homepage": "https://github.com/akusei",
+                    "role": "Original Creater"
                 },
                 {
-                    "type": "custom",
-                    "url": "https://paypal.me/francoispluchino"
+                    "name": "Brian French",
+                    "homepage": "https://github.com/fr3nch13",
+                    "role": "Developer"
                 }
             ],
-            "time": "2023-09-30T21:55:18+00:00"
+            "description": "Pushover Bash Script",
+            "homepage": "https://github.com/fr3nch13/pushover-bash",
+            "keywords": [
+                "bash",
+                "notifications",
+                "pushover"
+            ],
+            "support": {
+                "source": "https://github.com/fr3nch13/pushover-bash/tree/1.0.4"
+            },
+            "time": "2023-07-24T22:01:30+00:00"
         },
         {
             "name": "jasny/twig-extensions",
@@ -4033,16 +3963,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.10.36",
+            "version": "1.10.37",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "ffa3089511121a672e62969404e4fddc753f9b15"
+                "reference": "058ba07e92f744d4dcf6061ae75283d0c6456f2e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/ffa3089511121a672e62969404e4fddc753f9b15",
-                "reference": "ffa3089511121a672e62969404e4fddc753f9b15",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/058ba07e92f744d4dcf6061ae75283d0c6456f2e",
+                "reference": "058ba07e92f744d4dcf6061ae75283d0c6456f2e",
                 "shasum": ""
             },
             "require": {
@@ -4091,7 +4021,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-09-29T14:07:45+00:00"
+            "time": "2023-10-02T16:18:37+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -6360,18 +6290,11 @@
             "version": "5.9999999.9999999.9999999-dev",
             "alias": "5.0.1",
             "alias_normalized": "5.0.1.0"
-        },
-        {
-            "package": "foxy/foxy",
-            "version": "dev-main",
-            "alias": "1.3.1",
-            "alias_normalized": "1.3.1.0"
         }
     ],
     "minimum-stability": "dev",
     "stability-flags": {
-        "cakephp/cakephp": 20,
-        "foxy/foxy": 20
+        "cakephp/cakephp": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
