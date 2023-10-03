@@ -40,16 +40,16 @@ if (!$this->getRequest()->is('ajax')) {
                                     <li><?= $this->Html->fixPaginatorSort($this->Paginator->sort(
                                         'QrCodes.name',
                                         [
-                                            'asc' => __('Name') . ' <i class="bi bi-chevron-down"></i>',
-                                            'desc' => __('Name') . ' <i class="bi bi-chevron-up"></i>',
+                                            'asc' => '<i class="bi bi-chevron-down"></i> ' . __('Name'),
+                                            'desc' => '<i class="bi bi-chevron-up"></i> ' . __('Name'),
                                         ],
                                         ['escape' => false]
                                     )); ?></li>
                                     <li><?= $this->Html->fixPaginatorSort($this->Paginator->sort(
                                         'QrCodes.created',
                                         [
-                                            'asc' => __('Created') . ' <i class="bi bi-chevron-down"></i>',
-                                            'desc' => __('Created') . ' <i class="bi bi-chevron-up"></i>',
+                                            'asc' => '<i class="bi bi-chevron-down"></i> ' . __('Created'),
+                                            'desc' => '<i class="bi bi-chevron-up"></i> ' . __('NCreatedme'),
                                         ],
                                         ['escape' => false]
                                     )); ?></li>
