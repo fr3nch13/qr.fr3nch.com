@@ -130,14 +130,16 @@ if (!$this->getRequest()->is('ajax')) {
             <!-- Action Items -->
             <div class="row g-1 align-items-center">
                 <div class="col" aria-label="QR Code Options">
-                    <?= $this->Html->link(
-                        __('Follow'),
-                        ['action' => 'forward', $qrCode->qrkey],
-                        [
-                            'class' => 'btn btn-primary btn-block rounded-pill',
-                            'role' => 'button',
-                        ]
-                    ); ?>
+                    <div class="d-grid">
+                        <?= $this->Html->link(
+                            __('Follow'),
+                            ['action' => 'forward', $qrCode->qrkey],
+                            [
+                                'class' => 'btn btn-primary btn-block rounded-pill',
+                                'role' => 'button',
+                            ]
+                        ); ?>
+                    </div>
                 </div>
             </div>
 
