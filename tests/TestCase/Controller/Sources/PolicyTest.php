@@ -60,8 +60,7 @@ class PolicyTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('https://localhost/sources/dontexist');
         $this->assertResponseCode(404);
-        $this->helperTestError400();
-        $this->assertResponseContains('The requested address <strong>\'/sources/dontexist\'</strong> was not found on this server.</p>');
+        $this->helperTestError400('/sources/dontexist');
         Configure::write('debug', true);
     }
 

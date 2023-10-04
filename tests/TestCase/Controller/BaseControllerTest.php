@@ -224,14 +224,19 @@ class BaseControllerTest extends TestCase
     /**
      * Tests that we're using the Error/error400 page
      *
+     * @param string|null $path If included, also look for the actual error path as well.
      * @return void
      */
-    public function helperTestError400(): void
+    public function helperTestError400(?string $path = null): void
     {
         $this->helperTestLayoutError();
         $content = (string)$this->_response->getBody();
         $this->assertSame(1, substr_count($content, '<!-- START: App.Error/error400 -->'));
         $this->assertSame(1, substr_count($content, '<!-- END: App.Error/error400 -->'));
+
+        if ($path) {
+            $this->assertSame(1, substr_count($content, 'The requested address <strong>\'' . $path . '\'</strong> was not found on this server.'));
+        }
 
         // test other specific to this layout.
     }

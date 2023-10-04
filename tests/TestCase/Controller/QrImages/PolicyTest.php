@@ -60,8 +60,7 @@ class PolicyTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('https://localhost/qr-images/dontexist');
         $this->assertResponseCode(404);
-        $this->helperTestError400();
-        $this->assertResponseContains('The requested address <strong>\'/qr-images/dontexist\'</strong> was not found on this server.</p>');
+        $this->helperTestError400('/qr-images/dontexist');
         Configure::write('debug', true);
     }
 
