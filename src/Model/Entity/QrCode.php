@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Model\Entity;
 
 use App\Lib\PhpQrGenerator;
+use Cake\Core\Configure;
 use Cake\ORM\Entity;
 
 /**
@@ -85,11 +86,12 @@ class QrCode extends Entity
      */
     protected function _getPath(): ?string
     {
-        $path = TMP . 'qr_codes' . DS . $this->id . '.png';
+
+        // set in config/app.php or config/app_local.php
+        $path = Configure::read('App.paths.qr_codes', TMP . 'qr_codes' . DS) . $this->id . '.png';
         if (!file_exists($path) || $this->regenerate) {
             $QR = new PhpQrGenerator($this);
             $QR->generate();
-
         }
 
         if (is_readable($path)) {

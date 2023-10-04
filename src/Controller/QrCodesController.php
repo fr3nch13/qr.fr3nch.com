@@ -55,6 +55,7 @@ class QrCodesController extends AppController
         }
 
         $qrCode = $this->QrCodes->find('key', key: $key)->first();
+        $this->Authorization->authorize($qrCode);
         // if we can't find it, redirect to index with an error message.
         if (!$qrCode) {
             $this->Flash->error(__('A QR Code with the key: `{0}` could not be found.', [
@@ -82,8 +83,11 @@ class QrCodesController extends AppController
     {
         $this->request->allowMethod(['get']);
 
+        $qrCode = $this->QrCodes->get((int)$id);
+        $this->Authorization->authorize($qrCode);
+
         $qrCodeImagePath = $this->QrCodes->getQrImagePath((int)$id);
-        $response = $this->response->withFile($qrCodeImagePath);
+        $response = $this->response->withFile($qrCode->path);
         // Return the response to prevent controller from trying to render
         // a view.
         return $response;

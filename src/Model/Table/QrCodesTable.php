@@ -7,6 +7,7 @@ use App\Lib\PhpQrGenerator;
 use App\Model\Entity\QrCode;
 use ArrayObject;
 use Cake\Event\Event;
+use Cake\Http\Exception\InternalErrorException;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -173,8 +174,13 @@ class QrCodesTable extends Table
      */
     public function afterSave(Event $event, QrCode $entity, ArrayObject $options): void
     {
-        // use the qrCodeImagePath method to generate the image
-        $this->getQrImagePath($entity->id, true);
+        // This should trigger creating a QR Code if it doesn't exist,
+        // as the Entity's firtual field will try to generate one.
+        // so we just need to trigger that firtual field.
+        // TODO: Test this to make sure we output the exception properly.
+        if ($entity->path) {
+            throw new InternalErrorException('Unable to create QR Code.');
+        }
     }
 
     /**
