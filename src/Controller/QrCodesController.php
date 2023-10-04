@@ -86,7 +86,6 @@ class QrCodesController extends AppController
         $qrCode = $this->QrCodes->get((int)$id);
         $this->Authorization->authorize($qrCode);
 
-        $qrCodeImagePath = $this->QrCodes->getQrImagePath((int)$id);
         $response = $this->response->withFile($qrCode->path);
         // Return the response to prevent controller from trying to render
         // a view.
