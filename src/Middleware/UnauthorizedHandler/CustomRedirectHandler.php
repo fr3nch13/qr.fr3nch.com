@@ -5,6 +5,7 @@ namespace App\Middleware\UnauthorizedHandler;
 
 use Authorization\Exception\Exception;
 use Authorization\Middleware\UnauthorizedHandler\RedirectHandler;
+use Cake\Routing\Router;
 use Cake\Http\Exception\NotFoundException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -29,7 +30,11 @@ class CustomRedirectHandler extends RedirectHandler
     ): ResponseInterface {
         if (isset($options['url'])) {
             if (!$request->getAttribute('identity')) {
-                $options['url'] = '/users/login';
+                $options['url'] = Router::url([
+                    '_full' => true,
+                    'controller' => 'Users',
+                    'action' => 'login',
+                ]);
             }
         }
 

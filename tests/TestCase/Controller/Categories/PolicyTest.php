@@ -81,22 +81,19 @@ class PolicyTest extends BaseControllerTest
         $this->loginGuest();
         $this->get('https://localhost/categories');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="categories index content">');
-        $this->assertResponseContains('<h3>Categories</h3>');
+        $this->helperTestTemplate('Categories/index');
 
         // test with reqular
         $this->loginUserRegular();
         $this->get('https://localhost/categories');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="categories index content">');
-        $this->assertResponseContains('<h3>Categories</h3>');
+        $this->helperTestTemplate('Categories/index');
 
         // test with admin
         $this->loginUserAdmin();
         $this->get('https://localhost/categories');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="categories index content">');
-        $this->assertResponseContains('<h3>Categories</h3>');
+        $this->helperTestTemplate('Categories/index');
 
         // test with debug off
         Configure::write('debug', false);
@@ -121,22 +118,19 @@ class PolicyTest extends BaseControllerTest
         $this->loginGuest();
         $this->get('https://localhost/categories/view/1');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="categories view content">');
-        $this->assertResponseContains('<h3>Books</h3>');
+        $this->helperTestTemplate('Categories/view');
 
         // test with reqular
         $this->loginUserRegular();
         $this->get('https://localhost/categories/view/1');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="categories view content">');
-        $this->assertResponseContains('<h3>Books</h3>');
+        $this->helperTestTemplate('Categories/view');
 
         // test with admin
         $this->loginUserAdmin();
         $this->get('https://localhost/categories/view/1');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="categories view content">');
-        $this->assertResponseContains('<h3>Books</h3>');
+        $this->helperTestTemplate('Categories/view');
 
         /// Missing IDs
 
@@ -195,15 +189,14 @@ class PolicyTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('https://localhost/categories/add');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="categories form content">');
-        $this->assertResponseContains('<form method="post" accept-charset="utf-8" role="form" action="/categories/add">');
-        $this->assertResponseContains('<legend>Add Category</legend>');
+        $this->helperTestTemplate('Categories/add');
+        $this->helperTestFormTag('/categories/add', 'post');
 
         // Debug Off
         Configure::write('debug', false);
         $this->loginGuest();
         $this->get('https://localhost/categories/add');
-        $this->assertRedirectEquals('users/login?redirect=%2Fcategories%2Fadd');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fcategories%2Fadd');
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
         Configure::write('debug', true);
@@ -237,9 +230,8 @@ class PolicyTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('https://localhost/categories/edit/1');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="categories form content">');
-        $this->assertResponseContains('<form method="patch" accept-charset="utf-8" role="form" action="/categories/edit/1">');
-        $this->assertResponseContains('<legend>Edit Category</legend>');
+        $this->helperTestTemplate('Categories/edit');
+        $this->helperTestFormTag('/categories/edit/1', 'patch');
 
         /// Missing IDs
 

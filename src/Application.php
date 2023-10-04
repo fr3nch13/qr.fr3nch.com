@@ -175,7 +175,7 @@ class Application extends BaseApplication implements
                 },
                 'unauthorizedHandler' => [
                     'className' => 'CustomRedirect',
-                    'url' => '/',
+                    'url' => Router::url('/', true),
                     'queryParam' => 'redirect',
                     'exceptions' => [
                         MissingIdentityException::class,
