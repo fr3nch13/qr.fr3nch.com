@@ -67,7 +67,7 @@ class FormsTest extends BaseControllerTest
             'email' => 'admin@example.com',
             'password' => 'admin',
         ]);
-        $this->assertRedirectEquals('/');
+        $this->assertRedirectEquals('https://localhost/');
         $this->assertFlashMessage('Welcome back Admin', 'flash');
         $this->assertFlashElement('flash/success');
 
@@ -76,7 +76,7 @@ class FormsTest extends BaseControllerTest
             'email' => 'admin@example.com',
             'password' => 'admin',
         ]);
-        $this->assertRedirectEquals('/categories');
+        $this->assertRedirectEquals('https://localhost/categories');
         $this->assertFlashMessage('Welcome back Admin', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -139,7 +139,7 @@ class FormsTest extends BaseControllerTest
             'email' => 'newuser@example.com', // invalid email
             'password' => 'password',
         ]);
-        $this->assertRedirectEquals('/users');
+        $this->assertRedirectEquals('https://localhost/users');
         $this->assertFlashMessage('The user has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -171,7 +171,7 @@ class FormsTest extends BaseControllerTest
             'name' => 'New User',
             'description' => 'The Description',
         ]);
-        $this->assertRedirectEquals('/users');
+        $this->assertRedirectEquals('https://localhost/users');
         $this->assertFlashMessage('The user has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }

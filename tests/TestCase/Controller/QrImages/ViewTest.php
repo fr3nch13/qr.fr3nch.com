@@ -41,13 +41,13 @@ class ViewTest extends BaseControllerTest
         // not logged in
         $this->get('https://localhost/qr-images');
         $this->assertResponseOk();
-        $this->helperTestLayoutIndex();
+        $this->helperTestLayoutPagesIndex();
 
         // test with reqular
         $this->loginUserRegular();
         $this->get('https://localhost/qr-images');
         $this->assertResponseOk();
-        $this->helperTestLayoutIndex();
+        $this->helperTestLayoutPagesIndex();
 
         // test with admin
         // test html content.
@@ -115,19 +115,19 @@ class ViewTest extends BaseControllerTest
         // not logged in
         $this->get('https://localhost/qr-images/view/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutView();
+        $this->helperTestLayoutPagesView();
 
         // test with admin
         $this->loginUserAdmin();
         $this->get('https://localhost/qr-images/view/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutView();
+        $this->helperTestLayoutPagesView();
 
         // test with reqular
         $this->loginUserRegular();
         $this->get('https://localhost/qr-images/view/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutView();
+        $this->helperTestLayoutPagesView();
 
         // test html content.
         $this->get('https://localhost/qr-images/view/1');
@@ -181,13 +181,13 @@ class ViewTest extends BaseControllerTest
         $this->loginUserRegular();
         $this->get('https://localhost/qr-images/add/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutForm();
+        $this->helperTestLayoutPagesForm();
 
         // test with admin, get
         $this->loginUserAdmin();
         $this->get('https://localhost/qr-images/add/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutForm();
+        $this->helperTestLayoutPagesForm();
     }
 
     /**
@@ -203,7 +203,7 @@ class ViewTest extends BaseControllerTest
         $this->requestAsAjax();
         $this->loginUserRegular();
         $this->get('https://localhost/qr-images/add/1');
-        $this->assertRedirectEquals('/?redirect=%2Fqr-images%2Fadd%2F1');
+        $this->assertRedirectEquals('https://localhost/?redirect=%2Fqr-images%2Fadd%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -233,7 +233,7 @@ class ViewTest extends BaseControllerTest
         // test with reqular, get
         $this->loginUserRegular();
         $this->get('https://localhost/qr-images/edit/1');
-        $this->assertRedirectEquals('/?redirect=%2Fqr-images%2Fedit%2F1');
+        $this->assertRedirectEquals('https://localhost/?redirect=%2Fqr-images%2Fedit%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -242,7 +242,7 @@ class ViewTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('https://localhost/qr-images/edit/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutForm();
+        $this->helperTestLayoutPagesForm();
     }
 
     /**
@@ -257,7 +257,7 @@ class ViewTest extends BaseControllerTest
         $this->requestAsAjax();
         $this->loginUserRegular();
         $this->get('https://localhost/qr-images/edit/2');
-        $this->assertRedirectEquals('/?redirect=%2Fqr-images%2Fedit%2F2');
+        $this->assertRedirectEquals('https://localhost/?redirect=%2Fqr-images%2Fedit%2F2');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');

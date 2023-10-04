@@ -159,7 +159,7 @@ class PolicyTest extends BaseControllerTest
         // test with reqular, get
         $this->loginUserRegular();
         $this->get('https://localhost/sources/add');
-        $this->assertRedirectEquals('/?redirect=%2Fsources%2Fadd');
+        $this->assertRedirectEquals('https://localhost/?redirect=%2Fsources%2Fadd');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -207,7 +207,7 @@ class PolicyTest extends BaseControllerTest
         // test with reqular, get
         $this->loginUserRegular();
         $this->get('https://localhost/sources/edit/1');
-        $this->assertRedirectEquals('/?redirect=%2Fsources%2Fedit%2F1');
+        $this->assertRedirectEquals('https://localhost/?redirect=%2Fsources%2Fedit%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -250,7 +250,7 @@ class PolicyTest extends BaseControllerTest
         // test get with reqular, get
         $this->loginUserRegular();
         $this->get('https://localhost/sources/delete/1');
-        $this->assertRedirectEquals('/?redirect=%2Fsources%2Fdelete%2F1');
+        $this->assertRedirectEquals('https://localhost/?redirect=%2Fsources%2Fdelete%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -258,7 +258,7 @@ class PolicyTest extends BaseControllerTest
         // test post with regular, post
         $this->loginUserRegular();
         $this->post('https://localhost/sources/delete/1');
-        $this->assertRedirectEquals('/sources');
+        $this->assertRedirectEquals('https://localhost/sources');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -266,7 +266,7 @@ class PolicyTest extends BaseControllerTest
         // test delete with regular user
         $this->loginUserRegular();
         $this->delete('https://localhost/sources/delete/1');
-        $this->assertRedirectEquals('/sources');
+        $this->assertRedirectEquals('https://localhost/sources');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');

@@ -5,11 +5,12 @@
  * @var \App\View\AppView $this
  */
 
-$this->extend('default');
+ $this->extend('base');
 
-$this->start('page_content');
+ $this->start('layout');
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
+<?= $this->element('nav/top'); ?>
 <section class="py-15 py-xl-20 pages-generic">
     <div class="container mt-5">
         <div class="row align-items-center justify-content-between">
@@ -18,5 +19,6 @@ $this->start('page_content');
         </div>
     </div>
 </section>
+<?= $this->element('nav/footer'); ?>
 <?= $this->Template->templateComment(false, __FILE__); ?>
-<?php $this->end() // page_content ?>
+<?php $this->end() // layout ?>

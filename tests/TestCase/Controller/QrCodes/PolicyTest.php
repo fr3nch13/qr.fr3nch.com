@@ -211,7 +211,7 @@ class PolicyTest extends BaseControllerTest
         // test with reqular, get
         $this->loginUserRegular();
         $this->get('https://localhost/qr-codes/edit/1');
-        $this->assertRedirectEquals('/?redirect=%2Fqr-codes%2Fedit%2F1');
+        $this->assertRedirectEquals('https://localhost/?redirect=%2Fqr-codes%2Fedit%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -262,7 +262,7 @@ class PolicyTest extends BaseControllerTest
         // test delete with regular user
         $this->loginUserRegular();
         $this->delete('https://localhost/qr-codes/delete/1');
-        $this->assertRedirectEquals('/qr-codes');
+        $this->assertRedirectEquals('https://localhost/qr-codes');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -276,7 +276,7 @@ class PolicyTest extends BaseControllerTest
         // test with admin, post no data, no CSRF
         $this->loginUserAdmin();
         $this->delete('https://localhost/qr-codes/delete/1');
-        $this->assertRedirectEquals('/qr-codes');
+        $this->assertRedirectEquals('https://localhost/qr-codes');
         $this->assertFlashMessage('The qr code `Sow & Scribe` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
     }

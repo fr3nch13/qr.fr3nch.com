@@ -65,7 +65,7 @@ class FormsTest extends BaseControllerTest
             'source_id' => 1,
             'user_id' => 1,
         ]);
-        $this->assertRedirectEquals('/qr-images/qr-code/1');
+        $this->assertRedirectEquals('https://localhost/qr-images/qr-code/1');
         $this->assertFlashMessage('The image has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
@@ -109,7 +109,7 @@ class FormsTest extends BaseControllerTest
             'name' => 'New Category',
             'description' => 'The Description',
         ]);
-        $this->assertRedirectEquals('/qr-images/qr-code/1');
+        $this->assertRedirectEquals('https://localhost/qr-images/qr-code/1');
         $this->assertFlashMessage('The image has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }

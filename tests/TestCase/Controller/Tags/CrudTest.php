@@ -137,7 +137,7 @@ class CrudTest extends BaseControllerTest
         $this->post('https://localhost/tags/add', [
             'name' => 'New Tag',
         ]);
-        $this->assertRedirectEquals('/tags');
+        $this->assertRedirectEquals('https://localhost/tags');
         $this->assertFlashMessage('The tag has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
@@ -193,7 +193,7 @@ class CrudTest extends BaseControllerTest
         $this->patch('https://localhost/tags/edit/1', [
             'name' => 'Updated Tag',
         ]);
-        $this->assertRedirectEquals('/tags');
+        $this->assertRedirectEquals('https://localhost/tags');
         $this->assertFlashMessage('The tag has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
@@ -248,6 +248,6 @@ class CrudTest extends BaseControllerTest
         $this->delete('https://localhost/tags/delete/1');
         $this->assertFlashMessage('The tag `Notebook` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
-        $this->assertRedirectEquals('/tags');
+        $this->assertRedirectEquals('https://localhost/tags');
     }
 }

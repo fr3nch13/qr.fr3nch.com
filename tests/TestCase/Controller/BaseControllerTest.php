@@ -162,11 +162,27 @@ class BaseControllerTest extends TestCase
     }
 
     /**
+     * Tests that we're using the pages/generic layout.
+     * Mainly used by the PagesController's templates.
+     *
+     * @return void
+     */
+    public function helperTestLayoutPagesGeneric(): void
+    {
+        $this->helperTestLayoutBase();
+        $content = (string)$this->_response->getBody();
+        $this->assertSame(1, substr_count($content, '<!-- START: App.layout/pages/generic -->'));
+        $this->assertSame(1, substr_count($content, '<!-- END: App.layout/pages/generic -->'));
+
+        // test other specific to this layout.
+    }
+
+    /**
      * Tests that we're using the pages/index layout
      *
      * @return void
      */
-    public function helperTestLayoutIndex(): void
+    public function helperTestLayoutPagesIndex(): void
     {
         $this->helperTestLayoutBase();
         $content = (string)$this->_response->getBody();
@@ -181,7 +197,7 @@ class BaseControllerTest extends TestCase
      *
      * @return void
      */
-    public function helperTestLayoutView(): void
+    public function helperTestLayoutPagesView(): void
     {
         $this->helperTestLayoutBase();
         $content = (string)$this->_response->getBody();
@@ -196,7 +212,7 @@ class BaseControllerTest extends TestCase
      *
      * @return void
      */
-    public function helperTestLayoutForm(): void
+    public function helperTestLayoutPagesForm(): void
     {
         $this->helperTestLayoutBase();
         $content = (string)$this->_response->getBody();

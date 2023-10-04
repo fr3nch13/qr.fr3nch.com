@@ -120,7 +120,7 @@ class CrudTest extends BaseControllerTest
             'name' => 'New QrImage',
             'qr_code_id' => 1,
         ]);
-        $this->assertRedirectEquals('/qr-images/qr-code/1');
+        $this->assertRedirectEquals('https://localhost/qr-images/qr-code/1');
         $this->assertFlashMessage('The image has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
@@ -172,7 +172,7 @@ class CrudTest extends BaseControllerTest
         $this->patch('https://localhost/qr-images/edit/2', [
             'name' => 'Edited QrImage',
         ]);
-        $this->assertRedirectEquals('/qr-images/qr-code/1');
+        $this->assertRedirectEquals('https://localhost/qr-images/qr-code/1');
         $this->assertFlashMessage('The image has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
@@ -219,7 +219,7 @@ class CrudTest extends BaseControllerTest
 
         // delete
         $this->delete('https://localhost/qr-images/delete/1');
-        $this->assertRedirectEquals('/qr-images/qr-code/1');
+        $this->assertRedirectEquals('https://localhost/qr-images/qr-code/1');
         $this->assertFlashMessage('The image `Front Cover` for `Sow & Scribe` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
     }

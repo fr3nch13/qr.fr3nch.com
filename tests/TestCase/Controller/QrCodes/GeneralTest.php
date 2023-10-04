@@ -50,12 +50,12 @@ class GeneralTest extends BaseControllerTest
         $this->assertRedirectEquals('f/dontexist');
 
         $this->get('https://localhost/f/dontexist');
-        $this->assertRedirectEquals('/');
+        $this->assertRedirectEquals('https://localhost/');
         $this->assertFlashMessage('A QR Code with the key: `dontexist` could not be found.', 'flash');
         $this->assertFlashElement('flash/error');
 
         $this->get('https://localhost/f/');
-        $this->assertRedirectEquals('/');
+        $this->assertRedirectEquals('https://localhost/');
     }
 
     /**

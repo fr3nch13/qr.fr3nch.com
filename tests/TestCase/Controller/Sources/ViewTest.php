@@ -46,7 +46,7 @@ class ViewTest extends BaseControllerTest
         $this->loginUserRegular();
         $this->get('https://localhost/sources');
         $this->assertResponseOk();
-        $this->helperTestLayoutIndex();
+        $this->helperTestLayoutPagesIndex();
         $this->assertResponseContains('<div class="sources index content">');
         $this->assertResponseContains('<h3>Sources</h3>');
 
@@ -54,7 +54,7 @@ class ViewTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('https://localhost/sources');
         $this->assertResponseOk();
-        $this->helperTestLayoutIndex();
+        $this->helperTestLayoutPagesIndex();
     }
 
     /**
@@ -103,13 +103,13 @@ class ViewTest extends BaseControllerTest
         $this->loginUserRegular();
         $this->get('https://localhost/sources/view/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutView();
+        $this->helperTestLayoutPagesView();
 
         // test with admin
         $this->loginUserAdmin();
         $this->get('https://localhost/sources/view/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutView();
+        $this->helperTestLayoutPagesView();
     }
 
     /**
@@ -151,7 +151,7 @@ class ViewTest extends BaseControllerTest
         // test with reqular, get
         $this->loginUserRegular();
         $this->get('https://localhost/sources/add');
-        $this->assertRedirectEquals('/?redirect=%2Fsources%2Fadd');
+        $this->assertRedirectEquals('https://localhost/?redirect=%2Fsources%2Fadd');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -160,7 +160,7 @@ class ViewTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('https://localhost/sources/add');
         $this->assertResponseOk();
-        $this->helperTestLayoutForm();
+        $this->helperTestLayoutPagesForm();
     }
 
     /**
@@ -175,7 +175,7 @@ class ViewTest extends BaseControllerTest
         $this->requestAsAjax();
         $this->loginUserRegular();
         $this->get('https://localhost/sources/add');
-        $this->assertRedirectEquals('/?redirect=%2Fsources%2Fadd');
+        $this->assertRedirectEquals('https://localhost/?redirect=%2Fsources%2Fadd');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -199,7 +199,7 @@ class ViewTest extends BaseControllerTest
         // test with reqular, get
         $this->loginUserRegular();
         $this->get('https://localhost/sources/edit/1');
-        $this->assertRedirectEquals('/?redirect=%2Fsources%2Fedit%2F1');
+        $this->assertRedirectEquals('https://localhost/?redirect=%2Fsources%2Fedit%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -208,7 +208,7 @@ class ViewTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('https://localhost/sources/edit/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutForm();
+        $this->helperTestLayoutPagesForm();
     }
 
     /**
@@ -223,7 +223,7 @@ class ViewTest extends BaseControllerTest
         $this->requestAsAjax();
         $this->loginUserRegular();
         $this->get('https://localhost/sources/edit/1');
-        $this->assertRedirectEquals('/?redirect=%2Fsources%2Fedit%2F1');
+        $this->assertRedirectEquals('https://localhost/?redirect=%2Fsources%2Fedit%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');

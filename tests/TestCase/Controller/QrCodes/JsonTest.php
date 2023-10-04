@@ -154,7 +154,7 @@ class JsonTest extends BaseControllerTest
             'url' => 'https://amazon.com/path/to/forward',
             'source_id' => 1,
         ]);
-                $this->assertRedirectEquals('/');
+                $this->assertRedirectEquals('https://localhost/');
         $this->assertFlashMessage('The qr code has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -221,7 +221,7 @@ class JsonTest extends BaseControllerTest
             'url' => 'https://amazon.com/path/to/forward',
             'source_id' => 1,
         ]);
-                $this->assertRedirectEquals('/');
+                $this->assertRedirectEquals('https://localhost/');
         $this->assertFlashMessage('The qr code has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }

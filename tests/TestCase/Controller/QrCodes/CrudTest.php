@@ -124,7 +124,7 @@ class CrudTest extends BaseControllerTest
             'source_id' => 1,
             'user_id' => 1,
         ]);
-        $this->assertRedirectEquals('/qr-codes/view/4');
+        $this->assertRedirectEquals('https://localhost/qr-codes/view/4');
         $this->assertFlashMessage('The qr code has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
@@ -184,7 +184,7 @@ class CrudTest extends BaseControllerTest
         $this->patch('https://localhost/qr-codes/edit/1', [
             'name' => 'Edited QrCode',
         ]);
-        $this->assertRedirectEquals('/qr-codes/view/1');
+        $this->assertRedirectEquals('https://localhost/qr-codes/view/1');
         $this->assertFlashMessage('The qr code has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
@@ -231,7 +231,7 @@ class CrudTest extends BaseControllerTest
 
         // delete
         $this->delete('https://localhost/qr-codes/delete/1');
-        $this->assertRedirectEquals('/qr-codes');
+        $this->assertRedirectEquals('https://localhost/qr-codes');
         $this->assertFlashMessage('The qr code `Sow & Scribe` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
     }

@@ -72,9 +72,9 @@ class PagesControllerTest extends BaseControllerTest
         $this->get('https://localhost/pages/about/staff');
 
         $this->assertResponseOk();
-        $this->assertResponseContains('Staff');
-        $this->assertResponseContains('<html lang="en">');
-        $this->assertResponseContains('<h1>About: Staff</h1>');
+        $this->helperTestLayoutPagesGeneric();
+        $this->assertResponseContains('<!-- START: App.Pages/about/staff -->');
+        $this->assertResponseContains('<!-- END: App.Pages/about/staff -->');
     }
 
     /**
@@ -82,13 +82,13 @@ class PagesControllerTest extends BaseControllerTest
      *
      * @return void
      */
-    public function testDisplaySDirectly()
+    public function testDisplayDirectly()
     {
         Configure::write('debug', true);
 
         $this->get('https://localhost/pages');
 
-        $this->assertRedirectEquals('/');
+        $this->assertRedirectEquals('https://localhost/');
     }
 
     /**
@@ -118,14 +118,8 @@ class PagesControllerTest extends BaseControllerTest
         Configure::write('debug', false);
 
         $this->get('https://localhost/pages/not_existing');
-
         $this->assertResponseCode(404);
-        $this->assertResponseContains('<h2>Not Found</h2>');
-        $this->assertResponseContains('The requested address <strong>\'/pages/not_existing\'</strong> was not found on this server.');
-        $this->assertResponseContains('<!-- START: App.layout/error -->');
-        $this->assertResponseContains('<!-- START: App.Error/error400 -->');
-        $this->assertResponseContains('<!-- END: App.Error/error400 -->');
-        $this->assertResponseContains('<!-- END: App.layout/error -->');
+        $this->helperTestError400('/pages/not_existing');
     }
 
     /**

@@ -239,7 +239,7 @@ class CrudTest extends BaseControllerTest
             'email' => 'newuser@example.com',
             'password' => 'password',
         ]);
-        $this->assertRedirectEquals('/users');
+        $this->assertRedirectEquals('https://localhost/users');
         $this->assertFlashMessage('The user has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
@@ -295,7 +295,7 @@ class CrudTest extends BaseControllerTest
         $this->patch('https://localhost/users/edit/3', [
             'name' => 'Updated User',
         ]);
-        $this->assertRedirectEquals('/users');
+        $this->assertRedirectEquals('https://localhost/users');
         $this->assertFlashMessage('The user has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
@@ -346,6 +346,6 @@ class CrudTest extends BaseControllerTest
         $this->delete('https://localhost/users/delete/3');
         $this->assertFlashMessage('The user `Delete Me` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
-        $this->assertRedirectEquals('/users');
+        $this->assertRedirectEquals('https://localhost/users');
     }
 }

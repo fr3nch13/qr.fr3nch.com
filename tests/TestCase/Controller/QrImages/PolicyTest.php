@@ -105,7 +105,7 @@ class PolicyTest extends BaseControllerTest
         //$this->assertFlashElement('flash/error');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Error: Missing Method in QrImagesController');
-        $this->assertRedirectEquals('/users/login?redirect=%2Fqr-images');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fqr-images');
         Configure::write('debug', true);
 
     }
@@ -129,7 +129,7 @@ class PolicyTest extends BaseControllerTest
         // test with reqular
         $this->loginUserRegular();
         $this->get('https://localhost/qr-images/qr-code/1');
-        $this->assertRedirectEquals('/?redirect=%2Fqr-images%2Fqr-code%2F1');
+        $this->assertRedirectEquals('https://localhost/?redirect=%2Fqr-images%2Fqr-code%2F1');
         // TODO: Add a flash message when a policy check fails like this.
         // labels: policy, flash
         //$this->assertFlashMessage('You are not authorized to access that location', 'flash');
@@ -281,7 +281,7 @@ class PolicyTest extends BaseControllerTest
         // test with reqular, get
         $this->loginUserRegular();
         $this->get('https://localhost/qr-images/edit/2');
-        $this->assertRedirectEquals('/?redirect=%2Fqr-images%2Fedit%2F1');
+        $this->assertRedirectEquals('https://localhost/?redirect=%2Fqr-images%2Fedit%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -336,7 +336,7 @@ class PolicyTest extends BaseControllerTest
         // test delete with regular user
         $this->loginUserRegular();
         $this->delete('https://localhost/qr-images/delete/2');
-        $this->assertRedirectEquals('/qr-images/qr-code/1');
+        $this->assertRedirectEquals('https://localhost/qr-images/qr-code/1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -350,7 +350,7 @@ class PolicyTest extends BaseControllerTest
         // test with admin, post no data, no CSRF
         $this->loginUserAdmin();
         $this->delete('https://localhost/qr-images/delete/2');
-        $this->assertRedirectEquals('/qr-images/qr-code/1');
+        $this->assertRedirectEquals('https://localhost/qr-images/qr-code/1');
         $this->assertFlashMessage('The image `Front Cover` for `Sow & Scribe` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
     }

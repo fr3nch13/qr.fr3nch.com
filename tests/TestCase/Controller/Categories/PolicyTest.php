@@ -178,7 +178,7 @@ class PolicyTest extends BaseControllerTest
         // not logged in
         $this->loginGuest();
         $this->get('https://localhost/categories/add');
-        $this->assertRedirectEquals('/users/login?redirect=%2Fcategories%2Fadd');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fcategories%2Fadd');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -186,7 +186,7 @@ class PolicyTest extends BaseControllerTest
         // test with reqular
         $this->loginUserRegular();
         $this->get('https://localhost/categories/add');
-        $this->assertRedirectEquals('/?redirect=%2Fcategories%2Fadd');
+        $this->assertRedirectEquals('https://localhost/?redirect=%2Fcategories%2Fadd');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -220,7 +220,7 @@ class PolicyTest extends BaseControllerTest
         // not logged
         $this->loginGuest();
         $this->get('https://localhost/categories/edit/1');
-        $this->assertRedirectEquals('/users/login?redirect=%2Fcategories%2Fedit%2F1');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fcategories%2Fedit%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -228,7 +228,7 @@ class PolicyTest extends BaseControllerTest
         // test with reqular
         $this->loginUserRegular();
         $this->get('https://localhost/categories/edit/1');
-        $this->assertRedirectEquals('/?redirect=%2Fcategories%2Fedit%2F1');
+        $this->assertRedirectEquals('https://localhost/?redirect=%2Fcategories%2Fedit%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -284,7 +284,7 @@ class PolicyTest extends BaseControllerTest
         // not logged
         $this->loginGuest();
         $this->delete('https://localhost/categories/delete/3');
-        $this->assertRedirectEquals('/users/login');
+        $this->assertRedirectEquals('https://localhost/users/login');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -292,7 +292,7 @@ class PolicyTest extends BaseControllerTest
         // test with reqular
         $this->loginUserRegular();
         $this->delete('https://localhost/categories/delete/3');
-        $this->assertRedirectEquals('/');
+        $this->assertRedirectEquals('https://localhost/');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');

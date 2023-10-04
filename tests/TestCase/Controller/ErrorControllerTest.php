@@ -37,6 +37,5 @@ class ErrorControllerTest extends BaseControllerTest
         $this->get('https://localhost/dontexist');
         $this->assertResponseCode(404);
         $this->helperTestError400('/dontexist');
-        //print_r((string)$this->_response->getBody());
     }
 }

@@ -81,17 +81,17 @@ class PolicyTest extends BaseControllerTest
         // test with admin
         $this->loginUserAdmin();
         $this->get('https://localhost/users/login');
-        $this->assertRedirectEquals('/');
+        $this->assertRedirectEquals('https://localhost/');
 
         // test with reqular
         $this->loginUserRegular();
         $this->get('https://localhost/users/login');
-        $this->assertRedirectEquals('/');
+        $this->assertRedirectEquals('https://localhost/');
 
         // just test redirect
         $this->loginUserRegular();
         $this->get('https://localhost/users/login?redirect=%2Fcategories');
-        $this->assertRedirectEquals('/categories');
+        $this->assertRedirectEquals('https://localhost/categories');
     }
 
     /**
@@ -140,7 +140,7 @@ class PolicyTest extends BaseControllerTest
     {
         // not logged in
         $this->get('https://localhost/users');
-        $this->assertRedirectEquals('/users/login?redirect=%2Fusers');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fusers');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -155,7 +155,7 @@ class PolicyTest extends BaseControllerTest
         // test with reqular, should not allow a regular user to the list
         $this->loginUserRegular();
         $this->get('https://localhost/users');
-        $this->assertRedirectEquals('/?redirect=%2Fusers');
+        $this->assertRedirectEquals('https://localhost/?redirect=%2Fusers');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -171,7 +171,7 @@ class PolicyTest extends BaseControllerTest
     {
         // not logged in
         $this->get('https://localhost/users/view/3');
-        $this->assertRedirectEquals('/users/login?redirect=%2Fusers%2Fview%2F3');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fusers%2Fview%2F3');
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
         // TODO: add a flash message for unauthenticated requests.
@@ -194,7 +194,7 @@ class PolicyTest extends BaseControllerTest
         // regular user trying to view another user private profile
         $this->loginUserRegular();
         $this->get('https://localhost/users/view/3');
-        $this->assertRedirectEquals('/?redirect=%2Fusers%2Fview%2F3');
+        $this->assertRedirectEquals('https://localhost/?redirect=%2Fusers%2Fview%2F3');
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
@@ -281,7 +281,7 @@ class PolicyTest extends BaseControllerTest
     {
         // not logged in, so should redirect
         $this->get('https://localhost/users/add');
-        $this->assertRedirectEquals('/users/login?redirect=%2Fusers%2Fadd');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fusers%2Fadd');
 
         // test with admin, get
         $this->loginUserAdmin();
@@ -294,7 +294,7 @@ class PolicyTest extends BaseControllerTest
         // test with reqular, get
         $this->loginUserRegular();
         $this->get('https://localhost/users/add');
-        $this->assertRedirectEquals('/?redirect=%2Fusers');
+        $this->assertRedirectEquals('https://localhost/?redirect=%2Fusers');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -310,7 +310,7 @@ class PolicyTest extends BaseControllerTest
     {
         // not logged in, so should redirect
         $this->get('https://localhost/users/edit');
-        $this->assertRedirectEquals('/users/login?redirect=%2Fusers%2Fedit');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fusers%2Fedit');
 
         // test with missing id and debug
         $this->loginUserAdmin();
@@ -341,7 +341,7 @@ class PolicyTest extends BaseControllerTest
         // test with reqular, get
         $this->loginUserRegular();
         $this->get('https://localhost/users/edit/3');
-        $this->assertRedirectEquals('/?redirect=%2Fusers');
+        $this->assertRedirectEquals('https://localhost/?redirect=%2Fusers');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -384,7 +384,7 @@ class PolicyTest extends BaseControllerTest
         // test get with reqular, get
         $this->loginUserRegular();
         $this->get('https://localhost/users/delete/3');
-        $this->assertRedirectEquals('/?redirect=%2Fusers');
+        $this->assertRedirectEquals('https://localhost/?redirect=%2Fusers');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -392,7 +392,7 @@ class PolicyTest extends BaseControllerTest
         // test post with regular, post
         $this->loginUserRegular();
         $this->post('https://localhost/users/delete/3');
-        $this->assertRedirectEquals('/');
+        $this->assertRedirectEquals('https://localhost/');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -400,7 +400,7 @@ class PolicyTest extends BaseControllerTest
         // test delete with regular user
         $this->loginUserRegular();
         $this->delete('https://localhost/users/delete/3');
-        $this->assertRedirectEquals('/');
+        $this->assertRedirectEquals('https://localhost/');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -414,7 +414,7 @@ class PolicyTest extends BaseControllerTest
         // test with admin, post no data, no CSRF
         $this->loginUserAdmin();
         $this->delete('https://localhost/users/delete/3');
-        $this->assertRedirectEquals('/users');
+        $this->assertRedirectEquals('https://localhost/users');
         $this->assertFlashMessage('The user `Delete Me` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
     }
