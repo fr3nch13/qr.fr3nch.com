@@ -52,11 +52,8 @@ class QrImagesController extends AppController
         $qrImage = $this->QrImages->get((int)$id);
         $this->Authorization->authorize($qrImage);
 
-        $filePath = $this->QrImages->getFilePath((int)$id);
-        $response = $this->response->withFile($filePath);
-        // Return the response to prevent controller from trying to render
-        // a view.
-        //return $response;
+        $response = $this->response->withFile($qrImage->path);
+        return $response;
     }
 
     /**
@@ -92,7 +89,6 @@ class QrImagesController extends AppController
         $this->request->allowMethod(['get', 'post']);
 
         $qrCode = $this->QrImages->QrCodes->get((int)$id);
-        debug($qrCode);
         $this->Authorization->authorize($qrCode);
 
         $qrImage = $this->QrImages->newEmptyEntity();
@@ -129,9 +125,13 @@ class QrImagesController extends AppController
 
         $qrImage = $this->QrImages->get((int)$id, contain: ['QrCodes']);
         $this->Authorization->authorize($qrImage);
+        // ensure this isn't getting changed.
+        $qr_code_id = $qrImage->qr_code->id;
 
         if ($this->request->is('patch')) {
             $qrImage = $this->QrImages->patchEntity($qrImage, $this->request->getData());
+            // enforced here.
+            $qrImage->qr_code_id = $qr_code_id;
             if ($this->QrImages->save($qrImage)) {
                 $this->Flash->success(__('The image has been saved.'));
 
@@ -157,7 +157,7 @@ class QrImagesController extends AppController
     {
         $this->request->allowMethod(['delete']);
 
-        $qrImage = $this->QrImages->get((int)$id);
+        $qrImage = $this->QrImages->get((int)$id, contain: ['QrCodes']);
         $this->Authorization->authorize($qrImage);
 
         if ($this->QrImages->delete($qrImage)) {

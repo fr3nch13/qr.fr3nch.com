@@ -88,8 +88,6 @@ class QrCodesController extends AppController
         $this->Authorization->authorize($qrCode);
 
         $response = $this->response->withFile($qrCode->path);
-        // Return the response to prevent controller from trying to render
-        // a view.
         return $response;
     }
 
@@ -130,7 +128,7 @@ class QrCodesController extends AppController
     {
         $this->request->allowMethod(['get']);
 
-        $qrCode = $this->QrCodes->get((int)$id, contain: ['Sources', 'Users', 'Categories', 'Tags']);
+        $qrCode = $this->QrCodes->get((int)$id, contain: ['Sources', 'Users', 'Categories', 'Tags', 'QrImages']);
         $this->Authorization->authorize($qrCode);
 
         $this->set(compact('qrCode'));
