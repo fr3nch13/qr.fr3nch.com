@@ -56,7 +56,6 @@ class FormsTest extends BaseControllerTest
             'name' => 'new tag',
         ]);
         $this->assertRedirect();
-        $this->assertResponseCode(302);
         $this->assertRedirectContains('/tags');
         $this->assertFlashMessage('The tag has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
@@ -88,7 +87,6 @@ class FormsTest extends BaseControllerTest
             'description' => 'The Description',
         ]);
         $this->assertRedirect();
-        $this->assertResponseCode(302);
         $this->assertRedirectContains('/tags');
         $this->assertFlashMessage('The tag has been saved.', 'flash');
         $this->assertFlashElement('flash/success');

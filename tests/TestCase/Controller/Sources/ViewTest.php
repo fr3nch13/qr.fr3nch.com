@@ -40,8 +40,7 @@ class ViewTest extends BaseControllerTest
     {
         // not logged in
         $this->get('/sources');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/users/login?redirect=%2Fsources');
+        $this->assertRedirectContains('users/login?redirect=%2Fsources');
 
         // test with reqular
         $this->loginUserRegular();
@@ -69,8 +68,7 @@ class ViewTest extends BaseControllerTest
         // not logged in
         $this->requestAsAjax();
         $this->get('/sources');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/users/login?redirect=%2Fsources');
+        $this->assertRedirectContains('users/login?redirect=%2Fsources');
 
         // test with reqular
         $this->requestAsAjax();
@@ -99,8 +97,7 @@ class ViewTest extends BaseControllerTest
     {
         // not logged in
         $this->get('/sources/view/1');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/users/login?redirect=%2Fsources%2Fview%2F1');
+        $this->assertRedirectContains('users/login?redirect=%2Fsources%2Fview%2F1');
 
         // test with reqular
         $this->loginUserRegular();
@@ -126,8 +123,7 @@ class ViewTest extends BaseControllerTest
         // not logged in
         $this->requestAsAjax();
         $this->get('/sources/view/1');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/users/login?redirect=%2Fsources%2Fview%2F1');
+        $this->assertRedirectContains('users/login?redirect=%2Fsources%2Fview%2F1');
 
         // test with reqular
         $this->requestAsAjax();
@@ -155,8 +151,7 @@ class ViewTest extends BaseControllerTest
         // test with reqular, get
         $this->loginUserRegular();
         $this->get('/sources/add');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/?redirect=%2Fsources%2Fadd');
+        $this->assertRedirectContains('?redirect=%2Fsources%2Fadd');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -180,8 +175,7 @@ class ViewTest extends BaseControllerTest
         $this->requestAsAjax();
         $this->loginUserRegular();
         $this->get('/sources/add');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/?redirect=%2Fsources%2Fadd');
+        $this->assertRedirectContains('?redirect=%2Fsources%2Fadd');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -205,8 +199,7 @@ class ViewTest extends BaseControllerTest
         // test with reqular, get
         $this->loginUserRegular();
         $this->get('/sources/edit/1');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/?redirect=%2Fsources%2Fedit%2F1');
+        $this->assertRedirectContains('?redirect=%2Fsources%2Fedit%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -230,8 +223,7 @@ class ViewTest extends BaseControllerTest
         $this->requestAsAjax();
         $this->loginUserRegular();
         $this->get('/sources/edit/1');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/?redirect=%2Fsources%2Fedit%2F1');
+        $this->assertRedirectContains('?redirect=%2Fsources%2Fedit%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');

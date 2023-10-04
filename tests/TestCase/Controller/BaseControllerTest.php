@@ -21,6 +21,7 @@ class BaseControllerTest extends TestCase
         'app.Sources',
         'app.Categories',
         'app.QrCodes',
+        'app.QrImages',
         'app.CategoriesQrCodes',
         'app.Tags',
         'app.QrCodesTags',

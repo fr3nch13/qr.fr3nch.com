@@ -38,6 +38,18 @@ class QrCodePolicy
     }
 
     /**
+     * Check if $user can view the list of images for a qrcode.
+     *
+     * @param \App\Model\Entity\User $identity The identity object.
+     * @param \App\Model\Entity\QrCode $QrCode
+     * @return bool
+     */
+    public function canQrCode(User $identity, QrCode $QrCode): bool
+    {
+        return $this->isCreator($identity, $QrCode) || $identity->isAdmin();
+    }
+
+    /**
      * Check if $user can edit QrCode
      *
      * @param \App\Model\Entity\User $identity The identity object.

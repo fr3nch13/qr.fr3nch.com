@@ -9,7 +9,7 @@ use App\Model\Entity\User;
 /**
  * Sources Controller policy
  */
-class SourcesControllerPolicy
+class SourcesControllerPolicy extends BaseControllerPolicy
 {
     /**
      * Must be logged in to view a list of sources.

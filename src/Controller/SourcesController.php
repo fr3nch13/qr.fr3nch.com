@@ -18,10 +18,6 @@ class SourcesController extends AppController
      */
     public function beforeFilter(EventInterface $event): void
     {
-        parent::beforeFilter($event);
-
-        $this->Authorization->authorize($this);
-
         // make sure we have an ID where needed.
         $action = $this->request->getParam('action');
         // admin actions
@@ -32,6 +28,8 @@ class SourcesController extends AppController
                 throw new NotFoundException('Unknown ID');
             }
         }
+
+        parent::beforeFilter($event);
     }
 
     /**

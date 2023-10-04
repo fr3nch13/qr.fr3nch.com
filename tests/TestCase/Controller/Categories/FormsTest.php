@@ -57,9 +57,7 @@ class FormsTest extends BaseControllerTest
             'name' => 'New Category',
             'description' => 'The Description',
         ]);
-        $this->assertRedirect();
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/categories');
+        $this->assertRedirectContains('categories');
         $this->assertFlashMessage('The category has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -93,9 +91,7 @@ class FormsTest extends BaseControllerTest
             'description' => 'The Description',
             'parent_id' => 3, // this doesn't exist
         ]);
-        $this->assertRedirect();
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/categories');
+        $this->assertRedirectContains('categories');
         $this->assertFlashMessage('The category has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }

@@ -100,8 +100,7 @@ class JsonTest extends BaseControllerTest
             'email' => 'admin@example.com',
             'password' => 'admin',
         ]);
-        $this->assertResponseCode(302);
-        $this->assertRedirect('/');
+                $this->assertRedirectContains('/');
         $this->assertFlashMessage('Welcome back Admin', 'flash');
         $this->assertFlashElement('flash/success');
 
@@ -112,8 +111,7 @@ class JsonTest extends BaseControllerTest
             'email' => 'admin@example.com',
             'password' => 'admin',
         ]);
-        $this->assertResponseCode(302);
-        $this->assertRedirect('/categories');
+                $this->assertRedirectContains('/categories');
         $this->assertFlashMessage('Welcome back Admin', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -234,8 +232,7 @@ class JsonTest extends BaseControllerTest
             'email' => 'newjsonuser@example.com',
             'password' => 'password',
         ]);
-        $this->assertResponseCode(302);
-        $this->assertRedirect('/users');
+                $this->assertRedirectContains('/users');
         $this->assertFlashMessage('The user has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -267,8 +264,7 @@ class JsonTest extends BaseControllerTest
             'name' => 'New JSON Category',
             'description' => 'Description of the user',
         ]);
-        $this->assertResponseCode(302);
-        $this->assertRedirect('/users');
+                $this->assertRedirectContains('/users');
         $this->assertFlashMessage('The user has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }

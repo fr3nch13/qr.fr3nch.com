@@ -10,6 +10,7 @@ use App\Model\Entity\User;
 use App\View\AjaxView;
 use App\View\AppView;
 use Cake\Controller\Controller;
+use Cake\Event\EventInterface;
 use Cake\View\JsonView;
 
 /**
@@ -62,6 +63,7 @@ class AppController extends Controller
          *  @link https://book.cakephp.org/5/en/tutorials-and-examples/cms/authorization.html
          */
         $this->loadComponent('Authorization.Authorization');
+        // by default, skip authorization, then check on a
 
         $viewClass = AppView::class;
 
@@ -74,6 +76,13 @@ class AppController extends Controller
         }
 
         $this->viewBuilder()->setClassName($viewClass);
+    }
+    /**
+     * Runs before the code in the actions
+     */
+    public function beforeFilter(EventInterface $event): void
+    {
+        $this->Authorization->authorize($this);
     }
 
     /**

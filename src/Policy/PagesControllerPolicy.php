@@ -9,7 +9,7 @@ use App\Model\Entity\User;
 /**
  * Pages Controller policy
  */
-class PagesControllerPolicy
+class PagesControllerPolicy extends BaseControllerPolicy
 {
     /**
      * Anyone can view pages.

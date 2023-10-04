@@ -5,11 +5,12 @@ namespace App\Policy;
 
 use App\Controller\CategoriesController;
 use App\Model\Entity\User;
+use Authorization\IdentityInterface;
 
 /**
  * Categories Controller policy
  */
-class CategoriesControllerPolicy
+class CategoriesControllerPolicy extends BaseControllerPolicy
 {
     /**
      * Anyone can view a list of categories.

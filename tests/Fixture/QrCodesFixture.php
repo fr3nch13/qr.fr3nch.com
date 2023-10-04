@@ -55,7 +55,7 @@ class QrCodesFixture extends CoreFixture
                 'created' => new DateTime(),
                 'url' => 'https://www.etsy.com/listing/1539113524/american-flag-3d-printed',
                 'source_id' => 2,
-                'user_id' => 1,
+                'user_id' => 2,
             ],
         ];
         parent::init();

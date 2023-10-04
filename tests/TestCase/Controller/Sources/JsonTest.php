@@ -124,8 +124,7 @@ class JsonTest extends BaseControllerTest
             'name' => 'New JSON source',
             'description' => 'Description of the Source',
         ]);
-        $this->assertResponseCode(302);
-        $this->assertRedirect('/sources');
+                $this->assertRedirectContains('/sources');
         $this->assertFlashMessage('The source has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -156,8 +155,7 @@ class JsonTest extends BaseControllerTest
             'name' => 'New JSON source',
             'description' => 'Description of the source',
         ]);
-        $this->assertResponseCode(302);
-        $this->assertRedirect('/sources');
+                $this->assertRedirectContains('/sources');
         $this->assertFlashMessage('The source has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }

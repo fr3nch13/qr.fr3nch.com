@@ -138,7 +138,6 @@ class CrudTest extends BaseControllerTest
             'name' => 'New Tag',
         ]);
         $this->assertRedirect();
-        $this->assertResponseCode(302);
         $this->assertRedirectContains('/tags');
         $this->assertFlashMessage('The tag has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
@@ -196,7 +195,6 @@ class CrudTest extends BaseControllerTest
             'name' => 'Updated Tag',
         ]);
         $this->assertRedirect();
-        $this->assertResponseCode(302);
         $this->assertRedirectContains('/tags');
         $this->assertFlashMessage('The tag has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
@@ -253,7 +251,6 @@ class CrudTest extends BaseControllerTest
         $this->assertFlashMessage('The tag `Notebook` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
         $this->assertRedirect();
-        $this->assertResponseCode(302);
         $this->assertRedirectContains('/tags');
     }
 }

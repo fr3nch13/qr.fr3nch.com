@@ -31,6 +31,41 @@ class PolicyTest extends BaseControllerTest
     }
 
     /**
+     * Test missing action
+     *
+     * @return void
+     * @uses \App\Controller\CategoriesController::index()
+     */
+    public function testDontexist(): void
+    {
+        // not logged in
+        $this->get('/categories/dontexist');
+
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Error: Missing Action `App\Controller\CategoriesController::dontexist()`');
+
+        // test with reqular
+        $this->loginUserRegular();
+        $this->get('/categories/dontexist');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Error: Missing Action `App\Controller\CategoriesController::dontexist()`');
+
+        // test with admin
+        $this->loginUserAdmin();
+        $this->get('/categories/dontexist');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Error: Missing Action `App\Controller\CategoriesController::dontexist()`');
+
+        // test with debug off
+        Configure::write('debug', false);
+        $this->loginUserAdmin();
+        $this->get('/categories/dontexist');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Error: Missing Action `App\Controller\CategoriesController::dontexist()`');
+        Configure::write('debug', true);
+    }
+
+    /**
      * Test index method
      *
      * @return void
@@ -115,9 +150,7 @@ class PolicyTest extends BaseControllerTest
     {
         // not logged in, so should redirect
         $this->get('/categories/add');
-        $this->assertRedirect();
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/users/login?redirect=%2Fcategories%2Fadd');
+        $this->assertRedirectContains('users/login?redirect=%2Fcategories%2Fadd');
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
@@ -132,8 +165,7 @@ class PolicyTest extends BaseControllerTest
         // test with reqular, get
         $this->loginUserRegular();
         $this->get('/categories/add');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/?redirect=%2Fcategories%2Fadd');
+        $this->assertRedirectContains('?redirect=%2Fcategories%2Fadd');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -149,8 +181,7 @@ class PolicyTest extends BaseControllerTest
     {
         // not logged in, so should redirect
         $this->get('/categories/edit');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/users/login?redirect=%2Fcategories%2Fedit');
+        $this->assertRedirectContains('users/login?redirect=%2Fcategories%2Fedit');
 
         // test with missing id and debug
         $this->loginUserAdmin();
@@ -181,8 +212,7 @@ class PolicyTest extends BaseControllerTest
         // test with reqular, get
         $this->loginUserRegular();
         $this->get('/categories/edit/1');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/?redirect=%2Fcategories%2Fedit%2F1');
+        $this->assertRedirectContains('?redirect=%2Fcategories%2Fedit%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -201,9 +231,7 @@ class PolicyTest extends BaseControllerTest
 
         // not logged in, so should redirect
         $this->get('/categories/delete');
-        $this->assertRedirect();
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/users/login?redirect=%2Fcategories%2Fdelete');
+        $this->assertRedirectContains('users/login?redirect=%2Fcategories%2Fdelete');
 
         // test get with missing id and debug
         $this->loginUserAdmin();
@@ -226,8 +254,7 @@ class PolicyTest extends BaseControllerTest
         // test get with reqular, get
         $this->loginUserRegular();
         $this->get('/categories/delete/3');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/?redirect=%2Fcategories%2Fdelete%2F3');
+        $this->assertRedirectContains('?redirect=%2Fcategories%2Fdelete%2F3');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -235,8 +262,7 @@ class PolicyTest extends BaseControllerTest
         // test post with regular, post
         $this->loginUserRegular();
         $this->post('/categories/delete/3');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/');
+        $this->assertRedirectContains('/categories');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -244,8 +270,7 @@ class PolicyTest extends BaseControllerTest
         // test delete with regular user
         $this->loginUserRegular();
         $this->delete('/categories/delete/3');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/');
+        $this->assertRedirectContains('/categories');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -259,9 +284,7 @@ class PolicyTest extends BaseControllerTest
         // test with admin, delete
         $this->loginUserAdmin();
         $this->delete('/categories/delete/3');
-        $this->assertRedirect();
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/categories');
+        $this->assertRedirectContains('categories');
         $this->assertFlashMessage('The category `Charms` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
     }

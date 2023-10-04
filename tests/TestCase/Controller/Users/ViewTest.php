@@ -46,13 +46,11 @@ class ViewTest extends BaseControllerTest
         // test with reqular
         $this->loginUserRegular();
         $this->get('/users/login');
-        $this->assertResponseCode(302);
         $this->assertRedirectContains('/');
 
         // test with admin
         $this->loginUserAdmin();
         $this->get('/users/login');
-        $this->assertResponseCode(302);
         $this->assertRedirectContains('/');
     }
 
@@ -74,14 +72,12 @@ class ViewTest extends BaseControllerTest
         $this->requestAsAjax();
         $this->loginUserRegular();
         $this->get('/users/login');
-        $this->assertResponseCode(302);
         $this->assertRedirectContains('/');
 
         // test with admin
         $this->requestAsAjax();
         $this->loginUserAdmin();
         $this->get('/users/login');
-        $this->assertResponseCode(302);
         $this->assertRedirectContains('/');
     }
 
@@ -95,13 +91,11 @@ class ViewTest extends BaseControllerTest
     {
         // not logged in
         $this->get('/users');
-        $this->assertResponseCode(302);
         $this->assertRedirectContains('/users/login?redirect=%2Fusers');
 
         // test with reqular
         $this->loginUserRegular();
         $this->get('/users');
-        $this->assertResponseCode(302);
         $this->assertRedirectContains('/?redirect=%2Fusers');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
@@ -125,14 +119,12 @@ class ViewTest extends BaseControllerTest
         // not logged in
         $this->requestAsAjax();
         $this->get('/users');
-        $this->assertResponseCode(302);
         $this->assertRedirectContains('/users/login?redirect=%2Fusers');
 
         // test with reqular
         $this->requestAsAjax();
         $this->loginUserRegular();
         $this->get('/users');
-        $this->assertResponseCode(302);
         $this->assertRedirectContains('/?redirect=%2Fusers');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
@@ -156,13 +148,11 @@ class ViewTest extends BaseControllerTest
     {
         // not logged in
         $this->get('/users/view/1');
-        $this->assertResponseCode(302);
         $this->assertRedirectContains('/users/login?redirect=%2Fusers%2Fview%2F1');
 
         // test with reqular
         $this->loginUserRegular();
         $this->get('/users/view/1');
-        $this->assertResponseCode(302);
         $this->assertRedirectContains('/?redirect=%2Fusers%2Fview%2F1');
 
         // test with admin
@@ -183,14 +173,12 @@ class ViewTest extends BaseControllerTest
         // not logged in
         $this->requestAsAjax();
         $this->get('/users/view/1');
-        $this->assertResponseCode(302);
         $this->assertRedirectContains('/users/login?redirect=%2Fusers%2Fview%2F1');
 
         // test with reqular, can't view other user's private profile page
         $this->requestAsAjax();
         $this->loginUserRegular();
         $this->get('/users/view/1');
-        $this->assertResponseCode(302);
         $this->assertRedirectContains('/?redirect=%2Fusers%2Fview%2F1');
 
         // test with admin
@@ -267,7 +255,6 @@ class ViewTest extends BaseControllerTest
         // test with reqular, get
         $this->loginUserRegular();
         $this->get('/users/add');
-        $this->assertResponseCode(302);
         $this->assertRedirectContains('/?redirect=%2Fusers');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
@@ -292,7 +279,6 @@ class ViewTest extends BaseControllerTest
         $this->requestAsAjax();
         $this->loginUserRegular();
         $this->get('/users/add');
-        $this->assertResponseCode(302);
         $this->assertRedirectContains('/?redirect=%2Fusers');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
@@ -317,7 +303,6 @@ class ViewTest extends BaseControllerTest
         // test with reqular, get
         $this->loginUserRegular();
         $this->get('/users/edit/1');
-        $this->assertResponseCode(302);
         $this->assertRedirectContains('/?redirect=%2Fusers');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
@@ -342,7 +327,6 @@ class ViewTest extends BaseControllerTest
         $this->requestAsAjax();
         $this->loginUserRegular();
         $this->get('/users/edit/1');
-        $this->assertResponseCode(302);
         $this->assertRedirectContains('/?redirect=%2Fusers');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');

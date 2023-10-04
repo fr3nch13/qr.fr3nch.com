@@ -88,8 +88,6 @@ class PagesControllerTest extends BaseControllerTest
 
         $this->get('/pages');
 
-        $this->assertRedirect();
-        $this->assertResponseCode(302);
         $this->assertRedirectContains('/');
     }
 

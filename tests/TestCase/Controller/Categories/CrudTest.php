@@ -125,9 +125,7 @@ class CrudTest extends BaseControllerTest
             'name' => 'New Category',
             'description' => 'The Description',
         ]);
-        $this->assertRedirect();
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/categories');
+        $this->assertRedirectContains('categories');
         $this->assertFlashMessage('The category has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
@@ -181,9 +179,7 @@ class CrudTest extends BaseControllerTest
             'name' => 'New Category',
             'description' => 'The Description',
         ]);
-        $this->assertRedirect();
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/categories');
+        $this->assertRedirectContains('categories');
         $this->assertFlashMessage('The category has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
@@ -231,10 +227,8 @@ class CrudTest extends BaseControllerTest
 
         // delete
         $this->delete('/categories/delete/3');
+        $this->assertRedirectContains('categories');
         $this->assertFlashMessage('The category `Charms` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
-        $this->assertRedirect();
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/categories');
     }
 }

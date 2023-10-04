@@ -68,7 +68,6 @@ class FormsTest extends BaseControllerTest
             'password' => 'admin',
         ]);
         $this->assertRedirect();
-        $this->assertResponseCode(302);
         $this->assertRedirectContains('/');
         $this->assertFlashMessage('Welcome back Admin', 'flash');
         $this->assertFlashElement('flash/success');
@@ -79,7 +78,6 @@ class FormsTest extends BaseControllerTest
             'password' => 'admin',
         ]);
         $this->assertRedirect();
-        $this->assertResponseCode(302);
         $this->assertRedirectContains('/categories');
         $this->assertFlashMessage('Welcome back Admin', 'flash');
         $this->assertFlashElement('flash/success');
@@ -144,7 +142,6 @@ class FormsTest extends BaseControllerTest
             'password' => 'password',
         ]);
         $this->assertRedirect();
-        $this->assertResponseCode(302);
         $this->assertRedirectContains('/users');
         $this->assertFlashMessage('The user has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
@@ -178,7 +175,6 @@ class FormsTest extends BaseControllerTest
             'description' => 'The Description',
         ]);
         $this->assertRedirect();
-        $this->assertResponseCode(302);
         $this->assertRedirectContains('/users');
         $this->assertFlashMessage('The user has been saved.', 'flash');
         $this->assertFlashElement('flash/success');

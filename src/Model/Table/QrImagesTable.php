@@ -100,7 +100,7 @@ class QrImagesTable extends Table
      * @return string The absolute path to the QR Image.
      * @throws \Cake\Http\Exception\NotFoundException If the entity isn't found, or we can't find the image file.
      */
-    public function getQrImagePath(int $id): string
+    public function getFilePath(int $id): string
     {
         $qrImage = $this->get($id, contain:['QrCodes']); // throws a NotFoundException if it doesn't exist.
         $path = TMP . 'qr_images' . DS . $qrImage->qr_code_id . DS . $id;

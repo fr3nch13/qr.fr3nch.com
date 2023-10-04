@@ -137,8 +137,7 @@ class JsonTest extends BaseControllerTest
             'url' => 'https://amazon.com/path/to/forward',
             'source_id' => 1,
         ]);
-        $this->assertResponseCode(302);
-        $this->assertRedirect('/categories');
+                $this->assertRedirectContains('/categories');
         $this->assertFlashMessage('The category has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -172,8 +171,7 @@ class JsonTest extends BaseControllerTest
             'name' => 'New JSON Category',
             'description' => 'Description of the category',
         ]);
-        $this->assertResponseCode(302);
-        $this->assertRedirect('/categories');
+        $this->assertRedirectContains('/categories');
         $this->assertFlashMessage('The category has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }

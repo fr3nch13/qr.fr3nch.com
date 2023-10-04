@@ -9,7 +9,7 @@ use App\Model\Entity\User;
 /**
  * Users Controller policy
  */
-class UsersControllerPolicy
+class UsersControllerPolicy extends BaseControllerPolicy
 {
     /**
      * Anyone can try to login

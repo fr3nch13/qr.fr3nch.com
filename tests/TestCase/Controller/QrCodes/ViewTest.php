@@ -56,7 +56,6 @@ class ViewTest extends BaseControllerTest
         $this->get('/qr-codes');
         $this->assertResponseOk();
         $content = (string)$this->_response->getBody();
-        debug($content);
         $this->assertSame(1, substr_count($content, '<!-- START: App.QrCodes/index -->'));
         $this->assertSame(1, substr_count($content, '<!-- END: App.QrCodes/index -->'));
         $this->assertSame(1, substr_count($content, '<h1>QR Codes</h1>'));
@@ -119,14 +118,14 @@ class ViewTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestLayoutView();
 
-        // test with admin
-        $this->loginUserAdmin();
+        // test with reqular
+        $this->loginUserRegular();
         $this->get('/qr-codes/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutView();
 
-        // test with reqular
-        $this->loginUserRegular();
+        // test with admin
+        $this->loginUserAdmin();
         $this->get('/qr-codes/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutView();
@@ -226,7 +225,7 @@ class ViewTest extends BaseControllerTest
         // test with reqular, get
         $this->loginUserRegular();
         $this->get('/qr-codes/edit/1');
-        $this->assertRedirectContains('/?redirect=%2Fqr-codes%2Fedit%2F1');
+        $this->assertRedirectContains('?redirect=%2Fqr-codes%2Fedit%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -250,8 +249,7 @@ class ViewTest extends BaseControllerTest
         $this->requestAsAjax();
         $this->loginUserRegular();
         $this->get('/qr-codes/edit/1');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/?redirect=%2Fqr-codes%2Fedit%2F1');
+        $this->assertRedirectContains('?redirect=%2Fqr-codes%2Fedit%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');

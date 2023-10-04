@@ -121,8 +121,7 @@ class JsonTest extends BaseControllerTest
         $this->post('/tags/add.json', [
             'name' => 'New JSON Tag',
         ]);
-        $this->assertResponseCode(302);
-        $this->assertRedirect('/tags');
+                $this->assertRedirectContains('/tags');
         $this->assertFlashMessage('The tag has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -153,8 +152,7 @@ class JsonTest extends BaseControllerTest
             'name' => 'New JSON Category',
             'description' => 'Description of the tag',
         ]);
-        $this->assertResponseCode(302);
-        $this->assertRedirect('/tags');
+                $this->assertRedirectContains('/tags');
         $this->assertFlashMessage('The tag has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }

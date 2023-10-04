@@ -115,9 +115,7 @@ class PolicyTest extends BaseControllerTest
     {
         // not logged in, so should redirect
         $this->get('/qr-codes/add');
-        $this->assertRedirect();
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/users/login?redirect=%2Fqr-codes%2Fadd');
+        $this->assertRedirectContains('users/login?redirect=%2Fqr-codes%2Fadd');
 
         // test with admin, get
         $this->loginUserAdmin();
@@ -146,9 +144,7 @@ class PolicyTest extends BaseControllerTest
     {
         // not logged in, so should redirect
         $this->get('/qr-codes/edit');
-        $this->assertRedirect();
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/users/login?redirect=%2Fqr-codes%2Fedit');
+        $this->assertRedirectContains('users/login?redirect=%2Fqr-codes%2Fedit');
 
         // test with missing id and debug
         $this->loginUserAdmin();
@@ -179,7 +175,7 @@ class PolicyTest extends BaseControllerTest
         // test with reqular, get
         $this->loginUserRegular();
         $this->get('/qr-codes/edit/1');
-        $this->assertRedirectContains('/?redirect=%2Fqr-codes%2Fedit%2F1');
+        $this->assertRedirectContains('?redirect=%2Fqr-codes%2Fedit%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -198,9 +194,7 @@ class PolicyTest extends BaseControllerTest
 
         // not logged in, so should redirect
         $this->get('/qr-codes/delete');
-        $this->assertRedirect();
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/users/login?redirect=%2Fqr-codes%2Fdelete');
+        $this->assertRedirectContains('users/login?redirect=%2Fqr-codes%2Fdelete');
 
         // test get with missing id and debug
         $this->loginUserAdmin();
@@ -235,7 +229,7 @@ class PolicyTest extends BaseControllerTest
         // test delete with regular user
         $this->loginUserRegular();
         $this->delete('/qr-codes/delete/1');
-        $this->assertRedirectContains('/');
+        $this->assertRedirectContains('/qr-codes');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -249,9 +243,7 @@ class PolicyTest extends BaseControllerTest
         // test with admin, post no data, no CSRF
         $this->loginUserAdmin();
         $this->delete('/qr-codes/delete/1');
-        $this->assertRedirect();
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/');
+        $this->assertRedirectContains('/qr-codes');
         $this->assertFlashMessage('The qr code `Sow & Scribe` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
     }

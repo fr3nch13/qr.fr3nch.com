@@ -37,12 +37,9 @@ class PagesController extends AppController
      */
     public function beforeFilter(EventInterface $event): void
     {
-        parent::beforeFilter($event);
-        // Configure the login action to not require authentication, preventing
-        // the infinite redirect loop issue
         $this->Authentication->addUnauthenticatedActions(['display']);
 
-        $this->Authorization->authorize($this);
+        parent::beforeFilter($event);
     }
 
     /**

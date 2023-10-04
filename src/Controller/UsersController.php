@@ -19,12 +19,7 @@ class UsersController extends AppController
      */
     public function beforeFilter(EventInterface $event): void
     {
-        parent::beforeFilter($event);
-        // Configure the login action to not require authentication, preventing
-        // the infinite redirect loop issue
         $this->Authentication->addUnauthenticatedActions(['login', 'logout', 'profile']);
-
-        $this->Authorization->authorize($this);
 
         // make sure we have an ID where needed.
         $action = $this->request->getParam('action');
@@ -35,6 +30,8 @@ class UsersController extends AppController
                 throw new NotFoundException('Unknown ID');
             }
         }
+
+        parent::beforeFilter($event);
     }
 
     /**

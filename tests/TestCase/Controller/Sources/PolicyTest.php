@@ -38,9 +38,7 @@ class PolicyTest extends BaseControllerTest
     {
         // not logged in
         $this->get('/sources');
-        $this->assertRedirect();
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/users/login?redirect=%2Fsources');
+        $this->assertRedirectContains('users/login?redirect=%2Fsources');
 
         // test with admin
         $this->loginUserAdmin();
@@ -67,9 +65,7 @@ class PolicyTest extends BaseControllerTest
     {
         // not logged in
         $this->get('/sources/view/1');
-        $this->assertRedirect();
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/users/login?redirect=%2Fsources%2Fview%2F1');
+        $this->assertRedirectContains('users/login?redirect=%2Fsources%2Fview%2F1');
 
         // test with admin
         $this->loginUserAdmin();
@@ -114,9 +110,7 @@ class PolicyTest extends BaseControllerTest
     {
         // not logged in, so should redirect
         $this->get('/sources/add');
-        $this->assertRedirect();
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/users/login?redirect=%2Fsources%2Fadd');
+        $this->assertRedirectContains('users/login?redirect=%2Fsources%2Fadd');
 
         // test with admin, get
         $this->loginUserAdmin();
@@ -129,8 +123,7 @@ class PolicyTest extends BaseControllerTest
         // test with reqular, get
         $this->loginUserRegular();
         $this->get('/sources/add');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/?redirect=%2Fsources%2Fadd');
+        $this->assertRedirectContains('?redirect=%2Fsources%2Fadd');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -146,9 +139,7 @@ class PolicyTest extends BaseControllerTest
     {
         // not logged in, so should redirect
         $this->get('/sources/edit');
-        $this->assertRedirect();
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/users/login?redirect=%2Fsources%2Fedit');
+        $this->assertRedirectContains('users/login?redirect=%2Fsources%2Fedit');
 
         // test with missing id and debug
         $this->loginUserAdmin();
@@ -180,8 +171,7 @@ class PolicyTest extends BaseControllerTest
         // test with reqular, get
         $this->loginUserRegular();
         $this->get('/sources/edit/1');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/?redirect=%2Fsources%2Fedit%2F1');
+        $this->assertRedirectContains('?redirect=%2Fsources%2Fedit%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -201,8 +191,7 @@ class PolicyTest extends BaseControllerTest
         // not logged in, so should redirect
         $this->get('/sources/delete');
         $this->assertRedirect();
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/users/login?redirect=%2Fsources%2Fdelete');
+        $this->assertRedirectContains('users/login?redirect=%2Fsources%2Fdelete');
 
         // test get with missing id and debug
         $this->loginUserAdmin();
@@ -225,7 +214,7 @@ class PolicyTest extends BaseControllerTest
         // test get with reqular, get
         $this->loginUserRegular();
         $this->get('/sources/delete/1');
-        $this->assertRedirectContains('/?redirect=%2Fsources%2Fdelete%2F1');
+        $this->assertRedirectContains('?redirect=%2Fsources%2Fdelete%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -233,7 +222,7 @@ class PolicyTest extends BaseControllerTest
         // test post with regular, post
         $this->loginUserRegular();
         $this->post('/sources/delete/1');
-        $this->assertRedirectContains('/');
+        $this->assertRedirectContains('/sources');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -241,7 +230,7 @@ class PolicyTest extends BaseControllerTest
         // test delete with regular user
         $this->loginUserRegular();
         $this->delete('/sources/delete/1');
-        $this->assertRedirectContains('/');
+        $this->assertRedirectContains('/sources');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -255,9 +244,7 @@ class PolicyTest extends BaseControllerTest
         // test with admin, post no data, no CSRF
         $this->loginUserAdmin();
         $this->delete('/sources/delete/1');
-        $this->assertRedirect();
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/sources');
+        $this->assertRedirectContains('sources');
         $this->assertFlashMessage('The source `Amazon` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
     }

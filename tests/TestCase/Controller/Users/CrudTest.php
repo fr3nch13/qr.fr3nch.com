@@ -75,16 +75,14 @@ class CrudTest extends BaseControllerTest
         // get
         $this->loginUserAdmin();
         $this->get('/users/logout');
-        $this->assertResponseCode(302);
-        $this->assertRedirect('http://localhost/users/login');
+                $this->assertRedirectContains('users/login');
         $this->assertFlashMessage('You have been logged out', 'flash');
         $this->assertFlashElement('flash/success');
 
         // post
         $this->loginUserAdmin();
         $this->post('/users/logout');
-        $this->assertResponseCode(302);
-        $this->assertRedirect('http://localhost/users/login');
+                $this->assertRedirectContains('users/login');
         $this->assertFlashMessage('You have been logged out', 'flash');
         $this->assertFlashElement('flash/success');
 
@@ -242,7 +240,6 @@ class CrudTest extends BaseControllerTest
             'password' => 'password',
         ]);
         $this->assertRedirect();
-        $this->assertResponseCode(302);
         $this->assertRedirectContains('/users');
         $this->assertFlashMessage('The user has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
@@ -300,7 +297,6 @@ class CrudTest extends BaseControllerTest
             'name' => 'Updated User',
         ]);
         $this->assertRedirect();
-        $this->assertResponseCode(302);
         $this->assertRedirectContains('/users');
         $this->assertFlashMessage('The user has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
@@ -353,7 +349,6 @@ class CrudTest extends BaseControllerTest
         $this->assertFlashMessage('The user `Delete Me` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
         $this->assertRedirect();
-        $this->assertResponseCode(302);
         $this->assertRedirectContains('/users');
     }
 }

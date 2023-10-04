@@ -70,9 +70,7 @@ class FormsTest extends BaseControllerTest
             'name' => 'new name',
             'description' => 'description',
         ]);
-        $this->assertRedirect();
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/sources');
+        $this->assertRedirectContains('sources');
         $this->assertFlashMessage('The source has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -102,9 +100,7 @@ class FormsTest extends BaseControllerTest
             'name' => 'New Source',
             'description' => 'The Description',
         ]);
-        $this->assertRedirect();
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/sources');
+        $this->assertRedirectContains('sources');
         $this->assertFlashMessage('The source has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }

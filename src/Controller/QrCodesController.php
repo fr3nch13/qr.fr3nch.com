@@ -19,23 +19,22 @@ class QrCodesController extends AppController
      */
     public function beforeFilter(EventInterface $event): void
     {
-        parent::beforeFilter($event);
-        // Configure the login action to not require authentication, preventing
-        // the infinite redirect loop issue
-        $this->Authentication->addUnauthenticatedActions(['forward', 'show', 'index', 'view']);
 
-        $this->Authorization->authorize($this);
+        // allowed actions for anyone.
+        $this->Authentication->addUnauthenticatedActions(['forward', 'show', 'index', 'view']);
 
         // make sure we have an ID where needed.
         $action = $this->request->getParam('action');
         // admin actions
-        if (in_array($action, ['view', 'edit', 'delete'])) {
+        if (in_array($action, ['forward', 'show', 'view', 'edit', 'delete'])) {
             $pass = $this->request->getParam('pass');
             if (empty($pass) || !isset($pass['0'])) {
                 $event->stopPropagation();
                 throw new NotFoundException('Unknown ID');
             }
         }
+
+        parent::beforeFilter($event);
     }
 
     /**
@@ -152,7 +151,7 @@ class QrCodesController extends AppController
             if ($this->QrCodes->save($qrCode)) {
                 $this->Flash->success(__('The qr code has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'view', $qrCode->id]);
             }
             $this->Flash->error(__('The qr code could not be saved. Please, try again.'));
         }
@@ -185,7 +184,7 @@ class QrCodesController extends AppController
             if ($this->QrCodes->save($qrCode)) {
                 $this->Flash->success(__('The qr code has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'view', $qrCode->id]);
             }
             $this->Flash->error(__('The qr code could not be saved. Please, try again.'));
         }

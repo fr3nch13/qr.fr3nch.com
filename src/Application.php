@@ -19,12 +19,14 @@ namespace App;
 use App\Controller\CategoriesController;
 use App\Controller\PagesController;
 use App\Controller\QrCodesController;
+use App\Controller\QrImagesController;
 use App\Controller\SourcesController;
 use App\Controller\TagsController;
 use App\Controller\UsersController;
 use App\Policy\CategoriesControllerPolicy;
 use App\Policy\PagesControllerPolicy;
 use App\Policy\QrCodesControllerPolicy;
+use App\Policy\QrImagesControllerPolicy;
 use App\Policy\SourcesControllerPolicy;
 use App\Policy\TagsControllerPolicy;
 use App\Policy\UsersControllerPolicy;
@@ -36,6 +38,7 @@ use Authentication\Middleware\AuthenticationMiddleware;
 use Authorization\AuthorizationService;
 use Authorization\AuthorizationServiceInterface;
 use Authorization\AuthorizationServiceProviderInterface;
+use Authorization\Exception\Exception as AuthorizationException;
 use Authorization\Exception\ForbiddenException;
 use Authorization\Exception\MissingIdentityException;
 use Authorization\Middleware\AuthorizationMiddleware;
@@ -164,12 +167,12 @@ class Application extends BaseApplication implements
 
             // @link https://book.cakephp.org/5/en/tutorials-and-examples/cms/authorization.html
             ->add(new AuthorizationMiddleware($this, [
-                'requireAuthorizationCheck' => Configure::read('debug'),
+                'requireAuthorizationCheck' => true,
                 'identityDecorator' => function ($auth, $user) {
-                    return $user->setAuthorization($auth);
+                    return $user->setAuthorization($auth); //turns the user entity directly into the identity object.
                 },
                 'unauthorizedHandler' => [
-                    'className' => 'CustomRedirect', // <--- see here
+                    'className' => 'CustomRedirect',
                     'url' => '/',
                     'queryParam' => 'redirect',
                     'exceptions' => [
@@ -324,6 +327,7 @@ class Application extends BaseApplication implements
         // map the controllers
         $mapResolver->map(CategoriesController::class, CategoriesControllerPolicy::class);
         $mapResolver->map(QrCodesController::class, QrCodesControllerPolicy::class);
+        $mapResolver->map(QrImagesController::class, QrImagesControllerPolicy::class);
         $mapResolver->map(SourcesController::class, SourcesControllerPolicy::class);
         $mapResolver->map(TagsController::class, TagsControllerPolicy::class);
         $mapResolver->map(UsersController::class, UsersControllerPolicy::class);

@@ -80,7 +80,7 @@ class QrImagesFixture extends CoreFixture
                 'id' => 7,
                 'name' => 'Dimensions Side',
                 'created' => new DateTime(),
-                'is_active' => true,
+                'is_active' => false,
                 'imorder' => 2,
                 'qr_code_id' => 3,
             ],

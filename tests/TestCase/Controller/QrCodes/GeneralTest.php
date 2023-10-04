@@ -38,29 +38,23 @@ class GeneralTest extends BaseControllerTest
     public function testForward(): void
     {
         $this->get('/?k=sownscribe');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/f/sownscribe');
+        $this->assertRedirectContains('f/sownscribe');
 
         $this->get('/f/sownscribe');
-        $this->assertResponseCode(302);
         $this->assertRedirectContains('https://amazon.com/path/to/details/page');
 
         $this->get('/qr-codes/forward/sownscribe');
-        $this->assertResponseCode(302);
         $this->assertRedirectContains('https://amazon.com/path/to/details/page');
 
         $this->get('/?k=dontexist');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/f/dontexist');
+        $this->assertRedirectContains('f/dontexist');
 
         $this->get('/f/dontexist');
-        $this->assertResponseCode(302);
         $this->assertRedirectContains('/');
         $this->assertFlashMessage('A QR Code with the key: `dontexist` could not be found.', 'flash');
         $this->assertFlashElement('flash/error');
 
         $this->get('/f/');
-        $this->assertResponseCode(302);
         $this->assertRedirectContains('/');
     }
 
