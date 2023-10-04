@@ -42,7 +42,7 @@ class BaseControllerPolicy implements BeforePolicyInterface
         }
 
         // fall through
-        return false;
+        // always return null so that the other, more specific policy checks can happen.
+        return null;
     }
-
 }

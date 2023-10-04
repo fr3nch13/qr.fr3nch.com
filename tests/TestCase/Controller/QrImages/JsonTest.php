@@ -41,7 +41,7 @@ class JsonTest extends BaseControllerTest
      */
     public function testIndex(): void
     {
-        $this->get('/qr-images');
+        $this->get('https://localhost/qr-images');
         $this->assertResponseOk();
 
         $content = (string)$this->_response->getBody();
@@ -67,7 +67,7 @@ class JsonTest extends BaseControllerTest
      */
     public function testView(): void
     {
-        $this->get('/qr-images/view/1');
+        $this->get('https://localhost/qr-images/view/1');
         $this->assertResponseOk();
 
         $content = (string)$this->_response->getBody();
@@ -91,7 +91,7 @@ class JsonTest extends BaseControllerTest
     public function testAdd(): void
     {
         // a get
-        $this->get('/qr-images/add');
+        $this->get('https://localhost/qr-images/add');
         $this->assertResponseOk();
         $content = (string)$this->_response->getBody();
         $content = json_decode($content, true);
@@ -110,7 +110,7 @@ class JsonTest extends BaseControllerTest
         $this->assertCount(4, $content['tags']);
 
         // a post fail
-        $this->post('/qr-images/add.json', []);
+        $this->post('https://localhost/qr-images/add.json', []);
         $this->assertResponseOk();
         $content = (string)$this->_response->getBody();
         $content = json_decode($content, true);
@@ -147,14 +147,14 @@ class JsonTest extends BaseControllerTest
         $this->assertCount(4, $content['tags']);
 
         // a post success
-        $this->post('/qr-images/add.json', [
+        $this->post('https://localhost/qr-images/add.json', [
             'qrkey' => 'newjsonkey',
             'name' => 'New JSON QR Code',
             'description' => 'Description of the code',
             'url' => 'https://amazon.com/path/to/forward',
             'source_id' => 1,
         ]);
-                $this->assertRedirectContains('/');
+                $this->assertRedirectEquals('/');
         $this->assertFlashMessage('The qr code has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -169,7 +169,7 @@ class JsonTest extends BaseControllerTest
     {
         // test with admin, get
         $this->loginUserAdmin();
-        $this->get('/qr-images/edit/1');
+        $this->get('https://localhost/qr-images/edit/1');
         $this->assertResponseOk();
         $content = (string)$this->_response->getBody();
         $content = json_decode($content, true);
@@ -188,7 +188,7 @@ class JsonTest extends BaseControllerTest
         $this->assertCount(4, $content['tags']);
 
         // a fail as qrkey can't be updated via forms/entities
-        $this->patch('/qr-images/edit/1.json', [
+        $this->patch('https://localhost/qr-images/edit/1.json', [
             'qrkey' => 'newjsonkey',
             'name' => 'New JSON QR Code',
             'description' => 'Description of the code',
@@ -215,13 +215,13 @@ class JsonTest extends BaseControllerTest
         $this->assertCount(4, $content['tags']);
 
         // a patch success
-        $this->patch('/qr-images/edit/1.json', [
+        $this->patch('https://localhost/qr-images/edit/1.json', [
             'name' => 'New JSON QR Code',
             'description' => 'Description of the code',
             'url' => 'https://amazon.com/path/to/forward',
             'source_id' => 1,
         ]);
-                $this->assertRedirectContains('/');
+                $this->assertRedirectEquals('/');
         $this->assertFlashMessage('The qr code has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }

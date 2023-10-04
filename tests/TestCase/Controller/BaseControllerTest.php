@@ -96,6 +96,16 @@ class BaseControllerTest extends TestCase
     }
 
     /**
+     * Logs in a Regular user
+     *
+     * @return void
+     */
+    public function loginGuest(): void
+    {
+        $this->logoutUser();
+    }
+
+    /**
      * Sets HTTP headers for the *next* request to be identified as AJAX request.
      *
      * @return void
@@ -137,7 +147,7 @@ class BaseControllerTest extends TestCase
     }
 
     /**
-     * Tests the Layout is there.
+     * Tests that we're using the default layout
      *
      * @return void
      */
@@ -152,7 +162,7 @@ class BaseControllerTest extends TestCase
     }
 
     /**
-     * Tests the Layout is there.
+     * Tests that we're using the pages/index layout
      *
      * @return void
      */
@@ -167,7 +177,7 @@ class BaseControllerTest extends TestCase
     }
 
     /**
-     * Tests the Layout is there.
+     * Tests that we're using the pages/view layout
      *
      * @return void
      */
@@ -182,7 +192,7 @@ class BaseControllerTest extends TestCase
     }
 
     /**
-     * Tests the Layout is there.
+     * Tests that we're using the pages/form layout
      *
      * @return void
      */
@@ -197,7 +207,7 @@ class BaseControllerTest extends TestCase
     }
 
     /**
-     * Tests the Layout is there.
+     * Tests that we're using the login layout
      *
      * @return void
      */
@@ -207,6 +217,50 @@ class BaseControllerTest extends TestCase
         $content = (string)$this->_response->getBody();
         $this->assertSame(1, substr_count($content, '<!-- START: App.layout/login -->'));
         $this->assertSame(1, substr_count($content, '<!-- END: App.layout/login -->'));
+
+        // test other specific to this layout.
+    }
+
+    /**
+     * Tests that we're using the Error/error400 page
+     *
+     * @return void
+     */
+    public function helperTestError400(): void
+    {
+        $this->helperTestLayoutError();
+        $content = (string)$this->_response->getBody();
+        $this->assertSame(1, substr_count($content, '<!-- START: App.Error/error400 -->'));
+        $this->assertSame(1, substr_count($content, '<!-- END: App.Error/error400 -->'));
+
+        // test other specific to this layout.
+    }
+
+    /**
+     * Tests that we're using the Error/error500 page
+     *
+     * @return void
+     */
+    public function helperTestError500(): void
+    {
+        $this->helperTestLayoutError();
+        $content = (string)$this->_response->getBody();
+        $this->assertSame(1, substr_count($content, '<!-- START: App.Error/error500 -->'));
+        $this->assertSame(1, substr_count($content, '<!-- END: App.Error/error400 -->'));
+
+        // test other specific to this layout.
+    }
+
+    /**
+     * Tests that we're using the error layout
+     *
+     * @return void
+     */
+    public function helperTestLayoutError(): void
+    {
+        $content = (string)$this->_response->getBody();
+        $this->assertSame(1, substr_count($content, '<!-- START: App.layout/error -->'));
+        $this->assertSame(1, substr_count($content, '<!-- END: App.layout/error -->'));
 
         // test other specific to this layout.
     }

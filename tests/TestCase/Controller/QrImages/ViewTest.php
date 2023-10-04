@@ -39,20 +39,20 @@ class ViewTest extends BaseControllerTest
     public function testIndexNormal(): void
     {
         // not logged in
-        $this->get('/qr-images');
+        $this->get('https://localhost/qr-images');
         $this->assertResponseOk();
         $this->helperTestLayoutIndex();
 
         // test with reqular
         $this->loginUserRegular();
-        $this->get('/qr-images');
+        $this->get('https://localhost/qr-images');
         $this->assertResponseOk();
         $this->helperTestLayoutIndex();
 
         // test with admin
         // test html content.
         $this->loginUserAdmin();
-        $this->get('/qr-images');
+        $this->get('https://localhost/qr-images');
         $this->assertResponseOk();
         $content = (string)$this->_response->getBody();
         $this->assertSame(1, substr_count($content, '<!-- START: App.QrImages/index -->'));
@@ -85,21 +85,21 @@ class ViewTest extends BaseControllerTest
     {
         // not logged in
         $this->requestAsAjax();
-        $this->get('/qr-images');
+        $this->get('https://localhost/qr-images');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
 
         // test with reqular
         $this->requestAsAjax();
         $this->loginUserRegular();
-        $this->get('/qr-images');
+        $this->get('https://localhost/qr-images');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
 
         // test with admin
         $this->requestAsAjax();
         $this->loginUserAdmin();
-        $this->get('/qr-images');
+        $this->get('https://localhost/qr-images');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
     }
@@ -113,24 +113,24 @@ class ViewTest extends BaseControllerTest
     public function testViewNormal(): void
     {
         // not logged in
-        $this->get('/qr-images/view/1');
+        $this->get('https://localhost/qr-images/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutView();
 
         // test with admin
         $this->loginUserAdmin();
-        $this->get('/qr-images/view/1');
+        $this->get('https://localhost/qr-images/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutView();
 
         // test with reqular
         $this->loginUserRegular();
-        $this->get('/qr-images/view/1');
+        $this->get('https://localhost/qr-images/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutView();
 
         // test html content.
-        $this->get('/qr-images/view/1');
+        $this->get('https://localhost/qr-images/view/1');
         $this->assertResponseOk();
         $content = (string)$this->_response->getBody();
         $this->assertSame(1, substr_count($content, '<!-- START: App.QrImages/view -->'));
@@ -150,21 +150,21 @@ class ViewTest extends BaseControllerTest
     {
         // not logged in
         $this->requestAsAjax();
-        $this->get('/qr-images/view/1');
+        $this->get('https://localhost/qr-images/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
 
         // test with admin
         $this->requestAsAjax();
         $this->loginUserAdmin();
-        $this->get('/qr-images/view/1');
+        $this->get('https://localhost/qr-images/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
 
         // test with reqular
         $this->requestAsAjax();
         $this->loginUserRegular();
-        $this->get('/qr-images/view/1');
+        $this->get('https://localhost/qr-images/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
     }
@@ -179,13 +179,13 @@ class ViewTest extends BaseControllerTest
     {
         // test with reqular, get
         $this->loginUserRegular();
-        $this->get('/qr-images/add/1');
+        $this->get('https://localhost/qr-images/add/1');
         $this->assertResponseOk();
         $this->helperTestLayoutForm();
 
         // test with admin, get
         $this->loginUserAdmin();
-        $this->get('/qr-images/add/1');
+        $this->get('https://localhost/qr-images/add/1');
         $this->assertResponseOk();
         $this->helperTestLayoutForm();
     }
@@ -202,14 +202,14 @@ class ViewTest extends BaseControllerTest
         // not their qr code
         $this->requestAsAjax();
         $this->loginUserRegular();
-        $this->get('/qr-images/add/1');
-        $this->assertRedirectContains('?redirect=%2Fqr-images%2Fadd%2F1');
+        $this->get('https://localhost/qr-images/add/1');
+        $this->assertRedirectEquals('/?redirect=%2Fqr-images%2Fadd%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
         // their qr code.
-        $this->get('/qr-images/add/3');
+        $this->get('https://localhost/qr-images/add/3');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
 
@@ -217,7 +217,7 @@ class ViewTest extends BaseControllerTest
         // test with admin, get, can edit any.
         $this->requestAsAjax();
         $this->loginUserAdmin();
-        $this->get('/qr-images/add/3');
+        $this->get('https://localhost/qr-images/add/3');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
     }
@@ -232,15 +232,15 @@ class ViewTest extends BaseControllerTest
     {
         // test with reqular, get
         $this->loginUserRegular();
-        $this->get('/qr-images/edit/1');
-        $this->assertRedirectContains('?redirect=%2Fqr-images%2Fedit%2F1');
+        $this->get('https://localhost/qr-images/edit/1');
+        $this->assertRedirectEquals('/?redirect=%2Fqr-images%2Fedit%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
         // test with admin, get
         $this->loginUserAdmin();
-        $this->get('/qr-images/edit/1');
+        $this->get('https://localhost/qr-images/edit/1');
         $this->assertResponseOk();
         $this->helperTestLayoutForm();
     }
@@ -256,8 +256,8 @@ class ViewTest extends BaseControllerTest
         // test with reqular, get
         $this->requestAsAjax();
         $this->loginUserRegular();
-        $this->get('/qr-images/edit/2');
-        $this->assertRedirectContains('?redirect=%2Fqr-images%2Fedit%2F2');
+        $this->get('https://localhost/qr-images/edit/2');
+        $this->assertRedirectEquals('/?redirect=%2Fqr-images%2Fedit%2F2');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -265,7 +265,7 @@ class ViewTest extends BaseControllerTest
         // test with admin, get
         $this->requestAsAjax();
         $this->loginUserAdmin();
-        $this->get('/qr-images/edit/2');
+        $this->get('https://localhost/qr-images/edit/2');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
     }

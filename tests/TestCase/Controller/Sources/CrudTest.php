@@ -45,28 +45,28 @@ class CrudTest extends BaseControllerTest
         $this->loginUserAdmin();
 
         // get
-        $this->get('/sources');
+        $this->get('https://localhost/sources');
         $this->assertResponseOk();
         $this->assertResponseContains('<div class="sources index content">');
         $this->assertResponseContains('<h3>Sources</h3>');
 
         // post
-        $this->post('/sources');
+        $this->post('https://localhost/sources');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // patch
-        $this->patch('/sources');
+        $this->patch('https://localhost/sources');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('/sources');
+        $this->put('https://localhost/sources');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('/sources');
+        $this->delete('https://localhost/sources');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
     }
@@ -86,28 +86,28 @@ class CrudTest extends BaseControllerTest
         $this->loginUserAdmin();
 
         // test get
-        $this->get('/sources/view/1');
+        $this->get('https://localhost/sources/view/1');
         $this->assertResponseOk();
         $this->assertResponseContains('<div class="sources view content">');
         $this->assertResponseContains('<h3>Amazon</h3>');
 
         // post
-        $this->post('/sources/view/1');
+        $this->post('https://localhost/sources/view/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // patch
-        $this->patch('/sources/view/1');
+        $this->patch('https://localhost/sources/view/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('/sources/view/1');
+        $this->put('https://localhost/sources/view/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('/sources/view/1');
+        $this->delete('https://localhost/sources/view/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
     }
@@ -127,23 +127,23 @@ class CrudTest extends BaseControllerTest
         $this->loginUserAdmin();
 
         // test get
-        $this->get('/sources/add');
+        $this->get('https://localhost/sources/add');
         $this->assertResponseOk();
         $this->assertResponseContains('<div class="sources form content">');
         $this->assertResponseContains('<form method="post" accept-charset="utf-8" role="form" action="/sources/add">');
         $this->assertResponseContains('<legend>Add Source</legend>');
 
         // post
-        $this->post('/sources/add', [
+        $this->post('https://localhost/sources/add', [
             'name' => 'new name',
             'description' => 'description',
         ]);
-        $this->assertRedirectContains('sources');
+        $this->assertRedirectEquals('sources');
         $this->assertFlashMessage('The source has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
         // patch
-        $this->patch('/sources/add', [
+        $this->patch('https://localhost/sources/add', [
             'name' => 'new name',
             'description' => 'description',
         ]);
@@ -151,7 +151,7 @@ class CrudTest extends BaseControllerTest
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('/sources/add', [
+        $this->put('https://localhost/sources/add', [
             'name' => 'new name',
             'description' => 'description',
         ]);
@@ -159,7 +159,7 @@ class CrudTest extends BaseControllerTest
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('/sources/add');
+        $this->delete('https://localhost/sources/add');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
     }
@@ -179,14 +179,14 @@ class CrudTest extends BaseControllerTest
         $this->loginUserAdmin();
 
         // test get
-        $this->get('/sources/edit/1');
+        $this->get('https://localhost/sources/edit/1');
         $this->assertResponseOk();
         $this->assertResponseContains('<div class="sources form content">');
         $this->assertResponseContains('<form method="patch" accept-charset="utf-8" role="form" action="/sources/edit/1">');
         $this->assertResponseContains('<legend>Edit Source</legend>');
 
         // post
-        $this->post('/sources/edit/1', [
+        $this->post('https://localhost/sources/edit/1', [
             'name' => 'New Source',
             'description' => 'The Description',
         ]);
@@ -194,16 +194,16 @@ class CrudTest extends BaseControllerTest
         $this->assertResponseContains('Method Not Allowed');
 
         // patch
-        $this->patch('/sources/edit/1', [
+        $this->patch('https://localhost/sources/edit/1', [
             'name' => 'New Source',
             'description' => 'The Description',
         ]);
-        $this->assertRedirectContains('sources');
+        $this->assertRedirectEquals('sources');
         $this->assertFlashMessage('The source has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
         // put
-        $this->put('/sources/edit/1', [
+        $this->put('https://localhost/sources/edit/1', [
             'name' => 'New Source',
             'description' => 'The Description',
         ]);
@@ -211,7 +211,7 @@ class CrudTest extends BaseControllerTest
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('/sources/edit/1');
+        $this->delete('https://localhost/sources/edit/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
     }
@@ -231,28 +231,28 @@ class CrudTest extends BaseControllerTest
         $this->loginUserAdmin();
 
         // test get
-        $this->get('/sources/delete/1');
+        $this->get('https://localhost/sources/delete/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // post
-        $this->post('/sources/delete/1');
+        $this->post('https://localhost/sources/delete/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // patch
-        $this->patch('/sources/delete/1');
+        $this->patch('https://localhost/sources/delete/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('/sources/delete/1');
+        $this->put('https://localhost/sources/delete/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('/sources/delete/1');
-        $this->assertRedirectContains('sources');
+        $this->delete('https://localhost/sources/delete/1');
+        $this->assertRedirectEquals('sources');
         $this->assertFlashMessage('The source `Amazon` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
     }

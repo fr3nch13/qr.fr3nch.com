@@ -63,7 +63,6 @@ class AppController extends Controller
          *  @link https://book.cakephp.org/5/en/tutorials-and-examples/cms/authorization.html
          */
         $this->loadComponent('Authorization.Authorization');
-        // by default, skip authorization, then check on a
 
         $viewClass = AppView::class;
 

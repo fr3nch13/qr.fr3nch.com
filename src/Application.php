@@ -101,7 +101,9 @@ class Application extends BaseApplication implements
         }
 
         // Load more plugins here
-        // CakePHP's Authorizatio Plugin.
+        $this->addPlugin('Authentication');
+
+        // CakePHP's Authorization Plugin.
         $this->addPlugin('Authorization');
 
         // the bootstrapui plugin.
@@ -167,7 +169,7 @@ class Application extends BaseApplication implements
 
             // @link https://book.cakephp.org/5/en/tutorials-and-examples/cms/authorization.html
             ->add(new AuthorizationMiddleware($this, [
-                'requireAuthorizationCheck' => true,
+                'requireAuthorizationCheck' => false,
                 'identityDecorator' => function ($auth, $user) {
                     return $user->setAuthorization($auth); //turns the user entity directly into the identity object.
                 },

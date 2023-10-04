@@ -45,28 +45,28 @@ class CrudTest extends BaseControllerTest
         $this->loginUserAdmin();
 
         // get
-        $this->get('/tags');
+        $this->get('https://localhost/tags');
         $this->assertResponseOk();
         $this->assertResponseContains('<div class="tags index content">');
         $this->assertResponseContains('<h3>Tags</h3>');
 
         // post
-        $this->post('/tags');
+        $this->post('https://localhost/tags');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // patch
-        $this->patch('/tags');
+        $this->patch('https://localhost/tags');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('/tags');
+        $this->put('https://localhost/tags');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('/tags');
+        $this->delete('https://localhost/tags');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
     }
@@ -86,28 +86,28 @@ class CrudTest extends BaseControllerTest
         $this->loginUserAdmin();
 
         // test get
-        $this->get('/tags/view/1');
+        $this->get('https://localhost/tags/view/1');
         $this->assertResponseOk();
         $this->assertResponseContains('<div class="tags view content">');
         $this->assertResponseContains('<h3>Notebook</h3>');
 
         // post
-        $this->post('/tags/view/1');
+        $this->post('https://localhost/tags/view/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // patch
-        $this->patch('/tags/view/1');
+        $this->patch('https://localhost/tags/view/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('/tags/view/1');
+        $this->put('https://localhost/tags/view/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('/tags/view/1');
+        $this->delete('https://localhost/tags/view/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
     }
@@ -127,37 +127,36 @@ class CrudTest extends BaseControllerTest
         $this->loginUserAdmin();
 
         // test get
-        $this->get('/tags/add');
+        $this->get('https://localhost/tags/add');
         $this->assertResponseOk();
         $this->assertResponseContains('<div class="tags form content">');
         $this->assertResponseContains('<form method="post" accept-charset="utf-8" role="form" action="/tags/add">');
         $this->assertResponseContains('<legend>Add Tag</legend>');
 
         // post
-        $this->post('/tags/add', [
+        $this->post('https://localhost/tags/add', [
             'name' => 'New Tag',
         ]);
-        $this->assertRedirect();
-        $this->assertRedirectContains('/tags');
+        $this->assertRedirectEquals('/tags');
         $this->assertFlashMessage('The tag has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
         // patch
-        $this->patch('/tags/add', [
+        $this->patch('https://localhost/tags/add', [
             'name' => 'New Tag',
         ]);
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('/tags/add', [
+        $this->put('https://localhost/tags/add', [
             'name' => 'New Tag',
         ]);
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('/tags/add');
+        $this->delete('https://localhost/tags/add');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
     }
@@ -177,37 +176,36 @@ class CrudTest extends BaseControllerTest
         $this->loginUserAdmin();
 
         // test get
-        $this->get('/tags/edit/1');
+        $this->get('https://localhost/tags/edit/1');
         $this->assertResponseOk();
         $this->assertResponseContains('<div class="tags form content">');
         $this->assertResponseContains('<form method="patch" accept-charset="utf-8" role="form" action="/tags/edit/1">');
         $this->assertResponseContains('<legend>Edit Tag</legend>');
 
         // post
-        $this->post('/tags/edit/1', [
+        $this->post('https://localhost/tags/edit/1', [
             'name' => 'Updated Tag',
         ]);
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // patch
-        $this->patch('/tags/edit/1', [
+        $this->patch('https://localhost/tags/edit/1', [
             'name' => 'Updated Tag',
         ]);
-        $this->assertRedirect();
-        $this->assertRedirectContains('/tags');
+        $this->assertRedirectEquals('/tags');
         $this->assertFlashMessage('The tag has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
         // put
-        $this->put('/tags/edit/1', [
+        $this->put('https://localhost/tags/edit/1', [
             'name' => 'Updated Tag',
         ]);
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('/tags/edit/1');
+        $this->delete('https://localhost/tags/edit/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
     }
@@ -227,30 +225,29 @@ class CrudTest extends BaseControllerTest
         $this->loginUserAdmin();
 
         // test get
-        $this->get('/tags/delete/1');
+        $this->get('https://localhost/tags/delete/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // post
-        $this->post('/tags/delete/1');
+        $this->post('https://localhost/tags/delete/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // patch
-        $this->patch('/tags/delete/1');
+        $this->patch('https://localhost/tags/delete/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('/tags/delete/1');
+        $this->put('https://localhost/tags/delete/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('/tags/delete/1');
+        $this->delete('https://localhost/tags/delete/1');
         $this->assertFlashMessage('The tag `Notebook` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
-        $this->assertRedirect();
-        $this->assertRedirectContains('/tags');
+        $this->assertRedirectEquals('/tags');
     }
 }

@@ -41,7 +41,7 @@ class JsonTest extends BaseControllerTest
      */
     public function testIndex(): void
     {
-        $this->get('/categories');
+        $this->get('https://localhost/categories');
         $this->assertResponseOk();
 
         $content = (string)$this->_response->getBody();
@@ -66,7 +66,7 @@ class JsonTest extends BaseControllerTest
      */
     public function testView(): void
     {
-        $this->get('/categories/view/2');
+        $this->get('https://localhost/categories/view/2');
         $this->assertResponseOk();
 
         $content = (string)$this->_response->getBody();
@@ -89,7 +89,7 @@ class JsonTest extends BaseControllerTest
     public function testAdd(): void
     {
         // a get
-        $this->get('/categories/add');
+        $this->get('https://localhost/categories/add');
         $this->assertResponseOk();
 
         $content = (string)$this->_response->getBody();
@@ -105,7 +105,7 @@ class JsonTest extends BaseControllerTest
         $this->assertCount(3, $content['parentCategories']);
 
         // a post fail
-        $this->post('/categories/add.json', []);
+        $this->post('https://localhost/categories/add.json', []);
         $this->assertResponseOk();
         $content = (string)$this->_response->getBody();
         $content = json_decode($content, true);
@@ -130,14 +130,14 @@ class JsonTest extends BaseControllerTest
         $this->assertCount(3, $content['parentCategories']);
 
         // a post success
-        $this->post('/categories/add.json', [
+        $this->post('https://localhost/categories/add.json', [
             'qrkey' => 'newjsonkey',
             'name' => 'New JSON QR Code',
             'description' => 'Description of the code',
             'url' => 'https://amazon.com/path/to/forward',
             'source_id' => 1,
         ]);
-                $this->assertRedirectContains('/categories');
+                $this->assertRedirectEquals('/categories');
         $this->assertFlashMessage('The category has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -152,7 +152,7 @@ class JsonTest extends BaseControllerTest
     {
         // test with admin, get
         $this->loginUserAdmin();
-        $this->get('/categories/edit/1');
+        $this->get('https://localhost/categories/edit/1');
         $this->assertResponseOk();
         $content = (string)$this->_response->getBody();
         $content = json_decode($content, true);
@@ -167,11 +167,11 @@ class JsonTest extends BaseControllerTest
         $this->assertCount(3, $content['parentCategories']);
 
         // a patch success
-        $this->patch('/categories/edit/1.json', [
+        $this->patch('https://localhost/categories/edit/1.json', [
             'name' => 'New JSON Category',
             'description' => 'Description of the category',
         ]);
-        $this->assertRedirectContains('/categories');
+        $this->assertRedirectEquals('/categories');
         $this->assertFlashMessage('The category has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }

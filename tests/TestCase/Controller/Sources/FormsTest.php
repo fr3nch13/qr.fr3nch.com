@@ -41,7 +41,7 @@ class FormsTest extends BaseControllerTest
     public function testAdd(): void
     {
         // test failed
-        $this->post('/sources/add', [
+        $this->post('https://localhost/sources/add', [
         ]);
         $this->assertResponseOk();
         $this->helperTestAlert('The source could not be saved. Please, try again.', 'danger');
@@ -53,7 +53,7 @@ class FormsTest extends BaseControllerTest
         $this->assertResponseContains('id="description-error"');
 
         // existing fail
-        $this->post('/sources/add', [
+        $this->post('https://localhost/sources/add', [
             'name' => 'Etsy',
             'description' => 'description',
         ]);
@@ -66,11 +66,11 @@ class FormsTest extends BaseControllerTest
         $this->helperTestFormFieldError('This Name already exists.', 'name-error');
 
         // test success
-        $this->post('/sources/add', [
+        $this->post('https://localhost/sources/add', [
             'name' => 'new name',
             'description' => 'description',
         ]);
-        $this->assertRedirectContains('sources');
+        $this->assertRedirectEquals('sources');
         $this->assertFlashMessage('The source has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -84,7 +84,7 @@ class FormsTest extends BaseControllerTest
     public function testEdit(): void
     {
         // test fail
-        $this->patch('/sources/edit/1', [
+        $this->patch('https://localhost/sources/edit/1', [
             'name' => 'Etsy', // an existing record
         ]);
         $this->assertResponseOk();
@@ -96,11 +96,11 @@ class FormsTest extends BaseControllerTest
         $this->assertResponseContains('id="name-error"');
 
         // test success
-        $this->patch('/sources/edit/1', [
+        $this->patch('https://localhost/sources/edit/1', [
             'name' => 'New Source',
             'description' => 'The Description',
         ]);
-        $this->assertRedirectContains('sources');
+        $this->assertRedirectEquals('sources');
         $this->assertFlashMessage('The source has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }

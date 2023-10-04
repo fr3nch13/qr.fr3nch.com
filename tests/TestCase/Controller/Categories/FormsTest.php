@@ -41,7 +41,7 @@ class FormsTest extends BaseControllerTest
     public function testAdd(): void
     {
         // test failed
-        $this->post('/categories/add', [
+        $this->post('https://localhost/categories/add', [
         ]);
         $this->assertResponseOk();
         $this->helperTestAlert('The category could not be saved. Please, try again.', 'danger');
@@ -53,11 +53,11 @@ class FormsTest extends BaseControllerTest
         $this->assertResponseContains('id="description-error"');
 
         // test success
-        $this->post('/categories/add', [
+        $this->post('https://localhost/categories/add', [
             'name' => 'New Category',
             'description' => 'The Description',
         ]);
-        $this->assertRedirectContains('categories');
+        $this->assertRedirectEquals('categories');
         $this->assertFlashMessage('The category has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -71,7 +71,7 @@ class FormsTest extends BaseControllerTest
     public function testEdit(): void
     {
         // test fail validationDefault
-        $this->patch('/categories/edit/1', [
+        $this->patch('https://localhost/categories/edit/1', [
             'name' => 'Journals', // an existing record
             'parent_id' => 4, // this doesn't exist
         ]);
@@ -86,12 +86,12 @@ class FormsTest extends BaseControllerTest
         $this->assertResponseContains('id="parent-id-error"');
 
         // test success
-        $this->patch('/categories/edit/1', [
+        $this->patch('https://localhost/categories/edit/1', [
             'name' => 'New Category',
             'description' => 'The Description',
             'parent_id' => 3, // this doesn't exist
         ]);
-        $this->assertRedirectContains('categories');
+        $this->assertRedirectEquals('categories');
         $this->assertFlashMessage('The category has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }

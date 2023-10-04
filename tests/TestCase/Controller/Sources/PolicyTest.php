@@ -29,6 +29,43 @@ class PolicyTest extends BaseControllerTest
     }
 
     /**
+     * Test missing action
+     *
+     * @alert Keep the https://localhost/ as the HttpsEnforcerMiddleware will try to redirect.
+     *
+     * @return void
+     * @uses \App\Controller\SourcesController::index()
+     */
+    public function testDontexist(): void
+    {
+        // not logged in
+        $this->get('https://localhost/sources/dontexist');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Error: Missing Action `App\Controller\SourcesController::dontexist()`');
+
+        // test with reqular
+        $this->loginUserRegular();
+        $this->get('https://localhost/sources/dontexist');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Error: Missing Action `App\Controller\SourcesController::dontexist()`');
+
+        // test with admin
+        $this->loginUserAdmin();
+        $this->get('https://localhost/sources/dontexist');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Error: Missing Action `App\Controller\SourcesController::dontexist()`');
+
+        // test with debug off
+        Configure::write('debug', false);
+        $this->loginUserAdmin();
+        $this->get('https://localhost/sources/dontexist');
+        $this->assertResponseCode(404);
+        $this->helperTestError400();
+        $this->assertResponseContains('The requested address <strong>\'/sources/dontexist\'</strong> was not found on this server.</p>');
+        Configure::write('debug', true);
+    }
+
+    /**
      * Test index method
      *
      * @return void
@@ -37,19 +74,19 @@ class PolicyTest extends BaseControllerTest
     public function testIndex(): void
     {
         // not logged in
-        $this->get('/sources');
-        $this->assertRedirectContains('users/login?redirect=%2Fsources');
+        $this->get('https://localhost/sources');
+        $this->assertRedirectEquals('users/login?redirect=%2Fsources');
 
         // test with admin
         $this->loginUserAdmin();
-        $this->get('/sources');
+        $this->get('https://localhost/sources');
         $this->assertResponseOk();
         $this->assertResponseContains('<div class="sources index content">');
         $this->assertResponseContains('<h3>Sources</h3>');
 
         // test with reqular
         $this->loginUserRegular();
-        $this->get('/sources');
+        $this->get('https://localhost/sources');
         $this->assertResponseOk();
         $this->assertResponseContains('<div class="sources index content">');
         $this->assertResponseContains('<h3>Sources</h3>');
@@ -64,26 +101,26 @@ class PolicyTest extends BaseControllerTest
     public function testView(): void
     {
         // not logged in
-        $this->get('/sources/view/1');
-        $this->assertRedirectContains('users/login?redirect=%2Fsources%2Fview%2F1');
+        $this->get('https://localhost/sources/view/1');
+        $this->assertRedirectEquals('users/login?redirect=%2Fsources%2Fview%2F1');
 
         // test with admin
         $this->loginUserAdmin();
-        $this->get('/sources/view/1');
+        $this->get('https://localhost/sources/view/1');
         $this->assertResponseOk();
         $this->assertResponseContains('<div class="sources view content">');
         $this->assertResponseContains('<h3>Amazon</h3>');
 
         // test with reqular
         $this->loginUserRegular();
-        $this->get('/sources/view/1');
+        $this->get('https://localhost/sources/view/1');
         $this->assertResponseOk();
         $this->assertResponseContains('<div class="sources view content">');
         $this->assertResponseContains('<h3>Amazon</h3>');
 
         // test with missing id and debug
         $this->loginUserRegular();
-        $this->get('/sources/view');
+        $this->get('https://localhost/sources/view');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
 
@@ -109,12 +146,12 @@ class PolicyTest extends BaseControllerTest
     public function testAdd(): void
     {
         // not logged in, so should redirect
-        $this->get('/sources/add');
-        $this->assertRedirectContains('users/login?redirect=%2Fsources%2Fadd');
+        $this->get('https://localhost/sources/add');
+        $this->assertRedirectEquals('users/login?redirect=%2Fsources%2Fadd');
 
         // test with admin, get
         $this->loginUserAdmin();
-        $this->get('/sources/add');
+        $this->get('https://localhost/sources/add');
         $this->assertResponseOk();
         $this->assertResponseContains('<div class="sources form content">');
         $this->assertResponseContains('<form method="post" accept-charset="utf-8" role="form" action="/sources/add">');
@@ -122,8 +159,8 @@ class PolicyTest extends BaseControllerTest
 
         // test with reqular, get
         $this->loginUserRegular();
-        $this->get('/sources/add');
-        $this->assertRedirectContains('?redirect=%2Fsources%2Fadd');
+        $this->get('https://localhost/sources/add');
+        $this->assertRedirectEquals('/?redirect=%2Fsources%2Fadd');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -138,19 +175,19 @@ class PolicyTest extends BaseControllerTest
     public function testEdit(): void
     {
         // not logged in, so should redirect
-        $this->get('/sources/edit');
-        $this->assertRedirectContains('users/login?redirect=%2Fsources%2Fedit');
+        $this->get('https://localhost/sources/edit');
+        $this->assertRedirectEquals('users/login?redirect=%2Fsources%2Fedit');
 
         // test with missing id and debug
         $this->loginUserAdmin();
-        $this->get('/sources/edit');
+        $this->get('https://localhost/sources/edit');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
 
         // test with missing id, no debug
         Configure::write('debug', false);
         $this->loginUserAdmin();
-        $this->get('/sources/edit');
+        $this->get('https://localhost/sources/edit');
         $this->get(Router::url([
             '_https' => true,
             'controller' => 'Sources',
@@ -162,7 +199,7 @@ class PolicyTest extends BaseControllerTest
 
         // test with admin, get
         $this->loginUserAdmin();
-        $this->get('/sources/edit/1');
+        $this->get('https://localhost/sources/edit/1');
         $this->assertResponseOk();
         $this->assertResponseContains('<div class="sources form content">');
         $this->assertResponseContains('<form method="patch" accept-charset="utf-8" role="form" action="/sources/edit/1">');
@@ -170,8 +207,8 @@ class PolicyTest extends BaseControllerTest
 
         // test with reqular, get
         $this->loginUserRegular();
-        $this->get('/sources/edit/1');
-        $this->assertRedirectContains('?redirect=%2Fsources%2Fedit%2F1');
+        $this->get('https://localhost/sources/edit/1');
+        $this->assertRedirectEquals('/?redirect=%2Fsources%2Fedit%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -188,14 +225,14 @@ class PolicyTest extends BaseControllerTest
         $this->enableCsrfToken();
         $this->enableSecurityToken();
 
-        // not logged in, so should redirect
-        $this->get('/sources/delete');
-        $this->assertRedirect();
-        $this->assertRedirectContains('users/login?redirect=%2Fsources%2Fdelete');
+        // not logged in, missing id
+        $this->get('https://localhost/sources/delete');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
 
         // test get with missing id and debug
         $this->loginUserAdmin();
-        $this->get('/sources/delete');
+        $this->get('https://localhost/sources/delete');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
 
@@ -213,38 +250,38 @@ class PolicyTest extends BaseControllerTest
 
         // test get with reqular, get
         $this->loginUserRegular();
-        $this->get('/sources/delete/1');
-        $this->assertRedirectContains('?redirect=%2Fsources%2Fdelete%2F1');
+        $this->get('https://localhost/sources/delete/1');
+        $this->assertRedirectEquals('/?redirect=%2Fsources%2Fdelete%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
         // test post with regular, post
         $this->loginUserRegular();
-        $this->post('/sources/delete/1');
-        $this->assertRedirectContains('/sources');
+        $this->post('https://localhost/sources/delete/1');
+        $this->assertRedirectEquals('/sources');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
         // test delete with regular user
         $this->loginUserRegular();
-        $this->delete('/sources/delete/1');
-        $this->assertRedirectContains('/sources');
+        $this->delete('https://localhost/sources/delete/1');
+        $this->assertRedirectEquals('/sources');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
         // test post with admin, get
         $this->loginUserAdmin();
-        $this->post('/sources/delete/1');
+        $this->post('https://localhost/sources/delete/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // test with admin, post no data, no CSRF
         $this->loginUserAdmin();
-        $this->delete('/sources/delete/1');
-        $this->assertRedirectContains('sources');
+        $this->delete('https://localhost/sources/delete/1');
+        $this->assertRedirectEquals('sources');
         $this->assertFlashMessage('The source `Amazon` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
     }

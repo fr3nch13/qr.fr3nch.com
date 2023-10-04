@@ -39,19 +39,19 @@ class ViewTest extends BaseControllerTest
     public function testIndexNormal(): void
     {
         // not logged in
-        $this->get('/categories');
+        $this->get('https://localhost/categories');
         $this->assertResponseOk();
         $this->helperTestLayoutIndex();
 
         // test with reqular
         $this->loginUserRegular();
-        $this->get('/categories');
+        $this->get('https://localhost/categories');
         $this->assertResponseOk();
         $this->helperTestLayoutIndex();
 
         // test with admin
         $this->loginUserAdmin();
-        $this->get('/categories');
+        $this->get('https://localhost/categories');
         $this->assertResponseOk();
         $this->helperTestLayoutIndex();
     }
@@ -66,21 +66,21 @@ class ViewTest extends BaseControllerTest
     {
         // not logged in
         $this->requestAsAjax();
-        $this->get('/categories');
+        $this->get('https://localhost/categories');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
 
         // test with reqular
         $this->requestAsAjax();
         $this->loginUserRegular();
-        $this->get('/categories');
+        $this->get('https://localhost/categories');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
 
         // test with admin
         $this->requestAsAjax();
         $this->loginUserAdmin();
-        $this->get('/categories');
+        $this->get('https://localhost/categories');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
     }
@@ -94,19 +94,19 @@ class ViewTest extends BaseControllerTest
     public function testViewNormal(): void
     {
         // not logged in
-        $this->get('/categories/view/1');
+        $this->get('https://localhost/categories/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutView();
 
         // test with reqular
         $this->loginUserRegular();
-        $this->get('/categories/view/1');
+        $this->get('https://localhost/categories/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutView();
 
         // test with admin
         $this->loginUserAdmin();
-        $this->get('/categories/view/1');
+        $this->get('https://localhost/categories/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutView();
     }
@@ -121,21 +121,21 @@ class ViewTest extends BaseControllerTest
     {
         // not logged in
         $this->requestAsAjax();
-        $this->get('/categories/view/1');
+        $this->get('https://localhost/categories/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
 
         // test with reqular
         $this->requestAsAjax();
         $this->loginUserRegular();
-        $this->get('/categories/view/1');
+        $this->get('https://localhost/categories/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
 
         // test with admin
         $this->requestAsAjax();
         $this->loginUserAdmin();
-        $this->get('/categories/view/1');
+        $this->get('https://localhost/categories/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
     }
@@ -150,15 +150,15 @@ class ViewTest extends BaseControllerTest
     {
         // test with reqular, get
         $this->loginUserRegular();
-        $this->get('/categories/add');
-        $this->assertRedirectContains('?redirect=%2Fcategories%2Fadd');
+        $this->get('https://localhost/categories/add');
+        $this->assertRedirectEquals('/?redirect=%2Fcategories%2Fadd');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
         // test with admin, get
         $this->loginUserAdmin();
-        $this->get('/categories/add');
+        $this->get('https://localhost/categories/add');
         $this->assertResponseOk();
         $this->helperTestLayoutForm();
     }
@@ -174,8 +174,8 @@ class ViewTest extends BaseControllerTest
         // test with reqular, get
         $this->requestAsAjax();
         $this->loginUserRegular();
-        $this->get('/categories/add');
-        $this->assertRedirectContains('?redirect=%2Fcategories%2Fadd');
+        $this->get('https://localhost/categories/add');
+        $this->assertRedirectEquals('/?redirect=%2Fcategories%2Fadd');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -183,7 +183,7 @@ class ViewTest extends BaseControllerTest
         // test with admin, get
         $this->requestAsAjax();
         $this->loginUserAdmin();
-        $this->get('/categories/add');
+        $this->get('https://localhost/categories/add');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
     }
@@ -198,15 +198,15 @@ class ViewTest extends BaseControllerTest
     {
         // test with reqular, get
         $this->loginUserRegular();
-        $this->get('/categories/edit/1');
-        $this->assertRedirectContains('?redirect=%2Fcategories%2Fedit%2F1');
+        $this->get('https://localhost/categories/edit/1');
+        $this->assertRedirectEquals('/?redirect=%2Fcategories%2Fedit%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
         // test with admin, get
         $this->loginUserAdmin();
-        $this->get('/categories/edit/1');
+        $this->get('https://localhost/categories/edit/1');
         $this->assertResponseOk();
         $this->helperTestLayoutForm();
     }
@@ -222,8 +222,8 @@ class ViewTest extends BaseControllerTest
         // test with reqular, get
         $this->requestAsAjax();
         $this->loginUserRegular();
-        $this->get('/categories/edit/1');
-        $this->assertRedirectContains('?redirect=%2Fcategories%2Fedit%2F1');
+        $this->get('https://localhost/categories/edit/1');
+        $this->assertRedirectEquals('/?redirect=%2Fcategories%2Fedit%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -231,7 +231,7 @@ class ViewTest extends BaseControllerTest
         // test with admin, get
         $this->requestAsAjax();
         $this->loginUserAdmin();
-        $this->get('/categories/edit/1');
+        $this->get('https://localhost/categories/edit/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
     }

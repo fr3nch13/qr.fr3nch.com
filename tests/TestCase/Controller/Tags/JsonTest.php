@@ -41,7 +41,7 @@ class JsonTest extends BaseControllerTest
      */
     public function testIndex(): void
     {
-        $this->get('/tags');
+        $this->get('https://localhost/tags');
         $this->assertResponseOk();
 
         $content = (string)$this->_response->getBody();
@@ -64,7 +64,7 @@ class JsonTest extends BaseControllerTest
      */
     public function testView(): void
     {
-        $this->get('/tags/view/2');
+        $this->get('https://localhost/tags/view/2');
         $this->assertResponseOk();
 
         $content = (string)$this->_response->getBody();
@@ -86,7 +86,7 @@ class JsonTest extends BaseControllerTest
     public function testAdd(): void
     {
         // a get
-        $this->get('/tags/add');
+        $this->get('https://localhost/tags/add');
         $this->assertResponseOk();
 
         $content = (string)$this->_response->getBody();
@@ -99,7 +99,7 @@ class JsonTest extends BaseControllerTest
         $this->assertTrue(empty($content['errors']));
 
         // a post fail
-        $this->post('/tags/add.json', []);
+        $this->post('https://localhost/tags/add.json', []);
         $this->assertResponseOk();
         $content = (string)$this->_response->getBody();
         $content = json_decode($content, true);
@@ -118,10 +118,10 @@ class JsonTest extends BaseControllerTest
         $this->assertSame($expected, $content['errors']);
 
         // a post success
-        $this->post('/tags/add.json', [
+        $this->post('https://localhost/tags/add.json', [
             'name' => 'New JSON Tag',
         ]);
-                $this->assertRedirectContains('/tags');
+                $this->assertRedirectEquals('/tags');
         $this->assertFlashMessage('The tag has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -136,7 +136,7 @@ class JsonTest extends BaseControllerTest
     {
         // test with admin, get
         $this->loginUserAdmin();
-        $this->get('/tags/edit/1');
+        $this->get('https://localhost/tags/edit/1');
         $this->assertResponseOk();
         $content = (string)$this->_response->getBody();
         $content = json_decode($content, true);
@@ -148,11 +148,11 @@ class JsonTest extends BaseControllerTest
         $this->assertTrue(empty($content['errors']));
 
         // a patch success
-        $this->patch('/tags/edit/1.json', [
+        $this->patch('https://localhost/tags/edit/1.json', [
             'name' => 'New JSON Category',
             'description' => 'Description of the tag',
         ]);
-                $this->assertRedirectContains('/tags');
+                $this->assertRedirectEquals('/tags');
         $this->assertFlashMessage('The tag has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }

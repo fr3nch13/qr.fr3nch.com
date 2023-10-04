@@ -39,12 +39,12 @@ class ViewTest extends BaseControllerTest
     public function testIndexNormal(): void
     {
         // not logged in
-        $this->get('/sources');
-        $this->assertRedirectContains('users/login?redirect=%2Fsources');
+        $this->get('https://localhost/sources');
+        $this->assertRedirectEquals('users/login?redirect=%2Fsources');
 
         // test with reqular
         $this->loginUserRegular();
-        $this->get('/sources');
+        $this->get('https://localhost/sources');
         $this->assertResponseOk();
         $this->helperTestLayoutIndex();
         $this->assertResponseContains('<div class="sources index content">');
@@ -52,7 +52,7 @@ class ViewTest extends BaseControllerTest
 
         // test with admin
         $this->loginUserAdmin();
-        $this->get('/sources');
+        $this->get('https://localhost/sources');
         $this->assertResponseOk();
         $this->helperTestLayoutIndex();
     }
@@ -67,13 +67,13 @@ class ViewTest extends BaseControllerTest
     {
         // not logged in
         $this->requestAsAjax();
-        $this->get('/sources');
-        $this->assertRedirectContains('users/login?redirect=%2Fsources');
+        $this->get('https://localhost/sources');
+        $this->assertRedirectEquals('users/login?redirect=%2Fsources');
 
         // test with reqular
         $this->requestAsAjax();
         $this->loginUserRegular();
-        $this->get('/sources');
+        $this->get('https://localhost/sources');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
         $this->assertResponseContains('<div class="sources index content">');
@@ -82,7 +82,7 @@ class ViewTest extends BaseControllerTest
         // test with admin
         $this->requestAsAjax();
         $this->loginUserAdmin();
-        $this->get('/sources');
+        $this->get('https://localhost/sources');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
     }
@@ -96,18 +96,18 @@ class ViewTest extends BaseControllerTest
     public function testViewNormal(): void
     {
         // not logged in
-        $this->get('/sources/view/1');
-        $this->assertRedirectContains('users/login?redirect=%2Fsources%2Fview%2F1');
+        $this->get('https://localhost/sources/view/1');
+        $this->assertRedirectEquals('users/login?redirect=%2Fsources%2Fview%2F1');
 
         // test with reqular
         $this->loginUserRegular();
-        $this->get('/sources/view/1');
+        $this->get('https://localhost/sources/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutView();
 
         // test with admin
         $this->loginUserAdmin();
-        $this->get('/sources/view/1');
+        $this->get('https://localhost/sources/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutView();
     }
@@ -122,20 +122,20 @@ class ViewTest extends BaseControllerTest
     {
         // not logged in
         $this->requestAsAjax();
-        $this->get('/sources/view/1');
-        $this->assertRedirectContains('users/login?redirect=%2Fsources%2Fview%2F1');
+        $this->get('https://localhost/sources/view/1');
+        $this->assertRedirectEquals('users/login?redirect=%2Fsources%2Fview%2F1');
 
         // test with reqular
         $this->requestAsAjax();
         $this->loginUserRegular();
-        $this->get('/sources/view/1');
+        $this->get('https://localhost/sources/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
 
         // test with admin
         $this->requestAsAjax();
         $this->loginUserAdmin();
-        $this->get('/sources/view/1');
+        $this->get('https://localhost/sources/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
     }
@@ -150,15 +150,15 @@ class ViewTest extends BaseControllerTest
     {
         // test with reqular, get
         $this->loginUserRegular();
-        $this->get('/sources/add');
-        $this->assertRedirectContains('?redirect=%2Fsources%2Fadd');
+        $this->get('https://localhost/sources/add');
+        $this->assertRedirectEquals('/?redirect=%2Fsources%2Fadd');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
         // test with admin, get
         $this->loginUserAdmin();
-        $this->get('/sources/add');
+        $this->get('https://localhost/sources/add');
         $this->assertResponseOk();
         $this->helperTestLayoutForm();
     }
@@ -174,8 +174,8 @@ class ViewTest extends BaseControllerTest
         // test with reqular, get
         $this->requestAsAjax();
         $this->loginUserRegular();
-        $this->get('/sources/add');
-        $this->assertRedirectContains('?redirect=%2Fsources%2Fadd');
+        $this->get('https://localhost/sources/add');
+        $this->assertRedirectEquals('/?redirect=%2Fsources%2Fadd');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -183,7 +183,7 @@ class ViewTest extends BaseControllerTest
         // test with admin, get
         $this->requestAsAjax();
         $this->loginUserAdmin();
-        $this->get('/sources/add');
+        $this->get('https://localhost/sources/add');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
     }
@@ -198,15 +198,15 @@ class ViewTest extends BaseControllerTest
     {
         // test with reqular, get
         $this->loginUserRegular();
-        $this->get('/sources/edit/1');
-        $this->assertRedirectContains('?redirect=%2Fsources%2Fedit%2F1');
+        $this->get('https://localhost/sources/edit/1');
+        $this->assertRedirectEquals('/?redirect=%2Fsources%2Fedit%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
         // test with admin, get
         $this->loginUserAdmin();
-        $this->get('/sources/edit/1');
+        $this->get('https://localhost/sources/edit/1');
         $this->assertResponseOk();
         $this->helperTestLayoutForm();
     }
@@ -222,8 +222,8 @@ class ViewTest extends BaseControllerTest
         // test with reqular, get
         $this->requestAsAjax();
         $this->loginUserRegular();
-        $this->get('/sources/edit/1');
-        $this->assertRedirectContains('?redirect=%2Fsources%2Fedit%2F1');
+        $this->get('https://localhost/sources/edit/1');
+        $this->assertRedirectEquals('/?redirect=%2Fsources%2Fedit%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -231,7 +231,7 @@ class ViewTest extends BaseControllerTest
         // test with admin, get
         $this->requestAsAjax();
         $this->loginUserAdmin();
-        $this->get('/sources/edit/1');
+        $this->get('https://localhost/sources/edit/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
     }

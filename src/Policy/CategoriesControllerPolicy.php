@@ -5,7 +5,6 @@ namespace App\Policy;
 
 use App\Controller\CategoriesController;
 use App\Model\Entity\User;
-use Authorization\IdentityInterface;
 
 /**
  * Categories Controller policy
@@ -83,7 +82,7 @@ class CategoriesControllerPolicy extends BaseControllerPolicy
             return false;
         }
 
-        // Only admins can edit a category
+        // Only admins can delete a category
         return $identity->isAdmin();
     }
 }

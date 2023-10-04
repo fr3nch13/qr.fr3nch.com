@@ -37,7 +37,7 @@ class GeneralTest extends BaseControllerTest
      */
     public function testShow(): void
     {
-        $this->get('/qr-images/show/1');
+        $this->get('https://localhost/qr-images/show/1');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders(); // @phpstan-ignore-line

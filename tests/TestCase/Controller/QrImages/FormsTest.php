@@ -41,7 +41,7 @@ class FormsTest extends BaseControllerTest
     public function testAdd(): void
     {
         // test failed
-        $this->post('/qr-images/add/1', [
+        $this->post('https://localhost/qr-images/add/1', [
         ]);
         $this->assertResponseOk();
         $this->helperTestAlert('The image could not be saved. Please, try again.', 'danger');
@@ -57,7 +57,7 @@ class FormsTest extends BaseControllerTest
         // user is added in the controller, so no form element for it.
 
         // test success
-        $this->post('/qr-images/add/1', [
+        $this->post('https://localhost/qr-images/add/1', [
             'qrkey' => 'newqrcode',
             'name' => 'New QrImage',
             'description' => 'The Description',
@@ -65,7 +65,7 @@ class FormsTest extends BaseControllerTest
             'source_id' => 1,
             'user_id' => 1,
         ]);
-        $this->assertRedirectContains('/qr-images/qr-code/1');
+        $this->assertRedirectEquals('/qr-images/qr-code/1');
         $this->assertFlashMessage('The image has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
@@ -81,7 +81,7 @@ class FormsTest extends BaseControllerTest
     public function testEdit(): void
     {
         // test fail, can't edit qrkey
-        $this->patch('/qr-images/edit/2', [
+        $this->patch('https://localhost/qr-images/edit/2', [
             'qrkey' => 'blahblah', // changed key
         ]);
         $this->assertResponseOk();
@@ -93,7 +93,7 @@ class FormsTest extends BaseControllerTest
         // if it does, it's someone trying to be nefarious, don't give them more info.
 
         // a test fail existing key
-        $this->patch('/qr-images/edit/2', [
+        $this->patch('https://localhost/qr-images/edit/2', [
             'qrkey' => 'witchinghour', // an existing record
         ]);
         $this->assertResponseOk();
@@ -105,12 +105,11 @@ class FormsTest extends BaseControllerTest
         // if it does, it's someone trying to be nefarious, don't give them more info.
 
         // test success
-        $this->patch('/qr-images/edit/2', [
+        $this->patch('https://localhost/qr-images/edit/2', [
             'name' => 'New Category',
             'description' => 'The Description',
         ]);
-        $this->assertRedirect();
-        $this->assertRedirectContains('/qr-images/qr-code/1');
+        $this->assertRedirectEquals('/qr-images/qr-code/1');
         $this->assertFlashMessage('The image has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }

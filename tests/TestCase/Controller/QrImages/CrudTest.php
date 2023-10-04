@@ -39,28 +39,28 @@ class CrudTest extends BaseControllerTest
     public function testIndex(): void
     {
         // get
-        $this->get('/qr-images');
+        $this->get('https://localhost/qr-images');
         $this->assertResponseOk();
         $this->assertResponseContains('<div class="qrImages index content">');
         $this->assertResponseContains('<h3>QR Codes</h3>');
 
         // post
-        $this->post('/qr-images');
+        $this->post('https://localhost/qr-images');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // patch
-        $this->patch('/qr-images');
+        $this->patch('https://localhost/qr-images');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('/qr-images');
+        $this->put('https://localhost/qr-images');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('/qr-images');
+        $this->delete('https://localhost/qr-images');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
     }
@@ -74,28 +74,28 @@ class CrudTest extends BaseControllerTest
     public function testView(): void
     {
         // test get
-        $this->get('/qr-images/view/1');
+        $this->get('https://localhost/qr-images/view/1');
         $this->assertResponseOk();
         $this->assertResponseContains('<div class="qrImages view content">');
         $this->assertResponseContains('<h3>Sow &amp; Scribe</h3>');
 
         // post
-        $this->post('/qr-images/view/1');
+        $this->post('https://localhost/qr-images/view/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // patch
-        $this->patch('/qr-images/view/1');
+        $this->patch('https://localhost/qr-images/view/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('/qr-images/view/1');
+        $this->put('https://localhost/qr-images/view/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('/qr-images/view/1');
+        $this->delete('https://localhost/qr-images/view/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
     }
@@ -109,23 +109,23 @@ class CrudTest extends BaseControllerTest
     public function testAdd(): void
     {
         // test get
-        $this->get('/qr-images/add/1');
+        $this->get('https://localhost/qr-images/add/1');
         $this->assertResponseOk();
         $this->assertResponseContains('<div class="qrImages form content">');
         $this->assertResponseContains('<form method="post" accept-charset="utf-8" role="form" action="/qr-images/add">');
         $this->assertResponseContains('<legend>Add QR Code</legend>');
 
         // post
-        $this->post('/qr-images/add/1', [
+        $this->post('https://localhost/qr-images/add/1', [
             'name' => 'New QrImage',
             'qr_code_id' => 1,
         ]);
-        $this->assertRedirectContains('/qr-images/qr-code/1');
+        $this->assertRedirectEquals('/qr-images/qr-code/1');
         $this->assertFlashMessage('The image has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
         // patch
-        $this->patch('/qr-images/add/1', [
+        $this->patch('https://localhost/qr-images/add/1', [
             'name' => 'New QrImage',
             'qr_code_id' => 1,
         ]);
@@ -133,7 +133,7 @@ class CrudTest extends BaseControllerTest
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('/qr-images/add/1', [
+        $this->put('https://localhost/qr-images/add/1', [
             'name' => 'New QrImage',
             'qr_code_id' => 1,
         ]);
@@ -141,7 +141,7 @@ class CrudTest extends BaseControllerTest
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('/qr-images/add/1');
+        $this->delete('https://localhost/qr-images/add/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
     }
@@ -155,36 +155,36 @@ class CrudTest extends BaseControllerTest
     public function testEdit(): void
     {
         // test get
-        $this->get('/qr-images/edit/2');
+        $this->get('https://localhost/qr-images/edit/2');
         $this->assertResponseOk();
         $this->assertResponseContains('<div class="qrImages form content">');
         $this->assertResponseContains('<form method="patch" accept-charset="utf-8" role="form" action="/qr-images/edit/1">');
         $this->assertResponseContains('<legend>Edit QR Code</legend>');
 
         // post
-        $this->post('/qr-images/edit/2', [
+        $this->post('https://localhost/qr-images/edit/2', [
             'name' => 'Edited QrImage',
         ]);
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // patch
-        $this->patch('/qr-images/edit/2', [
+        $this->patch('https://localhost/qr-images/edit/2', [
             'name' => 'Edited QrImage',
         ]);
-        $this->assertRedirectContains('/qr-images/qr-code/1');
+        $this->assertRedirectEquals('/qr-images/qr-code/1');
         $this->assertFlashMessage('The image has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
         // put
-        $this->put('/qr-images/edit/1', [
+        $this->put('https://localhost/qr-images/edit/1', [
             'name' => 'Edited QrImage',
         ]);
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('/qr-images/edit/1');
+        $this->delete('https://localhost/qr-images/edit/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
     }
@@ -198,28 +198,28 @@ class CrudTest extends BaseControllerTest
     public function testDelete(): void
     {
         // test get
-        $this->get('/qr-images/delete/1');
+        $this->get('https://localhost/qr-images/delete/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // post
-        $this->post('/qr-images/delete/1');
+        $this->post('https://localhost/qr-images/delete/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // patch
-        $this->patch('/qr-images/delete/1');
+        $this->patch('https://localhost/qr-images/delete/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('/qr-images/delete/1');
+        $this->put('https://localhost/qr-images/delete/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('/qr-images/delete/1');
-        $this->assertRedirectContains('/qr-images/qr-code/1');
+        $this->delete('https://localhost/qr-images/delete/1');
+        $this->assertRedirectEquals('/qr-images/qr-code/1');
         $this->assertFlashMessage('The image `Front Cover` for `Sow & Scribe` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
     }

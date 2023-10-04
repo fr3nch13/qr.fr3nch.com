@@ -35,7 +35,7 @@ class PagesControllerTest extends BaseControllerTest
     {
         Configure::write('debug', true);
 
-        $this->get('/pages/about');
+        $this->get('https://localhost/pages/about');
 
         $this->assertResponseOk();
         $this->assertResponseContains('About');
@@ -53,7 +53,7 @@ class PagesControllerTest extends BaseControllerTest
     {
         Configure::write('debug', true);
 
-        $this->get('/');
+        $this->get('https://localhost/');
 
         $this->assertResponseOk();
         $this->assertResponseContains('QR Codes');
@@ -69,7 +69,7 @@ class PagesControllerTest extends BaseControllerTest
     {
         Configure::write('debug', true);
 
-        $this->get('/pages/about/staff');
+        $this->get('https://localhost/pages/about/staff');
 
         $this->assertResponseOk();
         $this->assertResponseContains('Staff');
@@ -86,9 +86,9 @@ class PagesControllerTest extends BaseControllerTest
     {
         Configure::write('debug', true);
 
-        $this->get('/pages');
+        $this->get('https://localhost/pages');
 
-        $this->assertRedirectContains('/');
+        $this->assertRedirectEquals('/');
     }
 
     /**
@@ -101,7 +101,7 @@ class PagesControllerTest extends BaseControllerTest
         Configure::write('debug', true);
         $this->loginUserAdmin();
 
-        $this->get('/pages/index');
+        $this->get('https://localhost/pages/index');
 
         $this->assertResponseOk();
         $this->assertResponseContains('Index');
@@ -137,7 +137,7 @@ class PagesControllerTest extends BaseControllerTest
     {
         Configure::write('debug', true);
 
-        $this->get('/pages/not_existing');
+        $this->get('https://localhost/pages/not_existing');
 
         $this->assertResponseFailure();
         $this->assertResponseContains('Missing Template');
@@ -165,7 +165,7 @@ class PagesControllerTest extends BaseControllerTest
      */
     public function testCsrfAppliedError()
     {
-        $this->post('/pages/home', ['hello' => 'world']);
+        $this->post('https://localhost/pages/home', ['hello' => 'world']);
 
         $this->assertResponseCode(403);
         $this->assertResponseContains('CSRF');
@@ -181,7 +181,7 @@ class PagesControllerTest extends BaseControllerTest
         Configure::write('debug', true);
         $this->enableCsrfToken();
 
-        $this->post('/pages/home', ['hello' => 'world']);
+        $this->post('https://localhost/pages/home', ['hello' => 'world']);
 
         $this->assertThat(403, $this->logicalNot(new StatusCode($this->_response)));
         $this->assertResponseContains('`_Token` was not found in request data.');

@@ -39,19 +39,19 @@ class ViewTest extends BaseControllerTest
     public function testIndexNormal(): void
     {
         // not logged in
-        $this->get('/tags');
+        $this->get('https://localhost/tags');
         $this->assertResponseOk();
         $this->helperTestLayoutIndex();
 
         // test with reqular
         $this->loginUserRegular();
-        $this->get('/tags');
+        $this->get('https://localhost/tags');
         $this->assertResponseOk();
         $this->helperTestLayoutIndex();
 
         // test with admin
         $this->loginUserAdmin();
-        $this->get('/tags');
+        $this->get('https://localhost/tags');
         $this->assertResponseOk();
         $this->helperTestLayoutIndex();
     }
@@ -66,21 +66,21 @@ class ViewTest extends BaseControllerTest
     {
         // not logged in
         $this->requestAsAjax();
-        $this->get('/tags');
+        $this->get('https://localhost/tags');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
 
         // test with reqular
         $this->requestAsAjax();
         $this->loginUserRegular();
-        $this->get('/tags');
+        $this->get('https://localhost/tags');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
 
         // test with admin
         $this->requestAsAjax();
         $this->loginUserAdmin();
-        $this->get('/tags');
+        $this->get('https://localhost/tags');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
     }
@@ -94,19 +94,19 @@ class ViewTest extends BaseControllerTest
     public function testViewNormal(): void
     {
         // not logged in
-        $this->get('/tags/view/1');
+        $this->get('https://localhost/tags/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutView();
 
         // test with reqular
         $this->loginUserRegular();
-        $this->get('/tags/view/1');
+        $this->get('https://localhost/tags/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutView();
 
         // test with admin
         $this->loginUserAdmin();
-        $this->get('/tags/view/1');
+        $this->get('https://localhost/tags/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutView();
     }
@@ -121,21 +121,21 @@ class ViewTest extends BaseControllerTest
     {
         // not logged in
         $this->requestAsAjax();
-        $this->get('/tags/view/1');
+        $this->get('https://localhost/tags/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
 
         // test with reqular
         $this->requestAsAjax();
         $this->loginUserRegular();
-        $this->get('/tags/view/1');
+        $this->get('https://localhost/tags/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
 
         // test with admin
         $this->requestAsAjax();
         $this->loginUserAdmin();
-        $this->get('/tags/view/1');
+        $this->get('https://localhost/tags/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
     }
@@ -150,13 +150,13 @@ class ViewTest extends BaseControllerTest
     {
         // test with reqular, get
         $this->loginUserRegular();
-        $this->get('/tags/add');
+        $this->get('https://localhost/tags/add');
         $this->assertResponseOk();
         $this->helperTestLayoutForm();
 
         // test with admin, get
         $this->loginUserAdmin();
-        $this->get('/tags/add');
+        $this->get('https://localhost/tags/add');
         $this->assertResponseOk();
         $this->helperTestLayoutForm();
     }
@@ -172,14 +172,14 @@ class ViewTest extends BaseControllerTest
         // test with reqular, get
         $this->requestAsAjax();
         $this->loginUserRegular();
-        $this->get('/tags/add');
+        $this->get('https://localhost/tags/add');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
 
         // test with admin, get
         $this->requestAsAjax();
         $this->loginUserAdmin();
-        $this->get('/tags/add');
+        $this->get('https://localhost/tags/add');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
     }
@@ -194,15 +194,15 @@ class ViewTest extends BaseControllerTest
     {
         // test with reqular, get
         $this->loginUserRegular();
-        $this->get('/tags/edit/1');
-        $this->assertRedirectContains('/?redirect=%2Ftags%2Fedit%2F1');
+        $this->get('https://localhost/tags/edit/1');
+        $this->assertRedirectEquals('/?redirect=%2Ftags%2Fedit%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
         // test with admin, get
         $this->loginUserAdmin();
-        $this->get('/tags/edit/1');
+        $this->get('https://localhost/tags/edit/1');
         $this->assertResponseOk();
         $this->helperTestLayoutForm();
     }
@@ -218,8 +218,8 @@ class ViewTest extends BaseControllerTest
         // test with reqular, get
         $this->requestAsAjax();
         $this->loginUserRegular();
-        $this->get('/tags/edit/1');
-        $this->assertRedirectContains('/?redirect=%2Ftags%2Fedit%2F1');
+        $this->get('https://localhost/tags/edit/1');
+        $this->assertRedirectEquals('/?redirect=%2Ftags%2Fedit%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -227,7 +227,7 @@ class ViewTest extends BaseControllerTest
         // test with admin, get
         $this->requestAsAjax();
         $this->loginUserAdmin();
-        $this->get('/tags/edit/1');
+        $this->get('https://localhost/tags/edit/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
     }

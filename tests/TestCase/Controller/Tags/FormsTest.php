@@ -41,7 +41,7 @@ class FormsTest extends BaseControllerTest
     public function testAdd(): void
     {
         // test failed
-        $this->post('/tags/add', [
+        $this->post('https://localhost/tags/add', [
         ]);
         $this->assertResponseOk();
         $this->helperTestAlert('The tag could not be saved. Please, try again.', 'danger');
@@ -52,11 +52,10 @@ class FormsTest extends BaseControllerTest
         $this->assertResponseContains('id="name-error"');
 
         // test success
-        $this->post('/tags/add', [
+        $this->post('https://localhost/tags/add', [
             'name' => 'new tag',
         ]);
-        $this->assertRedirect();
-        $this->assertRedirectContains('/tags');
+        $this->assertRedirectEquals('/tags');
         $this->assertFlashMessage('The tag has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -70,7 +69,7 @@ class FormsTest extends BaseControllerTest
     public function testEdit(): void
     {
         // test fail
-        $this->patch('/tags/edit/1', [
+        $this->patch('https://localhost/tags/edit/1', [
             'name' => 'Amazon', // an existing record
         ]);
         $this->assertResponseOk();
@@ -82,12 +81,11 @@ class FormsTest extends BaseControllerTest
         $this->assertResponseContains('id="name-error"');
 
         // test success
-        $this->patch('/tags/edit/1', [
+        $this->patch('https://localhost/tags/edit/1', [
             'name' => 'New Tag',
             'description' => 'The Description',
         ]);
-        $this->assertRedirect();
-        $this->assertRedirectContains('/tags');
+        $this->assertRedirectEquals('/tags');
         $this->assertFlashMessage('The tag has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
