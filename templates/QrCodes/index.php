@@ -66,7 +66,9 @@ if (!$this->getRequest()->is('ajax')) {
                             ]); ?>
                         </li>
                         <?php endif; ?>
-                        <!-- Will add back when I include friendsofcake/search
+                        <!--
+                        // TODO: Will add back when I include friendsofcake/search
+                        // labels: frontend
                         <li class="list-inline-item ms-2">
                             <a class=" underline text-black" data-bs-toggle="offcanvas" href="#offcanvasFilter" role="button"
                             aria-controls="offcanvasFilter">
@@ -84,7 +86,7 @@ if (!$this->getRequest()->is('ajax')) {
 
             <?php foreach ($qrCodes as $qrCode): ?>
                 <div class="col-md-6 col-lg-4">
-                    <div class="product">
+                    <div class="product<?= $qrCode->is_active ? ' active' : ' inactive' ?>">
                         <div class="product-title">
                             <?= $this->Html->link(
                                 $qrCode->name,
@@ -94,7 +96,11 @@ if (!$this->getRequest()->is('ajax')) {
                         </div>
                         <figure class="product-image">
                             <a href="<?= $this->Url->build(['action' => 'view', $qrCode->id]) ?>">
-                                <img src="<?= $this->Url->build(['action' => 'show', $qrCode->id]) ?>" alt="<?= __('The QR Code') ?>">
+                                <?php foreach ($qrCode->qr_images as $qrImage): ?>
+                                    <img class="product-qrimage" src="<?= $this->Url->build(['controller' => 'QrImages', 'action' => 'show', $qrImage->id]) ?>" alt="<?= $qrImage->name ?>">
+                                    <?php break; // we only want to use the first one ?>
+                                <?php endforeach; ?>
+                                <img class="product-qrcode" src="<?= $this->Url->build(['action' => 'show', $qrCode->id]) ?>" alt="<?= __('The QR Code') ?>">
                             </a>
                         </figure>
                         <div class="btn-group btn-block product-options" role="group" aria-label="Product Options">
