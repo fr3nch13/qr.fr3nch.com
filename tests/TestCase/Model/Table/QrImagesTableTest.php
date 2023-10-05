@@ -189,6 +189,7 @@ class QrImagesTableTest extends TestCase
         if (is_dir($tmpdir)) {
             // save the existing content
             $moved = TMP . 'qr_images_bak';
+            sleep(1); // let things settle for a secound.
             rename($tmpdir, $moved);
         }
 
@@ -201,13 +202,13 @@ class QrImagesTableTest extends TestCase
         // test the paths here.
         // this one has an image file.
         $entity = $this->QrImages->get(1);
-        $entityPath = $tmpdir . DS . $entity->qr_code_id . DS . $entity->id;
+        $entityPath = $tmpdir . DS . $entity->qr_code_id . DS . $entity->id . '.' . $entity->ext;
         $this->assertTrue(is_file($entityPath));
         $this->assertSame($entityPath, $entity->path);
 
         // this one is missing an image file.
         $entity = $this->QrImages->get(4);
-        $entityPath = $tmpdir . DS . $entity->qr_code_id . DS . $entity->id;
+        $entityPath = $tmpdir . DS . $entity->qr_code_id . DS . $entity->id . '.' . $entity->ext;
         $this->assertFalse(is_file($entityPath));
         $this->assertNull($entity->path);
 
@@ -223,13 +224,13 @@ class QrImagesTableTest extends TestCase
             $dir_handle = opendir($source);
             while($file = readdir($dir_handle)){
                 if($file != "." && $file != ".."){
-                    if(is_dir($source."/".$file)){
-                        if(!is_dir($dest."/".$file)){
-                            mkdir($dest."/".$file);
+                    if(is_dir($source . DS . $file)){
+                        if(!is_dir($dest . DS . $file)){
+                            mkdir($dest . DS . $file);
                         }
-                        $this->cpy($source."/".$file, $dest."/".$file);
+                        $this->cpy($source . DS . $file, $dest . DS . $file);
                     } else {
-                        copy($source."/".$file, $dest."/".$file);
+                        copy($source . DS . $file, $dest . DS . $file);
                     }
                 }
             }
@@ -245,10 +246,10 @@ class QrImagesTableTest extends TestCase
             $objects = scandir($dir);
             foreach ($objects as $object) {
                 if ($object != "." && $object != "..") {
-                    if (is_dir($dir. DIRECTORY_SEPARATOR .$object) && !is_link($dir."/".$object))
-                        $this->rrmdir($dir. DIRECTORY_SEPARATOR .$object);
+                    if (is_dir($dir. DS .$object) && !is_link($dir . DS . $object))
+                        $this->rrmdir($dir. DS .$object);
                     else
-                        unlink($dir. DIRECTORY_SEPARATOR .$object);
+                        unlink($dir. DS .$object);
                 }
             }
             rmdir($dir);
