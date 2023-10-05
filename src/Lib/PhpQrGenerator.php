@@ -67,7 +67,7 @@ class PhpQrGenerator
         $this->config['negativecolor'] = $this->config['negativecolor'] ?? [255, 255, 255];
         $this->config['logoPath'] = $this->config['logoPath'] ?? WWW_ROOT . 'img' . DS . 'qr_logo.png';
 
-        $this->qrImagePath = TMP . 'qr_codes' . DS . $this->qrCode->id . '.png';
+        $this->qrImagePath = Configure::read('App.paths.qr_codes') . DS . $this->qrCode->id . '.png';
 
         $this->options = new LogoOptions();
 

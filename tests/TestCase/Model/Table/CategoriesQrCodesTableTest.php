@@ -6,6 +6,7 @@ namespace App\Test\TestCase\Model\Table;
 use App\Model\Table\CategoriesQrCodesTable;
 use App\Model\Table\CategoriesTable;
 use App\Model\Table\QrCodesTable;
+use Cake\Core\Configure;
 use Cake\ORM\Association\BelongsTo;
 use Cake\TestSuite\TestCase;
 
@@ -42,6 +43,7 @@ class CategoriesQrCodesTableTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        Configure::write('debug', true);
         $config = $this->getTableLocator()->exists('CategoriesQrCodes') ? [] : ['className' => CategoriesQrCodesTable::class];
         /** @var \App\Model\Table\CategoriesQrCodesTable $CategoriesQrCodes */
         $CategoriesQrCodes = $this->getTableLocator()->get('CategoriesQrCodes', $config);
@@ -192,7 +194,7 @@ class CategoriesQrCodesTableTest extends TestCase
         // A valid entry
         $entity = $this->CategoriesQrCodes->newEntity([
             'category_id' => 2,
-            'qr_code_id' => 2,
+            'qr_code_id' => 4,
         ]);
         $result = $this->CategoriesQrCodes->checkRules($entity);
         $this->assertTrue($result);

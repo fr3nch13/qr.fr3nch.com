@@ -52,7 +52,8 @@ class QrImage extends Entity
      */
     protected function _getPath(): ?string
     {
-        $path = Configure::read('App.paths.qr_images', TMP . 'qr_images' . DS) .
+        $path = Configure::read('App.paths.qr_images', TMP . 'qr_images') .
+            DS .
             $this->qr_code_id . DS .
             $this->id . '.' . $this->ext;
 

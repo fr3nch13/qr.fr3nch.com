@@ -8,6 +8,7 @@ use App\Model\Entity\User;
 use ArrayObject;
 use Cake\Event\Event;
 use Cake\Http\Exception\InternalErrorException;
+use Cake\Http\Exception\NotFoundException;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -178,7 +179,7 @@ class QrCodesTable extends Table
         // as the Entity's firtual field will try to generate one.
         // so we just need to trigger that firtual field.
         // TODO: Test this to make sure we output the exception properly.
-        if ($entity->path) {
+        if (!$entity->path) {
             throw new InternalErrorException('Unable to create QR Code.');
         }
     }
@@ -239,7 +240,7 @@ class QrCodesTable extends Table
         }
 
         if (!$qrCode->path) {
-            throw new \Cake\Http\Exception\NotFoundException(__('Unable to find the QR Image for the QR Code {0}', [
+            throw new NotFoundException(__('Unable to find the QR Image for the QR Code `{0}`', [
                 $qrCode->name,
             ]));
         }
