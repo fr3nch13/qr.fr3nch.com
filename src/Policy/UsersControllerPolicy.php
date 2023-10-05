@@ -53,7 +53,9 @@ class UsersControllerPolicy extends BaseControllerPolicy
     }
 
     /**
-     * Only admins and Me can view the private profile page.
+     * Must be logged in to view a user private profile.
+     *
+     * Object policy to test the specific user is done in \App\Policy\UserPolicy::canView()
      *
      * @param \App\Model\Entity\User|null $user The identity object.
      * @param \App\Controller\UsersController $UsersController
@@ -99,6 +101,7 @@ class UsersControllerPolicy extends BaseControllerPolicy
 
     /**
      * Must be logged in to edit a user
+     *
      * Object policy to test editing the specific user is done in \App\Policy\UserPolicy::canEdit()
      *
      * @param \App\Model\Entity\User|null $user The identity object.
@@ -116,6 +119,7 @@ class UsersControllerPolicy extends BaseControllerPolicy
 
     /**
      * Must be an admin to delete a user
+     *
      * Object policy to test editing the specific user is done in \App\Policy\UserPolicy::canDelete()
      *
      * @param \App\Model\Entity\User|null $user The identity object.
