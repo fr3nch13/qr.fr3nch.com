@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Model\Entity\QrCode;
+use App\Model\Entity\User;
+use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -113,4 +116,43 @@ class QrImagesTable extends Table
 
         return $path;
     }
+
+    /**
+     * Custom finders
+     */
+
+    /**
+     * Find Active QR Images
+     *
+     * @param \Cake\ORM\Query\SelectQuery $query The initial query
+     * @return \Cake\ORM\Query\SelectQuery The updated query
+     */
+    public function findActive(SelectQuery $query)
+    {
+        return $query->where(['QrImages.is_active' => true]);
+    }
+
+    /**
+     * Finds the Qr Image with the imorder of 0
+     *
+     * @param \Cake\ORM\Query\SelectQuery $query The initial query
+     * @return \Cake\ORM\Query\SelectQuery The updated query
+     */
+    public function findOrderFirst(SelectQuery $query)
+    {
+        return $query->order(['QrImages.imorder' => 'asc']);
+    }
+
+    /**
+     * Find Images owned by a Qr Code
+     *
+     * @param \Cake\ORM\Query\SelectQuery $query The initial query
+     * @param \App\Model\Entity\QrCode $qrCode The QrCode to find for.
+     * @return \Cake\ORM\Query\SelectQuery $query The updated query
+     */
+    public function findQrCode(SelectQuery $query, QrCode $QrCode)
+    {
+        return $query->where(['QrImages.qr_code_id' => $QrCode->id]);
+    }
+
 }
