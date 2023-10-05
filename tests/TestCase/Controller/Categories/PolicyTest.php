@@ -199,6 +199,8 @@ class PolicyTest extends BaseControllerTest
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
         Configure::write('debug', true);
+
+        // can't test success with debug off as it messes with the test env setup.
     }
 
     /**
@@ -328,9 +330,17 @@ class PolicyTest extends BaseControllerTest
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
 
-        // debug off
+        // test with admin, debug off
         Configure::write('debug', false);
         $this->loginUserAdmin();
+        $this->delete('https://localhost/categories/delete');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
+        Configure::write('debug', true);
+
+        // not logged in, debug off
+        Configure::write('debug', false);
+        $this->loginGuest();
         $this->delete('https://localhost/categories/delete');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');

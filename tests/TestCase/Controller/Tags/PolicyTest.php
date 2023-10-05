@@ -349,5 +349,13 @@ class PolicyTest extends BaseControllerTest
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
         Configure::write('debug', true);
+
+        // not logged in, debug off
+        Configure::write('debug', false);
+        $this->loginGuest();
+        $this->delete('https://localhost/tags/delete');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
+        Configure::write('debug', true);
     }
 }

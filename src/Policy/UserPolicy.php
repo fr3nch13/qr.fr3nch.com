@@ -11,6 +11,30 @@ use App\Model\Entity\User;
 class UserPolicy
 {
     /**
+     * Any User view a User's public profile.
+     *
+     * @param \App\Model\Entity\User|null $user The identity object.
+     * @param \App\Model\Entity\User $User
+     * @return bool
+     */
+    public function canProfile(?User $user, User $User): bool
+    {
+        return true;
+    }
+
+    /**
+     * Any User view a User's public profile.
+     *
+     * @param \App\Model\Entity\User $user The identity object.
+     * @param \App\Model\Entity\User $User
+     * @return bool
+     */
+    public function canView(User $user, User $User): bool
+    {
+        return $this->isMe($user, $User) || $user->isAdmin();
+    }
+
+    /**
      * Only Admins can add User
      *
      * @param \App\Model\Entity\User $user The identity object.
@@ -44,30 +68,6 @@ class UserPolicy
     public function canDelete(User $user, User $User): bool
     {
         return $user->isAdmin();
-    }
-
-    /**
-     * Any User view a User's public profile.
-     *
-     * @param \App\Model\Entity\User $user The identity object.
-     * @param \App\Model\Entity\User $User
-     * @return bool
-     */
-    public function canView(User $user, User $User): bool
-    {
-        return $this->isMe($user, $User) || $user->isAdmin();
-    }
-
-    /**
-     * Any User view a User's public profile.
-     *
-     * @param \App\Model\Entity\User|null $user The identity object.
-     * @param \App\Model\Entity\User $User
-     * @return bool
-     */
-    public function canProfile(?User $user, User $User): bool
-    {
-        return true;
     }
 
     /**

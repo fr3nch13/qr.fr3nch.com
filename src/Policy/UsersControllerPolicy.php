@@ -48,7 +48,7 @@ class UsersControllerPolicy extends BaseControllerPolicy
             return false;
         }
 
-        // Only admins can add a category
+        // Only admins can add a user
         return $user->isAdmin();
     }
 
@@ -95,7 +95,7 @@ class UsersControllerPolicy extends BaseControllerPolicy
             return false;
         }
 
-        // Only admins can add a category
+        // Only admins can add a user
         return $user->isAdmin();
     }
 
@@ -132,7 +132,7 @@ class UsersControllerPolicy extends BaseControllerPolicy
             return false;
         }
 
-        // Only admins can add a category
+        // Only admins can add a user
         return $user->isAdmin();
     }
 }
