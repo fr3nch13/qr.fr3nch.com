@@ -41,6 +41,7 @@ class QrImageSeed extends AbstractSeed
             [
                 'id' => 1,
                 'name' => 'Front Cover',
+                'ext' => 'jpg',
                 'created' => (new DateTime())->format('Y-m-d H:i:s'),
                 'is_active' => true,
                 'imorder' => 0,
@@ -49,6 +50,7 @@ class QrImageSeed extends AbstractSeed
             [
                 'id' => 2,
                 'name' => 'Open Pages',
+                'ext' => 'jpg',
                 'created' => (new DateTime())->format('Y-m-d H:i:s'),
                 'is_active' => true,
                 'imorder' => 1,
@@ -57,6 +59,7 @@ class QrImageSeed extends AbstractSeed
             [
                 'id' => 3,
                 'name' => 'Front Cover',
+                'ext' => 'jpg',
                 'created' => (new DateTime())->format('Y-m-d H:i:s'),
                 'is_active' => true,
                 'imorder' => 0,
@@ -65,6 +68,7 @@ class QrImageSeed extends AbstractSeed
             [
                 'id' => 4,
                 'name' => 'Open Pages',
+                'ext' => 'jpg',
                 'created' => (new DateTime())->format('Y-m-d H:i:s'),
                 'is_active' => true,
                 'imorder' => 1,
@@ -73,6 +77,7 @@ class QrImageSeed extends AbstractSeed
             [
                 'id' => 5,
                 'name' => 'In Hand',
+                'ext' => 'jpg',
                 'created' => (new DateTime())->format('Y-m-d H:i:s'),
                 'is_active' => true,
                 'imorder' => 0,
@@ -81,6 +86,7 @@ class QrImageSeed extends AbstractSeed
             [
                 'id' => 6,
                 'name' => 'Dimensions Top',
+                'ext' => 'jpg',
                 'created' => (new DateTime())->format('Y-m-d H:i:s'),
                 'is_active' => true,
                 'imorder' => 1,
@@ -89,6 +95,7 @@ class QrImageSeed extends AbstractSeed
             [
                 'id' => 7,
                 'name' => 'Dimensions Side',
+                'ext' => 'jpg',
                 'created' => (new DateTime())->format('Y-m-d H:i:s'),
                 'is_active' => true,
                 'imorder' => 2,

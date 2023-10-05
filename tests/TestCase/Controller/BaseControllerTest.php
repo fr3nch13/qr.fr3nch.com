@@ -163,12 +163,19 @@ class BaseControllerTest extends TestCase
      *
      * @param string $action The path the form should submit to
      * @param string $method The method the form should be using. Defaults to post.
+     * @param bool $isFile If the form is a file upload form, Defaults to false
      * @return void
      */
-    public function helperTestFormTag(string $action, string $method = 'post'): void
+    public function helperTestFormTag(string $action, string $method = 'post', bool $isFile = false): void
     {
+        $fileString = '';
+        if ($isFile) {
+            $fileString = 'enctype="multipart/form-data" ';
+        }
+        $formString = '<form ' . $fileString . 'method="' . $method . '" accept-charset="utf-8" role="form" action="' . $action . '">';
+
         $content = (string)$this->_response->getBody();
-        $this->assertSame(1, substr_count($content, '<form method="' . $method . '" accept-charset="utf-8" role="form" action="' . $action . '">'));
+        $this->assertSame(1, substr_count($content, $formString));
     }
 
     /**
@@ -346,6 +353,7 @@ class BaseControllerTest extends TestCase
     public function helperTestLayoutError(): void
     {
         $content = (string)$this->_response->getBody();
+        debug($content);
         $this->assertSame(1, substr_count($content, '<!-- START: App.layout/error -->'));
         $this->assertSame(1, substr_count($content, '<!-- END: App.layout/error -->'));
 

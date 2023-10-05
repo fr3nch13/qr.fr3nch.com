@@ -30,6 +30,7 @@ class QrImagesFixture extends CoreFixture
             [
                 'id' => 1,
                 'name' => 'Front Cover',
+                'ext' => 'jpg',
                 'created' => new DateTime(),
                 'is_active' => true,
                 'imorder' => 0,
@@ -38,16 +39,19 @@ class QrImagesFixture extends CoreFixture
             [
                 'id' => 2,
                 'name' => 'Open Pages',
+                'ext' => 'jpg',
                 'created' => new DateTime(),
                 'is_active' => true,
                 'imorder' => 1,
                 'qr_code_id' => 1,
             ],
             [
+                // inactive and owned by admin
                 'id' => 3,
                 'name' => 'Front Cover',
+                'ext' => 'jpg',
                 'created' => new DateTime(),
-                'is_active' => true,
+                'is_active' => false,
                 'imorder' => 0,
                 'qr_code_id' => 2,
             ],
@@ -55,6 +59,7 @@ class QrImagesFixture extends CoreFixture
                 // this entity is intentionally missing it's file for unit testing.
                 'id' => 4,
                 'name' => 'Open Pages',
+                'ext' => 'jpg',
                 'created' => new DateTime(),
                 'is_active' => true,
                 'imorder' => 1,
@@ -63,6 +68,7 @@ class QrImagesFixture extends CoreFixture
             [
                 'id' => 5,
                 'name' => 'In Hand',
+                'ext' => 'jpg',
                 'created' => new DateTime(),
                 'is_active' => true,
                 'imorder' => 0,
@@ -71,14 +77,17 @@ class QrImagesFixture extends CoreFixture
             [
                 'id' => 6,
                 'name' => 'Dimensions Top',
+                'ext' => 'jpg',
                 'created' => new DateTime(),
                 'is_active' => true,
                 'imorder' => 1,
                 'qr_code_id' => 3,
             ],
             [
+                // inactive and owned by reqular.
                 'id' => 7,
                 'name' => 'Dimensions Side',
+                'ext' => 'jpg',
                 'created' => new DateTime(),
                 'is_active' => false,
                 'imorder' => 2,

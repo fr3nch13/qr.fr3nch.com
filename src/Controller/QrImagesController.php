@@ -25,7 +25,7 @@ class QrImagesController extends AppController
         // make sure we have an ID where needed.
         $action = $this->request->getParam('action');
         // admin actions
-        if (in_array($action, ['show', 'edit', 'delete'])) {
+        if (in_array($action, ['show', 'add', 'edit', 'delete'])) {
             $pass = $this->request->getParam('pass');
             if (empty($pass) || !isset($pass['0'])) {
                 $event->stopPropagation();
@@ -49,7 +49,7 @@ class QrImagesController extends AppController
     {
         $this->request->allowMethod(['get']);
 
-        $qrImage = $this->QrImages->get((int)$id);
+        $qrImage = $this->QrImages->get((int)$id, contain: ['QrCodes']);
         $this->Authorization->authorize($qrImage);
 
         $response = $this->response->withFile($qrImage->path);
@@ -67,10 +67,12 @@ class QrImagesController extends AppController
     {
         $this->request->allowMethod(['get']);
 
+        // Policy is located at \App\Policy\QrCodePolicy::canQrCode();
         $qrCode = $this->QrImages->QrCodes->get((int)$id);
         $this->Authorization->authorize($qrCode);
 
-        $query = $this->QrImages->find('all');
+        $query = $this->QrImages->find('all')
+            ->where(['QrImages.qr_code_id' => $id]);
         $qrImages = $this->paginate($query);
 
         $this->set(compact('qrCode', 'qrImages'));
@@ -92,7 +94,9 @@ class QrImagesController extends AppController
         $this->Authorization->authorize($qrCode);
 
         $qrImage = $this->QrImages->newEmptyEntity();
+        // assign the qrCode to this image so we can run authorization.
         $qrImage->qr_code_id = $qrCode->id;
+        $qrImage->qr_code = $qrCode;
         $this->Authorization->authorize($qrImage);
 
         if ($this->request->is('post')) {

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use Cake\Core\Configure;
 use Cake\ORM\Entity;
 
 /**
@@ -10,6 +11,7 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property string $name
+ * @property string $ext
  * @property \Cake\I18n\DateTime|null $created
  * @property \Cake\I18n\DateTime|null $modified
  * @property bool $is_active
@@ -34,6 +36,7 @@ class QrImage extends Entity
      */
     protected array $_accessible = [
         'name' => true,
+        'ext' => true,
         'created' => true,
         'modified' => true,
         'is_active' => true,
@@ -49,7 +52,9 @@ class QrImage extends Entity
      */
     protected function _getPath(): ?string
     {
-        $path = TMP . 'qr_images' . DS . $this->qr_code_id . DS . $this->id;
+        $path = Configure::read('App.paths.qr_images', TMP . 'qr_images' . DS) .
+            $this->qr_code_id . DS .
+            $this->id . '.' . $this->ext;
 
         if (file_exists($path) && is_readable($path)) {
             return $path;

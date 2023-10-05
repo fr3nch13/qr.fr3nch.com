@@ -40,6 +40,8 @@ class QrCodePolicy
     /**
      * Check if $user can view the list of images for a qrcode.
      *
+     * It's routing over to here, but is called from the QrImagesController::qrCode() method.
+     *
      * @param \App\Model\Entity\User $user The identity object.
      * @param \App\Model\Entity\QrCode $QrCode
      * @return bool

@@ -23,10 +23,14 @@ class QrImagePolicy
         // All users can view active.
         if ($QrImage->is_active) {
             return true;
+        } else {
+            // otherwise only admins and owners can view inactive images
+            if ($user) {
+                return $this->isCreator($user, $QrImage) || $user->isAdmin();
+            }
         }
 
-        // otherwide you need to own the qr code, or be an admin
-        return $this->isCreator($user, $QrImage) || $user->isAdmin();
+        return false;
     }
 
     /**
@@ -68,6 +72,9 @@ class QrImagePolicy
     /**
      * Check if $user created the QrImage
      *
+     * If this is being checked, with a null, user, it's most likely
+     * canShow, and the image is inactive.
+     *
      * @param \App\Model\Entity\User $user The identity object.
      * @param \App\Model\Entity\QrImage $QrImage
      * @return bool
@@ -75,7 +82,7 @@ class QrImagePolicy
     protected function isCreator(User $user, QrImage $QrImage): bool
     {
         // make sure the qr code is attached.
-        if (!$QrImage->isEmpty('qr_code_id')) {
+        if (!is_int($QrImage->qr_code_id)) {
             return false;
         }
 
