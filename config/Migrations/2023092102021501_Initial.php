@@ -215,8 +215,8 @@ class Initial extends AbstractMigration
             'null' => false,
         ])->addIndex(['is_active']);
         $table->addColumn('imorder', 'integer', [
-            'default' => null,
-            'null' => true,
+            'default' => 0,
+            'null' => false,
         ])->addIndex(['imorder']);
         $table->addColumn('qr_code_id', 'integer', [
             'default' => null,

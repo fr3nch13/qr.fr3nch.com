@@ -61,6 +61,7 @@ class QrCodesFixture extends CoreFixture
                 'user_id' => 2, // regular
             ],
             [
+                // this one also has no qr_images
                 'id' => 4,
                 'qrkey' => 'inactive',
                 'name' => 'Inactive Code',

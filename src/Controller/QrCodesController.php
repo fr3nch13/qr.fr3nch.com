@@ -6,6 +6,7 @@ namespace App\Controller;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
+use Cake\ORM\Query\SelectQuery;
 
 /**
  * QrCodes Controller
@@ -110,7 +111,13 @@ class QrCodesController extends AppController
         }
 
         $query = $this->QrCodes->find('all')
-            ->contain(['Sources', 'Users', 'Categories', 'Tags', 'QrImages']);
+            ->contain([
+                'QrImages' => function (SelectQuery $q) {
+                    // only include the first active one
+                    return $q
+                        ->find('active')
+                        ->find('orderFirst');
+            }]);
         $query = $this->Authorization->applyScope($query);
         $qrCodes = $this->paginate($query);
 
