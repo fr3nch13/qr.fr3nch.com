@@ -167,6 +167,8 @@ class CrudTest extends BaseControllerTest
     /**
      * Test edit method
      *
+     * TODO: TESt with #3, and check that the user_id was reset.
+     *
      * @return void
      * @uses \App\Controller\SourcesController::edit()
      */
@@ -179,14 +181,14 @@ class CrudTest extends BaseControllerTest
         $this->loginUserAdmin();
 
         // test get
-        $this->get('https://localhost/sources/edit/1');
+        $this->get('https://localhost/sources/edit/3');
         $this->assertResponseOk();
         $this->assertResponseContains('<div class="sources form content">');
-        $this->assertResponseContains('<form method="patch" accept-charset="utf-8" role="form" action="/sources/edit/1">');
+        $this->assertResponseContains('<form method="patch" accept-charset="utf-8" role="form" action="/sources/edit/3">');
         $this->assertResponseContains('<legend>Edit Source</legend>');
 
         // post
-        $this->post('https://localhost/sources/edit/1', [
+        $this->post('https://localhost/sources/edit/3', [
             'name' => 'New Source',
             'description' => 'The Description',
         ]);
@@ -194,7 +196,7 @@ class CrudTest extends BaseControllerTest
         $this->assertResponseContains('Method Not Allowed');
 
         // patch
-        $this->patch('https://localhost/sources/edit/1', [
+        $this->patch('https://localhost/sources/edit/3', [
             'name' => 'New Source',
             'description' => 'The Description',
         ]);
@@ -203,7 +205,7 @@ class CrudTest extends BaseControllerTest
         $this->assertFlashElement('flash/success');
 
         // put
-        $this->put('https://localhost/sources/edit/1', [
+        $this->put('https://localhost/sources/edit/3', [
             'name' => 'New Source',
             'description' => 'The Description',
         ]);
@@ -211,7 +213,7 @@ class CrudTest extends BaseControllerTest
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('https://localhost/sources/edit/1');
+        $this->delete('https://localhost/sources/edit/3');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
     }

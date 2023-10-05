@@ -26,6 +26,7 @@ class PolicyTest extends BaseControllerTest
         parent::setUp();
         Configure::write('debug', true);
         $this->enableRetainFlashMessages();
+        $this->enableCsrfToken();
     }
 
     /**
