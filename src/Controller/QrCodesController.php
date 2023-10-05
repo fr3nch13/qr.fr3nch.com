@@ -110,7 +110,8 @@ class QrCodesController extends AppController
         }
 
         $query = $this->QrCodes->find('all')
-            ->contain(['Sources', 'Users', 'Categories', 'Tags']);
+            ->contain(['Sources', 'Users', 'Categories', 'Tags', 'QrImages']);
+        $query = $this->Authorization->applyScope($query);
         $qrCodes = $this->paginate($query);
 
         $this->set(compact('qrCodes'));

@@ -34,6 +34,7 @@ class QrCodesFixture extends CoreFixture
                 'description' => 'The cute littly piggy journal/notebook',
                 'created' => new DateTime(),
                 'url' => 'https://amazon.com/path/to/details/page',
+                'is_active' => true,
                 'source_id' => 1, // amazon
                 'user_id' => 1, // admin user
             ],
@@ -44,6 +45,7 @@ class QrCodesFixture extends CoreFixture
                 'description' => 'A Halloween themed journal/notebook with a witch flying at night',
                 'created' => new DateTime(),
                 'url' => 'https://amazon.com/path/to/details/page2',
+                'is_active' => true,
                 'source_id' => 1, // amazon
                 'user_id' => 1, // admin user
             ],
@@ -54,6 +56,18 @@ class QrCodesFixture extends CoreFixture
                 'description' => 'The American flag 3D printed in TPU, so it\'s flexible.',
                 'created' => new DateTime(),
                 'url' => 'https://www.etsy.com/listing/1539113524/american-flag-3d-printed',
+                'is_active' => true,
+                'source_id' => 2, // etsy
+                'user_id' => 2, // regular
+            ],
+            [
+                'id' => 4,
+                'qrkey' => 'inactive',
+                'name' => 'Inactive Code',
+                'description' => 'This QR Code is inactive',
+                'created' => new DateTime(),
+                'url' => 'https://google.com',
+                'is_active' => false,
                 'source_id' => 2, // etsy
                 'user_id' => 2, // regular
             ],

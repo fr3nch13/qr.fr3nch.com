@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use App\Lib\PhpQrGenerator;
 use App\Model\Entity\QrCode;
+use App\Model\Entity\User;
 use ArrayObject;
 use Cake\Event\Event;
 use Cake\Http\Exception\InternalErrorException;
@@ -184,11 +184,42 @@ class QrCodesTable extends Table
     }
 
     /**
-     * Custom finder
+     * Custom finders
+     */
+
+    /**
+     * Find Active QR Codes
+     *
+     * @param \Cake\ORM\Query\SelectQuery $query The initial query
+     * @return \Cake\ORM\Query\SelectQuery The updated query
+     */
+    public function findActive(SelectQuery $query)
+    {
+        return $query->where(['QrCodes.is_active' => true]);
+    }
+
+    /**
+     * Find a QR code by its key
+     *
+     * @param \Cake\ORM\Query\SelectQuery $query The initial query
+     * @param string $key The key to look for.
+     * @return \Cake\ORM\Query\SelectQuery The updated query
      */
     public function findKey(SelectQuery $query, string $key): SelectQuery
     {
-        return $query->where(['qrkey' => $key]);
+        return $query->where(['QrCodes.qrkey' => $key]);
+    }
+
+    /**
+     * Find Qr Codes owned by a user
+     *
+     * @param \Cake\ORM\Query\SelectQuery $query The initial query
+     * @param \App\Model\Entity\User $user The user to scope the query to.
+     * @return \Cake\ORM\Query\SelectQuery The updated query
+     */
+    public function findOwnedBy(SelectQuery $query, User $user)
+    {
+        return $query->where(['QrCodes.user_id' => $user->id]);
     }
 
     /**

@@ -30,6 +30,16 @@ class CategoriesQrCodesFixture extends CoreFixture
                 'qr_code_id' => 1,
                 'category_id' => 2,
             ],
+            [
+                'id' => 2,
+                'qr_code_id' => 2,
+                'category_id' => 2,
+            ],
+            [
+                'id' => 3,
+                'qr_code_id' => 3,
+                'category_id' => 3,
+            ],
         ];
         parent::init();
     }

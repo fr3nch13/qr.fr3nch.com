@@ -78,18 +78,28 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/qr-codes');
         $this->assertResponseOk();
         $this->helperTestTemplate('QrCodes/index');
+        $content = (string)$this->_response->getBody();
+        // make sure only active ones are listed.
+        $this->assertSame(3, substr_count($content, '<div class="product">'));
 
         // test with reqular
         $this->loginUserRegular();
         $this->get('https://localhost/qr-codes');
         $this->assertResponseOk();
         $this->helperTestTemplate('QrCodes/index');
+        $content = (string)$this->_response->getBody();
+        // make sure all are listed.
+        // this may change to include all active, and inactive, scoped to the user.
+        $this->assertSame(4, substr_count($content, '<div class="product">'));
 
         // test with admin
         $this->loginUserAdmin();
         $this->get('https://localhost/qr-codes');
         $this->assertResponseOk();
         $this->helperTestTemplate('QrCodes/index');
+        $content = (string)$this->_response->getBody();
+        // make sure all are listed.
+        $this->assertSame(4, substr_count($content, '<div class="product">'));
 
         // test with debug off
         Configure::write('debug', false);

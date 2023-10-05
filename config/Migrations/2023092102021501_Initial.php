@@ -160,7 +160,7 @@ class Initial extends AbstractMigration
             'null' => false,
         ]);
         $table->addColumn('is_active', 'boolean', [
-            'default' => false,
+            'default' => true,
             'null' => false,
         ])->addIndex(['is_active']);
         $table->addColumn('source_id', 'integer', [
@@ -211,7 +211,7 @@ class Initial extends AbstractMigration
             'null' => true,
         ]);
         $table->addColumn('is_active', 'boolean', [
-            'default' => 1,
+            'default' => true,
             'null' => false,
         ])->addIndex(['is_active']);
         $table->addColumn('imorder', 'integer', [
