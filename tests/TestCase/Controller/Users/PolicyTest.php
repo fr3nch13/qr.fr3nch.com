@@ -104,28 +104,28 @@ class PolicyTest extends BaseControllerTest
     {
         // not logged in
         $this->get('https://localhost/users/logout');
-        $this->assertRedirectEquals('users/login');
+        $this->assertRedirectEquals('https://localhost/users/login');
         $this->assertFlashMessage('You have been logged out', 'flash');
         $this->assertFlashElement('flash/success');
 
         // test with admin
         $this->loginUserAdmin();
         $this->get('https://localhost/users/logout');
-        $this->assertRedirectEquals('users/login');
+        $this->assertRedirectEquals('https://localhost/users/login');
         $this->assertFlashMessage('You have been logged out', 'flash');
         $this->assertFlashElement('flash/success');
 
         // test with reqular
         $this->loginUserRegular();
         $this->get('https://localhost/users/logout');
-        $this->assertRedirectEquals('users/login');
+        $this->assertRedirectEquals('https://localhost/users/login');
         $this->assertFlashMessage('You have been logged out', 'flash');
         $this->assertFlashElement('flash/success');
 
         // just test redirect
         $this->loginUserRegular();
         $this->get('https://localhost/users/logout?redirect=%2Fcategories');
-        $this->assertRedirectEquals('users/login');
+        $this->assertRedirectEquals('https://localhost/users/login');
         $this->assertFlashMessage('You have been logged out', 'flash');
         $this->assertFlashElement('flash/success');
     }

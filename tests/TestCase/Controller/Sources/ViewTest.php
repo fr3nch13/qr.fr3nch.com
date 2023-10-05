@@ -40,7 +40,7 @@ class ViewTest extends BaseControllerTest
     {
         // not logged in
         $this->get('https://localhost/sources');
-        $this->assertRedirectEquals('users/login?redirect=%2Fsources');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fsources');
 
         // test with reqular
         $this->loginUserRegular();
@@ -68,7 +68,7 @@ class ViewTest extends BaseControllerTest
         // not logged in
         $this->requestAsAjax();
         $this->get('https://localhost/sources');
-        $this->assertRedirectEquals('users/login?redirect=%2Fsources');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fsources');
 
         // test with reqular
         $this->requestAsAjax();
@@ -97,7 +97,7 @@ class ViewTest extends BaseControllerTest
     {
         // not logged in
         $this->get('https://localhost/sources/view/1');
-        $this->assertRedirectEquals('users/login?redirect=%2Fsources%2Fview%2F1');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fsources%2Fview%2F1');
 
         // test with reqular
         $this->loginUserRegular();
@@ -123,7 +123,7 @@ class ViewTest extends BaseControllerTest
         // not logged in
         $this->requestAsAjax();
         $this->get('https://localhost/sources/view/1');
-        $this->assertRedirectEquals('users/login?redirect=%2Fsources%2Fview%2F1');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fsources%2Fview%2F1');
 
         // test with reqular
         $this->requestAsAjax();

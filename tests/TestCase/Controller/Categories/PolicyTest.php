@@ -27,7 +27,6 @@ class PolicyTest extends BaseControllerTest
         Configure::write('debug', true);
         $this->enableRetainFlashMessages();
         $this->enableCsrfToken();
-        $this->enableSecurityToken();
     }
 
     /**
@@ -99,10 +98,8 @@ class PolicyTest extends BaseControllerTest
         Configure::write('debug', false);
         $this->loginUserAdmin();
         $this->get('https://localhost/categories');
-        /// This is expected as turning off debug messes with the $this->enableCsrfToken()
-        // so look for it specifically
-        $this->assertResponseCode(400);
-        $this->assertResponseContains('Form tampering protection token validation failed.');
+        $this->assertResponseOk();
+        $this->helperTestTemplate('Categories/index');
         Configure::write('debug', true);
     }
 
@@ -169,6 +166,8 @@ class PolicyTest extends BaseControllerTest
      */
     public function testAdd(): void
     {
+        $this->enableSecurityToken();
+
         // not logged in
         $this->loginGuest();
         $this->get('https://localhost/categories/add');
@@ -210,6 +209,8 @@ class PolicyTest extends BaseControllerTest
      */
     public function testEdit(): void
     {
+        $this->enableSecurityToken();
+
         // not logged
         $this->loginGuest();
         $this->get('https://localhost/categories/edit/1');
@@ -273,6 +274,8 @@ class PolicyTest extends BaseControllerTest
      */
     public function testDelete(): void
     {
+        $this->enableSecurityToken();
+
         // not logged
         $this->loginGuest();
         $this->delete('https://localhost/categories/delete/3');
@@ -295,6 +298,14 @@ class PolicyTest extends BaseControllerTest
         $this->assertRedirectEquals('https://localhost/categories');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('The category `Charms` has been deleted.', 'flash');
+        $this->assertFlashElement('flash/success');
+
+        // test admin with another category
+        $this->loginUserAdmin();
+        $this->delete('https://localhost/categories/delete/2');
+        $this->assertRedirectEquals('https://localhost/categories');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('The category `Journals` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
 
         /// Missing IDs

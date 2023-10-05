@@ -14,11 +14,11 @@ class QrCodePolicy
     /**
      * Check if $user can view qr codes
      *
-     * @param \App\Model\Entity\User|null $identity The identity object.
+     * @param \App\Model\Entity\User|null $user The identity object.
      * @param \App\Model\Entity\QrCode $QrCode
      * @return bool
      */
-    public function canView(?User $identity, QrCode $QrCode): bool
+    public function canView(?User $user, QrCode $QrCode): bool
     {
         // All users can view qr codes.
         return true;
@@ -27,11 +27,11 @@ class QrCodePolicy
     /**
      * Check if $user can add QrCode
      *
-     * @param \App\Model\Entity\User $identity The identity object.
+     * @param \App\Model\Entity\User $user The identity object.
      * @param \App\Model\Entity\QrCode $QrCode
      * @return bool
      */
-    public function canAdd(User $identity, QrCode $QrCode): bool
+    public function canAdd(User $user, QrCode $QrCode): bool
     {
         // All logged in users can create qr codes.
         return true;
@@ -40,48 +40,48 @@ class QrCodePolicy
     /**
      * Check if $user can view the list of images for a qrcode.
      *
-     * @param \App\Model\Entity\User $identity The identity object.
+     * @param \App\Model\Entity\User $user The identity object.
      * @param \App\Model\Entity\QrCode $QrCode
      * @return bool
      */
-    public function canQrCode(User $identity, QrCode $QrCode): bool
+    public function canQrCode(User $user, QrCode $QrCode): bool
     {
-        return $this->isCreator($identity, $QrCode) || $identity->isAdmin();
+        return $this->isCreator($user, $QrCode) || $user->isAdmin();
     }
 
     /**
      * Check if $user can edit QrCode
      *
-     * @param \App\Model\Entity\User $identity The identity object.
+     * @param \App\Model\Entity\User $user The identity object.
      * @param \App\Model\Entity\QrCode $QrCode
      * @return bool
      */
-    public function canEdit(User $identity, QrCode $QrCode): bool
+    public function canEdit(User $user, QrCode $QrCode): bool
     {
-        return $this->isCreator($identity, $QrCode) || $identity->isAdmin();
+        return $this->isCreator($user, $QrCode) || $user->isAdmin();
     }
 
     /**
      * Check if $user can delete QrCode
      *
-     * @param \App\Model\Entity\User $identity The identity object.
+     * @param \App\Model\Entity\User $user The identity object.
      * @param \App\Model\Entity\QrCode $QrCode
      * @return bool
      */
-    public function canDelete(User $identity, QrCode $QrCode): bool
+    public function canDelete(User $user, QrCode $QrCode): bool
     {
-        return $this->isCreator($identity, $QrCode) || $identity->isAdmin();
+        return $this->isCreator($user, $QrCode) || $user->isAdmin();
     }
 
     /**
      * Check if $user created the QrCode
      *
-     * @param \App\Model\Entity\User $identity The identity object.
+     * @param \App\Model\Entity\User $user The identity object.
      * @param \App\Model\Entity\QrCode $QrCode
      * @return bool
      */
-    protected function isCreator(User $identity, QrCode $QrCode): bool
+    protected function isCreator(User $user, QrCode $QrCode): bool
     {
-        return $QrCode->user_id === $identity->id;
+        return $QrCode->user_id === $user->id;
     }
 }

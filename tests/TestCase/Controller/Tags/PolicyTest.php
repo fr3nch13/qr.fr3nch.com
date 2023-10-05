@@ -150,7 +150,7 @@ class PolicyTest extends BaseControllerTest
     {
         // not logged in, so should redirect
         $this->get('https://localhost/tags/add');
-        $this->assertRedirectEquals('users/login?redirect=%2Ftags%2Fadd');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Ftags%2Fadd');
 
         // test with admin, get
         $this->loginUserAdmin();
@@ -179,7 +179,7 @@ class PolicyTest extends BaseControllerTest
     {
         // not logged in, so should redirect
         $this->get('https://localhost/tags/edit');
-        $this->assertRedirectEquals('users/login?redirect=%2Ftags%2Fedit');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Ftags%2Fedit');
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 

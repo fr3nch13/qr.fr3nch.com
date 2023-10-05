@@ -14,11 +14,11 @@ class CategoryPolicy
     /**
      * Check if $user can view qr codes
      *
-     * @param \App\Model\Entity\User|null $identity The identity object.
+     * @param \App\Model\Entity\User|null $user The identity object.
      * @param \App\Model\Entity\Category $Category
      * @return bool
      */
-    public function canView(?User $identity, Category $Category): bool
+    public function canView(?User $user, Category $Category): bool
     {
         // All users can view a category.
         return true;
@@ -27,36 +27,36 @@ class CategoryPolicy
     /**
      * Only Admins can add a Category
      *
-     * @param \App\Model\Entity\User $identity The identity object.
+     * @param \App\Model\Entity\User $user The identity object.
      * @param \App\Model\Entity\Category $Category
      * @return bool
      */
-    public function canAdd(User $identity, Category $Category): bool
+    public function canAdd(User $user, Category $Category): bool
     {
-        return $identity->isAdmin();
+        return $user->isAdmin();
     }
 
     /**
      * Only Admins can edit a Category
      *
-     * @param \App\Model\Entity\User $identity The identity object.
+     * @param \App\Model\Entity\User $user The identity object.
      * @param \App\Model\Entity\Category $Category
      * @return bool
      */
-    public function canEdit(User $identity, Category $Category): bool
+    public function canEdit(User $user, Category $Category): bool
     {
-        return $identity->isAdmin();
+        return $user->isAdmin();
     }
 
     /**
      * Only Admins can delete a Category
      *
-     * @param \App\Model\Entity\User $identity The identity object.
+     * @param \App\Model\Entity\User $user The identity object.
      * @param \App\Model\Entity\Category $Category
      * @return bool
      */
-    public function canDelete(User $identity, Category $Category): bool
+    public function canDelete(User $user, Category $Category): bool
     {
-        return $identity->isAdmin();
+        return $user->isAdmin();
     }
 }

@@ -98,7 +98,7 @@ class PolicyTest extends BaseControllerTest
         Configure::write('debug', false);
         $this->loginUserAdmin();
         $this->get('https://localhost/qr-images');
-        $this->assertRedirectEquals('users/login?redirect=%2Fqr-images%2Fqr-code%2F1');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fqr-images%2Fqr-code%2F1');
         // TODO: add a flash message for users not logged in.
         // labels: policy, flash
         //$this->assertFlashMessage('You are not authorized to access that location', 'flash');
@@ -120,7 +120,7 @@ class PolicyTest extends BaseControllerTest
     {
         // not logged in
         $this->get('https://localhost/qr-images/qr-code/1');
-        $this->assertRedirectEquals('users/login?redirect=%2Fqr-images%2Fqr-code%2F1');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fqr-images%2Fqr-code%2F1');
         // TODO: add a flash message for users not logged in.
         // labels: policy, flash
         //$this->assertFlashMessage('You are not authorized to access that location', 'flash');
@@ -221,7 +221,7 @@ class PolicyTest extends BaseControllerTest
     {
         // not logged in, so should redirect
         $this->get('https://localhost/qr-images/add');
-        $this->assertRedirectEquals('users/login?redirect=%2Fqr-images%2Fadd');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fqr-images%2Fadd');
 
         // test with admin, get
         $this->loginUserAdmin();
@@ -250,7 +250,7 @@ class PolicyTest extends BaseControllerTest
     {
         // not logged in, so should redirect
         $this->get('https://localhost/qr-images/edit');
-        $this->assertRedirectEquals('users/login?redirect=%2Fqr-images%2Fedit');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fqr-images%2Fedit');
 
         // test with missing id and debug
         $this->loginUserAdmin();

@@ -74,7 +74,7 @@ class PolicyTest extends BaseControllerTest
     {
         // not logged in
         $this->get('https://localhost/sources');
-        $this->assertRedirectEquals('users/login?redirect=%2Fsources');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fsources');
 
         // test with admin
         $this->loginUserAdmin();
@@ -101,7 +101,7 @@ class PolicyTest extends BaseControllerTest
     {
         // not logged in
         $this->get('https://localhost/sources/view/1');
-        $this->assertRedirectEquals('users/login?redirect=%2Fsources%2Fview%2F1');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fsources%2Fview%2F1');
 
         // test with admin
         $this->loginUserAdmin();
@@ -146,7 +146,7 @@ class PolicyTest extends BaseControllerTest
     {
         // not logged in, so should redirect
         $this->get('https://localhost/sources/add');
-        $this->assertRedirectEquals('users/login?redirect=%2Fsources%2Fadd');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fsources%2Fadd');
 
         // test with admin, get
         $this->loginUserAdmin();
@@ -175,7 +175,7 @@ class PolicyTest extends BaseControllerTest
     {
         // not logged in, so should redirect
         $this->get('https://localhost/sources/edit');
-        $this->assertRedirectEquals('users/login?redirect=%2Fsources%2Fedit');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fsources%2Fedit');
 
         // test with missing id and debug
         $this->loginUserAdmin();

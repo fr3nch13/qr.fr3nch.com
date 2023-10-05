@@ -75,14 +75,14 @@ class CrudTest extends BaseControllerTest
         // get
         $this->loginUserAdmin();
         $this->get('https://localhost/users/logout');
-                $this->assertRedirectEquals('users/login');
+                $this->assertRedirectEquals('https://localhost/users/login');
         $this->assertFlashMessage('You have been logged out', 'flash');
         $this->assertFlashElement('flash/success');
 
         // post
         $this->loginUserAdmin();
         $this->post('https://localhost/users/logout');
-                $this->assertRedirectEquals('users/login');
+                $this->assertRedirectEquals('https://localhost/users/login');
         $this->assertFlashMessage('You have been logged out', 'flash');
         $this->assertFlashElement('flash/success');
 

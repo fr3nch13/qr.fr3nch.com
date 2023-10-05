@@ -14,11 +14,11 @@ class SourcePolicy
     /**
      * All Users can view Source
      *
-     * @param \App\Model\Entity\User $identity The identity object.
+     * @param \App\Model\Entity\User $user The identity object.
      * @param \App\Model\Entity\Source $Source
      * @return bool
      */
-    public function canView(User $identity, Source $Source): bool
+    public function canView(User $user, Source $Source): bool
     {
         return true;
     }
@@ -26,36 +26,36 @@ class SourcePolicy
     /**
      * Only Admins can add Source
      *
-     * @param \App\Model\Entity\User $identity The identity object.
+     * @param \App\Model\Entity\User $user The identity object.
      * @param \App\Model\Entity\Source $Source
      * @return bool
      */
-    public function canAdd(User $identity, Source $Source): bool
+    public function canAdd(User $user, Source $Source): bool
     {
-        return $identity->isAdmin();
+        return $user->isAdmin();
     }
 
     /**
      * Only Admins can edit Source
      *
-     * @param \App\Model\Entity\User $identity The identity object.
+     * @param \App\Model\Entity\User $user The identity object.
      * @param \App\Model\Entity\Source $Source
      * @return bool
      */
-    public function canEdit(User $identity, Source $Source): bool
+    public function canEdit(User $user, Source $Source): bool
     {
-        return $identity->isAdmin();
+        return $user->isAdmin();
     }
 
     /**
      * Only Admins can delete Source
      *
-     * @param \App\Model\Entity\User $identity The identity object.
+     * @param \App\Model\Entity\User $user The identity object.
      * @param \App\Model\Entity\Source $Source
      * @return bool
      */
-    public function canDelete(User $identity, Source $Source): bool
+    public function canDelete(User $user, Source $Source): bool
     {
-        return $identity->isAdmin();
+        return $user->isAdmin();
     }
 }
