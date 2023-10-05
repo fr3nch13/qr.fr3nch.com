@@ -105,5 +105,8 @@ class QrImageSeed extends AbstractSeed
         // add or change data here for the seeding.
 
         $table->insert($data)->save();
+
+        // TODO: After they're been inserted, copy over their images.
+        // labels: seeds, assets
     }
 }

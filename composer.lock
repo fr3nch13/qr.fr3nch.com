@@ -146,12 +146,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/cakephp.git",
-                "reference": "c3b31d4216c9cdbe3f57ba7cbed4e193d8a5663a"
+                "reference": "bb55e41c7d479f782f44eee9d9e85ef5fd55c423"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/c3b31d4216c9cdbe3f57ba7cbed4e193d8a5663a",
-                "reference": "c3b31d4216c9cdbe3f57ba7cbed4e193d8a5663a",
+                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/bb55e41c7d479f782f44eee9d9e85ef5fd55c423",
+                "reference": "bb55e41c7d479f782f44eee9d9e85ef5fd55c423",
                 "shasum": ""
             },
             "require": {
@@ -256,7 +256,7 @@
                 "issues": "https://github.com/cakephp/cakephp/issues",
                 "source": "https://github.com/cakephp/cakephp"
             },
-            "time": "2023-10-02T07:17:05+00:00"
+            "time": "2023-10-05T02:02:04+00:00"
         },
         {
             "name": "cakephp/chronos",
