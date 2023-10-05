@@ -53,9 +53,10 @@ class TemplateHelper extends Helper
      * Used for testing a part of a template within phpunit.
      *
      * @param string $string The string to include in the Html comment
+     * @param string $prefix The prefix, mainly App, or a plugin identifier
      * @return string The formatted Html comment.
      */
-    public function objectComment(string $string): string
+    public function objectComment(string $string, string $prefix = 'App'): string
     {
         /*
         if (!Configure::read('debug')) {
@@ -63,6 +64,6 @@ class TemplateHelper extends Helper
         }
         */
 
-        return "\n\n" . '<!-- objectComment: ' . $string . ' -->' . "\n\n";
+        return "\n\n" . '<!-- OBJECT_COMMENT: ' . $prefix . '.' . $string . ' -->' . "\n\n";
     }
 }

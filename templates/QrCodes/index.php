@@ -85,7 +85,7 @@ if (!$this->getRequest()->is('ajax')) {
             <div class="row g-3 g-lg-5 justify-content-between products">
 
             <?php foreach ($qrCodes as $qrCode): ?>
-                <?= $this->Template->objectComment('QrCodes.' . ($qrCode->is_active ? 'active' : 'inactive')) ?>
+                <?= $this->Template->objectComment('QrCodes/' . ($qrCode->is_active ? 'active' : 'inactive')) ?>
                 <div class="col-md-6 col-lg-4">
                     <div class="product<?= $qrCode->is_active ? ' active' : ' inactive' ?>">
                         <div class="product-title">
@@ -98,11 +98,11 @@ if (!$this->getRequest()->is('ajax')) {
                         <figure class="product-image">
                             <a href="<?= $this->Url->build(['action' => 'view', $qrCode->id]) ?>">
                                 <?php foreach ($qrCode->qr_images as $qrImage): ?>
-                                    <?= $this->Template->objectComment('QrImages.active.first') ?>
+                                    <?= $this->Template->objectComment('QrImages/active/first') ?>
                                     <img class="product-qrimage" src="<?= $this->Url->build(['controller' => 'QrImages', 'action' => 'show', $qrImage->id]) ?>" alt="<?= $qrImage->name ?>">
                                     <?php break; // we only want to use the first one ?>
                                 <?php endforeach; ?>
-                                <?= $this->Template->objectComment('QrCode.show') ?>
+                                <?= $this->Template->objectComment('QrCode/show') ?>
                                 <img class="product-qrcode" src="<?= $this->Url->build(['action' => 'show', $qrCode->id]) ?>" alt="<?= __('The QR Code') ?>">
                             </a>
                         </figure>

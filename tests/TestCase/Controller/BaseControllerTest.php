@@ -185,6 +185,20 @@ class BaseControllerTest extends TestCase
      * @param string $namespace The namespace of the template. Defaults to 'App'
      * @return void
      */
+    public function helperTestObjectComment(int $count, string $coment, string $namespace = 'App'): void
+    {
+        $templateString = $namespace . '.' . $coment;
+        $content = (string)$this->_response->getBody();
+        $this->assertSame($count, substr_count($content, '<!-- OBJECT_COMMENT: ' . $templateString . ' -->'));
+    }
+
+    /**
+     * Tests the right template is inlcuded.
+     *
+     * @param string $templatePath If included, also look for the actual error path as well.
+     * @param string $namespace The namespace of the template. Defaults to 'App'
+     * @return void
+     */
     public function helperTestTemplate(string $templatePath, string $namespace = 'App'): void
     {
         $templateString = $namespace . '.' . $templatePath;

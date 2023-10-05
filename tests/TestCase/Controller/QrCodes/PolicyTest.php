@@ -78,15 +78,15 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/qr-codes');
         $this->assertResponseOk();
         $this->helperTestTemplate('QrCodes/index');
-        $content = (string)$this->_response->getBody();
         // make sure only active ones are listed.
-        $this->assertSame(3, substr_count($content, '<!-- objectComment: QrCodes.active -->'));
-        $this->assertSame(0, substr_count($content, '<!-- objectComment: QrCodes.inactive -->'));
+        $this->helperTestObjectComment(3, 'QrCodes/active');
+        $this->helperTestObjectComment(0, 'QrCodes/inactive');
         // make sure the qcode is listed for each one.
-        $this->assertSame(3, substr_count($content, '<!-- objectComment: QrCode.show -->'));
+        $this->helperTestObjectComment(3, 'QrCode/show');
         // make sure only active primary images are listed.
-        $this->assertSame(3, substr_count($content, '<!-- objectComment: QrImages.active.first -->'));
+        $this->helperTestObjectComment(3, 'QrImages/active/first');
         // make sure the primary inactive one isn't listed.
+        $content = (string)$this->_response->getBody();
         $this->assertSame(0, substr_count($content, '<img class="product-qrimage" src="/qr-images/show/3'));
 
         // test with reqular
@@ -94,16 +94,16 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/qr-codes');
         $this->assertResponseOk();
         $this->helperTestTemplate('QrCodes/index');
-        $content = (string)$this->_response->getBody();
         // make sure all are listed.
         // this may change to include all active, and inactive, scoped to the user.
-        $this->assertSame(3, substr_count($content, '<!-- objectComment: QrCodes.active -->'));
-        $this->assertSame(1, substr_count($content, '<!-- objectComment: QrCodes.inactive -->'));
+        $this->helperTestObjectComment(3, 'QrCodes/active');
+        $this->helperTestObjectComment(1, 'QrCodes/inactive');
         // make sure the qcode is listed for each one.
-        $this->assertSame(4, substr_count($content, '<!-- objectComment: QrCode.show -->'));
+        $this->helperTestObjectComment(4, 'QrCode/show');
         // make sure only active primary images are listed.
-        $this->assertSame(3, substr_count($content, '<!-- objectComment: QrImages.active.first -->'));
+        $this->helperTestObjectComment(3, 'QrImages/active/first');
         // make sure the primary inactive one isn't listed.
+        $content = (string)$this->_response->getBody();
         $this->assertSame(0, substr_count($content, '<img class="product-qrimage" src="/qr-images/show/3'));
 
         // test with admin
@@ -114,13 +114,14 @@ class PolicyTest extends BaseControllerTest
         $content = (string)$this->_response->getBody();
         // make sure all are listed.
         // this may change to include all active, and inactive, scoped to the user.
-        $this->assertSame(3, substr_count($content, '<!-- objectComment: QrCodes.active -->'));
-        $this->assertSame(1, substr_count($content, '<!-- objectComment: QrCodes.inactive -->'));
+        $this->helperTestObjectComment(3, 'QrCodes/active');
+        $this->helperTestObjectComment(1, 'QrCodes/inactive');
         // make sure the qcode is listed for each one.
-        $this->assertSame(4, substr_count($content, '<!-- objectComment: QrCode.show -->'));
+        $this->helperTestObjectComment(4, 'QrCode/show');
         // make sure only active primary images are listed.
-        $this->assertSame(3, substr_count($content, '<!-- objectComment: QrImages.active.first -->'));
+        $this->helperTestObjectComment(3, 'QrImages/active/first');
         // make sure the primary inactive one isn't listed.
+        $content = (string)$this->_response->getBody();
         $this->assertSame(0, substr_count($content, '<img class="product-qrimage" src="/qr-images/show/3'));
 
         // test with debug off

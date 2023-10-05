@@ -71,8 +71,8 @@ class QrImagesController extends AppController
         $qrCode = $this->QrImages->QrCodes->get((int)$id);
         $this->Authorization->authorize($qrCode);
 
-        $query = $this->QrImages->find('all')
-            ->where(['QrImages.qr_code_id' => $id]);
+        $query = $this->QrImages->find('qrCode', QrCode: $qrCode);
+        $query = $this->Authorization->applyScope($query);
         $qrImages = $this->paginate($query);
 
         $this->set(compact('qrCode', 'qrImages'));
