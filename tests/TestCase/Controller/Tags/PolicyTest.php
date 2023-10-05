@@ -179,10 +179,9 @@ class PolicyTest extends BaseControllerTest
         // test with reqular
         $this->loginUserRegular();
         $this->get('https://localhost/tags/add');
-        $this->assertRedirectEquals('https://localhost/?redirect=%2Ftags%2Fadd');
-        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
-        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
-        $this->assertFlashElement('flash/error');
+        $this->assertResponseOk();
+        $this->helperTestTemplate('Tags/add');
+        $this->helperTestFormTag('/tags/add', 'post');
 
         // test with admin
         $this->loginUserAdmin();
@@ -219,7 +218,14 @@ class PolicyTest extends BaseControllerTest
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
-        // test with reqular
+        // test with reqular, owner
+        $this->loginUserRegular();
+        $this->get('https://localhost/tags/edit/4');
+        $this->assertResponseOk();
+        $this->helperTestTemplate('Tags/edit');
+        $this->helperTestFormTag('/tags/edit/4', 'patch');
+
+        // test with reqular, not owner
         $this->loginUserRegular();
         $this->get('https://localhost/tags/edit/1');
         $this->assertRedirectEquals('https://localhost/?redirect=%2Ftags%2Fedit%2F1');
@@ -284,13 +290,21 @@ class PolicyTest extends BaseControllerTest
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
-        // test with reqular
+        // test with reqular, not owner
         $this->loginUserRegular();
         $this->delete('https://localhost/tags/delete/3');
         $this->assertRedirectEquals('https://localhost/');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
+
+        // test with reqular, owner
+        $this->loginUserRegular();
+        $this->delete('https://localhost/tags/delete/4');
+        $this->assertRedirectEquals('https://localhost/tags');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('The tag `Pig` has been deleted.', 'flash');
+        $this->assertFlashElement('flash/success');
 
         // test with admin
         $this->loginUserAdmin();
