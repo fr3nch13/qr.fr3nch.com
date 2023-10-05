@@ -131,18 +131,27 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/qr-images/qr-code/3');
         $this->assertResponseOk();
         $this->helperTestTemplate('QrImages/qr_code');
+        $this->helperTestObjectComment(3, 'QrImages/entity');
+        $this->helperTestObjectComment(2, 'QrImages/entity/active');
+        $this->helperTestObjectComment(1, 'QrImages/entity/inactive');
 
         // test with admin, not owner
         $this->loginUserAdmin();
         $this->get('https://localhost/qr-images/qr-code/3');
         $this->assertResponseOk();
         $this->helperTestTemplate('QrImages/qr_code');
+        $this->helperTestObjectComment(3, 'QrImages/entity');
+        $this->helperTestObjectComment(2, 'QrImages/entity/active');
+        $this->helperTestObjectComment(1, 'QrImages/entity/inactive');
 
         // test with admin, owner
         $this->loginUserAdmin();
         $this->get('https://localhost/qr-images/qr-code/1');
         $this->assertResponseOk();
         $this->helperTestTemplate('QrImages/qr_code');
+        $this->helperTestObjectComment(2, 'QrImages/entity');
+        $this->helperTestObjectComment(2, 'QrImages/entity/active');
+        $this->helperTestObjectComment(0, 'QrImages/entity/inactive');
 
         // test with debug off
         Configure::write('debug', false);
@@ -176,6 +185,20 @@ class PolicyTest extends BaseControllerTest
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
+
+        // not logged in, missing image, debug on
+        $this->loginGuest();
+        $this->get('https://localhost/qr-images/show/999');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Error: Record not found in table `qr_images`.');
+
+        // not logged in, missing image, debug off
+        Configure::write('debug', false);
+        $this->loginGuest();
+        $this->get('https://localhost/qr-images/show/999');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Not Found');
+        Configure::write('debug', true);
 
         // test with admin, active image
         $this->loginUserAdmin();
