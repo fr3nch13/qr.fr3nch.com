@@ -46,6 +46,7 @@ class CategoriesController extends AppController
 
         $query = $this->Categories->find('all')
             ->contain(['QrCodes', 'ParentCategories']);
+        $query = $this->Authorization->applyScope($query);
         $categories = $this->paginate($query);
 
         $this->set(compact('categories'));

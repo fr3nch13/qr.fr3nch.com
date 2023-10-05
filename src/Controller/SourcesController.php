@@ -42,6 +42,7 @@ class SourcesController extends AppController
         $this->request->allowMethod(['get']);
 
         $query = $this->Sources->find('all');
+        $query = $this->Authorization->applyScope($query);
         $sources = $this->paginate($query);
 
         $this->set(compact('sources'));

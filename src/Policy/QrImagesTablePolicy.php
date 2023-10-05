@@ -7,7 +7,7 @@ use App\Model\Entity\User;
 use Cake\ORM\Query\SelectQuery;
 
 /**
- * QrImage policy
+ * QrImagesTable policy
  */
 class QrImagesTablePolicy
 {
@@ -22,20 +22,5 @@ class QrImagesTablePolicy
     public function scopeQrCode(User $user, SelectQuery $query, mixed ...$optionalArgs): SelectQuery
     {
         return $query;
-    }
-
-    /**
-     * Check if $user created the QrImage
-     *
-     * If this is being checked, with a null, user, it's most likely
-     * canShow, and the image is inactive.
-     *
-     * @param \App\Model\Entity\User $user The identity object.
-     * @param \Cake\ORM\Query\SelectQuery $query
-     * @return bool
-     */
-    protected function isCreator(User $user, SelectQuery $query): bool
-    {
-        return true;
     }
 }

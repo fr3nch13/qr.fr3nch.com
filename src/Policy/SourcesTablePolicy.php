@@ -7,12 +7,12 @@ use App\Model\Entity\User;
 use Cake\ORM\Query\SelectQuery;
 
 /**
- * QrCodesTable policy
+ * SourcesTable policy
  */
-class QrCodesTablePolicy
+class SourcesTablePolicy
 {
     /**
-     * Check if $user can view the list of images for a QR Code
+     * Check if $user can view the list of Sources.
      *
      * @param \App\Model\Entity\User|null $user The identity object.
      * @param \Cake\ORM\Query\SelectQuery $query
@@ -20,10 +20,6 @@ class QrCodesTablePolicy
      */
     public function scopeIndex(?User $user, SelectQuery $query): SelectQuery
     {
-        if ($user) {
-            return $query;
-        }
-
-        return $query->find('active');
+        return $query;
     }
 }

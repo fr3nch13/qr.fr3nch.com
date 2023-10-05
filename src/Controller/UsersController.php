@@ -133,6 +133,7 @@ class UsersController extends AppController
         $this->request->allowMethod(['get']);
 
         $query = $this->Users->find('all');
+        $query = $this->Authorization->applyScope($query);
         $users = $this->paginate($query);
 
         $this->set(compact('users'));

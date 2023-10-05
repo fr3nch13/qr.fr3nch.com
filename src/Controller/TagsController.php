@@ -46,6 +46,7 @@ class TagsController extends AppController
         $this->request->allowMethod(['get']);
 
         $query = $this->Tags->find('all');
+        $query = $this->Authorization->applyScope($query);
         $tags = $this->paginate($query);
 
         $this->set(compact('tags'));
