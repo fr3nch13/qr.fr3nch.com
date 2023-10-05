@@ -41,13 +41,19 @@ class TagsFixture extends CoreFixture
             ],
             [
                 'id' => 3,
-                'name' => 'Amazon',
+                'name' => 'Delete Me',
                 'created' => new DateTime(),
                 'user_id' => 1,
             ],
             [
                 'id' => 4,
                 'name' => 'Pig',
+                'created' => new DateTime(),
+                'user_id' => 1,
+            ],
+            [
+                'id' => 5,
+                'name' => 'Amazon',
                 'created' => new DateTime(),
                 'user_id' => 1,
             ],

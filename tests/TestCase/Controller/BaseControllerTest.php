@@ -20,10 +20,10 @@ class BaseControllerTest extends TestCase
         'app.Users',
         'app.Sources',
         'app.Categories',
+        'app.Tags',
         'app.QrCodes',
         'app.QrImages',
         'app.CategoriesQrCodes',
-        'app.Tags',
         'app.QrCodesTags',
     ];
     /**
