@@ -295,6 +295,21 @@ class BaseControllerTest extends TestCase
     }
 
     /**
+     * Tests that we're using the pages/dashboard layout
+     *
+     * @return void
+     */
+    public function helperTestLayoutPagesDashboard(): void
+    {
+        $this->helperTestLayoutBase();
+        $content = (string)$this->_response->getBody();
+        $this->assertSame(1, substr_count($content, '<!-- START: App.layout/pages/dashboard -->'));
+        $this->assertSame(1, substr_count($content, '<!-- END: App.layout/pages/dashboard -->'));
+
+        // test other specific to this layout.
+    }
+
+    /**
      * Tests that we're using the pages/form layout
      *
      * @return void

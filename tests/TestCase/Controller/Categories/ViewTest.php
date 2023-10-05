@@ -42,18 +42,21 @@ class ViewTest extends BaseControllerTest
         $this->get('https://localhost/categories');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesIndex();
+        $this->helperTestTemplate('Categories/index');
 
         // test with reqular
         $this->loginUserRegular();
         $this->get('https://localhost/categories');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesIndex();
+        $this->helperTestTemplate('Categories/index');
 
         // test with admin
         $this->loginUserAdmin();
         $this->get('https://localhost/categories');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesIndex();
+        $this->helperTestTemplate('Categories/index');
     }
 
     /**
@@ -69,6 +72,7 @@ class ViewTest extends BaseControllerTest
         $this->get('https://localhost/categories');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
+        $this->helperTestTemplate('Categories/index');
 
         // test with reqular
         $this->requestAsAjax();
@@ -76,6 +80,7 @@ class ViewTest extends BaseControllerTest
         $this->get('https://localhost/categories');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
+        $this->helperTestTemplate('Categories/index');
 
         // test with admin
         $this->requestAsAjax();
@@ -83,6 +88,7 @@ class ViewTest extends BaseControllerTest
         $this->get('https://localhost/categories');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
+        $this->helperTestTemplate('Categories/index');
     }
 
     /**
@@ -97,18 +103,21 @@ class ViewTest extends BaseControllerTest
         $this->get('https://localhost/categories/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesView();
+        $this->helperTestTemplate('Categories/view');
 
         // test with reqular
         $this->loginUserRegular();
         $this->get('https://localhost/categories/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesView();
+        $this->helperTestTemplate('Categories/view');
 
         // test with admin
         $this->loginUserAdmin();
         $this->get('https://localhost/categories/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesView();
+        $this->helperTestTemplate('Categories/view');
     }
 
     /**
@@ -124,6 +133,7 @@ class ViewTest extends BaseControllerTest
         $this->get('https://localhost/categories/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
+        $this->helperTestTemplate('Categories/view');
 
         // test with reqular
         $this->requestAsAjax();
@@ -131,6 +141,7 @@ class ViewTest extends BaseControllerTest
         $this->get('https://localhost/categories/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
+        $this->helperTestTemplate('Categories/view');
 
         // test with admin
         $this->requestAsAjax();
@@ -138,6 +149,7 @@ class ViewTest extends BaseControllerTest
         $this->get('https://localhost/categories/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
+        $this->helperTestTemplate('Categories/view');
     }
 
     /**
@@ -161,6 +173,7 @@ class ViewTest extends BaseControllerTest
         $this->get('https://localhost/categories/add');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesForm();
+        $this->helperTestTemplate('Categories/add');
     }
 
     /**
@@ -186,6 +199,7 @@ class ViewTest extends BaseControllerTest
         $this->get('https://localhost/categories/add');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
+        $this->helperTestTemplate('Categories/add');
     }
 
     /**
@@ -209,6 +223,7 @@ class ViewTest extends BaseControllerTest
         $this->get('https://localhost/categories/edit/1');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesForm();
+        $this->helperTestTemplate('Categories/edit');
     }
 
     /**
@@ -234,5 +249,6 @@ class ViewTest extends BaseControllerTest
         $this->get('https://localhost/categories/edit/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
+        $this->helperTestTemplate('Categories/edit');
     }
 }

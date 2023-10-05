@@ -4,7 +4,7 @@
  * @var iterable<\App\Model\Entity\User> $users
  */
 if (!$this->getRequest()->is('ajax')) {
-    $this->setLayout('pages/index');
+    $this->setLayout('pages/dashboard');
 }
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
