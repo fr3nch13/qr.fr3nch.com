@@ -111,7 +111,6 @@ class SourcesController extends AppController
 
         if ($this->request->is('patch')) {
             $source = $this->Sources->patchEntity($source, $this->request->getData());
-            $source->user_id = $this->getActiveUser('id');
             if ($this->Sources->save($source)) {
                 $this->Flash->success(__('The source has been saved.'));
 

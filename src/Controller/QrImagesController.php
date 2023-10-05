@@ -125,13 +125,9 @@ class QrImagesController extends AppController
 
         $qrImage = $this->QrImages->get((int)$id, contain: ['QrCodes']);
         $this->Authorization->authorize($qrImage);
-        // ensure this isn't getting changed.
-        $qr_code_id = $qrImage->qr_code->id;
 
         if ($this->request->is('patch')) {
             $qrImage = $this->QrImages->patchEntity($qrImage, $this->request->getData());
-            // enforced here.
-            $qrImage->qr_code_id = $qr_code_id;
             if ($this->QrImages->save($qrImage)) {
                 $this->Flash->success(__('The image has been saved.'));
 
