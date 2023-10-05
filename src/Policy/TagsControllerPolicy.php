@@ -14,11 +14,11 @@ class TagsControllerPolicy extends BaseControllerPolicy
     /**
      * Anyone can view a list of tags.
      *
-     * @param \App\Model\Entity\User|null $identity The identity object.
+     * @param \App\Model\Entity\User|null $user The identity object.
      * @param \App\Controller\TagsController $TagsController
      * @return bool
      */
-    public function canIndex(?User $identity, TagsController $TagsController): bool
+    public function canIndex(?User $user, TagsController $TagsController): bool
     {
         return true;
     }
@@ -26,11 +26,11 @@ class TagsControllerPolicy extends BaseControllerPolicy
     /**
      * Anyone can view a tag.
      *
-     * @param \App\Model\Entity\User|null $identity The identity object.
+     * @param \App\Model\Entity\User|null $user The identity object.
      * @param \App\Controller\TagsController $TagsController
      * @return bool
      */
-    public function canView(?User $identity, TagsController $TagsController): bool
+    public function canView(?User $user, TagsController $TagsController): bool
     {
         return true;
     }
@@ -38,13 +38,13 @@ class TagsControllerPolicy extends BaseControllerPolicy
     /**
      * Must be an logged in to add a tag
      *
-     * @param \App\Model\Entity\User|null $identity The identity object.
+     * @param \App\Model\Entity\User|null $user The identity object.
      * @param \App\Controller\TagsController $TagsController
      * @return bool
      */
-    public function canAdd(?User $identity, TagsController $TagsController): bool
+    public function canAdd(?User $user, TagsController $TagsController): bool
     {
-        if (!$identity) {
+        if (!$user) {
             return false;
         }
 
@@ -55,13 +55,13 @@ class TagsControllerPolicy extends BaseControllerPolicy
      * Must be logged in to edit a tag
      * Object policy to test editing the specific tag is done in \App\Policy\TagPolicy::canEdit()
      *
-     * @param \App\Model\Entity\User|null $identity The identity object.
+     * @param \App\Model\Entity\User|null $user The identity object.
      * @param \App\Controller\TagsController $TagsController
      * @return bool
      */
-    public function canEdit(?User $identity, TagsController $TagsController): bool
+    public function canEdit(?User $user, TagsController $TagsController): bool
     {
-        if (!$identity) {
+        if (!$user) {
             return false;
         }
 
@@ -72,13 +72,13 @@ class TagsControllerPolicy extends BaseControllerPolicy
      * Must be logged to delete a tag
      * Object policy to test editing the specific tag is done in \App\Policy\TagPolicy::canDelete()
      *
-     * @param \App\Model\Entity\User|null $identity The identity object.
+     * @param \App\Model\Entity\User|null $user The identity object.
      * @param \App\Controller\TagsController $TagsController
      * @return bool
      */
-    public function canDelete(?User $identity, TagsController $TagsController): bool
+    public function canDelete(?User $user, TagsController $TagsController): bool
     {
-        if (!$identity) {
+        if (!$user) {
             return false;
         }
 

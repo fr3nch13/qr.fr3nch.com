@@ -14,11 +14,11 @@ class QrCodesControllerPolicy extends BaseControllerPolicy
     /**
      * Anyone can be forwarded.
      *
-     * @param \App\Model\Entity\User|null $identity The identity object.
+     * @param \App\Model\Entity\User|null $user The identity object.
      * @param \App\Controller\QrCodesController $QrCodesController
      * @return bool
      */
-    public function canForward(?User $identity, QrCodesController $QrCodesController): bool
+    public function canForward(?User $user, QrCodesController $QrCodesController): bool
     {
         return true;
     }
@@ -26,11 +26,11 @@ class QrCodesControllerPolicy extends BaseControllerPolicy
     /**
      * Anyone can see the QR Code Image.
      *
-     * @param \App\Model\Entity\User|null $identity The identity object.
+     * @param \App\Model\Entity\User|null $user The identity object.
      * @param \App\Controller\QrCodesController $QrCodesController
      * @return bool
      */
-    public function canShow(?User $identity, QrCodesController $QrCodesController): bool
+    public function canShow(?User $user, QrCodesController $QrCodesController): bool
     {
         return true;
     }
@@ -38,11 +38,11 @@ class QrCodesControllerPolicy extends BaseControllerPolicy
     /**
      * Anyone can view a list of qr codes.
      *
-     * @param \App\Model\Entity\User|null $identity The identity object.
+     * @param \App\Model\Entity\User|null $user The identity object.
      * @param \App\Controller\QrCodesController $QrCodesController
      * @return bool
      */
-    public function canIndex(?User $identity, QrCodesController $QrCodesController): bool
+    public function canIndex(?User $user, QrCodesController $QrCodesController): bool
     {
         return true;
     }
@@ -50,11 +50,11 @@ class QrCodesControllerPolicy extends BaseControllerPolicy
     /**
      * Anyone can view a qr code.
      *
-     * @param \App\Model\Entity\User|null $identity The identity object.
+     * @param \App\Model\Entity\User|null $user The identity object.
      * @param \App\Controller\QrCodesController $QrCodesController
      * @return bool
      */
-    public function canView(?User $identity, QrCodesController $QrCodesController): bool
+    public function canView(?User $user, QrCodesController $QrCodesController): bool
     {
         return true;
     }
@@ -62,13 +62,13 @@ class QrCodesControllerPolicy extends BaseControllerPolicy
     /**
      * Must be an logged in to add a qr code
      *
-     * @param \App\Model\Entity\User|null $identity The identity object.
+     * @param \App\Model\Entity\User|null $user The identity object.
      * @param \App\Controller\QrCodesController $QrCodesController
      * @return bool
      */
-    public function canAdd(?User $identity, QrCodesController $QrCodesController): bool
+    public function canAdd(?User $user, QrCodesController $QrCodesController): bool
     {
-        if (!$identity) {
+        if (!$user) {
             return false;
         }
 
@@ -79,13 +79,13 @@ class QrCodesControllerPolicy extends BaseControllerPolicy
      * Must be an logged in to edit a qr code
      * Object policy to test editing the specific qr code is done in \App\Policy\QrCodePolicy::canEdit()
      *
-     * @param \App\Model\Entity\User|null $identity The identity object.
+     * @param \App\Model\Entity\User|null $user The identity object.
      * @param \App\Controller\QrCodesController $QrCodesController
      * @return bool
      */
-    public function canEdit(?User $identity, QrCodesController $QrCodesController): bool
+    public function canEdit(?User $user, QrCodesController $QrCodesController): bool
     {
-        if (!$identity) {
+        if (!$user) {
             return false;
         }
 
@@ -96,13 +96,13 @@ class QrCodesControllerPolicy extends BaseControllerPolicy
      * Must be an logged in to delete a qr code
      * Object policy to test editing the specific qr code is done in \App\Policy\QrCodePolicy::canDelete()
      *
-     * @param \App\Model\Entity\User|null $identity The identity object.
+     * @param \App\Model\Entity\User|null $user The identity object.
      * @param \App\Controller\QrCodesController $QrCodesController
      * @return bool
      */
-    public function canDelete(?User $identity, QrCodesController $QrCodesController): bool
+    public function canDelete(?User $user, QrCodesController $QrCodesController): bool
     {
-        if (!$identity) {
+        if (!$user) {
             return false;
         }
 

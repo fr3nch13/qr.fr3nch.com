@@ -14,13 +14,13 @@ class QrImagesControllerPolicy extends BaseControllerPolicy
     /**
      * Must be an logged in to view a list of images related to a code.
      *
-     * @param \App\Model\Entity\User|null $identity The identity object.
+     * @param \App\Model\Entity\User|null $user The identity object.
      * @param \App\Controller\QrImagesController $QrImagesController
      * @return bool
      */
-    public function canQrCode(?User $identity, QrImagesController $QrImagesController): bool
+    public function canQrCode(?User $user, QrImagesController $QrImagesController): bool
     {
-        if (!$identity) {
+        if (!$user) {
             return false;
         }
 
@@ -30,11 +30,11 @@ class QrImagesControllerPolicy extends BaseControllerPolicy
     /**
      * Anyone can see the Image.
      *
-     * @param \App\Model\Entity\User|null $identity The identity object.
+     * @param \App\Model\Entity\User|null $user The identity object.
      * @param \App\Controller\QrImagesController $QrImagesController
      * @return bool
      */
-    public function canShow(?User $identity, QrImagesController $QrImagesController): bool
+    public function canShow(?User $user, QrImagesController $QrImagesController): bool
     {
         return true;
     }
@@ -42,13 +42,13 @@ class QrImagesControllerPolicy extends BaseControllerPolicy
     /**
      * Must be an logged in to view an image details page
      *
-     * @param \App\Model\Entity\User|null $identity The identity object.
+     * @param \App\Model\Entity\User|null $user The identity object.
      * @param \App\Controller\QrImagesController $QrImagesController
      * @return bool
      */
-    public function canView(?User $identity, QrImagesController $QrImagesController): bool
+    public function canView(?User $user, QrImagesController $QrImagesController): bool
     {
-        if (!$identity) {
+        if (!$user) {
             return false;
         }
 
@@ -58,13 +58,13 @@ class QrImagesControllerPolicy extends BaseControllerPolicy
     /**
      * Must be an logged in to add a image
      *
-     * @param \App\Model\Entity\User|null $identity The identity object.
+     * @param \App\Model\Entity\User|null $user The identity object.
      * @param \App\Controller\QrImagesController $QrImagesController
      * @return bool
      */
-    public function canAdd(?User $identity, QrImagesController $QrImagesController): bool
+    public function canAdd(?User $user, QrImagesController $QrImagesController): bool
     {
-        if (!$identity) {
+        if (!$user) {
             return false;
         }
 
@@ -75,13 +75,13 @@ class QrImagesControllerPolicy extends BaseControllerPolicy
      * Must be an logged in to edit a image
      * Object policy to test editing the specific image is done in \App\Policy\QrCodePolicy::canEdit()
      *
-     * @param \App\Model\Entity\User|null $identity The identity object.
+     * @param \App\Model\Entity\User|null $user The identity object.
      * @param \App\Controller\QrImagesController $QrImagesController
      * @return bool
      */
-    public function canEdit(?User $identity, QrImagesController $QrImagesController): bool
+    public function canEdit(?User $user, QrImagesController $QrImagesController): bool
     {
-        if (!$identity) {
+        if (!$user) {
             return false;
         }
 
@@ -92,13 +92,13 @@ class QrImagesControllerPolicy extends BaseControllerPolicy
      * Must be an logged in to delete a image
      * Object policy to test editing the specific image is done in \App\Policy\QrCodePolicy::canDelete()
      *
-     * @param \App\Model\Entity\User|null $identity The identity object.
+     * @param \App\Model\Entity\User|null $user The identity object.
      * @param \App\Controller\QrImagesController $QrImagesController
      * @return bool
      */
-    public function canDelete(?User $identity, QrImagesController $QrImagesController): bool
+    public function canDelete(?User $user, QrImagesController $QrImagesController): bool
     {
-        if (!$identity) {
+        if (!$user) {
             return false;
         }
 

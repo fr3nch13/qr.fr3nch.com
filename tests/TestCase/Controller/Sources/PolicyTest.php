@@ -73,22 +73,32 @@ class PolicyTest extends BaseControllerTest
     public function testIndex(): void
     {
         // not logged in
+        $this->loginGuest();
         $this->get('https://localhost/sources');
         $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fsources');
-
-        // test with admin
-        $this->loginUserAdmin();
-        $this->get('https://localhost/sources');
-        $this->assertResponseOk();
-        $this->assertResponseContains('<div class="sources index content">');
-        $this->assertResponseContains('<h3>Sources</h3>');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
 
         // test with reqular
         $this->loginUserRegular();
         $this->get('https://localhost/sources');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="sources index content">');
-        $this->assertResponseContains('<h3>Sources</h3>');
+        $this->helperTestTemplate('Categories/index');
+
+        // test with admin
+        $this->loginUserAdmin();
+        $this->get('https://localhost/sources');
+        $this->assertResponseOk();
+        $this->helperTestTemplate('Categories/index');
+
+        // test with debug off
+        Configure::write('debug', false);
+        $this->loginUserAdmin();
+        $this->get('https://localhost/sources');
+        $this->assertResponseOk();
+        $this->helperTestTemplate('Categories/index');
+        Configure::write('debug', true);
     }
 
     /**
