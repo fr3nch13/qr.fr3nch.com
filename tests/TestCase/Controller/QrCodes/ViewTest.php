@@ -28,7 +28,6 @@ class ViewTest extends BaseControllerTest
         $this->enableRetainFlashMessages();
         $this->enableCsrfToken();
         $this->enableSecurityToken();
-        $this->loginUserAdmin();
     }
 
     /**
