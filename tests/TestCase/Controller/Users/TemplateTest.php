@@ -37,7 +37,7 @@ class TemplateTest extends BaseControllerTest
      * Test login method
      *
      * @return void
-     * @uses \App\Controller\UsersController::index()
+     * @uses \App\Controller\UsersController::login()
      */
     public function testLoginNormal(): void
     {
@@ -66,7 +66,7 @@ class TemplateTest extends BaseControllerTest
      * Test index method
      *
      * @return void
-     * @uses \App\Controller\UsersController::index()
+     * @uses \App\Controller\UsersController::login()
      */
     public function testLoginAjax(): void
     {

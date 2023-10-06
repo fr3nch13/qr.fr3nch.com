@@ -33,7 +33,6 @@ class PolicyTest extends BaseControllerTest
      *
      * @alert Keep the https://localhost/ as the HttpsEnforcerMiddleware will try to redirect.
      * @return void
-     * @uses \App\Controller\QrImagesController::index()
      */
     public function testDontexist(): void
     {
@@ -68,7 +67,6 @@ class PolicyTest extends BaseControllerTest
      * Test index method
      *
      * @return void
-     * @uses \App\Controller\QrImagesController::index() which doesn't exist
      */
     public function testIndex(): void
     {

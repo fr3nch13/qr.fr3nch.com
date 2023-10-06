@@ -44,7 +44,7 @@ class QrImagesController extends AppController
      * Shows the actual Image.
      *
      * @param ?string $id Image id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return \Cake\Http\Response Shows the image to the browser
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function show(?string $id = null): Response
@@ -53,6 +53,10 @@ class QrImagesController extends AppController
 
         $qrImage = $this->QrImages->get((int)$id, contain: ['QrCodes']);
         $this->Authorization->authorize($qrImage);
+
+        if (!$qrImage->path) {
+            throw new NotFoundException('Unable to find the image file.');
+        }
 
         $response = $this->response->withFile($qrImage->path);
 
@@ -63,7 +67,7 @@ class QrImagesController extends AppController
      * Index method
      *
      * @param ?string $id QR Code id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return ?\Cake\Http\Response Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function qrCode(?string $id = null): ?Response
@@ -88,7 +92,7 @@ class QrImagesController extends AppController
      * Add method
      *
      * @param ?string $id QR Code id.
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     * @return ?\Cake\Http\Response Redirects on successful add, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function add(?string $id = null): ?Response
@@ -132,7 +136,7 @@ class QrImagesController extends AppController
      * Edit method
      *
      * @param ?string $id Image id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
+     * @return ?\Cake\Http\Response Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function edit(?string $id = null): ?Response
@@ -168,7 +172,7 @@ class QrImagesController extends AppController
      * Delete method
      *
      * @param ?string $id Image id.
-     * @return \Cake\Http\Response|null|void Redirects to index.
+     * @return ?\Cake\Http\Response Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete(?string $id = null): ?Response

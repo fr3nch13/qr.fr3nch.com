@@ -16,6 +16,8 @@ class UsersController extends AppController
 {
     /**
      * Runs before the code in the actions
+     *
+     * @return void
      */
     public function beforeFilter(EventInterface $event): void
     {
@@ -37,7 +39,7 @@ class UsersController extends AppController
     /**
      * Action to allow users to login.
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return ?\Cake\Http\Response Renders view
      */
     public function login(): ?Response
     {
@@ -111,7 +113,7 @@ class UsersController extends AppController
      * Public Profile method
      *
      * @param ?string $id User id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return ?\Cake\Http\Response Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function profile(?string $id = null): ?Response
@@ -130,7 +132,7 @@ class UsersController extends AppController
     /**
      * Index method
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return ?\Cake\Http\Response Renders view
      */
     public function index(): ?Response
     {
@@ -150,7 +152,7 @@ class UsersController extends AppController
      * Private View method
      *
      * @param ?string $id User id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return ?\Cake\Http\Response Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view(?string $id = null): ?Response
@@ -173,7 +175,7 @@ class UsersController extends AppController
     /**
      * Add method
      *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     * @return ?\Cake\Http\Response Redirects on successful add, renders view otherwise.
      */
     public function add(): ?Response
     {
@@ -208,7 +210,7 @@ class UsersController extends AppController
      * Edit method
      *
      * @param ?string $id User id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
+     * @return ?\Cake\Http\Response Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function edit(?string $id = null): ?Response

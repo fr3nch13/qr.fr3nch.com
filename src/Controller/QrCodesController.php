@@ -89,6 +89,10 @@ class QrCodesController extends AppController
         $qrCode = $this->QrCodes->get((int)$id);
         $this->Authorization->authorize($qrCode);
 
+        if (!$qrCode->path) {
+            throw new NotFoundException('Unable to find the image file.');
+        }
+
         $response = $this->response->withFile($qrCode->path);
 
         return $response;
@@ -97,7 +101,7 @@ class QrCodesController extends AppController
     /**
      * Index method
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return ?\Cake\Http\Response Renders view
      */
     public function index(): ?Response
     {
@@ -133,7 +137,7 @@ class QrCodesController extends AppController
      * View method
      *
      * @param ?string $id QR Code id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return ?\Cake\Http\Response Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view(?string $id = null): ?Response
@@ -152,7 +156,7 @@ class QrCodesController extends AppController
     /**
      * Add method
      *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     * @return ?\Cake\Http\Response Redirects on successful add, renders view otherwise.
      */
     public function add(): ?Response
     {
@@ -191,7 +195,7 @@ class QrCodesController extends AppController
      * Edit method
      *
      * @param ?string $id QR Code id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
+     * @return ?\Cake\Http\Response Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function edit(?string $id = null): ?Response
@@ -230,7 +234,7 @@ class QrCodesController extends AppController
      * Delete method
      *
      * @param ?string $id QR Code id.
-     * @return \Cake\Http\Response|null|void Redirects to index.
+     * @return ?\Cake\Http\Response Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete(?string $id = null): ?Response

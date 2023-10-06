@@ -33,8 +33,8 @@ class CrudTest extends BaseControllerTest
     /**
      * Test qr-code method
      *
+     * @uses \App\Controller\QrImagesController::qrCode()
      * @return void
-     * @uses \App\Controller\QrImagesController::index()
      */
     public function testQrCode(): void
     {

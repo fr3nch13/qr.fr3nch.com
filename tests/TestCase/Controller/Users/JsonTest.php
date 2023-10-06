@@ -36,7 +36,7 @@ class JsonTest extends BaseControllerTest
      * Test login method
      *
      * @return void
-     * @uses \App\Controller\UsersController::add()
+     * @uses \App\Controller\UsersController::login()
      */
     public function testLogin(): void
     {

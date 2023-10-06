@@ -79,6 +79,8 @@ class AppController extends Controller
 
     /**
      * Runs before the code in the actions
+     *
+     * @return void
      */
     public function beforeFilter(EventInterface $event): void
     {

@@ -33,7 +33,6 @@ class PolicyTest extends BaseControllerTest
      *
      * @alert Keep the https://localhost/ as the HttpsEnforcerMiddleware will try to redirect.
      * @return void
-     * @uses \App\Controller\SourcesController::index()
      */
     public function testDontexist(): void
     {

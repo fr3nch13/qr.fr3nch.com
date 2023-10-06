@@ -36,8 +36,8 @@ class JsonTest extends BaseControllerTest
     /**
      * Test index method
      *
+     * @uses \App\Controller\QrImagesController::qrCode()
      * @return void
-     * @uses \App\Controller\QrImagesController::index()
      */
     public function testQrCode(): void
     {
@@ -61,8 +61,8 @@ class JsonTest extends BaseControllerTest
     /**
      * Test add method
      *
-     * @return void
      * @uses \App\Controller\QrImagesController::add()
+     * @return void
      */
     public function testAdd(): void
     {

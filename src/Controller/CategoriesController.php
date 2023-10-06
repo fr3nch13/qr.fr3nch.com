@@ -16,6 +16,8 @@ class CategoriesController extends AppController
 {
     /**
      * Runs before the code in the actions
+     *
+     * @return void
      */
     public function beforeFilter(EventInterface $event): void
     {
@@ -39,7 +41,7 @@ class CategoriesController extends AppController
     /**
      * Index method
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return ?\Cake\Http\Response Renders view
      */
     public function index(): ?Response
     {
@@ -60,7 +62,7 @@ class CategoriesController extends AppController
      * View method
      *
      * @param ?string $id Category id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return ?\Cake\Http\Response Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view(?string $id = null): ?Response
@@ -79,7 +81,7 @@ class CategoriesController extends AppController
     /**
      * Add method
      *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     * @return ?\Cake\Http\Response Redirects on successful add, renders view otherwise.
      */
     public function add(): ?Response
     {
@@ -116,7 +118,7 @@ class CategoriesController extends AppController
      * Edit method
      *
      * @param ?string $id Category id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
+     * @return ?\Cake\Http\Response Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function edit(?string $id = null): ?Response
@@ -153,7 +155,7 @@ class CategoriesController extends AppController
      * Delete method
      *
      * @param ?string $id Category id.
-     * @return \Cake\Http\Response|null|void Redirects to index.
+     * @return ?\Cake\Http\Response Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete(?string $id = null): ?Response
