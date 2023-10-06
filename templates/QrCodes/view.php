@@ -71,7 +71,7 @@ if (!$this->getRequest()->is('ajax')) {
                             <?= $this->Template->objectComment('QrImage/show/large') ?>
                         <div class="item text-center">
                             <img
-                                class="img-fluid"
+                                class="img-fluid img-thumbnail"
                                 src="<?= $this->Url->build([
                                     'controller' => 'QrImages',
                                     'action' => 'show', $qrImage->id,
