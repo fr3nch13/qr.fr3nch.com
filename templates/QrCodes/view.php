@@ -85,15 +85,17 @@ if (!$this->getRequest()->is('ajax')) {
                 </div>
                 <div class="col-md-2 order-md-1">
                     <div class="carousel-thumbs d-flex flex-row flex-md-column" id="nav-images">
+                        <?php foreach ($qrCode->qr_images as $qrImage) : ?>
                         <div>
-                            <img class="img-fluid" src="./assets/images/products/product-9.jpg" alt="Image">
+                            <img
+                                class="img-fluid"
+                                src=".<?= $this->Url->build([
+                                    'controller' => 'QrImages',
+                                    'action' => 'show', $qrImage->id,
+                                    ]) ?>"
+                                alt="<?= $qrImage->name ?>">
                         </div>
-                        <div>
-                            <img class="img-fluid" src="./assets/images/products/product-9-2.jpg" alt="Image">
-                        </div>
-                        <div>
-                            <img class="img-fluid" src="./assets/images/products/product-9-3.jpg" alt="Image">
-                        </div>
+                        <?php endforeach; ?>
                         <div>
                             <?= $this->Template->objectComment('QrCode/show') ?>
                             <img
