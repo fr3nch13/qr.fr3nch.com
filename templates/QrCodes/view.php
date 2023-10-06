@@ -14,8 +14,12 @@ if (!$this->getRequest()->is('ajax')) {
 
     <?php if (
         $this->ActiveUser->getUser() &&
-        $this->ActiveUser->getUser('id') === $qrCode->user_id
+        (
+            $this->ActiveUser->getUser('id') === $qrCode->user_id ||
+            $this->ActiveUser->getUser('is_admin') == true
+        )
 ) : ?>
+<div class="product-view">
     <!-- Page Actions -->
     <div class="row g-5 justify-content-center justify-content-lg-between">
         <div class="col-md-12 text-md-end">
@@ -45,7 +49,7 @@ if (!$this->getRequest()->is('ajax')) {
     <?php endif; // Page Actions ?>
 
     <!-- The QR Code Details -->
-    <div class="row g-5 justify-content-center justify-content-lg-between product-<?= ($qrCode->is_active ? 'active' : 'inactive')?>">
+    <div class="row g-5 justify-content-center justify-content-lg-between product product-<?= ($qrCode->is_active ? 'active' : 'inactive')?>">
         <?php if (!$qrCode->is_active) : ?>
         <div class="ribbon red"><span><?= __('Inactive') ?></span></div>
         <?php endif; ?>
@@ -180,7 +184,7 @@ if (!$this->getRequest()->is('ajax')) {
 
         </div>
     </div>
-
+</div>
 
 <!--
 <div class="row">

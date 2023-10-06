@@ -9,7 +9,6 @@ footer img.logo-bottom {
 /**
  * Product listing page
  */
-
 .products .product .product-title {
     font-size: 130%;
 }
@@ -21,8 +20,13 @@ footer img.logo-bottom {
     overflow: auto;
     max-height: 400px;
 }
+/**
+ * Product details page.
+ */
 
-/** ribbons **/
+/**
+ * ribbons
+ */
 
 .ribbon {
     position: absolute;
