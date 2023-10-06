@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
+use Cake\Http\Response;
 
 /**
  * Categories Controller
@@ -40,7 +41,7 @@ class CategoriesController extends AppController
      *
      * @return \Cake\Http\Response|null|void Renders view
      */
-    public function index()
+    public function index(): Response|null
     {
         $this->request->allowMethod(['get']);
 
@@ -51,6 +52,8 @@ class CategoriesController extends AppController
 
         $this->set(compact('categories'));
         $this->viewBuilder()->setOption('serialize', ['categories']);
+
+        return null;
     }
 
     /**
@@ -60,7 +63,7 @@ class CategoriesController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view(?string $id = null)
+    public function view(?string $id = null): Response|null
     {
         $this->request->allowMethod(['get']);
 
@@ -69,6 +72,8 @@ class CategoriesController extends AppController
 
         $this->set(compact('category'));
         $this->viewBuilder()->setOption('serialize', ['category']);
+
+        return null;
     }
 
     /**
@@ -76,7 +81,7 @@ class CategoriesController extends AppController
      *
      * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add(): Response|null
     {
         $this->request->allowMethod(['get', 'post']);
 
@@ -92,7 +97,7 @@ class CategoriesController extends AppController
                 return $this->redirect([
                     'action' => 'view',
                     $category->id,
-                    '_ext' => $this->getRequest()->getParam('_ext')
+                    '_ext' => $this->getRequest()->getParam('_ext'),
                 ]);
             }
             $this->Flash->error(__('The category could not be saved. Please, try again.'));
@@ -103,6 +108,8 @@ class CategoriesController extends AppController
 
         $this->set(compact('category', 'parentCategories', 'errors'));
         $this->viewBuilder()->setOption('serialize', ['category', 'parentCategories', 'errors']);
+
+        return null;
     }
 
     /**
@@ -112,7 +119,7 @@ class CategoriesController extends AppController
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit(?string $id = null)
+    public function edit(?string $id = null): Response|null
     {
         $this->request->allowMethod(['get', 'patch']);
 
@@ -127,7 +134,7 @@ class CategoriesController extends AppController
                 return $this->redirect([
                     'action' => 'view',
                     $category->id,
-                    '_ext' => $this->getRequest()->getParam('_ext')
+                    '_ext' => $this->getRequest()->getParam('_ext'),
                 ]);
             }
             $this->Flash->error(__('The category could not be saved. Please, try again.'));
@@ -138,6 +145,8 @@ class CategoriesController extends AppController
 
         $this->set(compact('category', 'parentCategories', 'errors'));
         $this->viewBuilder()->setOption('serialize', ['category', 'parentCategories', 'errors']);
+
+        return null;
     }
 
     /**
@@ -147,7 +156,7 @@ class CategoriesController extends AppController
      * @return \Cake\Http\Response|null|void Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete(?string $id = null)
+    public function delete(?string $id = null): Response|null
     {
         $this->request->allowMethod(['delete']);
 
@@ -158,11 +167,15 @@ class CategoriesController extends AppController
             $this->Flash->success(__('The category `{0}` has been deleted.', [
                 $category->name,
             ]));
-
-            return $this->redirect([
-                'action' => 'index',
-                '_ext' => $this->getRequest()->getParam('_ext')
-            ]);
+        } else {
+            $this->Flash->error(__('Unable to delete the category `{0}`.', [
+                $category->name,
+            ]));
         }
+
+        return $this->redirect([
+            'action' => 'index',
+            '_ext' => $this->getRequest()->getParam('_ext'),
+        ]);
     }
 }

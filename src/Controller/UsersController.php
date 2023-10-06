@@ -39,7 +39,7 @@ class UsersController extends AppController
      *
      * @return \Cake\Http\Response|null|void Renders view
      */
-    public function login()
+    public function login(): Response|null
     {
         $this->request->allowMethod(['get', 'post']);
 
@@ -75,6 +75,8 @@ class UsersController extends AppController
 
         $this->set(compact('result', 'errors'));
         $this->viewBuilder()->setOption('serialize', ['result', 'errors']);
+
+        return null;
     }
 
     /**
@@ -112,7 +114,7 @@ class UsersController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function profile(?string $id = null)
+    public function profile(?string $id = null): Response|null
     {
         $this->request->allowMethod(['get']);
 
@@ -121,6 +123,8 @@ class UsersController extends AppController
 
         $this->set(compact('user'));
         $this->viewBuilder()->setOption('serialize', ['user']);
+
+        return null;
     }
 
     /**
@@ -128,7 +132,7 @@ class UsersController extends AppController
      *
      * @return \Cake\Http\Response|null|void Renders view
      */
-    public function index()
+    public function index(): Response|null
     {
         $this->request->allowMethod(['get']);
 
@@ -138,6 +142,8 @@ class UsersController extends AppController
 
         $this->set(compact('users'));
         $this->viewBuilder()->setOption('serialize', ['users']);
+
+        return null;
     }
 
     /**
@@ -147,7 +153,7 @@ class UsersController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view(?string $id = null)
+    public function view(?string $id = null): Response|null
     {
         if (!$id) {
             $id = $this->getActiveUser('id');
@@ -160,6 +166,8 @@ class UsersController extends AppController
 
         $this->set(compact('user'));
         $this->viewBuilder()->setOption('serialize', ['user']);
+
+        return null;
     }
 
     /**
@@ -167,7 +175,7 @@ class UsersController extends AppController
      *
      * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add(): Response|null
     {
         $this->request->allowMethod(['get', 'post']);
 
@@ -182,7 +190,7 @@ class UsersController extends AppController
                 return $this->redirect([
                     'action' => 'view',
                     $user->id,
-                    '_ext' => $this->getRequest()->getParam('_ext')
+                    '_ext' => $this->getRequest()->getParam('_ext'),
                 ]);
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
@@ -192,6 +200,8 @@ class UsersController extends AppController
 
         $this->set(compact('user', 'errors'));
         $this->viewBuilder()->setOption('serialize', ['user', 'errors']);
+
+        return null;
     }
 
     /**
@@ -201,7 +211,7 @@ class UsersController extends AppController
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit(?string $id = null)
+    public function edit(?string $id = null): Response|null
     {
         if (!$id) {
             $id = $this->getActiveUser('id');
@@ -220,7 +230,7 @@ class UsersController extends AppController
                 return $this->redirect([
                     'action' => 'view',
                     $user->id,
-                    '_ext' => $this->getRequest()->getParam('_ext')
+                    '_ext' => $this->getRequest()->getParam('_ext'),
                 ]);
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
@@ -230,6 +240,8 @@ class UsersController extends AppController
 
         $this->set(compact('user', 'errors'));
         $this->viewBuilder()->setOption('serialize', ['user', 'errors']);
+
+        return null;
     }
 
     /**
@@ -239,7 +251,7 @@ class UsersController extends AppController
      * @return \Cake\Http\Response|null|void Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete(?string $id = null)
+    public function delete(?string $id = null): Response|null
     {
         $this->request->allowMethod(['delete']);
 
@@ -250,11 +262,15 @@ class UsersController extends AppController
             $this->Flash->success(__('The user `{0}` has been deleted.', [
                 $user->name,
             ]));
-
-            return $this->redirect([
-                'action' => 'index',
-                '_ext' => $this->getRequest()->getParam('_ext')
-            ]);
+        } else {
+            $this->Flash->error(__('Unable to delete the user `{0}`.', [
+                $user->name,
+            ]));
         }
+
+        return $this->redirect([
+            'action' => 'index',
+            '_ext' => $this->getRequest()->getParam('_ext'),
+        ]);
     }
 }

@@ -16,6 +16,8 @@ class QrImagesController extends AppController
 {
     /**
      * Runs before the code in the actions
+     *
+     * @return void
      */
     public function beforeFilter(EventInterface $event): void
     {
@@ -45,7 +47,7 @@ class QrImagesController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function show(?string $id = null)
+    public function show(?string $id = null): Response
     {
         $this->request->allowMethod(['get']);
 
@@ -53,6 +55,7 @@ class QrImagesController extends AppController
         $this->Authorization->authorize($qrImage);
 
         $response = $this->response->withFile($qrImage->path);
+
         return $response;
     }
 
@@ -63,7 +66,7 @@ class QrImagesController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function qrCode(?string $id = null)
+    public function qrCode(?string $id = null): Response|null
     {
         $this->request->allowMethod(['get']);
 
@@ -77,6 +80,8 @@ class QrImagesController extends AppController
 
         $this->set(compact('qrCode', 'qrImages'));
         $this->viewBuilder()->setOption('serialize', ['qrCode', 'qrImages']);
+
+        return null;
     }
 
     /**
@@ -86,7 +91,7 @@ class QrImagesController extends AppController
      * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function add(?string $id = null)
+    public function add(?string $id = null): Response|null
     {
         $this->request->allowMethod(['get', 'post']);
 
@@ -109,7 +114,7 @@ class QrImagesController extends AppController
                 return $this->redirect([
                     'action' => 'qrCode',
                     $qrImage->qr_code->id,
-                    '_ext' => $this->getRequest()->getParam('_ext')
+                    '_ext' => $this->getRequest()->getParam('_ext'),
                 ]);
             }
             $this->Flash->error(__('The image could not be saved. Please, try again.'));
@@ -119,6 +124,8 @@ class QrImagesController extends AppController
 
         $this->set(compact('qrCode', 'qrImage', 'errors'));
         $this->viewBuilder()->setOption('serialize', ['qrCode', 'qrImage', 'errors']);
+
+        return null;
     }
 
     /**
@@ -128,7 +135,7 @@ class QrImagesController extends AppController
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit(?string $id = null)
+    public function edit(?string $id = null): Response|null
     {
         $this->request->allowMethod(['get', 'patch']);
 
@@ -143,7 +150,7 @@ class QrImagesController extends AppController
                 return $this->redirect([
                     'action' => 'qrCode',
                     $qrImage->qr_code->id,
-                    '_ext' => $this->getRequest()->getParam('_ext')
+                    '_ext' => $this->getRequest()->getParam('_ext'),
                 ]);
             }
             $this->Flash->error(__('The image could not be saved. Please, try again.'));
@@ -153,6 +160,8 @@ class QrImagesController extends AppController
 
         $this->set(compact('qrImage', 'errors'));
         $this->viewBuilder()->setOption('serialize', ['qrImage', 'errors']);
+
+        return null;
     }
 
     /**
@@ -162,7 +171,7 @@ class QrImagesController extends AppController
      * @return \Cake\Http\Response|null|void Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete(?string $id = null)
+    public function delete(?string $id = null): Response|null
     {
         $this->request->allowMethod(['delete']);
 
@@ -175,7 +184,12 @@ class QrImagesController extends AppController
                 $qrImage->qr_code->name,
             ]));
 
-            return $this->redirect(['action' => 'qrCode', $qrImage->qr_code->id]);
+        } else {
+            $this->Flash->error(__('Unable to delete the image `{0}`.', [
+                $qrImage->name,
+            ]));
         }
+
+        return $this->redirect(['action' => 'qrCode', $qrImage->qr_code->id]);
     }
 }

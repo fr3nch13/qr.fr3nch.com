@@ -17,6 +17,8 @@ class QrCodesController extends AppController
 {
     /**
      * Runs before the code in the actions
+     *
+     * @return void
      */
     public function beforeFilter(EventInterface $event): void
     {
@@ -78,10 +80,10 @@ class QrCodesController extends AppController
      * Shows the actual QR Code.
      *
      * @param string|null $id QR Code id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return \Cake\Http\Response Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function show(?string $id = null)
+    public function show(?string $id = null): Response
     {
         $this->request->allowMethod(['get']);
 
@@ -89,6 +91,7 @@ class QrCodesController extends AppController
         $this->Authorization->authorize($qrCode);
 
         $response = $this->response->withFile($qrCode->path);
+
         return $response;
     }
 
@@ -97,7 +100,7 @@ class QrCodesController extends AppController
      *
      * @return \Cake\Http\Response|null|void Renders view
      */
-    public function index()
+    public function index(): Response|null
     {
         $this->request->allowMethod(['get']);
 
@@ -117,12 +120,14 @@ class QrCodesController extends AppController
                     return $q
                         ->find('active')
                         ->find('orderFirst');
-            }]);
+                }]);
         $query = $this->Authorization->applyScope($query);
         $qrCodes = $this->paginate($query);
 
         $this->set(compact('qrCodes'));
         $this->viewBuilder()->setOption('serialize', ['qrCodes']);
+
+        return null;
     }
 
     /**
@@ -132,7 +137,7 @@ class QrCodesController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view(?string $id = null)
+    public function view(?string $id = null): Response|null
     {
         $this->request->allowMethod(['get']);
 
@@ -141,6 +146,8 @@ class QrCodesController extends AppController
 
         $this->set(compact('qrCode'));
         $this->viewBuilder()->setOption('serialize', ['qrCode']);
+
+        return null;
     }
 
     /**
@@ -148,7 +155,7 @@ class QrCodesController extends AppController
      *
      * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add(): Response|null
     {
         $this->request->allowMethod(['get', 'post']);
 
@@ -164,7 +171,7 @@ class QrCodesController extends AppController
                 return $this->redirect([
                     'action' => 'view',
                     $qrCode->id,
-                    '_ext' => $this->getRequest()->getParam('_ext')
+                    '_ext' => $this->getRequest()->getParam('_ext'),
                 ]);
             }
             $this->Flash->error(__('The qr code could not be saved. Please, try again.'));
@@ -177,6 +184,8 @@ class QrCodesController extends AppController
 
         $this->set(compact('qrCode', 'sources', 'categories', 'tags', 'errors'));
         $this->viewBuilder()->setOption('serialize', ['qrCode', 'sources', 'categories', 'tags', 'errors']);
+
+        return null;
     }
 
     /**
@@ -186,7 +195,7 @@ class QrCodesController extends AppController
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit(?string $id = null)
+    public function edit(?string $id = null): Response|null
     {
         $this->request->allowMethod(['get', 'patch']);
 
@@ -201,7 +210,7 @@ class QrCodesController extends AppController
                 return $this->redirect([
                     'action' => 'view',
                     $qrCode->id,
-                    '_ext' => $this->getRequest()->getParam('_ext')
+                    '_ext' => $this->getRequest()->getParam('_ext'),
                 ]);
             }
             $this->Flash->error(__('The qr code could not be saved. Please, try again.'));
@@ -214,6 +223,8 @@ class QrCodesController extends AppController
 
         $this->set(compact('qrCode', 'sources', 'categories', 'tags', 'errors'));
         $this->viewBuilder()->setOption('serialize', ['qrCode', 'sources', 'categories', 'tags', 'errors']);
+
+        return null;
     }
 
     /**
@@ -223,7 +234,7 @@ class QrCodesController extends AppController
      * @return \Cake\Http\Response|null|void Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete(?string $id = null)
+    public function delete(?string $id = null): Response|null
     {
         $this->request->allowMethod(['delete']);
 
@@ -234,11 +245,15 @@ class QrCodesController extends AppController
             $this->Flash->success(__('The qr code `{0}` has been deleted.', [
                 $qrCode->name,
             ]));
-
-            return $this->redirect([
-                'action' => 'index',
-                '_ext' => $this->getRequest()->getParam('_ext')
-            ]);
+        } else {
+            $this->Flash->error(__('Unable to delete the qr code `{0}`.', [
+                $qrCode->name,
+            ]));
         }
+
+        return $this->redirect([
+            'action' => 'index',
+            '_ext' => $this->getRequest()->getParam('_ext'),
+        ]);
     }
 }

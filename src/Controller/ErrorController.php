@@ -17,6 +17,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Event\EventInterface;
+use Cake\Http\Response;
 
 /**
  * Error Handling Controller
@@ -29,9 +30,9 @@ class ErrorController extends AppController
      * beforeRender callback.
      *
      * @param \Cake\Event\EventInterface<\Cake\Controller\Controller> $event Event.
-     * @return \Cake\Http\Response|null|void
+     * @return void
      */
-    public function beforeRender(EventInterface $event)
+    public function beforeRender(EventInterface $event): void
     {
         parent::beforeRender($event);
 

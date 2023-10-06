@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
+use Cake\Http\Response;
 
 /**
  * Sources Controller
@@ -15,6 +16,8 @@ class SourcesController extends AppController
 {
     /**
      * Runs before the code in the actions
+     *
+     * @return void
      */
     public function beforeFilter(EventInterface $event): void
     {
@@ -37,7 +40,7 @@ class SourcesController extends AppController
      *
      * @return \Cake\Http\Response|null|void Renders view
      */
-    public function index()
+    public function index(): Response|null
     {
         $this->request->allowMethod(['get']);
 
@@ -47,6 +50,8 @@ class SourcesController extends AppController
 
         $this->set(compact('sources'));
         $this->viewBuilder()->setOption('serialize', ['sources']);
+
+        return null;
     }
 
     /**
@@ -56,7 +61,7 @@ class SourcesController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view(?string $id = null)
+    public function view(?string $id = null): Response|null
     {
         $this->request->allowMethod(['get']);
 
@@ -65,6 +70,8 @@ class SourcesController extends AppController
 
         $this->set(compact('source'));
         $this->viewBuilder()->setOption('serialize', ['source']);
+
+        return null;
     }
 
     /**
@@ -72,7 +79,7 @@ class SourcesController extends AppController
      *
      * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add(): Response|null
     {
         $this->request->allowMethod(['get', 'post']);
 
@@ -88,7 +95,7 @@ class SourcesController extends AppController
                 return $this->redirect([
                     'action' => 'view',
                     $source->id,
-                    '_ext' => $this->getRequest()->getParam('_ext')
+                    '_ext' => $this->getRequest()->getParam('_ext'),
                 ]);
             }
             $this->Flash->error(__('The source could not be saved. Please, try again.'));
@@ -98,6 +105,8 @@ class SourcesController extends AppController
 
         $this->set(compact('source', 'errors'));
         $this->viewBuilder()->setOption('serialize', ['source', 'errors']);
+
+        return null;
     }
 
     /**
@@ -107,7 +116,7 @@ class SourcesController extends AppController
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit(?string $id = null)
+    public function edit(?string $id = null): Response|null
     {
         $this->request->allowMethod(['get', 'patch']);
 
@@ -122,7 +131,7 @@ class SourcesController extends AppController
                 return $this->redirect([
                     'action' => 'view',
                     $source->id,
-                    '_ext' => $this->getRequest()->getParam('_ext')
+                    '_ext' => $this->getRequest()->getParam('_ext'),
                 ]);
             }
             $this->Flash->error(__('The source could not be saved. Please, try again.'));
@@ -132,6 +141,8 @@ class SourcesController extends AppController
 
         $this->set(compact('source', 'errors'));
         $this->viewBuilder()->setOption('serialize', ['source', 'errors']);
+
+        return null;
     }
 
     /**
@@ -141,7 +152,7 @@ class SourcesController extends AppController
      * @return \Cake\Http\Response|null|void Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete(?string $id = null)
+    public function delete(?string $id = null): Response|null
     {
         $this->request->allowMethod(['delete']);
 
@@ -152,11 +163,15 @@ class SourcesController extends AppController
             $this->Flash->success(__('The source `{0}` has been deleted.', [
                 $source->name,
             ]));
-
-            return $this->redirect([
-                'action' => 'index',
-                '_ext' => $this->getRequest()->getParam('_ext')
-            ]);
+        } else {
+            $this->Flash->error(__('Unable to delete the source `{0}`.', [
+                $source->name,
+            ]));
         }
+
+        return $this->redirect([
+            'action' => 'index',
+            '_ext' => $this->getRequest()->getParam('_ext'),
+        ]);
     }
 }

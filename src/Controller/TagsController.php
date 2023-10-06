@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
+use Cake\Http\Response;
 
 /**
  * Tags Controller
@@ -15,6 +16,8 @@ class TagsController extends AppController
 {
     /**
      * Runs before the code in the actions
+     *
+     * @return void
      */
     public function beforeFilter(EventInterface $event): void
     {
@@ -41,7 +44,7 @@ class TagsController extends AppController
      *
      * @return \Cake\Http\Response|null|void Renders view
      */
-    public function index()
+    public function index(): Response|null
     {
         $this->request->allowMethod(['get']);
 
@@ -51,6 +54,8 @@ class TagsController extends AppController
 
         $this->set(compact('tags'));
         $this->viewBuilder()->setOption('serialize', ['tags']);
+
+        return null;
     }
 
     /**
@@ -60,7 +65,7 @@ class TagsController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view(?string $id = null)
+    public function view(?string $id = null): Response|null
     {
         $this->request->allowMethod(['get']);
 
@@ -69,6 +74,8 @@ class TagsController extends AppController
 
         $this->set(compact('tag'));
         $this->viewBuilder()->setOption('serialize', ['tag']);
+
+        return null;
     }
 
     /**
@@ -76,7 +83,7 @@ class TagsController extends AppController
      *
      * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add(): Response|null
     {
         $this->request->allowMethod(['get', 'post']);
 
@@ -92,7 +99,7 @@ class TagsController extends AppController
                 return $this->redirect([
                     'action' => 'view',
                     $tag->id,
-                    '_ext' => $this->getRequest()->getParam('_ext')
+                    '_ext' => $this->getRequest()->getParam('_ext'),
                 ]);
             }
             $this->Flash->error(__('The tag could not be saved. Please, try again.'));
@@ -103,6 +110,8 @@ class TagsController extends AppController
 
         $this->set(compact('tag', 'qrCodes', 'errors'));
         $this->viewBuilder()->setOption('serialize', ['tag', 'qrCodes', 'errors']);
+
+        return null;
     }
 
     /**
@@ -112,7 +121,7 @@ class TagsController extends AppController
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit(?string $id = null)
+    public function edit(?string $id = null): Response|null
     {
         $this->request->allowMethod(['get', 'patch']);
 
@@ -127,7 +136,7 @@ class TagsController extends AppController
                 return $this->redirect([
                     'action' => 'view',
                     $tag->id,
-                    '_ext' => $this->getRequest()->getParam('_ext')
+                    '_ext' => $this->getRequest()->getParam('_ext'),
                 ]);
             }
             $this->Flash->error(__('The tag could not be saved. Please, try again.'));
@@ -138,6 +147,8 @@ class TagsController extends AppController
 
         $this->set(compact('tag', 'qrCodes', 'errors'));
         $this->viewBuilder()->setOption('serialize', ['tag', 'qrCodes', 'errors']);
+
+        return null;
     }
 
     /**
@@ -147,7 +158,7 @@ class TagsController extends AppController
      * @return \Cake\Http\Response|null|void Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete(?string $id = null)
+    public function delete(?string $id = null): Response|null
     {
         $this->request->allowMethod(['delete']);
 
@@ -158,11 +169,15 @@ class TagsController extends AppController
             $this->Flash->success(__('The tag `{0}` has been deleted.', [
                 $tag->name,
             ]));
-
-            return $this->redirect([
-                'action' => 'index',
-                '_ext' => $this->getRequest()->getParam('_ext')
-            ]);
+        } else {
+            $this->Flash->error(__('Unable to delete the tag `{0}`.', [
+                $tag->name,
+            ]));
         }
+
+        return $this->redirect([
+            'action' => 'index',
+            '_ext' => $this->getRequest()->getParam('_ext'),
+        ]);
     }
 }
