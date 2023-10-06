@@ -2,10 +2,10 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\QrCode $qrCode
- * @var string[]|\Cake\Collection\CollectionInterface $sources
- * @var string[]|\Cake\Collection\CollectionInterface $users
- * @var string[]|\Cake\Collection\CollectionInterface $categories
- * @var string[]|\Cake\Collection\CollectionInterface $tags
+ * @var \Cake\Collection\CollectionInterface|array<string> $sources
+ * @var \Cake\Collection\CollectionInterface|array<string> $users
+ * @var \Cake\Collection\CollectionInterface|array<string> $categories
+ * @var \Cake\Collection\CollectionInterface|array<string> $tags
  */
 if (!$this->getRequest()->is('ajax')) {
     $this->setLayout('pages/form');

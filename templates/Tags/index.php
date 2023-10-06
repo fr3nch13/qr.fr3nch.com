@@ -23,7 +23,7 @@ if (!$this->getRequest()->is('ajax')) {
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($tags as $tag): ?>
+                <?php foreach ($tags as $tag) : ?>
                 <tr>
                     <td><?= $this->Number->format($tag->id) ?></td>
                     <td><?= h($tag->name) ?></td>

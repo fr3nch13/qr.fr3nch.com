@@ -5,7 +5,6 @@
  * @var \App\View\AjaxView $this
  */
 
-?>
-<?= $this->Template->templateComment(true, __FILE__); ?>
-<?= $this->fetch('content'); ?>
-<?= $this->Template->templateComment(false, __FILE__); ?>
+echo $this->Template->templateComment(true, __FILE__);
+echo $this->fetch('content');
+echo $this->Template->templateComment(false, __FILE__);

@@ -24,7 +24,7 @@ if ($this->getLayout() === 'login') {
                     <i class="bi bi-person"></i>
                 </a>
             </li>
-            <?php if ($this->ActiveUser->getUser()): ?>
+            <?php if ($this->ActiveUser->getUser()) : ?>
             <!-- The user icon and dropdown for user-specific pages -->
             <li class="nav-item dropdown dropdown-hover d-none d-lg-block">
                 <a class="nav-link nav-icon" role="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -47,7 +47,7 @@ if ($this->getLayout() === 'login') {
                     <span class="bi bi-list"></span>
                 </a>
             </li>
-            <?php if (!$this->ActiveUser->getUser()): ?>
+            <?php if (!$this->ActiveUser->getUser()) : ?>
             <!-- Signup Link -->
             <li class="nav-item d-none d-lg-block">
                 <?php
@@ -57,7 +57,7 @@ if ($this->getLayout() === 'login') {
                 }
                 echo $this->Html->link(__('Sign In'), [
                 'controller' => 'Users',
-                'action' => 'login'
+                'action' => 'login',
                 ], ['class' => $classes]); ?>
             </li>
             <?php endif; ?>
@@ -68,17 +68,17 @@ if ($this->getLayout() === 'login') {
             <ul class="navbar-nav">
             <li class="nav-item"><?= $this->Html->link(__('QR Codes'), [
                 'controller' => 'QrCodes',
-                'action' => 'index'
+                'action' => 'index',
             ], ['class' => 'nav-link']); ?></li>
 
             <li class="nav-item"><?= $this->Html->link(__('Categories'), [
                 'controller' => 'Categories',
-                'action' => 'index'
+                'action' => 'index',
             ], ['class' => 'nav-link']); ?></li>
 
             <li class="nav-item"><?= $this->Html->link(__('Tags'), [
                 'controller' => 'Tags',
-                'action' => 'index'
+                'action' => 'index',
             ], ['class' => 'nav-link']); ?></li>
             </ul>
         </div>
@@ -86,7 +86,7 @@ if ($this->getLayout() === 'login') {
         <!-- mobile user menu -->
         <div class="collapse account-collapse" id="userNav" data-bs-parent="#mainNav">
             <ul class="navbar-nav">
-                <?php if ($this->ActiveUser->getUser()): ?>
+                <?php if ($this->ActiveUser->getUser()) : ?>
                 <li class="nav-item">
                     <a class="nav-link active" href="#">Dashboard</a>
                 </li>
@@ -105,7 +105,7 @@ if ($this->getLayout() === 'login') {
                         'action' => 'logout',
                     ], ['class' => 'nav-link text-red']); ?>
                 </li>
-                <?php else: ?>
+                <?php else : ?>
                 <li class="nav-item">
                     <?php
                     $classes = 'btn btn-primary rounded-pill ms-2';
@@ -114,7 +114,7 @@ if ($this->getLayout() === 'login') {
                     }
                     echo $this->Html->link(__('Sign In'), [
                     'controller' => 'Users',
-                    'action' => 'login'
+                    'action' => 'login',
                     ], ['class' => $classes]); ?>
                 </li>
                 <?php endif; ?>

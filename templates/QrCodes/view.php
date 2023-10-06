@@ -15,7 +15,7 @@ if (!$this->getRequest()->is('ajax')) {
     <?php if (
         $this->ActiveUser->getUser() &&
         $this->ActiveUser->getUser('id') === $qrCode->user_id
-    ): ?>
+) : ?>
     <!-- Page Actions -->
     <div class="row g-5 justify-content-center justify-content-lg-between">
         <div class="col-md-12 text-md-end">

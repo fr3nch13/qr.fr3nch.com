@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Model\Table;
 
 use App\Model\Entity\QrCode;
-use App\Model\Entity\User;
+use Cake\Http\Exception\NotFoundException;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -108,7 +108,7 @@ class QrImagesTable extends Table
         $qrImage = $this->get($id, contain:['QrCodes']); // throws a NotFoundException if it doesn't exist.
         $path = TMP . 'qr_images' . DS . $qrImage->qr_code_id . DS . $id;
         if (!file_exists($path) || !is_readable($path)) {
-            throw new \Cake\Http\Exception\NotFoundException(__('Unable to find the Image {0} for QR Code {1}', [
+            throw new NotFoundException(__('Unable to find the Image {0} for QR Code {1}', [
                 $qrImage->name,
                 $qrImage->qr_code->name,
             ]));
@@ -127,7 +127,7 @@ class QrImagesTable extends Table
      * @param \Cake\ORM\Query\SelectQuery $query The initial query
      * @return \Cake\ORM\Query\SelectQuery The updated query
      */
-    public function findActive(SelectQuery $query)
+    public function findActive(SelectQuery $query): SelectQuery
     {
         return $query->where(['QrImages.is_active' => true]);
     }
@@ -138,7 +138,7 @@ class QrImagesTable extends Table
      * @param \Cake\ORM\Query\SelectQuery $query The initial query
      * @return \Cake\ORM\Query\SelectQuery The updated query
      */
-    public function findOrderFirst(SelectQuery $query)
+    public function findOrderFirst(SelectQuery $query): SelectQuery
     {
         return $query->order(['QrImages.imorder' => 'asc']);
     }
@@ -150,9 +150,8 @@ class QrImagesTable extends Table
      * @param \App\Model\Entity\QrCode $qrCode The QrCode to find for.
      * @return \Cake\ORM\Query\SelectQuery $query The updated query
      */
-    public function findQrCode(SelectQuery $query, QrCode $QrCode)
+    public function findQrCode(SelectQuery $query, QrCode $QrCode): SelectQuery
     {
         return $query->where(['QrImages.qr_code_id' => $QrCode->id]);
     }
-
 }

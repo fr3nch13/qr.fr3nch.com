@@ -5,7 +5,6 @@ namespace App\Test\TestCase\Controller\QrCodes;
 
 use App\Test\TestCase\Controller\BaseControllerTest;
 use Cake\Core\Configure;
-use Cake\Routing\Router;
 
 /**
  * App\Controller\QrCodesController Test Case
@@ -33,7 +32,6 @@ class PolicyTest extends BaseControllerTest
      * Test missing action
      *
      * @alert Keep the https://localhost/ as the HttpsEnforcerMiddleware will try to redirect.
-     *
      * @return void
      * @uses \App\Controller\QrCodesController::index()
      */

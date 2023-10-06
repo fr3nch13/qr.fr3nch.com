@@ -32,7 +32,6 @@ class PolicyTest extends BaseControllerTest
      * Test missing action
      *
      * @alert Keep the https://localhost/ as the HttpsEnforcerMiddleware will try to redirect.
-     *
      * @return void
      * @uses \App\Controller\SourcesController::index()
      */

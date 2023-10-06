@@ -19,4 +19,4 @@ $this->start('layout');
 <?= $this->element('nav/footer'); ?>
 
 <?= $this->Template->templateComment(false, __FILE__); ?>
-<?php $this->end() // layout ?>
+<?php $this->end(); // layout

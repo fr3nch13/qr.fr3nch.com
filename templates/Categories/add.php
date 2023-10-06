@@ -2,7 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Category $category
- * @var \Cake\Collection\CollectionInterface|string[] $parentCategories
+ * @var \Cake\Collection\CollectionInterface|array<string> $parentCategories
  */
 if (!$this->getRequest()->is('ajax')) {
     $this->setLayout('pages/form');

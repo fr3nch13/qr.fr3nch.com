@@ -219,13 +219,19 @@ class QrImagesTableTest extends TestCase
         }
     }
 
-    private function cpy($source, $dest){
-        if(is_dir($source)) {
+    /**
+     * Copies assets into place
+     *
+     * @return void
+     */
+    private function cpy($source, $dest): void
+    {
+        if (is_dir($source)) {
             $dir_handle = opendir($source);
-            while($file = readdir($dir_handle)){
-                if($file != "." && $file != ".."){
-                    if(is_dir($source . DS . $file)){
-                        if(!is_dir($dest . DS . $file)){
+            while ($file = readdir($dir_handle)) {
+                if ($file != '.' && $file != '..') {
+                    if (is_dir($source . DS . $file)) {
+                        if (!is_dir($dest . DS . $file)) {
                             mkdir($dest . DS . $file);
                         }
                         $this->cpy($source . DS . $file, $dest . DS . $file);
@@ -240,16 +246,22 @@ class QrImagesTableTest extends TestCase
         }
     }
 
-    private function rrmdir($dir)
+    /**
+     * Removes copied assets
+     *
+     * @return void
+     */
+    private function rrmdir($dir): void
     {
         if (is_dir($dir)) {
             $objects = scandir($dir);
             foreach ($objects as $object) {
-                if ($object != "." && $object != "..") {
-                    if (is_dir($dir. DS .$object) && !is_link($dir . DS . $object))
-                        $this->rrmdir($dir. DS .$object);
-                    else
-                        unlink($dir. DS .$object);
+                if ($object != '.' && $object != '..') {
+                    if (is_dir($dir . DS . $object) && !is_link($dir . DS . $object)) {
+                        $this->rrmdir($dir . DS . $object);
+                    } else {
+                        unlink($dir . DS . $object);
+                    }
                 }
             }
             rmdir($dir);

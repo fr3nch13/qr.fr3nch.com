@@ -5,9 +5,9 @@
  * @var \App\View\AppView $this
  */
 
- $this->extend('base');
+$this->extend('base');
 
- $this->start('layout');
+$this->start('layout');
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <?= $this->element('nav/top'); ?>

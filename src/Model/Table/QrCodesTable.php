@@ -194,7 +194,7 @@ class QrCodesTable extends Table
      * @param \Cake\ORM\Query\SelectQuery $query The initial query
      * @return \Cake\ORM\Query\SelectQuery The updated query
      */
-    public function findActive(SelectQuery $query)
+    public function findActive(SelectQuery $query): SelectQuery
     {
         return $query->where(['QrCodes.is_active' => true]);
     }
@@ -218,7 +218,7 @@ class QrCodesTable extends Table
      * @param \App\Model\Entity\User $user The user to scope the query to.
      * @return \Cake\ORM\Query\SelectQuery The updated query
      */
-    public function findOwnedBy(SelectQuery $query, User $user)
+    public function findOwnedBy(SelectQuery $query, User $user): SelectQuery
     {
         return $query->where(['QrCodes.user_id' => $user->id]);
     }

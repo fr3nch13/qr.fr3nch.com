@@ -24,7 +24,7 @@ if (!$this->getRequest()->is('ajax')) {
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($categories as $category): ?>
+                <?php foreach ($categories as $category) : ?>
                 <tr>
                     <td><?= $this->Number->format($category->id) ?></td>
                     <td><?= h($category->name) ?></td>

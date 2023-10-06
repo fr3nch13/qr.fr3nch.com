@@ -23,7 +23,7 @@ if (!$this->getRequest()->is('ajax')) {
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($sources as $source): ?>
+                <?php foreach ($sources as $source) : ?>
                 <tr>
                     <td><?= $this->Number->format($source->id) ?></td>
                     <td><?= h($source->name) ?></td>

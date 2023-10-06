@@ -2,7 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Tag $tag
- * @var \Cake\Collection\CollectionInterface|string[] $qrCodes
+ * @var \Cake\Collection\CollectionInterface|array<string> $qrCodes
  */
 if (!$this->getRequest()->is('ajax')) {
     $this->setLayout('pages/form');

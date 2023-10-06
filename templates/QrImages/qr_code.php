@@ -16,7 +16,7 @@ if (!$this->getRequest()->is('ajax')) {
 <div class="qrImages index content">
     <h2>List of images for <?= $qrCode->name; ?></h2>
     <div class="qr_images">
-        <?php foreach ($qrImages as $qrImage): ?>
+        <?php foreach ($qrImages as $qrImage) : ?>
         <div class="qr_image">
             <?= $this->Template->objectComment('QrImages/entity') ?>
             <?= $this->Template->objectComment('QrImages/entity/' . ($qrImage->is_active ? 'active' : 'inactive')) ?>

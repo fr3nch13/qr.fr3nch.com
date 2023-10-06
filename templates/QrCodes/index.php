@@ -56,7 +56,7 @@ if (!$this->getRequest()->is('ajax')) {
                                 </ul>
                             </div>
                         </li>
-                        <?php if ($this->ActiveUser->getUser()): ?>
+                        <?php if ($this->ActiveUser->getUser()) : ?>
                         <li class="list-inline-item ms-2">
                             <?= $this->Html->link(__('Add a QR Code'), [
                                 'controller' => 'QrCodes',
@@ -84,7 +84,7 @@ if (!$this->getRequest()->is('ajax')) {
         <div class="container">
             <div class="row g-3 g-lg-5 justify-content-between products">
 
-            <?php foreach ($qrCodes as $qrCode): ?>
+            <?php foreach ($qrCodes as $qrCode) : ?>
                 <?= $this->Template->objectComment('QrCodes/' . ($qrCode->is_active ? 'active' : 'inactive')) ?>
                 <div class="col-md-6 col-lg-4">
                     <div class="product<?= $qrCode->is_active ? ' active' : ' inactive' ?>">

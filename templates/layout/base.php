@@ -29,7 +29,7 @@ if ($this->get('body_options')) {
     <?= $this->Html->css([
         'libs.bundle',
         'index.bundle',
-        'qr.css'
+        'qr.css',
         ]) ?>
 
     <?= $this->fetch('meta') ?>

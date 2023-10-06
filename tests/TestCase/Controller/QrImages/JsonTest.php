@@ -109,7 +109,7 @@ class JsonTest extends BaseControllerTest
         // a post success
         $this->post('https://localhost/qr-images/add/1.json', [
             'name' => 'New JSON QR Image',
-            'ext' => 'jpg' // TODO: change this once we get file uploading working.
+            'ext' => 'jpg', // TODO: change this once we get file uploading working.
         ]);
         $this->assertRedirectEquals('https://localhost/qr-images/qr-code/1.json');
         $this->assertFlashMessage('The image has been saved.', 'flash');

@@ -14,7 +14,7 @@
                         <li class="list-inline-item mb-1"><?= $this->Html->link('About', [
                             'controller' => 'Pages',
                             'action' => 'display',
-                            'about'
+                            'about',
                         ], [
                             'class' => 'text-reset text-primary-hover',
                         ]) ?></li>

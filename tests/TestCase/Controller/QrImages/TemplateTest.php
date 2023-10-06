@@ -110,7 +110,6 @@ class TemplateTest extends BaseControllerTest
         $this->helperTestLayoutAjax();
         $this->helperTestTemplate('QrImages/add');
 
-
         // test with admin, get, can edit any.
         $this->requestAsAjax();
         $this->loginUserAdmin();

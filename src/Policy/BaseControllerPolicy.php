@@ -3,8 +3,7 @@ declare(strict_types=1);
 
 namespace App\Policy;
 
-use App\Controller\CategoriesController;
-use App\Model\Entity\User;
+use App\Controller\AppController;
 use Authorization\IdentityInterface;
 use Authorization\Policy\BeforePolicyInterface;
 use Authorization\Policy\ResultInterface;
@@ -18,6 +17,7 @@ class BaseControllerPolicy implements BeforePolicyInterface
 {
     /**
      * Summary of before
+     *
      * @param mixed $identity The user or null
      * @param mixed $resource The controller
      * @param string $action The name of the action trying to be accessed
@@ -27,7 +27,7 @@ class BaseControllerPolicy implements BeforePolicyInterface
     public function before(?IdentityInterface $identity, mixed $resource, string $action): ResultInterface|bool|null
     {
         // throw a 404 here for all missing actions.
-        if (!empty($action) && $resource instanceof \App\Controller\AppController) {
+        if (!empty($action) && $resource instanceof AppController) {
             if (!method_exists($resource, $action)) {
                 $message = __('Page Not Found');
                 if (Configure::read('debug')) {
