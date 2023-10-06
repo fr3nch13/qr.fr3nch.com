@@ -135,11 +135,16 @@ class BaseControllerTest extends TestCase
     public function helperValidateHTML(): void
     {
         $content = (string)$this->_response->getBody();
-        $validator = new HtmlValidator();
-        $result = $validator->validateDocument($content);
+        try {
+            $validator = new HtmlValidator();
+            $result = $validator->validateDocument($content);
+            $this->assertFalse($result->hasErrors(), (string)$result);
+            $this->assertFalse($result->hasWarnings(), (string)$result);
 
-        $this->assertFalse($result->hasErrors(), (string)$result);
-        $this->assertFalse($result->hasWarnings(), (string)$result);
+            // Incase validator.nu throws an error.
+        } catch(\HtmlValidator\Exception\ServerException $e) {
+            $this->assertTrue(true);
+        }
     }
 
     /**

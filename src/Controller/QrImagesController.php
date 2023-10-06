@@ -60,7 +60,7 @@ class QrImagesController extends AppController
         }
 
         $response = $this->response->withFile($qrImage->path);
-        $modified = date('Y-m-d H:i:s.', filemtime($qrImage->path)?: null);
+        $modified = date('Y-m-d H:i:s.', filemtime($qrImage->path) ?: null);
         $response = $response->withModified($modified);
 
         // allow browser and proxy caching when debug is off

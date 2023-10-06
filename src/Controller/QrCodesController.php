@@ -95,7 +95,7 @@ class QrCodesController extends AppController
         }
 
         $response = $this->response->withFile($qrCode->path);
-        $modified = date('Y-m-d H:i:s.', filemtime($qrCode->path)?: null);
+        $modified = date('Y-m-d H:i:s.', filemtime($qrCode->path) ?: null);
         $response = $response->withModified($modified);
 
         // allow browser and proxy caching when debug is off
