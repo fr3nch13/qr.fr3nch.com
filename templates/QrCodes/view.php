@@ -45,7 +45,7 @@ if (!$this->getRequest()->is('ajax')) {
     <?php endif; // Page Actions ?>
 
     <!-- The QR Code Details -->
-    <div class="row g-5 justify-content-center justify-content-lg-between">
+    <div class="row g-5 justify-content-center justify-content-lg-between product-<?= ($qrCode->is_active ? 'active' : 'inactive')?>">
         <!-- The QR Code's images -->
         <div class="col-lg-6 position-relative">
             <div class="row g-1">
