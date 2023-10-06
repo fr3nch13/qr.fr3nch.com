@@ -23,6 +23,9 @@ footer img.logo-bottom {
 /**
  * Product details page.
  */
+.product-view {
+    position: relative;
+}
 
 /**
  * ribbons
