@@ -127,7 +127,7 @@ class Application extends BaseApplication implements
                 'cacheTime' => Configure::read('Asset.cacheTime'),
             ]))
 
-
+            /*
             // Content Security Policy
             // @link https://book.cakephp.org/5/en/security/content-security-policy.html#content-security-policy-middleware
             ->add(new CspMiddleware([
@@ -146,6 +146,7 @@ class Application extends BaseApplication implements
                 'scriptNonce' => true,
                 'styleNonce' => true,
             ]))
+            */
 
             // Add routing middleware.
             // If you have a large number of routes connected, turning on routes
@@ -158,13 +159,13 @@ class Application extends BaseApplication implements
             // https://book.cakephp.org/4/en/controllers/middleware.html#body-parser-middleware
             ->add(new BodyParserMiddleware())
 
-            /*
+
             // Cross Site Request Forgery (CSRF) Protection Middleware
             // https://book.cakephp.org/4/en/security/csrf.html#cross-site-request-forgery-csrf-middleware
             ->add(new CsrfProtectionMiddleware([
                 'httponly' => true,
             ]))
-            */
+
 
             // @link https://book.cakephp.org/5/en/tutorials-and-examples/cms/authentication.html
             ->add(new AuthenticationMiddleware($this))
