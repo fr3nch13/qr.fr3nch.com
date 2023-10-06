@@ -3,13 +3,23 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Tag $tag
  */
+if (!$this->getRequest()->is('ajax')) {
+    $this->setLayout('pages/view');
+}
 ?>
+<?= $this->Template->templateComment(true, __FILE__); ?>
 <div class="row">
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
             <?= $this->Html->link(__('Edit Tag'), ['action' => 'edit', $tag->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->Form->postLink(__('Delete Tag'), ['action' => 'delete', $tag->id], ['confirm' => __('Are you sure you want to delete # {0}?', $tag->id), 'class' => 'side-nav-item']) ?>
+            <?= $this->Form->postLink(__('Delete Tag'), [
+                'action' => 'delete',
+                $tag->id,
+            ], [
+                'confirm' => __('Are you sure you want to delete # {0}?', $tag->id),
+                'class' => 'side-nav-item',
+            ]) ?>
             <?= $this->Html->link(__('List Tags'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
             <?= $this->Html->link(__('New Tag'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
         </div>
@@ -64,9 +74,23 @@
                             <td><?= h($qrCodes->source_id) ?></td>
                             <td><?= h($qrCodes->user_id) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'QrCodes', 'action' => 'view', $qrCodes->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'QrCodes', 'action' => 'edit', $qrCodes->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'QrCodes', 'action' => 'delete', $qrCodes->id], ['confirm' => __('Are you sure you want to delete # {0}?', $qrCodes->id)]) ?>
+                                <?= $this->Html->link(__('View'), [
+                                    'controller' => 'QrCodes',
+                                    'action' => 'view',
+                                    $qrCodes->id,
+                                ]) ?>
+                                <?= $this->Html->link(__('Edit'), [
+                                    'controller' => 'QrCodes',
+                                    'action' => 'edit',
+                                    $qrCodes->id,
+                                ]) ?>
+                                <?= $this->Form->postLink(__('Delete'), [
+                                    'controller' => 'QrCodes',
+                                    'action' => 'delete',
+                                    $qrCodes->id,
+                                ], [
+                                    'confirm' => __('Are you sure you want to delete # {0}?', $qrCodes->id),
+                                ]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -77,3 +101,4 @@
         </div>
     </div>
 </div>
+<?= $this->Template->templateComment(false, __FILE__); ?>

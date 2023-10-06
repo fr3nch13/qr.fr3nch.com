@@ -25,7 +25,7 @@ class ActiveUserHelper extends Helper
     /**
      * Gets the User element from the response/view
      *
-     * @param string|null $key Key of something you want to get from the user
+     * @param ?string $key Key of something you want to get from the user
      * @return mixed
      */
     public function getUser(?string $key = null): mixed

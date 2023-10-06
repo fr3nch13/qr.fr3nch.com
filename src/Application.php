@@ -19,18 +19,21 @@ namespace App;
 use App\Controller\CategoriesController;
 use App\Controller\PagesController;
 use App\Controller\QrCodesController;
+use App\Controller\QrImagesController;
 use App\Controller\SourcesController;
 use App\Controller\TagsController;
 use App\Controller\UsersController;
 use App\Policy\CategoriesControllerPolicy;
 use App\Policy\PagesControllerPolicy;
 use App\Policy\QrCodesControllerPolicy;
+use App\Policy\QrImagesControllerPolicy;
 use App\Policy\SourcesControllerPolicy;
 use App\Policy\TagsControllerPolicy;
 use App\Policy\UsersControllerPolicy;
 use Authentication\AuthenticationService;
 use Authentication\AuthenticationServiceInterface;
 use Authentication\AuthenticationServiceProviderInterface;
+use Authentication\Identifier\AbstractIdentifier;
 use Authentication\Middleware\AuthenticationMiddleware;
 use Authorization\AuthorizationService;
 use Authorization\AuthorizationServiceInterface;
@@ -97,7 +100,9 @@ class Application extends BaseApplication implements
         }
 
         // Load more plugins here
-        // CakePHP's Authorizatio Plugin.
+        $this->addPlugin('Authentication');
+
+        // CakePHP's Authorization Plugin.
         $this->addPlugin('Authorization');
 
         // the bootstrapui plugin.
@@ -163,13 +168,13 @@ class Application extends BaseApplication implements
 
             // @link https://book.cakephp.org/5/en/tutorials-and-examples/cms/authorization.html
             ->add(new AuthorizationMiddleware($this, [
-                'requireAuthorizationCheck' => Configure::read('debug'),
+                'requireAuthorizationCheck' => false,
                 'identityDecorator' => function ($auth, $user) {
-                    return $user->setAuthorization($auth);
+                    return $user->setAuthorization($auth); //turns the user entity directly into the identity object.
                 },
                 'unauthorizedHandler' => [
-                    'className' => 'CustomRedirect', // <--- see here
-                    'url' => '/',
+                    'className' => 'CustomRedirect',
+                    'url' => Router::url('/', true),
                     'queryParam' => 'redirect',
                     'exceptions' => [
                         MissingIdentityException::class,
@@ -241,6 +246,11 @@ class Application extends BaseApplication implements
      */
     public function getAuthenticationService(ServerRequestInterface $request): AuthenticationServiceInterface
     {
+        $fields = [
+            AbstractIdentifier::CREDENTIAL_USERNAME => 'email',
+            AbstractIdentifier::CREDENTIAL_PASSWORD => 'password',
+        ];
+
         $authenticationService = new AuthenticationService([
             'unauthenticatedRedirect' => Router::url([
                 'prefix' => false,
@@ -253,10 +263,7 @@ class Application extends BaseApplication implements
 
         // Load identifiers, ensure we check email and password fields
         $authenticationService->loadIdentifier('Authentication.Password', [
-            'fields' => [
-                'username' => 'email',
-                'password' => 'password',
-            ],
+            'fields' => $fields,
         ]);
 
         // Load the authenticators, you want session first
@@ -264,10 +271,28 @@ class Application extends BaseApplication implements
 
         // Configure form data check to pick email and password
         $authenticationService->loadAuthenticator('Authentication.Form', [
-            'fields' => [
-                'username' => 'email',
-                'password' => 'password',
+            'fields' => $fields,
+            'loginUrl' => [
+                Router::url([
+                    'prefix' => false,
+                    'plugin' => false,
+                    'controller' => 'Users',
+                    'action' => 'login',
+                    '_ext' => null,
+                ]),
+                Router::url([
+                    'prefix' => false,
+                    'plugin' => false,
+                    'controller' => 'Users',
+                    'action' => 'login',
+                    '_ext' => 'json',
+                ]),
             ],
+        ]);
+
+        // Used for Remember me
+        $authenticationService->loadAuthenticator('Authentication.Cookie', [
+            'fields' => $fields,
             'loginUrl' => [
                 Router::url([
                     'prefix' => false,
@@ -303,6 +328,7 @@ class Application extends BaseApplication implements
         // map the controllers
         $mapResolver->map(CategoriesController::class, CategoriesControllerPolicy::class);
         $mapResolver->map(QrCodesController::class, QrCodesControllerPolicy::class);
+        $mapResolver->map(QrImagesController::class, QrImagesControllerPolicy::class);
         $mapResolver->map(SourcesController::class, SourcesControllerPolicy::class);
         $mapResolver->map(TagsController::class, TagsControllerPolicy::class);
         $mapResolver->map(UsersController::class, UsersControllerPolicy::class);

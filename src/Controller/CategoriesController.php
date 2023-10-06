@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
+use Cake\Http\Response;
 
 /**
  * Categories Controller
@@ -15,15 +16,13 @@ class CategoriesController extends AppController
 {
     /**
      * Runs before the code in the actions
+     *
+     * @return void
      */
     public function beforeFilter(EventInterface $event): void
     {
-        parent::beforeFilter($event);
-
         //Allow anyone to view the list of categories, and their details page.
         $this->Authentication->addUnauthenticatedActions(['index', 'view']);
-
-        $this->Authorization->authorize($this);
 
         // make sure we have an ID where needed.
         $action = $this->request->getParam('action');
@@ -35,33 +34,38 @@ class CategoriesController extends AppController
                 throw new NotFoundException('Unknown ID');
             }
         }
+
+        parent::beforeFilter($event);
     }
 
     /**
      * Index method
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return ?\Cake\Http\Response Renders view
      */
-    public function index()
+    public function index(): ?Response
     {
         $this->request->allowMethod(['get']);
 
         $query = $this->Categories->find('all')
             ->contain(['QrCodes', 'ParentCategories']);
+        $query = $this->Authorization->applyScope($query);
         $categories = $this->paginate($query);
 
         $this->set(compact('categories'));
         $this->viewBuilder()->setOption('serialize', ['categories']);
+
+        return null;
     }
 
     /**
      * View method
      *
-     * @param string|null $id Category id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @param ?string $id Category id.
+     * @return ?\Cake\Http\Response Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view(?string $id = null)
+    public function view(?string $id = null): ?Response
     {
         $this->request->allowMethod(['get']);
 
@@ -70,14 +74,16 @@ class CategoriesController extends AppController
 
         $this->set(compact('category'));
         $this->viewBuilder()->setOption('serialize', ['category']);
+
+        return null;
     }
 
     /**
      * Add method
      *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     * @return ?\Cake\Http\Response Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add(): ?Response
     {
         $this->request->allowMethod(['get', 'post']);
 
@@ -90,7 +96,11 @@ class CategoriesController extends AppController
             if ($this->Categories->save($category)) {
                 $this->Flash->success(__('The category has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect([
+                    'action' => 'view',
+                    $category->id,
+                    '_ext' => $this->getRequest()->getParam('_ext'),
+                ]);
             }
             $this->Flash->error(__('The category could not be saved. Please, try again.'));
         }
@@ -100,16 +110,18 @@ class CategoriesController extends AppController
 
         $this->set(compact('category', 'parentCategories', 'errors'));
         $this->viewBuilder()->setOption('serialize', ['category', 'parentCategories', 'errors']);
+
+        return null;
     }
 
     /**
      * Edit method
      *
-     * @param string|null $id Category id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
+     * @param ?string $id Category id.
+     * @return ?\Cake\Http\Response Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit(?string $id = null)
+    public function edit(?string $id = null): ?Response
     {
         $this->request->allowMethod(['get', 'patch']);
 
@@ -121,7 +133,11 @@ class CategoriesController extends AppController
             if ($this->Categories->save($category)) {
                 $this->Flash->success(__('The category has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect([
+                    'action' => 'view',
+                    $category->id,
+                    '_ext' => $this->getRequest()->getParam('_ext'),
+                ]);
             }
             $this->Flash->error(__('The category could not be saved. Please, try again.'));
         }
@@ -131,16 +147,18 @@ class CategoriesController extends AppController
 
         $this->set(compact('category', 'parentCategories', 'errors'));
         $this->viewBuilder()->setOption('serialize', ['category', 'parentCategories', 'errors']);
+
+        return null;
     }
 
     /**
      * Delete method
      *
-     * @param string|null $id Category id.
-     * @return \Cake\Http\Response|null|void Redirects to index.
+     * @param ?string $id Category id.
+     * @return ?\Cake\Http\Response Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete(?string $id = null)
+    public function delete(?string $id = null): ?Response
     {
         $this->request->allowMethod(['delete']);
 
@@ -151,8 +169,15 @@ class CategoriesController extends AppController
             $this->Flash->success(__('The category `{0}` has been deleted.', [
                 $category->name,
             ]));
-
-            return $this->redirect(['action' => 'index']);
+        } else {
+            $this->Flash->error(__('Unable to delete the category `{0}`.', [
+                $category->name,
+            ]));
         }
+
+        return $this->redirect([
+            'action' => 'index',
+            '_ext' => $this->getRequest()->getParam('_ext'),
+        ]);
     }
 }

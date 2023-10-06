@@ -33,49 +33,44 @@ class GeneralTest extends BaseControllerTest
      * Test index method
      *
      * @return void
-     * @uses \App\Controller\QrCodesController::index()
+     * @uses \App\Controller\QrCodesController::forward()
      */
     public function testForward(): void
     {
-        $this->get('/?k=sownscribe');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/f/sownscribe');
+        $this->get('https://localhost/?k=sownscribe');
+        $this->assertRedirectEquals('https://localhost/f/sownscribe');
 
-        $this->get('/f/sownscribe');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('https://amazon.com/path/to/details/page');
+        $this->get('https://localhost/f/sownscribe');
+        $this->assertRedirectEquals('https://amazon.com/path/to/details/page');
 
-        $this->get('/qr-codes/forward/sownscribe');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('https://amazon.com/path/to/details/page');
+        $this->get('https://localhost/qr-codes/forward/sownscribe');
+        $this->assertRedirectEquals('https://amazon.com/path/to/details/page');
 
-        $this->get('/?k=dontexist');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/f/dontexist');
+        $this->get('https://localhost/?k=dontexist');
+        $this->assertRedirectEquals('https://localhost/f/dontexist');
 
-        $this->get('/f/dontexist');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/');
+        $this->get('https://localhost/f/dontexist');
+        $this->assertRedirectEquals('https://localhost/');
         $this->assertFlashMessage('A QR Code with the key: `dontexist` could not be found.', 'flash');
         $this->assertFlashElement('flash/error');
 
-        $this->get('/f/');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/');
+        $this->get('https://localhost/f/');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
     }
 
     /**
      * Test show method
      *
      * @return void
-     * @uses \App\Controller\QrCodesController::index()
+     * @uses \App\Controller\QrCodesController::show()
      */
     public function testShow(): void
     {
-        $this->get('/qr-codes/show/1');
+        $this->get('https://localhost/qr-codes/show/1');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
-        $headers = $this->_response->getHeaders(); // @phpstan-ignore-line
+        $headers = $this->_response->getHeaders();
         $this->assertSame('image/png', $headers['Content-Type'][0]);
         $this->assertGreaterThan(0, $headers['Content-Length'][0]);
     }

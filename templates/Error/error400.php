@@ -10,9 +10,7 @@ use Cake\Error\Debugger;
 
 $this->layout = 'error';
 ?>
-
-<!-- START: App.Error/error400 -->
-
+<?= $this->Template->templateComment(true, __FILE__); ?>
 <?php
 
 if (Configure::read('debug')) :
@@ -22,19 +20,19 @@ if (Configure::read('debug')) :
     $this->assign('templateName', 'error400.php');
 
     $this->start('file');
-?>
-<?php if (!empty($error->queryString)) : ?>
+    ?>
+    <?php if (!empty($error->queryString)) : ?>
     <p class="notice">
         <strong>SQL Query: </strong>
         <?= h($error->queryString) ?>
     </p>
-<?php endif; ?>
-<?php if (!empty($error->params)) : ?>
+    <?php endif; ?>
+    <?php if (!empty($error->params)) : ?>
     <strong>SQL Query Params: </strong>
-    <?php Debugger::dump($error->params) ?>
-<?php endif; ?>
+        <?php Debugger::dump($error->params) ?>
+    <?php endif; ?>
 
-<?php
+    <?php
     echo $this->element('auto_table_warning');
 
     $this->end();
@@ -45,5 +43,4 @@ endif;
     <strong><?= __d('cake', 'Error') ?>: </strong>
     <?= __d('cake', 'The requested address {0} was not found on this server.', "<strong>'{$url}'</strong>") ?>
 </p>
-
-<!-- END: App.Error/error400 -->
+<?= $this->Template->templateComment(false, __FILE__); ?>

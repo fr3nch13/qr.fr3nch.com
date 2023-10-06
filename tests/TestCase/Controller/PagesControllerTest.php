@@ -35,7 +35,7 @@ class PagesControllerTest extends BaseControllerTest
     {
         Configure::write('debug', true);
 
-        $this->get('/pages/about');
+        $this->get('https://localhost/pages/about');
 
         $this->assertResponseOk();
         $this->assertResponseContains('About');
@@ -53,7 +53,7 @@ class PagesControllerTest extends BaseControllerTest
     {
         Configure::write('debug', true);
 
-        $this->get('/');
+        $this->get('https://localhost/');
 
         $this->assertResponseOk();
         $this->assertResponseContains('QR Codes');
@@ -69,12 +69,12 @@ class PagesControllerTest extends BaseControllerTest
     {
         Configure::write('debug', true);
 
-        $this->get('/pages/about/staff');
+        $this->get('https://localhost/pages/about/staff');
 
         $this->assertResponseOk();
-        $this->assertResponseContains('Staff');
-        $this->assertResponseContains('<html lang="en">');
-        $this->assertResponseContains('<h1>About: Staff</h1>');
+        $this->helperTestLayoutPagesGeneric();
+        $this->assertResponseContains('<!-- START: App.Pages/about/staff -->');
+        $this->assertResponseContains('<!-- END: App.Pages/about/staff -->');
     }
 
     /**
@@ -82,15 +82,13 @@ class PagesControllerTest extends BaseControllerTest
      *
      * @return void
      */
-    public function testDisplaySDirectly()
+    public function testDisplayDirectly()
     {
         Configure::write('debug', true);
 
-        $this->get('/pages');
+        $this->get('https://localhost/pages');
 
-        $this->assertRedirect();
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/');
+        $this->assertRedirectEquals('https://localhost/');
     }
 
     /**
@@ -103,7 +101,7 @@ class PagesControllerTest extends BaseControllerTest
         Configure::write('debug', true);
         $this->loginUserAdmin();
 
-        $this->get('/pages/index');
+        $this->get('https://localhost/pages/index');
 
         $this->assertResponseOk();
         $this->assertResponseContains('Index');
@@ -120,14 +118,8 @@ class PagesControllerTest extends BaseControllerTest
         Configure::write('debug', false);
 
         $this->get('https://localhost/pages/not_existing');
-
         $this->assertResponseCode(404);
-        $this->assertResponseContains('<h2>Not Found</h2>');
-        $this->assertResponseContains('The requested address <strong>\'/pages/not_existing\'</strong> was not found on this server.');
-        $this->assertResponseContains('<!-- START: App.layout/error -->');
-        $this->assertResponseContains('<!-- START: App.Error/error400 -->');
-        $this->assertResponseContains('<!-- END: App.Error/error400 -->');
-        $this->assertResponseContains('<!-- END: App.layout/error -->');
+        $this->helperTestError400('/pages/not_existing');
     }
 
     /**
@@ -139,7 +131,7 @@ class PagesControllerTest extends BaseControllerTest
     {
         Configure::write('debug', true);
 
-        $this->get('/pages/not_existing');
+        $this->get('https://localhost/pages/not_existing');
 
         $this->assertResponseFailure();
         $this->assertResponseContains('Missing Template');
@@ -167,7 +159,7 @@ class PagesControllerTest extends BaseControllerTest
      */
     public function testCsrfAppliedError()
     {
-        $this->post('/pages/home', ['hello' => 'world']);
+        $this->post('https://localhost/pages/home', ['hello' => 'world']);
 
         $this->assertResponseCode(403);
         $this->assertResponseContains('CSRF');
@@ -183,7 +175,7 @@ class PagesControllerTest extends BaseControllerTest
         Configure::write('debug', true);
         $this->enableCsrfToken();
 
-        $this->post('/pages/home', ['hello' => 'world']);
+        $this->post('https://localhost/pages/home', ['hello' => 'world']);
 
         $this->assertThat(403, $this->logicalNot(new StatusCode($this->_response)));
         $this->assertResponseContains('`_Token` was not found in request data.');

@@ -2,9 +2,13 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Category $category
- * @var \Cake\Collection\CollectionInterface|string[] $parentCategories
+ * @var \Cake\Collection\CollectionInterface|array<string> $parentCategories
  */
+if (!$this->getRequest()->is('ajax')) {
+    $this->setLayout('pages/form');
+}
 ?>
+<?= $this->Template->templateComment(true, __FILE__); ?>
 <div class="row">
     <aside class="column">
         <div class="side-nav">
@@ -30,3 +34,4 @@
         </div>
     </div>
 </div>
+<?= $this->Template->templateComment(false, __FILE__); ?>

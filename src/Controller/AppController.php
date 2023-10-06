@@ -10,6 +10,7 @@ use App\Model\Entity\User;
 use App\View\AjaxView;
 use App\View\AppView;
 use Cake\Controller\Controller;
+use Cake\Event\EventInterface;
 use Cake\View\JsonView;
 
 /**
@@ -77,9 +78,19 @@ class AppController extends Controller
     }
 
     /**
+     * Runs before the code in the actions
+     *
+     * @return void
+     */
+    public function beforeFilter(EventInterface $event): void
+    {
+        $this->Authorization->authorize($this);
+    }
+
+    /**
      * Gets the active/logged in user from the session.
      *
-     * @param string|null $field If the user exists, return this field
+     * @param ?string $field If the user exists, return this field
      * @param mixed|null $default If the field doesn't exist, or the users doesn't then return this.
      * @return mixed The logged in user, or $default if none, or the field doesn't exist.
      */

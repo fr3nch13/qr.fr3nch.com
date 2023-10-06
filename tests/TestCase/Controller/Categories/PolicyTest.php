@@ -5,7 +5,6 @@ namespace App\Test\TestCase\Controller\Categories;
 
 use App\Test\TestCase\Controller\BaseControllerTest;
 use Cake\Core\Configure;
-use Cake\Routing\Router;
 
 /**
  * App\Controller\CategoriesController Test Case
@@ -27,11 +26,47 @@ class PolicyTest extends BaseControllerTest
         Configure::write('debug', true);
         $this->enableRetainFlashMessages();
         $this->enableCsrfToken();
-        $this->enableSecurityToken();
+    }
+
+    /**
+     * Test missing action
+     *
+     * @alert Keep the https://localhost/ as the HttpsEnforcerMiddleware will try to redirect.
+     * @return void
+     */
+    public function testDontexist(): void
+    {
+        // not logged in
+        $this->loginGuest();
+        $this->get('https://localhost/categories/dontexist');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Error: Missing Action `App\Controller\CategoriesController::dontexist()`');
+
+        // test with reqular
+        $this->loginUserRegular();
+        $this->get('https://localhost/categories/dontexist');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Error: Missing Action `App\Controller\CategoriesController::dontexist()`');
+
+        // test with admin
+        $this->loginUserAdmin();
+        $this->get('https://localhost/categories/dontexist');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Error: Missing Action `App\Controller\CategoriesController::dontexist()`');
+
+        // test with debug off
+        Configure::write('debug', false);
+        $this->loginUserAdmin();
+        $this->get('https://localhost/categories/dontexist');
+        $this->assertResponseCode(404);
+        $this->helperTestError400('/categories/dontexist');
+        Configure::write('debug', true);
     }
 
     /**
      * Test index method
+     *
+     * Anyone can view the list of Categories.
      *
      * @return void
      * @uses \App\Controller\CategoriesController::index()
@@ -39,24 +74,30 @@ class PolicyTest extends BaseControllerTest
     public function testIndex(): void
     {
         // not logged in
-        $this->get('/categories');
+        $this->loginGuest();
+        $this->get('https://localhost/categories');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="categories index content">');
-        $this->assertResponseContains('<h3>Categories</h3>');
-
-        // test with admin
-        $this->loginUserAdmin();
-        $this->get('/categories');
-        $this->assertResponseOk();
-        $this->assertResponseContains('<div class="categories index content">');
-        $this->assertResponseContains('<h3>Categories</h3>');
+        $this->helperTestTemplate('Categories/index');
 
         // test with reqular
         $this->loginUserRegular();
-        $this->get('/categories');
+        $this->get('https://localhost/categories');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="categories index content">');
-        $this->assertResponseContains('<h3>Categories</h3>');
+        $this->helperTestTemplate('Categories/index');
+
+        // test with admin
+        $this->loginUserAdmin();
+        $this->get('https://localhost/categories');
+        $this->assertResponseOk();
+        $this->helperTestTemplate('Categories/index');
+
+        // test with debug off
+        Configure::write('debug', false);
+        $this->loginUserAdmin();
+        $this->get('https://localhost/categories');
+        $this->assertResponseOk();
+        $this->helperTestTemplate('Categories/index');
+        Configure::write('debug', true);
     }
 
     /**
@@ -68,41 +109,50 @@ class PolicyTest extends BaseControllerTest
     public function testView(): void
     {
         // not logged in
-        $this->get('/categories/view/1');
+        $this->loginGuest();
+        $this->get('https://localhost/categories/view/1');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="categories view content">');
-        $this->assertResponseContains('<h3>Books</h3>');
-
-        // test with admin
-        $this->loginUserAdmin();
-        $this->get('/categories/view/1');
-        $this->assertResponseOk();
-        $this->assertResponseContains('<div class="categories view content">');
-        $this->assertResponseContains('<h3>Books</h3>');
+        $this->helperTestTemplate('Categories/view');
 
         // test with reqular
         $this->loginUserRegular();
-        $this->get('/categories/view/1');
+        $this->get('https://localhost/categories/view/1');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="categories view content">');
-        $this->assertResponseContains('<h3>Books</h3>');
+        $this->helperTestTemplate('Categories/view');
 
-        // test with missing id and debug
-        $this->loginUserRegular();
-        $this->get('/categories/view');
+        // test with admin
+        $this->loginUserAdmin();
+        $this->get('https://localhost/categories/view/1');
+        $this->assertResponseOk();
+        $this->helperTestTemplate('Categories/view');
+
+        /// Missing IDs
+
+        // not logged in
+        $this->loginGuest();
+        $this->get('https://localhost/categories/view');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
 
-        // test with missing id, no debug
+        // test with reqular
+        $this->loginUserRegular();
+        $this->get('https://localhost/categories/view');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
+
+        // test with admin
+        $this->loginUserAdmin();
+        $this->get('https://localhost/categories/view');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
+
+        // debug off
         Configure::write('debug', false);
-        $this->loginUserRegular();
-        $this->get(Router::url([
-            '_https' => true,
-            'controller' => 'Categories',
-            'action' => 'view',
-        ]));
+        $this->loginUserAdmin();
+        $this->get('https://localhost/categories/view');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
+        Configure::write('debug', true);
     }
 
     /**
@@ -113,30 +163,41 @@ class PolicyTest extends BaseControllerTest
      */
     public function testAdd(): void
     {
-        // not logged in, so should redirect
-        $this->get('/categories/add');
-        $this->assertRedirect();
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/users/login?redirect=%2Fcategories%2Fadd');
-        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
-        $this->assertFlashElement('flash/error');
+        $this->enableSecurityToken();
 
-        // test with admin, get
-        $this->loginUserAdmin();
-        $this->get('/categories/add');
-        $this->assertResponseOk();
-        $this->assertResponseContains('<div class="categories form content">');
-        $this->assertResponseContains('<form method="post" accept-charset="utf-8" role="form" action="/categories/add">');
-        $this->assertResponseContains('<legend>Add Category</legend>');
-
-        // test with reqular, get
-        $this->loginUserRegular();
-        $this->get('/categories/add');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/?redirect=%2Fcategories%2Fadd');
+        // not logged in
+        $this->loginGuest();
+        $this->get('https://localhost/categories/add');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fcategories%2Fadd');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
+
+        // test with reqular
+        $this->loginUserRegular();
+        $this->get('https://localhost/categories/add');
+        $this->assertRedirectEquals('https://localhost/?redirect=%2Fcategories%2Fadd');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
+
+        // test with admin
+        $this->loginUserAdmin();
+        $this->get('https://localhost/categories/add');
+        $this->assertResponseOk();
+        $this->helperTestTemplate('Categories/add');
+        $this->helperTestFormTag('/categories/add', 'post');
+
+        // Debug Off
+        Configure::write('debug', false);
+        $this->loginGuest();
+        $this->get('https://localhost/categories/add');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fcategories%2Fadd');
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
+        Configure::write('debug', true);
+
+        // can't test success with debug off as it messes with the test env setup.
     }
 
     /**
@@ -147,122 +208,139 @@ class PolicyTest extends BaseControllerTest
      */
     public function testEdit(): void
     {
-        // not logged in, so should redirect
-        $this->get('/categories/edit');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/users/login?redirect=%2Fcategories%2Fedit');
+        $this->enableSecurityToken();
 
-        // test with missing id and debug
-        $this->loginUserAdmin();
-        $this->get('/categories/edit');
-        $this->assertResponseCode(404);
-        $this->assertResponseContains('Unknown ID');
-
-        // test with missing id, no debug
-        Configure::write('debug', false);
-        $this->loginUserAdmin();
-        $this->get(Router::url([
-            '_https' => true,
-            'controller' => 'Categories',
-            'action' => 'edit',
-        ]));
-        $this->assertResponseCode(404);
-        $this->assertResponseContains('Unknown ID');
-        Configure::write('debug', true); // turn it back on
-
-        // test with admin, get
-        $this->loginUserAdmin();
-        $this->get('/categories/edit/1');
-        $this->assertResponseOk();
-        $this->assertResponseContains('<div class="categories form content">');
-        $this->assertResponseContains('<form method="patch" accept-charset="utf-8" role="form" action="/categories/edit/1">');
-        $this->assertResponseContains('<legend>Edit Category</legend>');
-
-        // test with reqular, get
-        $this->loginUserRegular();
-        $this->get('/categories/edit/1');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/?redirect=%2Fcategories%2Fedit%2F1');
+        // not logged
+        $this->loginGuest();
+        $this->get('https://localhost/categories/edit/1');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fcategories%2Fedit%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
+
+        // test with reqular
+        $this->loginUserRegular();
+        $this->get('https://localhost/categories/edit/1');
+        $this->assertRedirectEquals('https://localhost/?redirect=%2Fcategories%2Fedit%2F1');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
+
+        // test with admin
+        $this->loginUserAdmin();
+        $this->get('https://localhost/categories/edit/1');
+        $this->assertResponseOk();
+        $this->helperTestTemplate('Categories/edit');
+        $this->helperTestFormTag('/categories/edit/1', 'patch');
+
+        /// Missing IDs
+
+        // not logged in
+        $this->loginGuest();
+        $this->get('https://localhost/categories/edit');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
+
+        // test with reqular
+        $this->loginUserRegular();
+        $this->get('https://localhost/categories/edit');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
+
+        // test with admin
+        $this->loginUserAdmin();
+        $this->get('https://localhost/categories/edit');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
+
+        // debug off
+        Configure::write('debug', false);
+        $this->loginUserAdmin();
+        $this->get('https://localhost/categories/edit');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
+        Configure::write('debug', true);
     }
 
     /**
      * Test delete method
+     *
+     * The redirects here should not inlcude the query string.
+     * Sonce a delete() http method is also treated similar to a post.
      *
      * @return void
      * @uses \App\Controller\CategoriesController::delete()
      */
     public function testDelete(): void
     {
-        $this->enableCsrfToken();
         $this->enableSecurityToken();
 
-        // not logged in, so should redirect
-        $this->get('/categories/delete');
-        $this->assertRedirect();
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/users/login?redirect=%2Fcategories%2Fdelete');
-
-        // test get with missing id and debug
-        $this->loginUserAdmin();
-        $this->get('/categories/delete');
-        $this->assertResponseCode(404);
-        $this->assertResponseContains('Unknown ID');
-
-        // test with missing id, no debug
-        Configure::write('debug', false);
-        $this->loginUserAdmin();
-        $this->get(Router::url([
-            '_https' => true,
-            'controller' => 'Categories',
-            'action' => 'delete',
-        ]));
-        $this->assertResponseCode(404);
-        $this->assertResponseContains('Unknown ID');
-        Configure::write('debug', true); // turn it back on
-
-        // test get with reqular, get
-        $this->loginUserRegular();
-        $this->get('/categories/delete/3');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/?redirect=%2Fcategories%2Fdelete%2F3');
+        // not logged
+        $this->loginGuest();
+        $this->delete('https://localhost/categories/delete/3');
+        $this->assertRedirectEquals('https://localhost/users/login');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
-        // test post with regular, post
+        // test with reqular
         $this->loginUserRegular();
-        $this->post('/categories/delete/3');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/');
+        $this->delete('https://localhost/categories/delete/3');
+        $this->assertRedirectEquals('https://localhost/');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
-        // test delete with regular user
-        $this->loginUserRegular();
-        $this->delete('/categories/delete/3');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/');
+        // test with admin
+        $this->loginUserAdmin();
+        $this->delete('https://localhost/categories/delete/3');
+        $this->assertRedirectEquals('https://localhost/categories');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
-        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
-        $this->assertFlashElement('flash/error');
-
-        // test post with admin, get
-        $this->loginUserAdmin();
-        $this->post('/categories/delete/3');
-        $this->assertResponseCode(405);
-        $this->assertResponseContains('Method Not Allowed');
-
-        // test with admin, delete
-        $this->loginUserAdmin();
-        $this->delete('/categories/delete/3');
-        $this->assertRedirect();
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/categories');
         $this->assertFlashMessage('The category `Charms` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
+
+        // test admin with another category
+        $this->loginUserAdmin();
+        $this->delete('https://localhost/categories/delete/2');
+        $this->assertRedirectEquals('https://localhost/categories');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('The category `Journals` has been deleted.', 'flash');
+        $this->assertFlashElement('flash/success');
+
+        /// Missing IDs
+
+        // not logged in
+        $this->loginGuest();
+        $this->delete('https://localhost/categories/delete');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
+
+        // test with reqular
+        $this->loginUserRegular();
+        $this->delete('https://localhost/categories/delete');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
+
+        // test with admin
+        $this->loginUserAdmin();
+        $this->delete('https://localhost/categories/delete');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
+
+        // test with admin, debug off
+        Configure::write('debug', false);
+        $this->loginUserAdmin();
+        $this->delete('https://localhost/categories/delete');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
+        Configure::write('debug', true);
+
+        // not logged in, debug off
+        Configure::write('debug', false);
+        $this->loginGuest();
+        $this->delete('https://localhost/categories/delete');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
+        Configure::write('debug', true);
     }
 }

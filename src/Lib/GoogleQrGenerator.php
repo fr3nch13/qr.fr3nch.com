@@ -126,7 +126,7 @@ class GoogleQrGenerator
         $result = null;
         $this->generate();
         if ($this->QR instanceof GdImage) {
-            $result = imagepng($this->QR, TMP . 'qr_codes' . DS . $this->qrCode->id . '.png');
+            $result = imagepng($this->QR, Configure::read('App.paths.qr_codes') . DS . $this->qrCode->id . '.png');
             imagedestroy($this->QR);
         }
 

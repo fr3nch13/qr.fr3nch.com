@@ -46,7 +46,7 @@ class CategoriesFixture extends CoreFixture
             [
                 'id' => 3,
                 'name' => 'Charms',
-                'description' => 'JLittle Charms',
+                'description' => 'Little Charms',
                 'parent_id' => null,
                 'created' => new DateTime(),
                 'user_id' => 1,

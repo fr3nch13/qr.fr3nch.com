@@ -6,7 +6,6 @@ declare(strict_types=1);
  */
 namespace App\View;
 
-use BootstrapUI\View\UIViewTrait;
 use Cake\View\View;
 
 /**
@@ -16,17 +15,18 @@ use Cake\View\View;
  *
  * @link https://book.cakephp.org/4/en/views.html#the-app-view
  * @property \App\View\Helper\ActiveUserHelper $ActiveUser
+ * @property \App\View\Helper\FormHelper $Form
+ * @property \App\View\Helper\HtmlHelper $Html
  * @property \App\View\Helper\TemplateHelper $Template
  * @property \BootstrapUI\View\Helper\FlashHelper $Flash
- * @property \BootstrapUI\View\Helper\FormHelper $Form
- * @property \BootstrapUI\View\Helper\HtmlHelper $Html
  * @property \BootstrapUI\View\Helper\PaginatorHelper $Paginator
  * @property \BootstrapUI\View\Helper\BreadcrumbsHelper $Breadcrumbs
  * @property \Authentication\View\Helper\IdentityHelper $Identity
+ * @property \Cake\View\Helper\UrlHelper $Url
  */
 class AppView extends View
 {
-    use UIViewTrait;
+    use LoadAppHelpersTrait;
 
     /**
      * The name of the layout file to render the view inside of. The name
@@ -58,9 +58,8 @@ class AppView extends View
      */
     public function initialize(): void
     {
-        $this->initializeUI(['layout' => false]);
-        $this->addHelper('Template');
-        $this->loadHelper('Authentication.Identity');
-        $this->loadHelper('ActiveUser');
+        parent::initialize();
+
+        $this->loadAppHelpers();
     }
 }

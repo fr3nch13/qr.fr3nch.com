@@ -41,6 +41,15 @@ class SourcesFixture extends CoreFixture
                 'created' => new DateTime(),
                 'user_id' => 1,
             ],
+            [
+                'id' => 3,
+                'name' => 'Delete Me',
+                'description' => 'Used for testing deleting',
+                'created' => new DateTime(),
+                // intentionally set to the regular users to test that they still can't edit/delete it.
+                // also test that this gets reset on an edit by Admin.
+                'user_id' => 2,
+            ],
         ];
         parent::init();
     }

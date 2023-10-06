@@ -5,7 +5,6 @@ namespace App\Test\TestCase\Controller\Users;
 
 use App\Test\TestCase\Controller\BaseControllerTest;
 use Cake\Core\Configure;
-use Cake\Routing\Router;
 
 /**
  * App\Controller\UsersController Test Case
@@ -26,6 +25,41 @@ class PolicyTest extends BaseControllerTest
         parent::setUp();
         Configure::write('debug', true);
         $this->enableRetainFlashMessages();
+        $this->enableCsrfToken();
+    }
+
+    /**
+     * Test missing action
+     *
+     * @alert Keep the https://localhost/ as the HttpsEnforcerMiddleware will try to redirect.
+     * @return void
+     */
+    public function testDontexist(): void
+    {
+        // not logged in
+        $this->get('https://localhost/users/dontexist');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Error: Missing Action `App\Controller\UsersController::dontexist()`');
+
+        // test with reqular
+        $this->loginUserRegular();
+        $this->get('https://localhost/users/dontexist');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Error: Missing Action `App\Controller\UsersController::dontexist()`');
+
+        // test with admin
+        $this->loginUserAdmin();
+        $this->get('https://localhost/users/dontexist');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Error: Missing Action `App\Controller\UsersController::dontexist()`');
+
+        // test with debug off
+        Configure::write('debug', false);
+        $this->loginUserAdmin();
+        $this->get('https://localhost/users/dontexist');
+        $this->assertResponseCode(404);
+        $this->helperTestError400('/users/dontexist');
+        Configure::write('debug', true);
     }
 
     /**
@@ -36,29 +70,31 @@ class PolicyTest extends BaseControllerTest
      */
     public function testLogin(): void
     {
+        $this->enableSecurityToken();
+
         // not logged in
-        $this->get('/users/login');
+        $this->get('https://localhost/users/login');
         $this->assertResponseOk();
-        $this->assertResponseContains('<!-- START: App.Users/login -->');
-        $this->assertResponseContains('<!-- END: App.Users/login -->');
+        $this->helperTestTemplate('Users/login');
 
         // test with admin
         $this->loginUserAdmin();
-        $this->get('/users/login');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/');
+        $this->get('https://localhost/users/login');
+        $this->assertRedirectEquals('https://localhost/');
+        $this->assertFlashMessage('Welcome back Admin', 'flash');
+        $this->assertFlashElement('flash/success');
 
         // test with reqular
         $this->loginUserRegular();
-        $this->get('/users/login');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/');
+        $this->get('https://localhost/users/login');
+        $this->assertRedirectEquals('https://localhost/');
+        $this->assertFlashMessage('Welcome back Regular', 'flash');
+        $this->assertFlashElement('flash/success');
 
         // just test redirect
         $this->loginUserRegular();
-        $this->get('/users/login?redirect=%2Fcategories');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/categories');
+        $this->get('https://localhost/users/login?redirect=%2Fsources');
+        $this->assertRedirectEquals('https://localhost/sources');
     }
 
     /**
@@ -70,37 +106,29 @@ class PolicyTest extends BaseControllerTest
     public function testLogout(): void
     {
         // not logged in
-        $this->get('/users/logout');
-        $this->assertRedirect();
-        $this->assertResponseCode(302);
-        $this->assertRedirect('http://localhost/users/login');
+        $this->get('https://localhost/users/logout');
+        $this->assertRedirectEquals('https://localhost/users/login');
         $this->assertFlashMessage('You have been logged out', 'flash');
         $this->assertFlashElement('flash/success');
 
         // test with admin
         $this->loginUserAdmin();
-        $this->get('/users/logout');
-        $this->assertRedirect();
-        $this->assertResponseCode(302);
-        $this->assertRedirect('http://localhost/users/login');
+        $this->get('https://localhost/users/logout');
+        $this->assertRedirectEquals('https://localhost/users/login');
         $this->assertFlashMessage('You have been logged out', 'flash');
         $this->assertFlashElement('flash/success');
 
         // test with reqular
         $this->loginUserRegular();
-        $this->get('/users/logout');
-        $this->assertRedirect();
-        $this->assertResponseCode(302);
-        $this->assertRedirect('http://localhost/users/login');
+        $this->get('https://localhost/users/logout');
+        $this->assertRedirectEquals('https://localhost/users/login');
         $this->assertFlashMessage('You have been logged out', 'flash');
         $this->assertFlashElement('flash/success');
 
         // just test redirect
         $this->loginUserRegular();
-        $this->get('/users/logout?redirect=%2Fcategories');
-        $this->assertRedirect();
-        $this->assertResponseCode(302);
-        $this->assertRedirect('http://localhost/users/login');
+        $this->get('https://localhost/users/logout?redirect=%2Fsources');
+        $this->assertRedirectEquals('https://localhost/users/login');
         $this->assertFlashMessage('You have been logged out', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -114,33 +142,48 @@ class PolicyTest extends BaseControllerTest
     public function testIndex(): void
     {
         // not logged in
-        $this->get('/users');
-        $this->assertRedirect();
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/users/login?redirect=%2Fusers');
+        $this->get('https://localhost/users');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fusers');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
+
+        // test with reqular
+        // should not allow a regular user to the list
+        $this->loginUserRegular();
+        $this->get('https://localhost/users');
+        $this->assertRedirectEquals('https://localhost/?redirect=%2Fusers');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
+
+        // test with reqular, debug off
+        Configure::write('debug', false);
+        $this->loginUserRegular();
+        $this->get('https://localhost/users');
+        $this->assertRedirectEquals('https://localhost/?redirect=%2Fusers');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
+        Configure::write('debug', true);
 
         // test with admin
         $this->loginUserAdmin();
-        $this->get('/users');
+        $this->get('https://localhost/users');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="users index content">');
-        $this->assertResponseContains('<h3>Users</h3>');
+        $this->helperTestTemplate('Users/index');
 
-        // test with reqular, should not allow a regular user to the list
-        $this->loginUserRegular();
-        $this->get('/users');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/?redirect=%2Fusers');
-        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
-        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
-        $this->assertFlashElement('flash/error');
+        // test with admin, debug off
+        Configure::write('debug', false);
+        $this->loginUserAdmin();
+        $this->get('https://localhost/users');
+        $this->assertResponseOk();
+        $this->helperTestTemplate('Users/index');
+        Configure::write('debug', true);
     }
 
     /**
-     * Test view method
+     * Test private profile method
      *
      * @return void
      * @uses \App\Controller\UsersController::view()
@@ -148,57 +191,62 @@ class PolicyTest extends BaseControllerTest
     public function testView(): void
     {
         // not logged in
-        $this->get('/users/view/3');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/users/login?redirect=%2Fusers%2Fview%2F3');
+        $this->get('https://localhost/users/view/3');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fusers%2Fview%2F3');
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
-        // TODO: add a flash message for unauthenticated requests.
-        // labels: flash
 
         // test with admin
         $this->loginUserAdmin();
-        $this->get('/users/view/3');
+        $this->get('https://localhost/users/view/3');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="users view content">');
-        $this->assertResponseContains('<h3>Delete Me</h3>');
+        $this->helperTestTemplate('Users/view');
 
         // test with reqular viewing self
         $this->loginUserRegular();
-        $this->get('/users/view/2');
+        $this->get('https://localhost/users/view/2');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="users view content">');
-        $this->assertResponseContains('<h3>Regular</h3>');
+        $this->helperTestTemplate('Users/view');
 
         // regular user trying to view another user private profile
         $this->loginUserRegular();
-        $this->get('/users/view/3');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/?redirect=%2Fusers%2Fview%2F3');
+        $this->get('https://localhost/users/view/3');
+        $this->assertRedirectEquals('https://localhost/?redirect=%2Fusers%2Fview%2F3');
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
-        // test with missing id and debug
-        $this->loginUserRegular();
-        $this->get('/users/view');
-        $this->assertResponseCode(404);
-        $this->assertResponseContains('Unknown ID');
+        /// Missing IDs
 
-        // test with missing id, no debug
-        Configure::write('debug', false);
+        // not logged in
+        $this->loginGuest();
+        $this->get('https://localhost/users/view');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fusers%2Fview');
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
+
+        // test with reqular
         $this->loginUserRegular();
-        $this->get(Router::url([
-            '_https' => true,
-            'controller' => 'Users',
-            'action' => 'view',
-        ]));
-        $this->assertResponseCode(404);
-        $this->assertResponseContains('Unknown ID');
-        Configure::write('debug', true); // turn it back on
+        $this->get('https://localhost/users/view');
+        $this->assertResponseOk();
+        $this->helperTestTemplate('Users/view');
+
+        // test with admin
+        $this->loginUserAdmin();
+        $this->get('https://localhost/users/view');
+        $this->assertResponseOk();
+        $this->helperTestTemplate('Users/view');
+
+        // debug off
+        Configure::write('debug', false);
+        $this->loginUserAdmin();
+        $this->get('https://localhost/users/view');
+        $this->assertResponseOk();
+        $this->helperTestTemplate('Users/view');
+        Configure::write('debug', true);
     }
 
     /**
-     * Test view method
+     * Test public profile method
      *
      * @return void
      * @uses \App\Controller\UsersController::profile()
@@ -206,46 +254,31 @@ class PolicyTest extends BaseControllerTest
     public function testProfile(): void
     {
         // not logged in
-        $this->get('/users/profile/3');
+        $this->get('https://localhost/users/profile/3');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="users view content">');
-        $this->assertResponseContains('<h3>Delete Me</h3>');
-
-        // test with admin
-        $this->loginUserAdmin();
-        $this->get('/users/profile/3');
-        $this->assertResponseOk();
-        $this->assertResponseContains('<div class="users view content">');
-        $this->assertResponseContains('<h3>Delete Me</h3>');
+        $this->helperTestTemplate('Users/profile');
 
         // test with reqular viewing self
         $this->loginUserRegular();
-        $this->get('/users/profile/2');
+        $this->get('https://localhost/users/profile/2');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="users view content">');
-        $this->assertResponseContains('<h3>Regular</h3>');
+        $this->helperTestTemplate('Users/profile');
 
-        // regular user trying to view another user private profile
-        $this->loginUserRegular();
-        $this->get('/users/profile/3');
+        // test with admin
+        $this->loginUserAdmin();
+        $this->get('https://localhost/users/profile/3');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="users view content">');
-        $this->assertResponseContains('<h3>Delete Me</h3>');
+        $this->helperTestTemplate('Users/profile');
 
         // test with missing id and debug
         $this->loginUserRegular();
-        $this->get('/users/profile');
+        $this->get('https://localhost/users/profile');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
 
         // test with missing id, no debug
         Configure::write('debug', false);
-        $this->loginUserRegular();
-        $this->get(Router::url([
-            '_https' => true,
-            'controller' => 'Users',
-            'action' => 'profile',
-        ]));
+        $this->get('https://localhost/users/profile');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
         Configure::write('debug', true); // turn it back on
@@ -259,28 +292,41 @@ class PolicyTest extends BaseControllerTest
      */
     public function testAdd(): void
     {
-        // not logged in, so should redirect
-        $this->get('/users/add');
-        $this->assertRedirect();
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/users/login?redirect=%2Fusers%2Fadd');
+        $this->enableSecurityToken();
 
-        // test with admin, get
-        $this->loginUserAdmin();
-        $this->get('/users/add');
-        $this->assertResponseOk();
-        $this->assertResponseContains('<div class="users form content">');
-        $this->assertResponseContains('<form method="post" accept-charset="utf-8" role="form" action="/users/add">');
-        $this->assertResponseContains('<legend>Add User</legend>');
-
-        // test with reqular, get
-        $this->loginUserRegular();
-        $this->get('/users/add');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/?redirect=%2Fusers');
+        // not logged in
+        $this->loginGuest();
+        $this->get('https://localhost/users/add');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fusers%2Fadd');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
+
+        // test with reqular
+        $this->loginUserRegular();
+        $this->get('https://localhost/users/add');
+        $this->assertRedirectEquals('https://localhost/?redirect=%2Fusers%2Fadd');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
+
+        // test with admin
+        $this->loginUserAdmin();
+        $this->get('https://localhost/users/add');
+        $this->assertResponseOk();
+        $this->helperTestTemplate('Users/add');
+        $this->helperTestFormTag('/users/add', 'post');
+
+        // Debug Off
+        Configure::write('debug', false);
+        $this->loginGuest();
+        $this->get('https://localhost/users/add');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fusers%2Fadd');
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
+        Configure::write('debug', true);
+
+        // can't test success with debug off as it messes with the test env setup.
     }
 
     /**
@@ -291,121 +337,154 @@ class PolicyTest extends BaseControllerTest
      */
     public function testEdit(): void
     {
-        // not logged in, so should redirect
-        $this->get('/users/edit');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/users/login?redirect=%2Fusers%2Fedit');
+        $this->enableSecurityToken();
 
-        // test with missing id and debug
-        $this->loginUserAdmin();
-        $this->get('/users/edit');
-        $this->assertResponseCode(404);
-        $this->assertResponseContains('Unknown ID');
-
-        // test with missing id, no debug
-        Configure::write('debug', false);
-        $this->loginUserAdmin();
-        $this->get(Router::url([
-            '_https' => true,
-            'controller' => 'Users',
-            'action' => 'edit',
-        ]));
-        $this->assertResponseCode(404);
-        $this->assertResponseContains('Unknown ID');
-        Configure::write('debug', true); // turn it back on
-
-        // test with admin, get
-        $this->loginUserAdmin();
-        $this->get('/users/edit/3');
-        $this->assertResponseOk();
-        $this->assertResponseContains('<div class="users form content">');
-        $this->assertResponseContains('<form method="patch" accept-charset="utf-8" role="form" action="/users/edit/3">');
-        $this->assertResponseContains('<legend>Edit User</legend>');
-
-        // test with reqular, get
-        $this->loginUserRegular();
-        $this->get('/users/edit/3');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/?redirect=%2Fusers');
+        // not logged
+        $this->loginGuest();
+        $this->get('https://localhost/users/edit/1');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fusers%2Fedit%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
+
+        // test with reqular, not me
+        $this->loginUserRegular();
+        $this->get('https://localhost/users/edit/1');
+        $this->assertRedirectEquals('https://localhost/?redirect=%2Fusers%2Fedit%2F1');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
+
+        // test with regular user, me
+        $this->loginUserRegular();
+        $this->get('https://localhost/users/edit/2');
+        $this->assertResponseOk();
+        $this->helperTestTemplate('Users/edit');
+        $this->helperTestFormTag('/users/edit/2', 'patch');
+
+        // test with admin
+        $this->loginUserAdmin();
+        $this->get('https://localhost/users/edit/2');
+        $this->assertResponseOk();
+        $this->helperTestTemplate('Users/edit');
+        $this->helperTestFormTag('/users/edit/2', 'patch');
+
+        /// Missing IDs
+
+        // not logged in
+        $this->loginGuest();
+        $this->get('https://localhost/users/edit');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fusers%2Fedit');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
+
+        // test with reqular
+        $this->loginUserRegular();
+        $this->get('https://localhost/users/edit');
+        $this->assertResponseOk();
+        $this->helperTestTemplate('Users/edit');
+        $this->helperTestFormTag('/users/edit', 'patch');
+
+        // test with admin
+        $this->loginUserAdmin();
+        $this->get('https://localhost/users/edit');
+        $this->assertResponseOk();
+        $this->helperTestTemplate('Users/edit');
+        $this->helperTestFormTag('/users/edit', 'patch');
+
+        // Debug Off
+        Configure::write('debug', false);
+        $this->loginGuest();
+        $this->get('https://localhost/users/edit');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fusers%2Fedit');
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
+        Configure::write('debug', true);
+
+        // can't test success with debug off as it messes with the test env setup. and triggers a form tempering error.
     }
 
     /**
      * Test delete method
+     *
+     * The redirects here should not inlcude the query string.
+     * Sonce a delete() http method is also treated similar to a post.
      *
      * @return void
      * @uses \App\Controller\UsersController::delete()
      */
     public function testDelete(): void
     {
-        $this->enableCsrfToken();
         $this->enableSecurityToken();
 
-        // not logged in, so should redirect
-        $this->get('/users/delete');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/users/login?redirect=%2Fusers%2Fdelete');
-
-        // test get with missing id and debug
-        $this->loginUserAdmin();
-        $this->get('/users/delete');
-        $this->assertResponseCode(404);
-        $this->assertResponseContains('Unknown ID');
-
-        // test with missing id, no debug
-        Configure::write('debug', false);
-        $this->loginUserAdmin();
-        $this->get(Router::url([
-            '_https' => true,
-            'controller' => 'Users',
-            'action' => 'delete',
-        ]));
-        $this->assertResponseCode(404);
-        $this->assertResponseContains('Unknown ID');
-        Configure::write('debug', true); // turn it back on
-
-        // test get with reqular, get
-        $this->loginUserRegular();
-        $this->get('/users/delete/3');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/?redirect=%2Fusers');
+        // not logged
+        $this->loginGuest();
+        $this->delete('https://localhost/users/delete/3');
+        $this->assertRedirectEquals('https://localhost/users/login');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
-        // test post with regular, post
+        // test with reqular, other user
         $this->loginUserRegular();
-        $this->post('/users/delete/3');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/');
+        $this->delete('https://localhost/users/delete/3');
+        $this->assertRedirectEquals('https://localhost/');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
-        // test delete with regular user
+        // test with reqular, me
+        // only an admin can delete a user.
         $this->loginUserRegular();
-        $this->delete('/users/delete/3');
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/');
+        $this->delete('https://localhost/users/delete/2');
+        $this->assertRedirectEquals('https://localhost/');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
-        // test post with admin, get
+        // test with admin
         $this->loginUserAdmin();
-        $this->post('/users/delete/3');
-        $this->assertResponseCode(405);
-        $this->assertResponseContains('Method Not Allowed');
-
-        // test with admin, post no data, no CSRF
-        $this->loginUserAdmin();
-        $this->delete('/users/delete/3');
-        $this->assertRedirect();
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/users');
+        $this->delete('https://localhost/users/delete/3');
+        $this->assertRedirectEquals('https://localhost/users');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('The user `Delete Me` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
+
+        /// Missing IDs
+
+        // not logged in
+        $this->loginGuest();
+        $this->delete('https://localhost/users/delete');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
+
+        // test with reqular
+        $this->loginUserRegular();
+        $this->delete('https://localhost/users/delete');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
+
+        // test with admin
+        $this->loginUserAdmin();
+        $this->delete('https://localhost/users/delete');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
+
+        // admin, debug off
+        Configure::write('debug', false);
+        $this->loginUserAdmin();
+        $this->delete('https://localhost/users/delete');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
+        Configure::write('debug', true);
+
+        // not logged in, debug off
+        Configure::write('debug', false);
+        $this->loginGuest();
+        $this->delete('https://localhost/users/delete');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
+        Configure::write('debug', true);
     }
 }

@@ -44,6 +44,8 @@ class Installer
         'tmp/cache/views',
         'tmp/sessions',
         'tmp/tests',
+        'tmp/qr_codes',
+        'tmp/qr_images',
     ];
 
     /**

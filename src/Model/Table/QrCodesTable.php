@@ -3,10 +3,12 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use App\Lib\PhpQrGenerator;
 use App\Model\Entity\QrCode;
+use App\Model\Entity\User;
 use ArrayObject;
 use Cake\Event\Event;
+use Cake\Http\Exception\InternalErrorException;
+use Cake\Http\Exception\NotFoundException;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -59,6 +61,10 @@ class QrCodesTable extends Table
         $this->belongsTo('Sources')
             ->setClassName('Sources')
             ->setForeignKey('source_id');
+
+        $this->hasMany('QrImages')
+            ->setClassName('QrImages')
+            ->setForeignKey('qr_code_id');
 
         $this->belongsToMany('Categories')
             ->setClassName('Categories')
@@ -117,6 +123,9 @@ class QrCodesTable extends Table
             ]);
 
         $validator
+            ->boolean('is_active');
+
+        $validator
             ->integer('source_id')
             ->notEmptyString('source_id')
             ->requirePresence('source_id', Validator::WHEN_CREATE);
@@ -166,16 +175,52 @@ class QrCodesTable extends Table
      */
     public function afterSave(Event $event, QrCode $entity, ArrayObject $options): void
     {
-        // use the qrCodeImagePath method to generate the image
-        $this->getQrImagePath($entity->id, true);
+        // This should trigger creating a QR Code if it doesn't exist,
+        // as the Entity's firtual field will try to generate one.
+        // so we just need to trigger that firtual field.
+        // TODO: Test this to make sure we output the exception properly.
+        if (!$entity->path) {
+            throw new InternalErrorException('Unable to create QR Code.');
+        }
     }
 
     /**
-     * Custom finder
+     * Custom finders
+     */
+
+    /**
+     * Find Active QR Codes
+     *
+     * @param \Cake\ORM\Query\SelectQuery $query The initial query
+     * @return \Cake\ORM\Query\SelectQuery The updated query
+     */
+    public function findActive(SelectQuery $query): SelectQuery
+    {
+        return $query->where(['QrCodes.is_active' => true]);
+    }
+
+    /**
+     * Find a QR code by its key
+     *
+     * @param \Cake\ORM\Query\SelectQuery $query The initial query
+     * @param string $key The key to look for.
+     * @return \Cake\ORM\Query\SelectQuery The updated query
      */
     public function findKey(SelectQuery $query, string $key): SelectQuery
     {
-        return $query->where(['qrkey' => $key]);
+        return $query->where(['QrCodes.qrkey' => $key]);
+    }
+
+    /**
+     * Find Qr Codes owned by a user
+     *
+     * @param \Cake\ORM\Query\SelectQuery $query The initial query
+     * @param \App\Model\Entity\User $user The user to scope the query to.
+     * @return \Cake\ORM\Query\SelectQuery The updated query
+     */
+    public function findOwnedBy(SelectQuery $query, User $user): SelectQuery
+    {
+        return $query->where(['QrCodes.user_id' => $user->id]);
     }
 
     /**
@@ -186,18 +231,20 @@ class QrCodesTable extends Table
      * @return string The absolute path to the generated QR code Image.
      * @throws \Cake\Http\Exception\NotFoundException If the entity isn't found, or we can't create the image.
      */
-    public function getQrImagePath(int $id, bool $renerate = false): string
+    public function getQrImagePath(int $id, bool $regenerate = false): string
     {
         $qrCode = $this->get($id); // throws a NotFoundException if it doesn't exist.
-        $path = TMP . 'qr_codes' . DS . $id . '.png';
-        if (!file_exists($path) || $renerate) {
-            $QR = new PhpQrGenerator($qrCode);
-            $QR->generate();
-            if (is_readable($path)) {
-                return $path;
-            }
+
+        if ($regenerate === true) {
+            $qrCode->regenerate = true;
         }
 
-        return $path;
+        if (!$qrCode->path) {
+            throw new NotFoundException(__('Unable to find the QR Image for the QR Code `{0}`', [
+                $qrCode->name,
+            ]));
+        }
+
+        return $qrCode->path;
     }
 }

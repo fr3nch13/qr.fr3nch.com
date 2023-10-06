@@ -36,12 +36,12 @@ class JsonTest extends BaseControllerTest
      * Test login method
      *
      * @return void
-     * @uses \App\Controller\UsersController::add()
+     * @uses \App\Controller\UsersController::login()
      */
     public function testLogin(): void
     {
         // a get
-        $this->get('/users/login');
+        $this->get('https://localhost/users/login');
         $this->assertResponseOk();
 
         $content = (string)$this->_response->getBody();
@@ -59,7 +59,7 @@ class JsonTest extends BaseControllerTest
         $this->assertSame($expected, $content['errors']);
 
         // a post fail
-        $this->post('/users/login.json', []);
+        $this->post('https://localhost/users/login.json', []);
         $this->assertResponseOk();
         $content = (string)$this->_response->getBody();
         $content = json_decode($content, true);
@@ -76,7 +76,7 @@ class JsonTest extends BaseControllerTest
         $this->assertSame($expected, $content['errors']);
 
         // a post login fail
-        $this->post('/users/login.json', [
+        $this->post('https://localhost/users/login.json', [
             'email' => 'admin@example.com',
             'password' => 'badpassword',
         ]);
@@ -91,29 +91,27 @@ class JsonTest extends BaseControllerTest
         $this->assertFalse(empty($content['errors']));
 
         $expected = [
-            'Password' => [],
+            'Login credentials not found',
         ];
         $this->assertSame($expected, $content['errors']);
 
         // a post success
-        $this->post('/users/login.json', [
+        $this->post('https://localhost/users/login.json', [
             'email' => 'admin@example.com',
             'password' => 'admin',
         ]);
-        $this->assertResponseCode(302);
-        $this->assertRedirect('/');
+                $this->assertRedirectEquals('https://localhost/');
         $this->assertFlashMessage('Welcome back Admin', 'flash');
         $this->assertFlashElement('flash/success');
 
         $this->logoutUser();
 
         // a post success
-        $this->post('/users/login.json?redirect=categories', [
+        $this->post('https://localhost/users/login.json?redirect=categories', [
             'email' => 'admin@example.com',
             'password' => 'admin',
         ]);
-        $this->assertResponseCode(302);
-        $this->assertRedirect('/categories');
+                $this->assertRedirectEquals('https://localhost/categories');
         $this->assertFlashMessage('Welcome back Admin', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -127,7 +125,7 @@ class JsonTest extends BaseControllerTest
     public function testIndex(): void
     {
         $this->loginUserAdmin();
-        $this->get('/users');
+        $this->get('https://localhost/users.json');
         $this->assertResponseOk();
 
         $content = (string)$this->_response->getBody();
@@ -150,7 +148,7 @@ class JsonTest extends BaseControllerTest
     public function testView(): void
     {
         $this->loginUserAdmin();
-        $this->get('/users/view/2');
+        $this->get('https://localhost/users/view/2.json');
         $this->assertResponseOk();
 
         $content = (string)$this->_response->getBody();
@@ -170,7 +168,7 @@ class JsonTest extends BaseControllerTest
     public function testProfile(): void
     {
         $this->loginUserAdmin();
-        $this->get('/users/profile/2');
+        $this->get('https://localhost/users/profile/2.json');
         $this->assertResponseOk();
 
         $content = (string)$this->_response->getBody();
@@ -191,7 +189,7 @@ class JsonTest extends BaseControllerTest
     {
         $this->loginUserAdmin();
         // a get
-        $this->get('/users/add');
+        $this->get('https://localhost/users/add.json');
         $this->assertResponseOk();
 
         $content = (string)$this->_response->getBody();
@@ -204,7 +202,7 @@ class JsonTest extends BaseControllerTest
         $this->assertTrue(empty($content['errors']));
 
         // a post fail
-        $this->post('/users/add.json', []);
+        $this->post('https://localhost/users/add.json', []);
         $this->assertResponseOk();
         $content = (string)$this->_response->getBody();
         $content = json_decode($content, true);
@@ -229,13 +227,12 @@ class JsonTest extends BaseControllerTest
         $this->assertSame($expected, $content['errors']);
 
         // a post success
-        $this->post('/users/add.json', [
+        $this->post('https://localhost/users/add.json', [
             'name' => 'New JSON User',
             'email' => 'newjsonuser@example.com',
             'password' => 'password',
         ]);
-        $this->assertResponseCode(302);
-        $this->assertRedirect('/users');
+        $this->assertRedirectEquals('https://localhost/users/view/4.json');
         $this->assertFlashMessage('The user has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -251,7 +248,7 @@ class JsonTest extends BaseControllerTest
         $this->loginUserAdmin();
         // test with admin, get
         $this->loginUserAdmin();
-        $this->get('/users/edit/1');
+        $this->get('https://localhost/users/edit/1.json');
         $this->assertResponseOk();
         $content = (string)$this->_response->getBody();
         $content = json_decode($content, true);
@@ -263,12 +260,11 @@ class JsonTest extends BaseControllerTest
         $this->assertTrue(empty($content['errors']));
 
         // a patch success
-        $this->patch('/users/edit/1.json', [
+        $this->patch('https://localhost/users/edit/1.json', [
             'name' => 'New JSON Category',
             'description' => 'Description of the user',
         ]);
-        $this->assertResponseCode(302);
-        $this->assertRedirect('/users');
+        $this->assertRedirectEquals('https://localhost/users/view/1.json');
         $this->assertFlashMessage('The user has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }

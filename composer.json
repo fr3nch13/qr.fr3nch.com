@@ -4,12 +4,6 @@
     "homepage": "https://qr.fr3nch.com",
     "type": "project",
     "license": "MIT",
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/fr3nch13/foxy"
-        }
-    ],
     "require": {
         "php": ">=8.1",
         "cakephp/authentication": "~3.0",
@@ -27,7 +21,7 @@
         "cakephp/bake": "~3.0",
         "cakephp/cakephp-codesniffer": "~5.1",
         "cakephp/debug_kit": "~5.0",
-        "foxy/foxy": "dev-main as 1.3.1",
+        "fr3nch13/pushover-bash": "~1.0",
         "josegonzalez/dotenv": "~4.0",
         "phpstan/phpstan": "~1.10",
         "phpunit/phpunit": "~10.3"
@@ -54,11 +48,15 @@
     "scripts": {
         "post-install-cmd": "App\\Console\\Installer::postInstall",
         "post-create-project-cmd": "App\\Console\\Installer::postInstall",
+        "pushover": "./vendor/bin/pushover.sh",
+        "pushover-test": "@pushover -T QR.fr3nch.com: Unit Test -m Test complete",
+        "pushover-done": "@pushover -T QR.fr3nch.com: Composer done -m Composer done -p 2",
         "migrate": "bin/cake migrations migrate",
         "seed": "bin/cake migrations seed",
         "ci": [
             "@check",
-            "@coverage-text"
+            "@coverage-text",
+            "@pushover -m QR.fr3nch.com CI done -p 1"
         ],
         "check": [
             "@test",
@@ -69,10 +67,10 @@
             "@cs-fix",
             "@cs-check"
         ],
-        "cs-check": "php -d memory_limit=-1 ./vendor/bin/phpcs --colors -p",
+        "cs-check": "php -d memory_limit=-1 ./vendor/bin/phpcs --colors -p -s",
         "cs-fix": "php -d memory_limit=-1 ./vendor/bin/phpcbf --colors -p",
-        "test": "php -d memory_limit=-1 ./vendor/bin/phpunit --colors=always",
         "cs-checkstyle": "@cs-check -- --report=checkstyle",
+        "test": "php -d memory_limit=-1 ./vendor/bin/phpunit --colors=always",
         "phpstan": "php -d memory_limit=-1 ./vendor/bin/phpstan --no-progress -vvv",
         "phpstan-github": "php -d memory_limit=-1 ./vendor/bin/phpstan --no-progress -vvv --error-format=github",
         "coverage": "php -d memory_limit=-1 -d xdebug.mode=coverage ./vendor/bin/phpunit --coverage-html tmp/coverage --coverage-clover=tmp/cov.xml",

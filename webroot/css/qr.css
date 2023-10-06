@@ -1,7 +1,12 @@
-.navbar.navbar-light img.logo-top {
+.navbar.qr-navbar-top img.logo-top {
     max-width: 200px;
 }
 footer img.logo-bottom {
     max-width: 150px;
 
+}
+
+/* Product listing page */
+.products .product .product-title {
+    font-size: 130%;
 }

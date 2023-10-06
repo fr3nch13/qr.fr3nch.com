@@ -30,7 +30,8 @@ require dirname(__DIR__) . '/vendor/autoload.php';
 require dirname(__DIR__) . '/config/bootstrap.php';
 
 if (empty($_SERVER['HTTP_HOST']) && !Configure::read('App.fullBaseUrl')) {
-    Configure::write('App.fullBaseUrl', 'http://localhost');
+    // enforce https in tests.
+    Configure::write('App.fullBaseUrl', 'https://localhost');
 }
 
 // Statically set here, instad of in a environment variable, so i can test the actual salted results.
@@ -65,5 +66,7 @@ session_id('cli');
 // load schema from a SQL dump file with
 // use Cake\TestSuite\Fixture\SchemaLoader;
 // (new SchemaLoader())->loadSqlFiles('./tests/schema.sql', 'test');
+
+Configure::write('App.paths.qr_images', TMP . 'qr_images_test');
 
 (new Migrator())->run();

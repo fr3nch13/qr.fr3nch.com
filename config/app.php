@@ -64,6 +64,10 @@ return [
             'plugins' => [ROOT . DS . 'plugins' . DS],
             'templates' => [ROOT . DS . 'templates' . DS],
             'locales' => [RESOURCES . 'locales' . DS],
+            // This is where the generated QR Codes are stored.
+            'qr_codes' => TMP . 'qr_codes',
+            // This is where the images fpr QR Codes are stored.
+            'qr_images' => TMP . 'qr_images',
         ],
     ],
 

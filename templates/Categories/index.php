@@ -3,7 +3,11 @@
  * @var \App\View\AppView $this
  * @var iterable<\App\Model\Entity\Category> $categories
  */
+if (!$this->getRequest()->is('ajax')) {
+    $this->setLayout('pages/index');
+}
 ?>
+<?= $this->Template->templateComment(true, __FILE__); ?>
 <div class="categories index content">
     <?= $this->Html->link(__('New Category'), ['action' => 'add'], ['class' => 'button float-right']) ?>
     <h3><?= __('Categories') ?></h3>
@@ -20,17 +24,34 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($categories as $category): ?>
+                <?php foreach ($categories as $category) : ?>
                 <tr>
                     <td><?= $this->Number->format($category->id) ?></td>
                     <td><?= h($category->name) ?></td>
                     <td><?= h($category->created) ?></td>
                     <td><?= h($category->modified) ?></td>
-                    <td><?= $category->hasValue('parent_category') ? $this->Html->link($category->parent_category->name, ['controller' => 'Categories', 'action' => 'view', $category->parent_category->id]) : '' ?></td>
+                    <td><?= $category->hasValue('parent_category') ?
+                        $this->Html->link($category->parent_category->name, [
+                            'controller' => 'Categories',
+                            'action' => 'view',
+                            $category->parent_category->id,
+                        ]) :
+                        '' ?></td>
                     <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $category->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $category->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $category->id], ['confirm' => __('Are you sure you want to delete # {0}?', $category->id)]) ?>
+                        <?= $this->Html->link(__('View'), [
+                            'action' => 'view',
+                            $category->id,
+                        ]) ?>
+                        <?= $this->Html->link(__('Edit'), [
+                            'action' => 'edit',
+                            $category->id,
+                        ]) ?>
+                        <?= $this->Form->postLink(__('Delete'), [
+                            'action' => 'delete',
+                            $category->id,
+                        ], [
+                            'confirm' => __('Are you sure you want to delete # {0}?', $category->id),
+                        ]) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
@@ -45,6 +66,8 @@
             <?= $this->Paginator->next(__('next') . ' >') ?>
             <?= $this->Paginator->last(__('last') . ' >>') ?>
         </ul>
-        <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></p>
+        <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, ' .
+            'showing {{current}} record(s) out of {{count}} total')) ?></p>
     </div>
 </div>
+<?= $this->Template->templateComment(false, __FILE__); ?>

@@ -41,23 +41,20 @@ class FormsTest extends BaseControllerTest
     public function testAdd(): void
     {
         // test failed
-        $this->post('/tags/add', [
+        $this->post('https://localhost/tags/add', [
         ]);
         $this->assertResponseOk();
+        $this->helperTestTemplate('Tags/add');
+        $this->helperTestFormTag('/tags/add');
         $this->helperTestAlert('The tag could not be saved. Please, try again.', 'danger');
-        $this->assertResponseContains('<div class="tags form content">');
-        $this->assertResponseContains('<form method="post" accept-charset="utf-8" role="form" action="/tags/add">');
-        $this->assertResponseContains('<legend>Add Tag</legend>');
         // test to make sure the fields that are required are actually tagged as so.
-        $this->assertResponseContains('id="name-error"');
+        $this->helperTestFormFieldError('This field is required', 'name-error');
 
         // test success
-        $this->post('/tags/add', [
+        $this->post('https://localhost/tags/add', [
             'name' => 'new tag',
         ]);
-        $this->assertRedirect();
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/tags');
+        $this->assertRedirectEquals('https://localhost/tags/view/6');
         $this->assertFlashMessage('The tag has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -71,25 +68,22 @@ class FormsTest extends BaseControllerTest
     public function testEdit(): void
     {
         // test fail
-        $this->patch('/tags/edit/1', [
+        $this->patch('https://localhost/tags/edit/1', [
             'name' => 'Amazon', // an existing record
         ]);
         $this->assertResponseOk();
+        $this->helperTestTemplate('Tags/edit');
+        $this->helperTestFormTag('/tags/edit/1', 'patch');
         $this->helperTestAlert('The tag could not be saved. Please, try again.', 'danger');
-        $this->assertResponseContains('<div class="tags form content">');
-        $this->assertResponseContains('<form method="patch" accept-charset="utf-8" role="form" action="/tags/edit/1">');
-        $this->assertResponseContains('<legend>Edit Tag</legend>');
         // test to make sure the fields that are required are actually tagged as so.
-        $this->assertResponseContains('id="name-error"');
+        $this->helperTestFormFieldError('This Tag already exists.', 'name-error');
 
         // test success
-        $this->patch('/tags/edit/1', [
+        $this->patch('https://localhost/tags/edit/1', [
             'name' => 'New Tag',
             'description' => 'The Description',
         ]);
-        $this->assertRedirect();
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/tags');
+        $this->assertRedirectEquals('https://localhost/tags/view/1');
         $this->assertFlashMessage('The tag has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }

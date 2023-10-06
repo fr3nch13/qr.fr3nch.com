@@ -28,8 +28,8 @@ use function imagecopyresampled, imagecreatefrompng, imagesx, imagesy, is_file, 
 class QRImageWithLogo extends QRImage
 {
     /**
-     * @param string|null $file
-     * @param string|null $logo
+     * @param ?string $file
+     * @param ?string $logo
      * @return string
      * @throws \chillerlan\QRCode\Output\QRCodeOutputException
      */

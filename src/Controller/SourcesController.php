@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
+use Cake\Http\Response;
 
 /**
  * Sources Controller
@@ -15,13 +16,11 @@ class SourcesController extends AppController
 {
     /**
      * Runs before the code in the actions
+     *
+     * @return void
      */
     public function beforeFilter(EventInterface $event): void
     {
-        parent::beforeFilter($event);
-
-        $this->Authorization->authorize($this);
-
         // make sure we have an ID where needed.
         $action = $this->request->getParam('action');
         // admin actions
@@ -32,32 +31,37 @@ class SourcesController extends AppController
                 throw new NotFoundException('Unknown ID');
             }
         }
+
+        parent::beforeFilter($event);
     }
 
     /**
      * Index method
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return ?\Cake\Http\Response Renders view
      */
-    public function index()
+    public function index(): ?Response
     {
         $this->request->allowMethod(['get']);
 
         $query = $this->Sources->find('all');
+        $query = $this->Authorization->applyScope($query);
         $sources = $this->paginate($query);
 
         $this->set(compact('sources'));
         $this->viewBuilder()->setOption('serialize', ['sources']);
+
+        return null;
     }
 
     /**
      * View method
      *
-     * @param string|null $id Source id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @param ?string $id Source id.
+     * @return ?\Cake\Http\Response Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view(?string $id = null)
+    public function view(?string $id = null): ?Response
     {
         $this->request->allowMethod(['get']);
 
@@ -66,14 +70,16 @@ class SourcesController extends AppController
 
         $this->set(compact('source'));
         $this->viewBuilder()->setOption('serialize', ['source']);
+
+        return null;
     }
 
     /**
      * Add method
      *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     * @return ?\Cake\Http\Response Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add(): ?Response
     {
         $this->request->allowMethod(['get', 'post']);
 
@@ -86,7 +92,11 @@ class SourcesController extends AppController
             if ($this->Sources->save($source)) {
                 $this->Flash->success(__('The source has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect([
+                    'action' => 'view',
+                    $source->id,
+                    '_ext' => $this->getRequest()->getParam('_ext'),
+                ]);
             }
             $this->Flash->error(__('The source could not be saved. Please, try again.'));
         }
@@ -95,16 +105,18 @@ class SourcesController extends AppController
 
         $this->set(compact('source', 'errors'));
         $this->viewBuilder()->setOption('serialize', ['source', 'errors']);
+
+        return null;
     }
 
     /**
      * Edit method
      *
-     * @param string|null $id Source id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
+     * @param ?string $id Source id.
+     * @return ?\Cake\Http\Response Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit(?string $id = null)
+    public function edit(?string $id = null): ?Response
     {
         $this->request->allowMethod(['get', 'patch']);
 
@@ -116,7 +128,11 @@ class SourcesController extends AppController
             if ($this->Sources->save($source)) {
                 $this->Flash->success(__('The source has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect([
+                    'action' => 'view',
+                    $source->id,
+                    '_ext' => $this->getRequest()->getParam('_ext'),
+                ]);
             }
             $this->Flash->error(__('The source could not be saved. Please, try again.'));
         }
@@ -125,16 +141,18 @@ class SourcesController extends AppController
 
         $this->set(compact('source', 'errors'));
         $this->viewBuilder()->setOption('serialize', ['source', 'errors']);
+
+        return null;
     }
 
     /**
      * Delete method
      *
-     * @param string|null $id Source id.
-     * @return \Cake\Http\Response|null|void Redirects to index.
+     * @param ?string $id Source id.
+     * @return ?\Cake\Http\Response Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete(?string $id = null)
+    public function delete(?string $id = null): ?Response
     {
         $this->request->allowMethod(['delete']);
 
@@ -145,8 +163,15 @@ class SourcesController extends AppController
             $this->Flash->success(__('The source `{0}` has been deleted.', [
                 $source->name,
             ]));
-
-            return $this->redirect(['action' => 'index']);
+        } else {
+            $this->Flash->error(__('Unable to delete the source `{0}`.', [
+                $source->name,
+            ]));
         }
+
+        return $this->redirect([
+            'action' => 'index',
+            '_ext' => $this->getRequest()->getParam('_ext'),
+        ]);
     }
 }

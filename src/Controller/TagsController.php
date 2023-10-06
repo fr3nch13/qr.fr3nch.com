@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
+use Cake\Http\Response;
 
 /**
  * Tags Controller
@@ -15,15 +16,13 @@ class TagsController extends AppController
 {
     /**
      * Runs before the code in the actions
+     *
+     * @return void
      */
     public function beforeFilter(EventInterface $event): void
     {
-        parent::beforeFilter($event);
-
         //Allow anyone to view the list of tags, and their details page.
         $this->Authentication->addUnauthenticatedActions(['index', 'view']);
-
-        $this->Authorization->authorize($this);
 
         // make sure we have an ID where needed.
         $action = $this->request->getParam('action');
@@ -35,32 +34,37 @@ class TagsController extends AppController
                 throw new NotFoundException('Unknown ID');
             }
         }
+
+        parent::beforeFilter($event);
     }
 
     /**
      * Index method
      *
-     * @return \Cake\Http\Response|null|void Renders view
+     * @return ?\Cake\Http\Response Renders view
      */
-    public function index()
+    public function index(): ?Response
     {
         $this->request->allowMethod(['get']);
 
         $query = $this->Tags->find('all');
+        $query = $this->Authorization->applyScope($query);
         $tags = $this->paginate($query);
 
         $this->set(compact('tags'));
         $this->viewBuilder()->setOption('serialize', ['tags']);
+
+        return null;
     }
 
     /**
      * View method
      *
-     * @param string|null $id Tag id.
-     * @return \Cake\Http\Response|null|void Renders view
+     * @param ?string $id Tag id.
+     * @return ?\Cake\Http\Response Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view(?string $id = null)
+    public function view(?string $id = null): ?Response
     {
         $this->request->allowMethod(['get']);
 
@@ -69,14 +73,16 @@ class TagsController extends AppController
 
         $this->set(compact('tag'));
         $this->viewBuilder()->setOption('serialize', ['tag']);
+
+        return null;
     }
 
     /**
      * Add method
      *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     * @return ?\Cake\Http\Response Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add(): ?Response
     {
         $this->request->allowMethod(['get', 'post']);
 
@@ -89,7 +95,11 @@ class TagsController extends AppController
             if ($this->Tags->save($tag)) {
                 $this->Flash->success(__('The tag has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect([
+                    'action' => 'view',
+                    $tag->id,
+                    '_ext' => $this->getRequest()->getParam('_ext'),
+                ]);
             }
             $this->Flash->error(__('The tag could not be saved. Please, try again.'));
         }
@@ -99,16 +109,18 @@ class TagsController extends AppController
 
         $this->set(compact('tag', 'qrCodes', 'errors'));
         $this->viewBuilder()->setOption('serialize', ['tag', 'qrCodes', 'errors']);
+
+        return null;
     }
 
     /**
      * Edit method
      *
-     * @param string|null $id Tag id.
-     * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
+     * @param ?string $id Tag id.
+     * @return ?\Cake\Http\Response Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit(?string $id = null)
+    public function edit(?string $id = null): ?Response
     {
         $this->request->allowMethod(['get', 'patch']);
 
@@ -120,7 +132,11 @@ class TagsController extends AppController
             if ($this->Tags->save($tag)) {
                 $this->Flash->success(__('The tag has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect([
+                    'action' => 'view',
+                    $tag->id,
+                    '_ext' => $this->getRequest()->getParam('_ext'),
+                ]);
             }
             $this->Flash->error(__('The tag could not be saved. Please, try again.'));
         }
@@ -130,16 +146,18 @@ class TagsController extends AppController
 
         $this->set(compact('tag', 'qrCodes', 'errors'));
         $this->viewBuilder()->setOption('serialize', ['tag', 'qrCodes', 'errors']);
+
+        return null;
     }
 
     /**
      * Delete method
      *
-     * @param string|null $id Tag id.
-     * @return \Cake\Http\Response|null|void Redirects to index.
+     * @param ?string $id Tag id.
+     * @return ?\Cake\Http\Response Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete(?string $id = null)
+    public function delete(?string $id = null): ?Response
     {
         $this->request->allowMethod(['delete']);
 
@@ -150,8 +168,15 @@ class TagsController extends AppController
             $this->Flash->success(__('The tag `{0}` has been deleted.', [
                 $tag->name,
             ]));
-
-            return $this->redirect(['action' => 'index']);
+        } else {
+            $this->Flash->error(__('Unable to delete the tag `{0}`.', [
+                $tag->name,
+            ]));
         }
+
+        return $this->redirect([
+            'action' => 'index',
+            '_ext' => $this->getRequest()->getParam('_ext'),
+        ]);
     }
 }

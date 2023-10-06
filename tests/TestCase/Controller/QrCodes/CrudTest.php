@@ -39,28 +39,27 @@ class CrudTest extends BaseControllerTest
     public function testIndex(): void
     {
         // get
-        $this->get('/qr-codes');
+        $this->get('https://localhost/qr-codes');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="qrCodes index content">');
-        $this->assertResponseContains('<h3>QR Codes</h3>');
+        $this->helperTestTemplate('QrCodes/index');
 
         // post
-        $this->post('/qr-codes');
+        $this->post('https://localhost/qr-codes');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // patch
-        $this->patch('/qr-codes');
+        $this->patch('https://localhost/qr-codes');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('/qr-codes');
+        $this->put('https://localhost/qr-codes');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('/qr-codes');
+        $this->delete('https://localhost/qr-codes');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
     }
@@ -74,28 +73,27 @@ class CrudTest extends BaseControllerTest
     public function testView(): void
     {
         // test get
-        $this->get('/qr-codes/view/1');
+        $this->get('https://localhost/qr-codes/view/1');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="qrCodes view content">');
-        $this->assertResponseContains('<h3>Sow &amp; Scribe</h3>');
+        $this->helperTestTemplate('QrCodes/view');
 
         // post
-        $this->post('/qr-codes/view/1');
+        $this->post('https://localhost/qr-codes/view/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // patch
-        $this->patch('/qr-codes/view/1');
+        $this->patch('https://localhost/qr-codes/view/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('/qr-codes/view/1');
+        $this->put('https://localhost/qr-codes/view/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('/qr-codes/view/1');
+        $this->delete('https://localhost/qr-codes/view/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
     }
@@ -109,14 +107,12 @@ class CrudTest extends BaseControllerTest
     public function testAdd(): void
     {
         // test get
-        $this->get('/qr-codes/add');
+        $this->get('https://localhost/qr-codes/add');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="qrCodes form content">');
-        $this->assertResponseContains('<form method="post" accept-charset="utf-8" role="form" action="/qr-codes/add">');
-        $this->assertResponseContains('<legend>Add QR Code</legend>');
+        $this->helperTestTemplate('QrCodes/add');
 
         // post
-        $this->post('/qr-codes/add', [
+        $this->post('https://localhost/qr-codes/add', [
             'qrkey' => 'newqrcode',
             'name' => 'New QrCode',
             'description' => 'The Description',
@@ -124,14 +120,12 @@ class CrudTest extends BaseControllerTest
             'source_id' => 1,
             'user_id' => 1,
         ]);
-        $this->assertRedirect();
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/');
+        $this->assertRedirectEquals('https://localhost/qr-codes/view/5');
         $this->assertFlashMessage('The qr code has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
         // patch
-        $this->patch('/qr-codes/add', [
+        $this->patch('https://localhost/qr-codes/add', [
             'qrkey' => 'newqrcode',
             'name' => 'New QrCode',
             'description' => 'The Description',
@@ -143,7 +137,7 @@ class CrudTest extends BaseControllerTest
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('/qr-codes/add', [
+        $this->put('https://localhost/qr-codes/add', [
             'qrkey' => 'newqrcode',
             'name' => 'New QrCode',
             'description' => 'The Description',
@@ -155,7 +149,7 @@ class CrudTest extends BaseControllerTest
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('/qr-codes/add');
+        $this->delete('https://localhost/qr-codes/add');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
     }
@@ -169,38 +163,34 @@ class CrudTest extends BaseControllerTest
     public function testEdit(): void
     {
         // test get
-        $this->get('/qr-codes/edit/1');
+        $this->get('https://localhost/qr-codes/edit/1');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="qrCodes form content">');
-        $this->assertResponseContains('<form method="patch" accept-charset="utf-8" role="form" action="/qr-codes/edit/1">');
-        $this->assertResponseContains('<legend>Edit QR Code</legend>');
+        $this->helperTestTemplate('QrCodes/edit');
 
         // post
-        $this->post('/qr-codes/edit/1', [
+        $this->post('https://localhost/qr-codes/edit/1', [
             'name' => 'Edited QrCode',
         ]);
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // patch
-        $this->patch('/qr-codes/edit/1', [
+        $this->patch('https://localhost/qr-codes/edit/1', [
             'name' => 'Edited QrCode',
         ]);
-        $this->assertRedirect();
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/');
+        $this->assertRedirectEquals('https://localhost/qr-codes/view/1');
         $this->assertFlashMessage('The qr code has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
         // put
-        $this->put('/qr-codes/edit/1', [
+        $this->put('https://localhost/qr-codes/edit/1', [
             'name' => 'Edited QrCode',
         ]);
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('/qr-codes/edit/1');
+        $this->delete('https://localhost/qr-codes/edit/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
     }
@@ -214,31 +204,29 @@ class CrudTest extends BaseControllerTest
     public function testDelete(): void
     {
         // test get
-        $this->get('/qr-codes/delete/1');
+        $this->get('https://localhost/qr-codes/delete/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // post
-        $this->post('/qr-codes/delete/1');
+        $this->post('https://localhost/qr-codes/delete/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // patch
-        $this->patch('/qr-codes/delete/1');
+        $this->patch('https://localhost/qr-codes/delete/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('/qr-codes/delete/1');
+        $this->put('https://localhost/qr-codes/delete/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('/qr-codes/delete/1');
+        $this->delete('https://localhost/qr-codes/delete/1');
+        $this->assertRedirectEquals('https://localhost/');
         $this->assertFlashMessage('The qr code `Sow & Scribe` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
-        $this->assertRedirect();
-        $this->assertResponseCode(302);
-        $this->assertRedirectContains('/');
     }
 }

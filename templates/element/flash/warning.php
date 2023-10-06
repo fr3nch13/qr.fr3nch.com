@@ -8,9 +8,6 @@ if (!isset($params['escape']) || $params['escape'] !== false) {
     $message = h($message);
 }
 ?>
-
-<!-- START: App.element/flash/warning -->
-
+<?= $this->Template->templateComment(true, __FILE__); ?>
 <div class="message warning" onclick="this.classList.add('hidden');"><?= $message ?></div>
-
-<!-- END: App.element/flash/warning -->
+<?= $this->Template->templateComment(false, __FILE__); ?>

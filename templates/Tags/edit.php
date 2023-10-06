@@ -2,9 +2,13 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Tag $tag
- * @var string[]|\Cake\Collection\CollectionInterface $qrCodes
+ * @var \Cake\Collection\CollectionInterface|array<string> $qrCodes
  */
+if (!$this->getRequest()->is('ajax')) {
+    $this->setLayout('pages/form');
+}
 ?>
+<?= $this->Template->templateComment(true, __FILE__); ?>
 <div class="row">
     <aside class="column">
         <div class="side-nav">
@@ -33,3 +37,4 @@
         </div>
     </div>
 </div>
+<?= $this->Template->templateComment(false, __FILE__); ?>

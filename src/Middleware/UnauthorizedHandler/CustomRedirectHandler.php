@@ -5,6 +5,7 @@ namespace App\Middleware\UnauthorizedHandler;
 
 use Authorization\Exception\Exception;
 use Authorization\Middleware\UnauthorizedHandler\RedirectHandler;
+use Cake\Routing\Router;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -28,9 +29,14 @@ class CustomRedirectHandler extends RedirectHandler
     ): ResponseInterface {
         if (isset($options['url'])) {
             if (!$request->getAttribute('identity')) {
-                $options['url'] = '/users/login';
+                $options['url'] = Router::url([
+                    '_full' => true,
+                    'controller' => 'Users',
+                    'action' => 'login',
+                ]);
             }
         }
+
         $response = parent::handle($exception, $request, $options);
         $request->getFlash()->error(__('You are not authorized to access that location'));
 

@@ -26,45 +26,15 @@ use Cake\Event\EventInterface;
 class ErrorController extends AppController
 {
     /**
-     * Initialization hook method.
-     *
-     * @return void
-     */
-    public function initialize(): void
-    {
-        // Only add parent::initialize() if you are confident your appcontroller is safe.
-    }
-
-    /**
-     * beforeFilter callback.
-     *
-     * @param \Cake\Event\EventInterface<\Cake\Controller\Controller> $event Event.
-     * @return \Cake\Http\Response|null|void
-     */
-    public function beforeFilter(EventInterface $event)
-    {
-    }
-
-    /**
      * beforeRender callback.
      *
      * @param \Cake\Event\EventInterface<\Cake\Controller\Controller> $event Event.
-     * @return \Cake\Http\Response|null|void
+     * @return void
      */
-    public function beforeRender(EventInterface $event)
+    public function beforeRender(EventInterface $event): void
     {
         parent::beforeRender($event);
 
         $this->viewBuilder()->setTemplatePath('Error');
-    }
-
-    /**
-     * afterFilter callback.
-     *
-     * @param \Cake\Event\EventInterface<\Cake\Controller\Controller> $event Event.
-     * @return \Cake\Http\Response|null|void
-     */
-    public function afterFilter(EventInterface $event)
-    {
     }
 }

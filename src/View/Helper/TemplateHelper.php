@@ -32,6 +32,12 @@ class TemplateHelper extends Helper
      */
     public function templateComment(bool $start, string $path, string $prefix = 'App'): string
     {
+        /*
+        if (!Configure::read('debug')) {
+            return '';
+        }
+        */
+
         $comment = "\n\n" . '<!-- ' . ($start ? 'START' : 'END') . ': ' . $prefix . '.';
 
         $path = str_replace(ROOT . DS . 'templates' . DS, '', $path);
@@ -40,5 +46,23 @@ class TemplateHelper extends Helper
         $comment .= $path . ' -->' . "\n\n";
 
         return $comment;
+    }
+
+    /**
+     * Used for testing a part of a template within phpunit.
+     *
+     * @param string $string The string to include in the Html comment
+     * @param string $prefix The prefix, mainly App, or a plugin identifier
+     * @return string The formatted Html comment.
+     */
+    public function objectComment(string $string, string $prefix = 'App'): string
+    {
+        /*
+        if (!Configure::read('debug')) {
+            return '';
+        }
+        */
+
+        return "\n\n" . '<!-- OBJECT_COMMENT: ' . $prefix . '.' . $string . ' -->' . "\n\n";
     }
 }

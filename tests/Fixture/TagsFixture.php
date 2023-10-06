@@ -41,7 +41,7 @@ class TagsFixture extends CoreFixture
             ],
             [
                 'id' => 3,
-                'name' => 'Amazon',
+                'name' => 'Delete Me',
                 'created' => new DateTime(),
                 'user_id' => 1,
             ],
@@ -49,7 +49,13 @@ class TagsFixture extends CoreFixture
                 'id' => 4,
                 'name' => 'Pig',
                 'created' => new DateTime(),
-                'user_id' => 1,
+                'user_id' => 2, // regular user
+            ],
+            [
+                'id' => 5,
+                'name' => 'Amazon',
+                'created' => new DateTime(),
+                'user_id' => 2, // regular user
             ],
         ];
         parent::init();

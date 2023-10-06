@@ -23,6 +23,8 @@ namespace App\View;
  */
 class AjaxView extends AppView
 {
+    use LoadAppHelpersTrait;
+
     /**
      * The name of the layout file to render the view inside of. The name
      * specified is the filename of the layout in /templates/Layout without
@@ -50,6 +52,8 @@ class AjaxView extends AppView
     public function initialize(): void
     {
         parent::initialize();
+
+        $this->loadAppHelpers();
 
         $this->response = $this->response->withType('ajax');
     }

@@ -2,12 +2,16 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\QrCode $qrCode
- * @var \Cake\Collection\CollectionInterface|string[] $sources
- * @var \Cake\Collection\CollectionInterface|string[] $users
- * @var \Cake\Collection\CollectionInterface|string[] $categories
- * @var \Cake\Collection\CollectionInterface|string[] $tags
+ * @var \Cake\Collection\CollectionInterface|array<string> $sources
+ * @var \Cake\Collection\CollectionInterface|array<string> $users
+ * @var \Cake\Collection\CollectionInterface|array<string> $categories
+ * @var \Cake\Collection\CollectionInterface|array<string> $tags
  */
+if (!$this->getRequest()->is('ajax')) {
+    $this->setLayout('pages/form');
+}
 ?>
+<?= $this->Template->templateComment(true, __FILE__); ?>
 <div class="row">
     <aside class="column">
         <div class="side-nav">
@@ -41,3 +45,4 @@
         </div>
     </div>
 </div>
+<?= $this->Template->templateComment(false, __FILE__); ?>

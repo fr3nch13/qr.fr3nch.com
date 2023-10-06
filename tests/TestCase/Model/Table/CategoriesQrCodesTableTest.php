@@ -6,7 +6,8 @@ namespace App\Test\TestCase\Model\Table;
 use App\Model\Table\CategoriesQrCodesTable;
 use App\Model\Table\CategoriesTable;
 use App\Model\Table\QrCodesTable;
-use Cake\ORM\Association\HasMany;
+use Cake\Core\Configure;
+use Cake\ORM\Association\BelongsTo;
 use Cake\TestSuite\TestCase;
 
 /**
@@ -42,6 +43,7 @@ class CategoriesQrCodesTableTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        Configure::write('debug', true);
         $config = $this->getTableLocator()->exists('CategoriesQrCodes') ? [] : ['className' => CategoriesQrCodesTable::class];
         /** @var \App\Model\Table\CategoriesQrCodesTable $CategoriesQrCodes */
         $CategoriesQrCodes = $this->getTableLocator()->get('CategoriesQrCodes', $config);
@@ -98,7 +100,7 @@ class CategoriesQrCodesTableTest extends TestCase
         ////// foreach association.
         // make sure the association exists
         $this->assertNotNull($Associations->get('Categories'));
-        $this->assertInstanceOf(HasMany::class, $Associations->get('Categories'));
+        $this->assertInstanceOf(BelongsTo::class, $Associations->get('Categories'));
         $this->assertInstanceOf(CategoriesTable::class, $Associations->get('Categories')->getTarget());
         $Association = $this->CategoriesQrCodes->Categories;
         $this->assertSame('Categories', $Association->getName());
@@ -106,7 +108,7 @@ class CategoriesQrCodesTableTest extends TestCase
 
         // make sure the association exists
         $this->assertNotNull($Associations->get('QrCodes'));
-        $this->assertInstanceOf(HasMany::class, $Associations->get('QrCodes'));
+        $this->assertInstanceOf(BelongsTo::class, $Associations->get('QrCodes'));
         $this->assertInstanceOf(QrCodesTable::class, $Associations->get('QrCodes')->getTarget());
         $Association = $this->CategoriesQrCodes->QrCodes;
         $this->assertSame('QrCodes', $Association->getName());
@@ -192,7 +194,7 @@ class CategoriesQrCodesTableTest extends TestCase
         // A valid entry
         $entity = $this->CategoriesQrCodes->newEntity([
             'category_id' => 2,
-            'qr_code_id' => 2,
+            'qr_code_id' => 4,
         ]);
         $result = $this->CategoriesQrCodes->checkRules($entity);
         $this->assertTrue($result);
