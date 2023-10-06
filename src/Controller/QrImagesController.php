@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Core\Configure;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
@@ -59,6 +60,11 @@ class QrImagesController extends AppController
         }
 
         $response = $this->response->withFile($qrImage->path);
+        // allow browser and proxy caching when debug is off
+        if (!Configure::read('debug')) {
+            $this->response = $this->response->withSharable(true, 3600);
+        }
+
 
         return $response;
     }
