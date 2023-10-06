@@ -91,7 +91,7 @@ class JsonTest extends BaseControllerTest
         $this->assertFalse(empty($content['errors']));
 
         $expected = [
-            'Password' => [],
+            'Login credentials not found',
         ];
         $this->assertSame($expected, $content['errors']);
 
@@ -232,7 +232,7 @@ class JsonTest extends BaseControllerTest
             'email' => 'newjsonuser@example.com',
             'password' => 'password',
         ]);
-                $this->assertRedirectEquals('https://localhost/users');
+        $this->assertRedirectEquals('https://localhost/users');
         $this->assertFlashMessage('The user has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -264,7 +264,7 @@ class JsonTest extends BaseControllerTest
             'name' => 'New JSON Category',
             'description' => 'Description of the user',
         ]);
-                $this->assertRedirectEquals('https://localhost/users');
+        $this->assertRedirectEquals('https://localhost/users');
         $this->assertFlashMessage('The user has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
