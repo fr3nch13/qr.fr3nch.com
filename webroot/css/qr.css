@@ -13,7 +13,7 @@ footer img.logo-bottom {
 .products .product .product-title {
     font-size: 130%;
 }
-.products .product .product-title.inactive {
+.products .product.inactive .product-title {
     color: #f70505;
 }
 
