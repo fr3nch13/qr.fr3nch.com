@@ -127,50 +127,55 @@ class QrImagesFixture extends CoreFixture
     }
 
     /**
-     * Used to copy a folder with stuff in it.
+     * Copies assets into place
      *
-     * @param string $source The source folder
-     * @param string $dest The destination folder
+     * @param string $source The directory to copy
+     * @param string $dest The directory to copy the source to
      * @return void
      */
-    private function cpy($source, $dest): void
+    private function cpy(string $source, string $dest): void
     {
-        if(is_dir($source)) {
+        if (is_dir($source)) {
             $dir_handle = opendir($source);
-            while($file = readdir($dir_handle)){
-                // no self, parent or dot files/folders
-                if(substr($file, 0, 1) !== '.'){
-                    if(is_dir($source . DS . $file)){
-                        if(!is_dir($dest . DS . $file)){
-                            mkdir($dest . DS . $file);
+            if ($dir_handle) {
+                while ($file = readdir($dir_handle)) {
+                    if ($file != '.' && $file != '..') {
+                        if (is_dir($source . DS . $file)) {
+                            if (!is_dir($dest . DS . $file)) {
+                                mkdir($dest . DS . $file);
+                            }
+                            $this->cpy($source . DS . $file, $dest . DS . $file);
+                        } else {
+                            copy($source . DS . $file, $dest . DS . $file);
                         }
-                        $this->cpy($source . DS . $file, $dest . DS . $file);
-                    } else {
-                        copy($source . DS . $file, $dest . DS . $file);
                     }
                 }
+                closedir($dir_handle);
             }
-            closedir($dir_handle);
         } else {
             copy($source, $dest);
         }
     }
 
     /**
-     * Recursivly removed a destination dir.
-     * @param string $dir The folder to remove.
+     * Removes copied assets
+     *
+     * @param string $dir The directory to recursivly remove
      * @return void
      */
-    private function rrmdir($dir)
+    private function rrmdir(string $dir): void
     {
         if (is_dir($dir)) {
             $objects = scandir($dir);
-            foreach ($objects as $object) {
-                if ($object != "." && $object != "..") {
-                    if (is_dir($dir. DS .$object) && !is_link($dir . DS . $object))
-                        $this->rrmdir($dir. DS .$object);
-                    else
-                        unlink($dir. DS .$object);
+            if ($objects) {
+                foreach ($objects as $object) {
+                    if ($object != '.' && $object != '..') {
+                        if (is_dir($dir . DS . $object) && !is_link($dir . DS . $object)) {
+                            $this->rrmdir($dir . DS . $object);
+                        } else {
+                            unlink($dir . DS . $object);
+                        }
+                    }
                 }
             }
             rmdir($dir);
