@@ -10,12 +10,11 @@ footer img.logo-bottom {
  * Product listing page
  */
 
-.products .product {
-    /* Here so the ribbon will work */
-    position: relative;
-}
 .products .product .product-title {
     font-size: 130%;
+}
+.products .product .product-title.inactive {
+    color: #f70505;
 }
 
 .products .product .product-image img.product-qrimage {
