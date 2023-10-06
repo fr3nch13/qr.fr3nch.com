@@ -63,7 +63,6 @@ if (!$this->getRequest()->is('ajax')) {
                         <?php foreach ($qrCode->qr_images as $qrImage) : ?>
                         <div class="item text-center">
                             <img
-                                class="img-fluid"
                                 src="<?= $this->Url->build([
                                     'controller' => 'QrImages',
                                     'action' => 'show', $qrImage->id,
@@ -75,7 +74,6 @@ if (!$this->getRequest()->is('ajax')) {
                         <div class="item text-center">
                             <?= $this->Template->objectComment('QrCode/show') ?>
                             <img
-                                class="img-fluid"
                                 src="<?= $this->Url->build(['action' => 'show', $qrCode->id]) ?>"
                                 alt="<?= __('The QR Code'); ?>">
                         </div>
@@ -88,7 +86,6 @@ if (!$this->getRequest()->is('ajax')) {
                         <?php foreach ($qrCode->qr_images as $qrImage) : ?>
                         <div>
                             <img
-                                class="img-fluid"
                                 src="<?= $this->Url->build([
                                     'controller' => 'QrImages',
                                     'action' => 'show', $qrImage->id,
@@ -99,7 +96,6 @@ if (!$this->getRequest()->is('ajax')) {
                         <div>
                             <?= $this->Template->objectComment('QrCode/show') ?>
                             <img
-                                class="img-fluid"
                                 src="<?= $this->Url->build(['action' => 'show', $qrCode->id]) ?>"
                                 alt="<?= __('The QR Code'); ?>">
                         </div>
