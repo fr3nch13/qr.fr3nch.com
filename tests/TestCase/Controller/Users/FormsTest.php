@@ -39,17 +39,13 @@ class FormsTest extends BaseControllerTest
      */
     public function testLogin(): void
     {
-        //$this->loginUserAdmin();
-        // not logged in, that is tested in the PolicyTest
-
         // test failed
         $this->post('https://localhost/users/login', [
         ]);
         $this->assertResponseOk();
+        $this->helperTestTemplate('Users/login');
+        $this->helperTestFormTag('/users/login');
         $this->helperTestAlert('Invalid email or password', 'danger');
-        $this->assertResponseContains('<div class="users form">');
-        $this->assertResponseContains('<form method="post" accept-charset="utf-8" role="form" action="/users/login">');
-        $this->assertResponseContains('<legend>Please enter your email and password</legend>');
 
         // login fail
         $this->post('https://localhost/users/login', [
@@ -57,10 +53,9 @@ class FormsTest extends BaseControllerTest
             'password' => 'notpassword',
         ]);
         $this->assertResponseOk();
+        $this->helperTestTemplate('Users/login');
+        $this->helperTestFormTag('/users/login');
         $this->helperTestAlert('Invalid email or password', 'danger');
-        $this->assertResponseContains('<div class="users form">');
-        $this->assertResponseContains('<form method="post" accept-charset="utf-8" role="form" action="/users/login">');
-        $this->assertResponseContains('<legend>Please enter your email and password</legend>');
 
         // test success
         $this->post('https://localhost/users/login', [
@@ -95,10 +90,9 @@ class FormsTest extends BaseControllerTest
         $this->post('https://localhost/users/add', [
         ]);
         $this->assertResponseOk();
+        $this->helperTestTemplate('Users/add');
+        $this->helperTestFormTag('/users/add');
         $this->helperTestAlert('The user could not be saved. Please, try again.', 'danger');
-        $this->assertResponseContains('<div class="users form content">');
-        $this->assertResponseContains('<form method="post" accept-charset="utf-8" role="form" action="/users/add">');
-        $this->assertResponseContains('<legend>Add User</legend>');
         // test to make sure the fields that are required are actually tagged as so.
         $this->helperTestFormFieldError('This field is required', 'name-error');
         $this->helperTestFormFieldError('This field is required', 'email-error');
@@ -111,10 +105,9 @@ class FormsTest extends BaseControllerTest
             // missing password
         ]);
         $this->assertResponseOk();
+        $this->helperTestTemplate('Users/add');
+        $this->helperTestFormTag('/users/add');
         $this->helperTestAlert('The user could not be saved. Please, try again.', 'danger');
-        $this->assertResponseContains('<div class="users form content">');
-        $this->assertResponseContains('<form method="post" accept-charset="utf-8" role="form" action="/users/add">');
-        $this->assertResponseContains('<legend>Add User</legend>');
         // test to make sure the fields that are required are actually tagged as so.
         $this->helperTestFormFieldError('The provided value must be an e-mail address', 'email-error');
         $this->helperTestFormFieldError('This field is required', 'password-error');
@@ -126,10 +119,9 @@ class FormsTest extends BaseControllerTest
             'password' => 'password',
         ]);
         $this->assertResponseOk();
+        $this->helperTestTemplate('Users/add');
+        $this->helperTestFormTag('/users/add');
         $this->helperTestAlert('The user could not be saved. Please, try again.', 'danger');
-        $this->assertResponseContains('<div class="users form content">');
-        $this->assertResponseContains('<form method="post" accept-charset="utf-8" role="form" action="/users/add">');
-        $this->assertResponseContains('<legend>Add User</legend>');
         // test to make sure the fields that are required are actually tagged as so.
         $this->helperTestFormFieldError('This Email already exists.', 'email-error');
 
@@ -139,7 +131,7 @@ class FormsTest extends BaseControllerTest
             'email' => 'newuser@example.com', // invalid email
             'password' => 'password',
         ]);
-        $this->assertRedirectEquals('https://localhost/users');
+        $this->assertRedirectEquals('https://localhost/users/view/4');
         $this->assertFlashMessage('The user has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -160,10 +152,9 @@ class FormsTest extends BaseControllerTest
             'email' => 'regular@example.com', // existing record, should be unique
         ]);
         $this->assertResponseOk();
+        $this->helperTestTemplate('Users/edit');
+        $this->helperTestFormTag('/users/edit/3', 'patch');
         $this->helperTestAlert('The user could not be saved. Please, try again.', 'danger');
-        $this->assertResponseContains('<div class="users form content">');
-        $this->assertResponseContains('<form method="patch" accept-charset="utf-8" role="form" action="/users/edit/3">');
-        $this->assertResponseContains('<legend>Edit User</legend>');
         // test to make sure the fields that are required are actually tagged as so.
         $this->helperTestFormFieldError('This Email already exists.', 'email-error');
         // test success
@@ -171,7 +162,7 @@ class FormsTest extends BaseControllerTest
             'name' => 'New User',
             'description' => 'The Description',
         ]);
-        $this->assertRedirectEquals('https://localhost/users');
+        $this->assertRedirectEquals('https://localhost/users/view/3');
         $this->assertFlashMessage('The user has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }

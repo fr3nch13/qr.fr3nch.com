@@ -44,17 +44,15 @@ class FormsTest extends BaseControllerTest
         $this->post('https://localhost/qr-codes/add', [
         ]);
         $this->assertResponseOk();
+        $this->helperTestTemplate('QrCodes/add');
+        $this->helperTestFormTag('/qr-codes/add');
         $this->helperTestAlert('The qr code could not be saved. Please, try again.', 'danger');
-        $this->assertResponseContains('<div class="qrCodes form content">');
-        $this->assertResponseContains('<form method="post" accept-charset="utf-8" role="form" action="/qr-codes/add">');
-        $this->assertResponseContains('<legend>Add QR Code</legend>');
         // test to make sure the fields that are required are actually tagged as so.
-        $this->assertResponseContains('id="qrkey-error"');
-        $this->assertResponseContains('id="name-error"');
-        $this->assertResponseContains('id="description-error"');
-        $this->assertResponseContains('id="url-error"');
-        $this->assertResponseContains('id="source-id-error"');
-        // user is added in the controller, so no form element for it.
+        $this->helperTestFormFieldError('This field is required', 'qrkey-error');
+        $this->helperTestFormFieldError('This field is required', 'name-error');
+        $this->helperTestFormFieldError('This field is required', 'description-error');
+        $this->helperTestFormFieldError('This field is required', 'url-error');
+        $this->helperTestFormFieldError('This field is required', 'source-id-error');
 
         // test success
         $this->post('https://localhost/qr-codes/add', [
@@ -65,7 +63,7 @@ class FormsTest extends BaseControllerTest
             'source_id' => 1,
             'user_id' => 1,
         ]);
-        $this->assertRedirectEquals('https://localhost/qr-codes/view/4');
+        $this->assertRedirectEquals('https://localhost/qr-codes/view/5');
         $this->assertFlashMessage('The qr code has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
@@ -85,31 +83,32 @@ class FormsTest extends BaseControllerTest
             'qrkey' => 'blahblah', // changed key
         ]);
         $this->assertResponseOk();
+        $this->helperTestTemplate('QrCodes/edit');
+        $this->helperTestFormTag('/qr-codes/edit/1', 'patch');
         $this->helperTestAlert('The qr code could not be saved. Please, try again.', 'danger');
-        $this->assertResponseContains('<div class="qrCodes form content">');
-        $this->assertResponseContains('<form method="patch" accept-charset="utf-8" role="form" action="/qr-codes/edit/1">');
-        $this->assertResponseContains('<legend>Edit QR Code</legend>');
+        // test to make sure the fields that are required are actually tagged as so.
         // don't show the frontend an error as this shouldn't happen.
         // if it does, it's someone trying to be nefarious, don't give them more info.
+        // $this->helperTestFormFieldError('Message here.', 'qrkey-error');
 
         // a test fail existing key
         $this->patch('https://localhost/qr-codes/edit/1', [
             'qrkey' => 'witchinghour', // an existing record
         ]);
         $this->assertResponseOk();
+        $this->helperTestTemplate('QrCodes/edit');
+        $this->helperTestFormTag('/qr-codes/edit/1', 'patch');
         $this->helperTestAlert('The qr code could not be saved. Please, try again.', 'danger');
-        $this->assertResponseContains('<div class="qrCodes form content">');
-        $this->assertResponseContains('<form method="patch" accept-charset="utf-8" role="form" action="/qr-codes/edit/1">');
-        $this->assertResponseContains('<legend>Edit QR Code</legend>');
         // don't show the frontend an error as this shouldn't happen.
         // if it does, it's someone trying to be nefarious, don't give them more info.
+        // $this->helperTestFormFieldError('Message here.', 'qrkey-error');
 
         // test success
         $this->patch('https://localhost/qr-codes/edit/1', [
             'name' => 'New Category',
             'description' => 'The Description',
         ]);
-        $this->assertRedirectEquals('https://localhost/qr-codes/view/4');
+        $this->assertRedirectEquals('https://localhost/qr-codes/view/1');
         $this->assertFlashMessage('The qr code has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }

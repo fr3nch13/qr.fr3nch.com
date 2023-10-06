@@ -44,20 +44,19 @@ class FormsTest extends BaseControllerTest
         $this->post('https://localhost/categories/add', [
         ]);
         $this->assertResponseOk();
+        $this->helperTestTemplate('Categories/add');
+        $this->helperTestFormTag('/categories/add');
         $this->helperTestAlert('The category could not be saved. Please, try again.', 'danger');
-        $this->assertResponseContains('<div class="categories form content">');
-        $this->assertResponseContains('<form method="post" accept-charset="utf-8" role="form" action="/categories/add">');
-        $this->assertResponseContains('<legend>Add Category</legend>');
         // test to make sure the fields that are required are actually tagged as so.
-        $this->assertResponseContains('id="name-error"');
-        $this->assertResponseContains('id="description-error"');
+        $this->helperTestFormFieldError('This field is required', 'name-error');
+        $this->helperTestFormFieldError('This field is required', 'description-error');
 
         // test success
         $this->post('https://localhost/categories/add', [
             'name' => 'New Category',
             'description' => 'The Description',
         ]);
-        $this->assertRedirectEquals('categories');
+        $this->assertRedirectEquals('https://localhost/categories/view/4');
         $this->assertFlashMessage('The category has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -76,14 +75,12 @@ class FormsTest extends BaseControllerTest
             'parent_id' => 4, // this doesn't exist
         ]);
         $this->assertResponseOk();
+        $this->helperTestTemplate('Categories/edit');
+        $this->helperTestFormTag('/categories/edit/1', 'patch');
         $this->helperTestAlert('The category could not be saved. Please, try again.', 'danger');
-        $this->assertResponseContains('<div class="categories form content">');
-        $this->assertResponseContains('<form method="patch" accept-charset="utf-8" role="form" action="/categories/edit/1">');
-        $this->assertResponseContains('<legend>Edit Category</legend>');
         // test to make sure the fields that are required are actually tagged as so.
-        $this->assertResponseContains('id="name-error"');
-        // this should be here, but if validation fails for, the buildRules doesn't even seem to get called.
-        $this->assertResponseContains('id="parent-id-error"');
+        $this->helperTestFormFieldError('This Name already exists.', 'name-error');
+        $this->helperTestFormFieldError('This Parent Category doesn&#039;t exist.', 'parent-id-error');
 
         // test success
         $this->patch('https://localhost/categories/edit/1', [
@@ -91,7 +88,7 @@ class FormsTest extends BaseControllerTest
             'description' => 'The Description',
             'parent_id' => 3, // this doesn't exist
         ]);
-        $this->assertRedirectEquals('categories');
+        $this->assertRedirectEquals('https://localhost/categories/view/1');
         $this->assertFlashMessage('The category has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }

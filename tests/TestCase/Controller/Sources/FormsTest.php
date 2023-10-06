@@ -44,13 +44,12 @@ class FormsTest extends BaseControllerTest
         $this->post('https://localhost/sources/add', [
         ]);
         $this->assertResponseOk();
+        $this->helperTestTemplate('Sources/add');
+        $this->helperTestFormTag('/sources/add');
         $this->helperTestAlert('The source could not be saved. Please, try again.', 'danger');
-        $this->assertResponseContains('<div class="sources form content">');
-        $this->assertResponseContains('<form method="post" accept-charset="utf-8" role="form" action="/sources/add">');
-        $this->assertResponseContains('<legend>Add Source</legend>');
         // test to make sure the fields that are required are actually tagged as so.
-        $this->assertResponseContains('id="name-error"');
-        $this->assertResponseContains('id="description-error"');
+        $this->helperTestFormFieldError('This field is required', 'name-error');
+        $this->helperTestFormFieldError('This field is required', 'description-error');
 
         // existing fail
         $this->post('https://localhost/sources/add', [
@@ -58,10 +57,9 @@ class FormsTest extends BaseControllerTest
             'description' => 'description',
         ]);
         $this->assertResponseOk();
+        $this->helperTestTemplate('Sources/add');
+        $this->helperTestFormTag('/sources/add');
         $this->helperTestAlert('The source could not be saved. Please, try again.', 'danger');
-        $this->assertResponseContains('<div class="sources form content">');
-        $this->assertResponseContains('<form method="post" accept-charset="utf-8" role="form" action="/sources/add">');
-        $this->assertResponseContains('<legend>Add Source</legend>');
         // test to make sure the fields that are required are actually tagged as so.
         $this->helperTestFormFieldError('This Name already exists.', 'name-error');
 
@@ -70,7 +68,7 @@ class FormsTest extends BaseControllerTest
             'name' => 'new name',
             'description' => 'description',
         ]);
-        $this->assertRedirectEquals('sources');
+        $this->assertRedirectEquals('https://localhost/sources/view/4');
         $this->assertFlashMessage('The source has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -88,19 +86,18 @@ class FormsTest extends BaseControllerTest
             'name' => 'Etsy', // an existing record
         ]);
         $this->assertResponseOk();
+        $this->helperTestTemplate('Sources/edit');
+        $this->helperTestFormTag('/sources/edit/1', 'patch');
         $this->helperTestAlert('The source could not be saved. Please, try again.', 'danger');
-        $this->assertResponseContains('<div class="sources form content">');
-        $this->assertResponseContains('<form method="patch" accept-charset="utf-8" role="form" action="/sources/edit/1">');
-        $this->assertResponseContains('<legend>Edit Source</legend>');
         // test to make sure the fields that are required are actually tagged as so.
-        $this->assertResponseContains('id="name-error"');
+        $this->helperTestFormFieldError('This Name already exists.', 'name-error');
 
         // test success
         $this->patch('https://localhost/sources/edit/1', [
             'name' => 'New Source',
             'description' => 'The Description',
         ]);
-        $this->assertRedirectEquals('sources');
+        $this->assertRedirectEquals('https://localhost/sources/view/1');
         $this->assertFlashMessage('The source has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
