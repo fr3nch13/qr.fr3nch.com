@@ -101,7 +101,7 @@ if (!$this->getRequest()->is('ajax')) {
                         <?php endif; ?>
 
                         <div class="product-title"><?= $this->Html->link(
-                                h($qrCode->name),
+                                $qrCode->name,
                                 ['action' => 'view', $qrCode->id],
                                 ['class' => 'product-title']
                         ); ?></div>
