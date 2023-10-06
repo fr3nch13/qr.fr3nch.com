@@ -97,7 +97,7 @@ if (!$this->getRequest()->is('ajax')) {
                 <div class="col-md-6 col-lg-4">
                     <div class="product<?= $qrCode->is_active ? ' active' : ' inactive' ?>">
                         <?php if (!$qrCode->is_active) : ?>
-                        <div class="ribbon red"><span><?= __('Inactive') ?></span>
+                        <div class="ribbon red"><span><?= __('Inactive') ?></span></div>
                         <?php endif; ?>
 
                         <div class="product-title"><?= $this->Html->link(
