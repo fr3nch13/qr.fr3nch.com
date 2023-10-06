@@ -60,17 +60,17 @@ if (!$this->getRequest()->is('ajax')) {
                             "loop": true,
                             "items": 1
                         }'>
+                        <?php foreach ($qrCode->qr_images as $qrImage) : ?>
                         <div class="item text-center">
-                            <img class="img-fluid" src="./assets/images/products/product-9.jpg" alt="Image">
+                            <img
+                                class="img-fluid"
+                                src=".<?= $this->Url->build([
+                                    'controller' => 'QrImages',
+                                    'action' => 'show', $qrImage->id,
+                                    ]) ?>"
+                                alt="<?= $qrImage->name ?>">
                         </div>
-
-                        <div class="item text-center">
-                            <img class="img-fluid" src="./assets/images/products/product-9-2.jpg" alt="Image">
-                        </div>
-
-                        <div class="item text-center">
-                            <img class="img-fluid" src="./assets/images/products/product-9-3.jpg" alt="Image">
-                        </div>
+                        <?php endforeach; ?>
 
                         <div class="item text-center">
                             <?= $this->Template->objectComment('QrCode/show') ?>
