@@ -106,18 +106,17 @@ class QrImagesFixture extends CoreFixture
      */
     public function insert(ConnectionInterface $connection): bool
     {
-        if (parent::insert($connection))
-        {
+        if (parent::insert($connection)) {
             // TODO: After they're been inserted, copy over their images.
             // labels: seeds, assets
             $source = TESTS . 'assets' . DS . 'qr_images';
             $dest = Configure::read('App.paths.qr_images');
             if (is_dir($dest)) {
                 $this->rrmdir($dest);
-                usleep( 500 * 1000 );  // give it a half second to catch up.
+                usleep(500 * 1000); // give it a half second to catch up.
             }
             mkdir($dest);
-            usleep( 500 * 1000 );  // give it a half second to catch up.
+            usleep(500 * 1000); // give it a half second to catch up.
             $this->cpy($source, $dest);
 
             return true;
