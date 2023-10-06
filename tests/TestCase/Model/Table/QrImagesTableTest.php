@@ -183,22 +183,9 @@ class QrImagesTableTest extends TestCase
     {
         Configure::write('debug', true);
 
-        // backup the existing stuff.
-        $tmpdir = TMP . 'qr_images';
-        $moved = false;
-        if (is_dir($tmpdir)) {
-            // save the existing content
-            $moved = TMP . 'qr_images_bak';
-            sleep(1); // let things settle for a secound.
-            rename($tmpdir, $moved);
-        }
-
-        // copy the assets in place
-        if (!is_dir($tmpdir)) {
-            mkdir($tmpdir);
-        }
-        $this->cpy(TESTS . 'assets' . DS . 'qr_images', $tmpdir);
-
+        // for tests, we use this dir so we don't mess with the actual dir
+        // we also copy over the assets in QrImagesFixture::insert()
+        $tmpdir = TMP . 'qr_images_test';
         // test the paths here.
         // this one has an image file.
         $entity = $this->QrImages->get(1);
@@ -211,67 +198,5 @@ class QrImagesTableTest extends TestCase
         $entityPath = $tmpdir . DS . $entity->qr_code_id . DS . $entity->id . '.' . $entity->ext;
         $this->assertFalse(is_file($entityPath));
         $this->assertNull($entity->path);
-
-        // put the existing stuff back.
-        if ($moved) {
-            $this->rrmdir($tmpdir);
-            rename($moved, $tmpdir);
-        }
-    }
-
-    /**
-     * Copies assets into place
-     *
-     * @param string $source The directory to copy
-     * @param string $dest The directory to copy the source to
-     * @return void
-     */
-    private function cpy(string $source, string $dest): void
-    {
-        if (is_dir($source)) {
-            $dir_handle = opendir($source);
-            if ($dir_handle) {
-                while ($file = readdir($dir_handle)) {
-                    if ($file != '.' && $file != '..') {
-                        if (is_dir($source . DS . $file)) {
-                            if (!is_dir($dest . DS . $file)) {
-                                mkdir($dest . DS . $file);
-                            }
-                            $this->cpy($source . DS . $file, $dest . DS . $file);
-                        } else {
-                            copy($source . DS . $file, $dest . DS . $file);
-                        }
-                    }
-                }
-                closedir($dir_handle);
-            }
-        } else {
-            copy($source, $dest);
-        }
-    }
-
-    /**
-     * Removes copied assets
-     *
-     * @param string $dir The directory to recursivly remove
-     * @return void
-     */
-    private function rrmdir(string $dir): void
-    {
-        if (is_dir($dir)) {
-            $objects = scandir($dir);
-            if ($objects) {
-                foreach ($objects as $object) {
-                    if ($object != '.' && $object != '..') {
-                        if (is_dir($dir . DS . $object) && !is_link($dir . DS . $object)) {
-                            $this->rrmdir($dir . DS . $object);
-                        } else {
-                            unlink($dir . DS . $object);
-                        }
-                    }
-                }
-            }
-            rmdir($dir);
-        }
     }
 }
