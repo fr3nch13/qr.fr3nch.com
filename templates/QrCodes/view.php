@@ -64,7 +64,7 @@ if (!$this->getRequest()->is('ajax')) {
                         <div class="item text-center">
                             <img
                                 class="img-fluid"
-                                src=".<?= $this->Url->build([
+                                src="<?= $this->Url->build([
                                     'controller' => 'QrImages',
                                     'action' => 'show', $qrImage->id,
                                     ]) ?>"
@@ -89,7 +89,7 @@ if (!$this->getRequest()->is('ajax')) {
                         <div>
                             <img
                                 class="img-fluid"
-                                src=".<?= $this->Url->build([
+                                src="<?= $this->Url->build([
                                     'controller' => 'QrImages',
                                     'action' => 'show', $qrImage->id,
                                     ]) ?>"
