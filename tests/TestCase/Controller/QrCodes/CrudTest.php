@@ -41,8 +41,7 @@ class CrudTest extends BaseControllerTest
         // get
         $this->get('https://localhost/qr-codes');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="qrCodes index content">');
-        $this->assertResponseContains('<h3>QR Codes</h3>');
+        $this->helperTestTemplate('QrCodes/index');
 
         // post
         $this->post('https://localhost/qr-codes');
@@ -76,8 +75,7 @@ class CrudTest extends BaseControllerTest
         // test get
         $this->get('https://localhost/qr-codes/view/1');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="qrCodes view content">');
-        $this->assertResponseContains('<h3>Sow &amp; Scribe</h3>');
+        $this->helperTestTemplate('QrCodes/view');
 
         // post
         $this->post('https://localhost/qr-codes/view/1');
@@ -111,9 +109,7 @@ class CrudTest extends BaseControllerTest
         // test get
         $this->get('https://localhost/qr-codes/add');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="qrCodes form content">');
-        $this->assertResponseContains('<form method="post" accept-charset="utf-8" role="form" action="/qr-codes/add">');
-        $this->assertResponseContains('<legend>Add QR Code</legend>');
+        $this->helperTestTemplate('QrCodes/add');
 
         // post
         $this->post('https://localhost/qr-codes/add', [
@@ -124,7 +120,7 @@ class CrudTest extends BaseControllerTest
             'source_id' => 1,
             'user_id' => 1,
         ]);
-        $this->assertRedirectEquals('https://localhost/qr-codes/view/4');
+        $this->assertRedirectEquals('https://localhost/qr-codes/view/5');
         $this->assertFlashMessage('The qr code has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
@@ -169,9 +165,7 @@ class CrudTest extends BaseControllerTest
         // test get
         $this->get('https://localhost/qr-codes/edit/1');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="qrCodes form content">');
-        $this->assertResponseContains('<form method="patch" accept-charset="utf-8" role="form" action="/qr-codes/edit/1">');
-        $this->assertResponseContains('<legend>Edit QR Code</legend>');
+        $this->helperTestTemplate('QrCodes/edit');
 
         // post
         $this->post('https://localhost/qr-codes/edit/1', [
@@ -231,7 +225,7 @@ class CrudTest extends BaseControllerTest
 
         // delete
         $this->delete('https://localhost/qr-codes/delete/1');
-        $this->assertRedirectEquals('https://localhost/qr-codes');
+        $this->assertRedirectEquals('https://localhost/');
         $this->assertFlashMessage('The qr code `Sow & Scribe` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
     }

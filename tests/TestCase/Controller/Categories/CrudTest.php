@@ -41,8 +41,7 @@ class CrudTest extends BaseControllerTest
         // get
         $this->get('https://localhost/categories');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="categories index content">');
-        $this->assertResponseContains('<h3>Categories</h3>');
+        $this->helperTestTemplate('Categories/index');
 
         // post
         $this->post('https://localhost/categories');
@@ -76,8 +75,7 @@ class CrudTest extends BaseControllerTest
         // test get
         $this->get('https://localhost/categories/view/1');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="categories view content">');
-        $this->assertResponseContains('<h3>Books</h3>');
+        $this->helperTestTemplate('Categories/view');
 
         // post
         $this->post('https://localhost/categories/view/1');
@@ -116,16 +114,14 @@ class CrudTest extends BaseControllerTest
         // test get
         $this->get('https://localhost/categories/add');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="categories form content">');
-        $this->assertResponseContains('<form method="post" accept-charset="utf-8" role="form" action="/categories/add">');
-        $this->assertResponseContains('<legend>Add Category</legend>');
+        $this->helperTestTemplate('Categories/add');
 
         // post
         $this->post('https://localhost/categories/add', [
             'name' => 'New Category',
             'description' => 'The Description',
         ]);
-        $this->assertRedirectEquals('categories');
+        $this->assertRedirectEquals('https://localhost/categories/view/4');
         $this->assertFlashMessage('The category has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
@@ -162,9 +158,7 @@ class CrudTest extends BaseControllerTest
         // test get
         $this->get('https://localhost/categories/edit/1');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="categories form content">');
-        $this->assertResponseContains('<form method="patch" accept-charset="utf-8" role="form" action="/categories/edit/1">');
-        $this->assertResponseContains('<legend>Edit Category</legend>');
+        $this->helperTestTemplate('Categories/edit');
 
         // post
         $this->post('https://localhost/categories/edit/1', [
@@ -179,7 +173,7 @@ class CrudTest extends BaseControllerTest
             'name' => 'New Category',
             'description' => 'The Description',
         ]);
-        $this->assertRedirectEquals('categories');
+        $this->assertRedirectEquals('https://localhost/categories/view/1');
         $this->assertFlashMessage('The category has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
@@ -227,7 +221,7 @@ class CrudTest extends BaseControllerTest
 
         // delete
         $this->delete('https://localhost/categories/delete/3');
-        $this->assertRedirectEquals('categories');
+        $this->assertRedirectEquals('https://localhost/categories');
         $this->assertFlashMessage('The category `Charms` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
     }

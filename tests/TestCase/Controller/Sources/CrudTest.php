@@ -47,8 +47,7 @@ class CrudTest extends BaseControllerTest
         // get
         $this->get('https://localhost/sources');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="sources index content">');
-        $this->assertResponseContains('<h3>Sources</h3>');
+        $this->helperTestTemplate('Sources/index');
 
         // post
         $this->post('https://localhost/sources');
@@ -88,8 +87,7 @@ class CrudTest extends BaseControllerTest
         // test get
         $this->get('https://localhost/sources/view/1');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="sources view content">');
-        $this->assertResponseContains('<h3>Amazon</h3>');
+        $this->helperTestTemplate('Sources/view');
 
         // post
         $this->post('https://localhost/sources/view/1');
@@ -129,16 +127,14 @@ class CrudTest extends BaseControllerTest
         // test get
         $this->get('https://localhost/sources/add');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="sources form content">');
-        $this->assertResponseContains('<form method="post" accept-charset="utf-8" role="form" action="/sources/add">');
-        $this->assertResponseContains('<legend>Add Source</legend>');
+        $this->helperTestTemplate('Sources/add');
 
         // post
         $this->post('https://localhost/sources/add', [
             'name' => 'new name',
             'description' => 'description',
         ]);
-        $this->assertRedirectEquals('sources');
+        $this->assertRedirectEquals('https://localhost/sources/view/4');
         $this->assertFlashMessage('The source has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
@@ -183,9 +179,7 @@ class CrudTest extends BaseControllerTest
         // test get
         $this->get('https://localhost/sources/edit/3');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="sources form content">');
-        $this->assertResponseContains('<form method="patch" accept-charset="utf-8" role="form" action="/sources/edit/3">');
-        $this->assertResponseContains('<legend>Edit Source</legend>');
+        $this->helperTestTemplate('Sources/edit');
 
         // post
         $this->post('https://localhost/sources/edit/3', [
@@ -200,7 +194,7 @@ class CrudTest extends BaseControllerTest
             'name' => 'New Source',
             'description' => 'The Description',
         ]);
-        $this->assertRedirectEquals('sources');
+        $this->assertRedirectEquals('https://localhost/sources/view/3');
         $this->assertFlashMessage('The source has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
@@ -254,7 +248,7 @@ class CrudTest extends BaseControllerTest
 
         // delete
         $this->delete('https://localhost/sources/delete/1');
-        $this->assertRedirectEquals('sources');
+        $this->assertRedirectEquals('https://localhost/sources');
         $this->assertFlashMessage('The source `Amazon` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
     }

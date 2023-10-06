@@ -56,7 +56,6 @@ class QrCodesController extends AppController
         }
 
         $qrCode = $this->QrCodes->find('key', key: $key)->first();
-        $this->Authorization->authorize($qrCode);
 
         // if we can't find it, redirect to index with an error message.
         if (!$qrCode) {
@@ -68,6 +67,7 @@ class QrCodesController extends AppController
                 'action' => 'index',
             ]);
         }
+        $this->Authorization->authorize($qrCode);
 
         return $this->redirect($qrCode->url);
     }

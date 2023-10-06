@@ -47,8 +47,7 @@ class CrudTest extends BaseControllerTest
         // get
         $this->get('https://localhost/tags');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="tags index content">');
-        $this->assertResponseContains('<h3>Tags</h3>');
+        $this->helperTestTemplate('Tags/index');
 
         // post
         $this->post('https://localhost/tags');
@@ -88,8 +87,7 @@ class CrudTest extends BaseControllerTest
         // test get
         $this->get('https://localhost/tags/view/1');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="tags view content">');
-        $this->assertResponseContains('<h3>Notebook</h3>');
+        $this->helperTestTemplate('Tags/view');
 
         // post
         $this->post('https://localhost/tags/view/1');
@@ -129,15 +127,13 @@ class CrudTest extends BaseControllerTest
         // test get
         $this->get('https://localhost/tags/add');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="tags form content">');
-        $this->assertResponseContains('<form method="post" accept-charset="utf-8" role="form" action="/tags/add">');
-        $this->assertResponseContains('<legend>Add Tag</legend>');
+        $this->helperTestTemplate('Tags/add');
 
         // post
         $this->post('https://localhost/tags/add', [
             'name' => 'New Tag',
         ]);
-        $this->assertRedirectEquals('https://localhost/tags');
+        $this->assertRedirectEquals('https://localhost/tags/view/6');
         $this->assertFlashMessage('The tag has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
@@ -178,9 +174,7 @@ class CrudTest extends BaseControllerTest
         // test get
         $this->get('https://localhost/tags/edit/1');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="tags form content">');
-        $this->assertResponseContains('<form method="patch" accept-charset="utf-8" role="form" action="/tags/edit/1">');
-        $this->assertResponseContains('<legend>Edit Tag</legend>');
+        $this->helperTestTemplate('Tags/edit');
 
         // post
         $this->post('https://localhost/tags/edit/1', [
@@ -193,7 +187,7 @@ class CrudTest extends BaseControllerTest
         $this->patch('https://localhost/tags/edit/1', [
             'name' => 'Updated Tag',
         ]);
-        $this->assertRedirectEquals('https://localhost/tags');
+        $this->assertRedirectEquals('https://localhost/tags/view/1');
         $this->assertFlashMessage('The tag has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 

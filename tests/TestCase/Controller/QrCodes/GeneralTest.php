@@ -38,7 +38,7 @@ class GeneralTest extends BaseControllerTest
     public function testForward(): void
     {
         $this->get('https://localhost/?k=sownscribe');
-        $this->assertRedirectEquals('f/sownscribe');
+        $this->assertRedirectEquals('https://localhost/f/sownscribe');
 
         $this->get('https://localhost/f/sownscribe');
         $this->assertRedirectEquals('https://amazon.com/path/to/details/page');
@@ -47,7 +47,7 @@ class GeneralTest extends BaseControllerTest
         $this->assertRedirectEquals('https://amazon.com/path/to/details/page');
 
         $this->get('https://localhost/?k=dontexist');
-        $this->assertRedirectEquals('f/dontexist');
+        $this->assertRedirectEquals('https://localhost/f/dontexist');
 
         $this->get('https://localhost/f/dontexist');
         $this->assertRedirectEquals('https://localhost/');
@@ -55,7 +55,8 @@ class GeneralTest extends BaseControllerTest
         $this->assertFlashElement('flash/error');
 
         $this->get('https://localhost/f/');
-        $this->assertRedirectEquals('https://localhost/');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unknown ID');
     }
 
     /**

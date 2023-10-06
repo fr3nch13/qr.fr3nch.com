@@ -31,71 +31,35 @@ class CrudTest extends BaseControllerTest
     }
 
     /**
-     * Test index method
+     * Test qr-code method
      *
      * @return void
      * @uses \App\Controller\QrImagesController::index()
      */
-    public function testIndex(): void
+    public function testQrCode(): void
     {
         // get
-        $this->get('https://localhost/qr-images');
+        $this->get('https://localhost/qr-images/qr-code/1');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="qrImages index content">');
-        $this->assertResponseContains('<h3>QR Codes</h3>');
+        $this->helperTestTemplate('QrImages/qr_code');
 
         // post
-        $this->post('https://localhost/qr-images');
+        $this->post('https://localhost/qr-images/qr-code/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // patch
-        $this->patch('https://localhost/qr-images');
+        $this->patch('https://localhost/qr-images/qr-code/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('https://localhost/qr-images');
+        $this->put('https://localhost/qr-images/qr-code/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('https://localhost/qr-images');
-        $this->assertResponseCode(405);
-        $this->assertResponseContains('Method Not Allowed');
-    }
-
-    /**
-     * Test view method
-     *
-     * @return void
-     * @uses \App\Controller\QrImagesController::view()
-     */
-    public function testView(): void
-    {
-        // test get
-        $this->get('https://localhost/qr-images/view/1');
-        $this->assertResponseOk();
-        $this->assertResponseContains('<div class="qrImages view content">');
-        $this->assertResponseContains('<h3>Sow &amp; Scribe</h3>');
-
-        // post
-        $this->post('https://localhost/qr-images/view/1');
-        $this->assertResponseCode(405);
-        $this->assertResponseContains('Method Not Allowed');
-
-        // patch
-        $this->patch('https://localhost/qr-images/view/1');
-        $this->assertResponseCode(405);
-        $this->assertResponseContains('Method Not Allowed');
-
-        // put
-        $this->put('https://localhost/qr-images/view/1');
-        $this->assertResponseCode(405);
-        $this->assertResponseContains('Method Not Allowed');
-
-        // delete
-        $this->delete('https://localhost/qr-images/view/1');
+        $this->delete('https://localhost/qr-images/qr-code/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
     }
@@ -111,13 +75,12 @@ class CrudTest extends BaseControllerTest
         // test get
         $this->get('https://localhost/qr-images/add/1');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="qrImages form content">');
-        $this->assertResponseContains('<form method="post" accept-charset="utf-8" role="form" action="/qr-images/add">');
-        $this->assertResponseContains('<legend>Add QR Code</legend>');
+        $this->helperTestTemplate('QrImages/add');
 
         // post
         $this->post('https://localhost/qr-images/add/1', [
             'name' => 'New QrImage',
+            'ext' => 'jpg',
             'qr_code_id' => 1,
         ]);
         $this->assertRedirectEquals('https://localhost/qr-images/qr-code/1');
@@ -157,9 +120,7 @@ class CrudTest extends BaseControllerTest
         // test get
         $this->get('https://localhost/qr-images/edit/2');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="qrImages form content">');
-        $this->assertResponseContains('<form method="patch" accept-charset="utf-8" role="form" action="/qr-images/edit/1">');
-        $this->assertResponseContains('<legend>Edit QR Code</legend>');
+        $this->helperTestTemplate('QrImages/edit');
 
         // post
         $this->post('https://localhost/qr-images/edit/2', [

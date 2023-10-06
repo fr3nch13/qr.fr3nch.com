@@ -12,7 +12,7 @@ use App\Model\Entity\User;
 class QrCodePolicy
 {
     /**
-     * Check if $user can view qr codes
+     * Check if $user can view a qr code
      *
      * @param \App\Model\Entity\User|null $user The identity object.
      * @param \App\Model\Entity\QrCode $QrCode
@@ -20,8 +20,56 @@ class QrCodePolicy
      */
     public function canView(?User $user, QrCode $QrCode): bool
     {
-        // All users can view qr codes.
-        return true;
+        // All users can view active.
+        if ($QrCode->is_active) {
+            return true;
+        } else {
+            // otherwise only admins and owners can view inactive images
+            if ($user) {
+                return $this->isCreator($user, $QrCode) || $user->isAdmin();
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if $user can view a qr codes' actual code
+     *
+     * @param \App\Model\Entity\User|null $user The identity object.
+     * @param \App\Model\Entity\QrCode $QrCode
+     * @return bool
+     */
+    public function canShow(?User $user, QrCode $QrCode): bool
+    {
+        // All users can view active.
+        if ($QrCode->is_active) {
+            return true;
+        } else {
+            // otherwise only admins and owners can view inactive images
+            if ($user) {
+                return $this->isCreator($user, $QrCode) || $user->isAdmin();
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if the QR Code is allowed to be followed.
+     *
+     * @param \App\Model\Entity\User|null $user The identity object.
+     * @param \App\Model\Entity\QrCode|null $QrCode
+     * @return bool
+     */
+    public function canForward(?User $user, ?QrCode $QrCode): bool
+    {
+        // All users can view active.
+        if ($QrCode->is_active) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

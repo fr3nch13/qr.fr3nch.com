@@ -43,10 +43,12 @@ class CrudTest extends BaseControllerTest
         // get
         $this->get('https://localhost/users/login');
         $this->assertResponseOk();
+        $this->helperTestTemplate('Users/login');
 
         // post
         $this->post('https://localhost/users/login');
         $this->assertResponseOk();
+        $this->helperTestTemplate('Users/login');
 
         // patch
         $this->patch('https://localhost/users/login');
@@ -75,14 +77,14 @@ class CrudTest extends BaseControllerTest
         // get
         $this->loginUserAdmin();
         $this->get('https://localhost/users/logout');
-                $this->assertRedirectEquals('https://localhost/users/login');
+        $this->assertRedirectEquals('https://localhost/users/login');
         $this->assertFlashMessage('You have been logged out', 'flash');
         $this->assertFlashElement('flash/success');
 
         // post
         $this->loginUserAdmin();
         $this->post('https://localhost/users/logout');
-                $this->assertRedirectEquals('https://localhost/users/login');
+        $this->assertRedirectEquals('https://localhost/users/login');
         $this->assertFlashMessage('You have been logged out', 'flash');
         $this->assertFlashElement('flash/success');
 
@@ -118,8 +120,7 @@ class CrudTest extends BaseControllerTest
         // get
         $this->get('https://localhost/users');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="users index content">');
-        $this->assertResponseContains('<h3>Users</h3>');
+        $this->helperTestTemplate('Users/index');
 
         // post
         $this->post('https://localhost/users');
@@ -155,8 +156,7 @@ class CrudTest extends BaseControllerTest
         // test get
         $this->get('https://localhost/users/view/3');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="users view content">');
-        $this->assertResponseContains('<h3>Delete Me</h3>');
+        $this->helperTestTemplate('Users/view');
 
         // post
         $this->post('https://localhost/users/view/3');
@@ -192,8 +192,7 @@ class CrudTest extends BaseControllerTest
         // test get
         $this->get('https://localhost/users/profile/3');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="users view content">');
-        $this->assertResponseContains('<h3>Delete Me</h3>');
+        $this->helperTestTemplate('Users/profile');
 
         // post
         $this->post('https://localhost/users/profile/3');
@@ -229,9 +228,7 @@ class CrudTest extends BaseControllerTest
         // test get
         $this->get('https://localhost/users/add');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="users form content">');
-        $this->assertResponseContains('<form method="post" accept-charset="utf-8" role="form" action="/users/add">');
-        $this->assertResponseContains('<legend>Add User</legend>');
+        $this->helperTestTemplate('Users/add');
 
         // post
         $this->post('https://localhost/users/add', [
@@ -239,7 +236,7 @@ class CrudTest extends BaseControllerTest
             'email' => 'newuser@example.com',
             'password' => 'password',
         ]);
-        $this->assertRedirectEquals('https://localhost/users');
+        $this->assertRedirectEquals('https://localhost/users/view/4');
         $this->assertFlashMessage('The user has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
@@ -280,9 +277,7 @@ class CrudTest extends BaseControllerTest
         // test get
         $this->get('https://localhost/users/edit/3');
         $this->assertResponseOk();
-        $this->assertResponseContains('<div class="users form content">');
-        $this->assertResponseContains('<form method="patch" accept-charset="utf-8" role="form" action="/users/edit/3">');
-        $this->assertResponseContains('<legend>Edit User</legend>');
+        $this->helperTestTemplate('Users/edit');
 
         // post
         $this->post('https://localhost/users/edit/3', [
@@ -295,7 +290,7 @@ class CrudTest extends BaseControllerTest
         $this->patch('https://localhost/users/edit/3', [
             'name' => 'Updated User',
         ]);
-        $this->assertRedirectEquals('https://localhost/users');
+        $this->assertRedirectEquals('https://localhost/users/view/3');
         $this->assertFlashMessage('The user has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
