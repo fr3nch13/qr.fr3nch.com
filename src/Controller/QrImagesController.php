@@ -149,12 +149,12 @@ class QrImagesController extends AppController
      */
     public function edit(?string $id = null): ?Response
     {
-        $this->request->allowMethod(['get', 'patch']);
+        $this->request->allowMethod(['get', 'put']);
 
         $qrImage = $this->QrImages->get((int)$id, contain: ['QrCodes']);
         $this->Authorization->authorize($qrImage);
 
-        if ($this->request->is('patch')) {
+        if ($this->request->is('put')) {
             $qrImage = $this->QrImages->patchEntity($qrImage, $this->request->getData());
             if ($this->QrImages->save($qrImage)) {
                 $this->Flash->success(__('The image has been saved.'));

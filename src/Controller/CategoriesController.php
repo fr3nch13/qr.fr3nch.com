@@ -123,12 +123,12 @@ class CategoriesController extends AppController
      */
     public function edit(?string $id = null): ?Response
     {
-        $this->request->allowMethod(['get', 'patch']);
+        $this->request->allowMethod(['get', 'put']);
 
         $category = $this->Categories->get((int)$id, contain: ['QrCodes']);
         $this->Authorization->authorize($category);
 
-        if ($this->request->is('patch')) {
+        if ($this->request->is('put')) {
             $category = $this->Categories->patchEntity($category, $this->request->getData());
             if ($this->Categories->save($category)) {
                 $this->Flash->success(__('The category has been saved.'));
