@@ -100,7 +100,6 @@ class QrCodesController extends AppController
             $response = $response->withSharable(true, 3600);
             $response = $response->withModified(date ("Y-m-d H:i:s.", filemtime($qrCode->path)));
         }
-        print_r($response->getHeaders());
 
         return $response;
     }
