@@ -12,10 +12,29 @@ if (!$this->getRequest()->is('ajax')) {
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('Edit Source'), ['action' => 'edit', $source->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->Form->postLink(__('Delete Source'), ['action' => 'delete', $source->id], ['confirm' => __('Are you sure you want to delete # {0}?', $source->id), 'class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('List Sources'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('New Source'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__('Edit Source'), [
+                'action' => 'edit',
+                $source->id,
+            ], [
+                'class' => 'side-nav-item',
+            ]) ?>
+            <?= $this->Form->postLink(__('Delete Source'), [
+                'action' => 'delete',
+                $source->id,
+            ], [
+                'confirm' => __('Are you sure you want to delete # {0}?', $source->id),
+                'class' => 'side-nav-item',
+            ]) ?>
+            <?= $this->Html->link(__('List Sources'), [
+                'action' => 'index',
+            ], [
+                'class' => 'side-nav-item',
+            ]) ?>
+            <?= $this->Html->link(__('New Source'), [
+                'action' => 'add',
+            ], [
+                'class' => 'side-nav-item',
+            ]) ?>
         </div>
     </aside>
     <div class="column column-80">
@@ -74,9 +93,23 @@ if (!$this->getRequest()->is('ajax')) {
                             <td><?= h($qrCodes->source_id) ?></td>
                             <td><?= h($qrCodes->user_id) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'QrCodes', 'action' => 'view', $qrCodes->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'QrCodes', 'action' => 'edit', $qrCodes->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'QrCodes', 'action' => 'delete', $qrCodes->id], ['confirm' => __('Are you sure you want to delete # {0}?', $qrCodes->id)]) ?>
+                                <?= $this->Html->link(__('View'), [
+                                    'controller' => 'QrCodes',
+                                    'action' => 'view',
+                                    $qrCodes->id,
+                                    ]) ?>
+                                <?= $this->Html->link(__('Edit'), [
+                                    'controller' => 'QrCodes',
+                                    'action' => 'edit',
+                                    $qrCodes->id,
+                                    ]) ?>
+                                <?= $this->Form->postLink(__('Delete'), [
+                                    'controller' => 'QrCodes',
+                                    'action' => 'delete',
+                                    $qrCodes->id,
+                                    ], [
+                                        'confirm' => __('Are you sure you want to delete # {0}?', $qrCodes->id),
+                                    ]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>

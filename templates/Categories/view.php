@@ -12,10 +12,29 @@ if (!$this->getRequest()->is('ajax')) {
     <aside class="column">
         <div class="side-nav">
             <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('Edit Category'), ['action' => 'edit', $category->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->Form->postLink(__('Delete Category'), ['action' => 'delete', $category->id], ['confirm' => __('Are you sure you want to delete # {0}?', $category->id), 'class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('List Categories'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('New Category'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
+            <?= $this->Html->link(__('Edit Category'), [
+                'action' => 'edit',
+                $category->id,
+            ], [
+                'class' => 'side-nav-item',
+            ]) ?>
+            <?= $this->Form->postLink(__('Delete Category'), [
+                'action' => 'delete',
+                $category->id,
+            ], [
+                'confirm' => __('Are you sure you want to delete # {0}?', $category->id),
+                'class' => 'side-nav-item',
+            ]) ?>
+            <?= $this->Html->link(__('List Categories'), [
+                'action' => 'index',
+            ], [
+                'class' => 'side-nav-item',
+            ]) ?>
+            <?= $this->Html->link(__('New Category'), [
+                'action' => 'add',
+            ], [
+                'class' => 'side-nav-item',
+            ]) ?>
         </div>
     </aside>
     <div class="column column-80">
@@ -28,7 +47,13 @@ if (!$this->getRequest()->is('ajax')) {
                 </tr>
                 <tr>
                     <th><?= __('Parent Category') ?></th>
-                    <td><?= $category->hasValue('parent_category') ? $this->Html->link($category->parent_category->name, ['controller' => 'Categories', 'action' => 'view', $category->parent_category->id]) : '' ?></td>
+                    <td><?= $category->hasValue('parent_category') ?
+                        $this->Html->link($category->parent_category->name, [
+                            'controller' => 'Categories',
+                            'action' => 'view',
+                            $category->parent_category->id,
+                            ]) :
+                            '' ?></td>
                 </tr>
                 <tr>
                     <th><?= __('Id') ?></th>
@@ -76,9 +101,23 @@ if (!$this->getRequest()->is('ajax')) {
                             <td><?= h($qrCodes->url) ?></td>
                             <td><?= h($qrCodes->source_id) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'QrCodes', 'action' => 'view', $qrCodes->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'QrCodes', 'action' => 'edit', $qrCodes->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'QrCodes', 'action' => 'delete', $qrCodes->id], ['confirm' => __('Are you sure you want to delete # {0}?', $qrCodes->id)]) ?>
+                                <?= $this->Html->link(__('View'), [
+                                    'controller' => 'QrCodes',
+                                    'action' => 'view',
+                                    $qrCodes->id,
+                                ]) ?>
+                                <?= $this->Html->link(__('Edit'), [
+                                    'controller' => 'QrCodes',
+                                    'action' => 'edit',
+                                    $qrCodes->id,
+                                ]) ?>
+                                <?= $this->Form->postLink(__('Delete'), [
+                                    'controller' => 'QrCodes',
+                                    'action' => 'delete',
+                                    $qrCodes->id,
+                                ], [
+                                    'confirm' => __('Are you sure you want to delete # {0}?', $qrCodes->id),
+                                ]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>

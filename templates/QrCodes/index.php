@@ -31,7 +31,11 @@ if (!$this->getRequest()->is('ajax')) {
                     <ul class="list-inline">
                         <li class="list-inline-item">
                             <div class="dropdown">
-                                <a class="underline text-black" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
+                                <a
+                                    class="underline text-black"
+                                    href="#" role="button"
+                                    id="dropdownMenuLink"
+                                    data-bs-toggle="dropdown"
                                     aria-expanded="false">
                                     Sort <i class="bi bi-chevron-down"></i>
                                 </a>
@@ -70,8 +74,12 @@ if (!$this->getRequest()->is('ajax')) {
                         // TODO: Will add back when I include friendsofcake/search
                         // labels: frontend
                         <li class="list-inline-item ms-2">
-                            <a class=" underline text-black" data-bs-toggle="offcanvas" href="#offcanvasFilter" role="button"
-                            aria-controls="offcanvasFilter">
+                            <a
+                                class=" underline text-black"
+                                data-bs-toggle="offcanvas"
+                                href="#offcanvasFilter"
+                                role="button"
+                                aria-controls="offcanvasFilter">
                             Filters
                             </a>
                         </li>
@@ -99,14 +107,20 @@ if (!$this->getRequest()->is('ajax')) {
                             <a href="<?= $this->Url->build(['action' => 'view', $qrCode->id]) ?>">
                                 <?php if (!empty($qrCode->qr_images)) : ?>
                                     <?= $this->Template->objectComment('QrImages/active/first') ?>
-                                    <img class="product-qrimage" src="<?= $this->Url->build([
-                                        'controller' => 'QrImages',
-                                        'action' => 'show',
-                                        $qrCode->qr_images[0]->id,
-                                        ]) ?>" alt="<?= $qrCode->qr_images[0]->name ?>">
+                                    <img
+                                        class="product-qrimage"
+                                        src="<?= $this->Url->build([
+                                            'controller' => 'QrImages',
+                                            'action' => 'show',
+                                            $qrCode->qr_images[0]->id,
+                                        ]) ?>"
+                                        alt="<?= $qrCode->qr_images[0]->name ?>">
                                 <?php endif; ?>
                                 <?= $this->Template->objectComment('QrCode/show') ?>
-                                <img class="product-qrcode" src="<?= $this->Url->build(['action' => 'show', $qrCode->id]) ?>" alt="<?= __('The QR Code') ?>">
+                                <img
+                                    class="product-qrcode"
+                                    src="<?= $this->Url->build(['action' => 'show', $qrCode->id]) ?>"
+                                    alt="<?= __('The QR Code') ?>">
                             </a>
                         </figure>
                         <div class="btn-group btn-block product-options" role="group" aria-label="Product Options">
@@ -225,8 +239,15 @@ if (!$this->getRequest()->is('ajax')) {
 
       <div class="widget mt-5">
         <span class="d-flex eyebrow text-muted mb-2">Price</span>
-        <div class="range-slider" data-range='{"decimals": 0,"step": 1,"connect": true, "start" : [20,80], "range" : {"min": 0, "max" :
-          100}}'></div>
+        <div
+            class="range-slider"
+            data-range='{
+                "decimals": 0,
+                "step": 1,
+                "connect": true,
+                "start" : [20,80],
+                "range" : {"min": 0, "max" :100}
+            }'></div>
         <div class="range-slider-selection">Price: <span class="range-slider-value" id="range-min"></span>
           &mdash; <span class="range-slider-value" id="range-max"></span></div>
       </div>

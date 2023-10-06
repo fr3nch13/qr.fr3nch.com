@@ -53,7 +53,13 @@ if (!$this->getRequest()->is('ajax')) {
                 <div class="col-md-10 order-md-2">
                     <div class="carousel">
                     <div
-                        data-carousel='{"mouseDrag": true, "navContainer": "#nav-images", "gutter": 8, "loop": true, "items": 1}'>
+                        data-carousel='{
+                            "mouseDrag": true,
+                            "navContainer": "#nav-images",
+                            "gutter": 8,
+                            "loop": true,
+                            "items": 1
+                        }'>
                         <div class="item text-center">
                             <img class="img-fluid" src="./assets/images/products/product-9.jpg" alt="Image">
                         </div>
@@ -67,7 +73,10 @@ if (!$this->getRequest()->is('ajax')) {
                         </div>
 
                         <div class="item text-center">
-                            <img class="img-fluid" src="<?= $this->Url->build(['action' => 'show', $qrCode->id]) ?>" alt="<?= __('The QR Code'); ?>">
+                            <img
+                                class="img-fluid"
+                                src="<?= $this->Url->build(['action' => 'show', $qrCode->id]) ?>"
+                                alt="<?= __('The QR Code'); ?>">
                         </div>
 
                     </div>
@@ -85,7 +94,10 @@ if (!$this->getRequest()->is('ajax')) {
                             <img class="img-fluid" src="./assets/images/products/product-9-3.jpg" alt="Image">
                         </div>
                         <div>
-                            <img class="img-fluid" src="<?= $this->Url->build(['action' => 'show', $qrCode->id]) ?>" alt="<?= __('The QR Code'); ?>">
+                            <img
+                                class="img-fluid"
+                                src="<?= $this->Url->build(['action' => 'show', $qrCode->id]) ?>"
+                                alt="<?= __('The QR Code'); ?>">
                         </div>
 
                     </div>
@@ -116,8 +128,9 @@ if (!$this->getRequest()->is('ajax')) {
                                 <dd class="col-sm-9"><?= h($qrCode->qrkey) ?></dd>
 
                                 <dt class="col-sm-3"><?= __('Source') ?></dt>
-                                <dd class="col-sm-9"><?= $qrCode->hasValue('source') ? $qrCode->source->name : '' ?></dd>
-
+                                <dd class="col-sm-9"><?= $qrCode->hasValue('source') ?
+                                    $qrCode->source->name :
+                                '' ?></dd>
 
                                 <dt class="col-sm-3"><?= __('Created') ?></dt>
                                 <dd class="col-sm-9"><?= h($qrCode->created) ?></dd>
@@ -165,11 +178,23 @@ if (!$this->getRequest()->is('ajax')) {
                             </tr>
                             <tr>
                                 <th><?= __('Source') ?></th>
-                                <td><?= $qrCode->hasValue('source') ? $this->Html->link($qrCode->source->name, ['controller' => 'Sources', 'action' => 'view', $qrCode->source->id]) : '' ?></td>
+                                <td><?= $qrCode->hasValue('source') ?
+                                    $this->Html->link($qrCode->source->name, [
+                                        'controller' => 'Sources',
+                                        'action' => 'view',
+                                        $qrCode->source->id,
+                                    ]) :
+                                    '' ?></td>
                             </tr>
                             <tr>
                                 <th><?= __('User') ?></th>
-                                <td><?= $qrCode->hasValue('user') ? $this->Html->link($qrCode->user->name, ['controller' => 'Users', 'action' => 'view', $qrCode->user->id]) : '' ?></td>
+                                <td><?= $qrCode->hasValue('user') ?
+                                    $this->Html->link($qrCode->user->name, [
+                                        'controller' => 'Users',
+                                        'action' => 'view',
+                                        $qrCode->user->id,
+                                    ]) :
+                                    '' ?></td>
                             </tr>
                             <tr>
                                 <th><?= __('Id') ?></th>
@@ -228,9 +253,23 @@ if (!$this->getRequest()->is('ajax')) {
                             <td><?= h($categories->modified) ?></td>
                             <td><?= h($categories->parent_id) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'Categories', 'action' => 'view', $categories->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'Categories', 'action' => 'edit', $categories->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Categories', 'action' => 'delete', $categories->id], ['confirm' => __('Are you sure you want to delete # {0}?', $categories->id)]) ?>
+                                <?= $this->Html->link(__('View'), [
+                                    'controller' => 'Categories',
+                                    'action' => 'view',
+                                    $categories->id,
+                                ]) ?>
+                                <?= $this->Html->link(__('Edit'), [
+                                    'controller' => 'Categories',
+                                    'action' => 'edit',
+                                    $categories->id,
+                                ]) ?>
+                                <?= $this->Form->postLink(__('Delete'), [
+                                    'controller' => 'Categories',
+                                    'action' => 'delete',
+                                    $categories->id,
+                                ], [
+                                    'confirm' => __('Are you sure you want to delete # {0}?', $categories->id),
+                                ]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -257,9 +296,23 @@ if (!$this->getRequest()->is('ajax')) {
                             <td><?= h($tags->created) ?></td>
                             <td><?= h($tags->modified) ?></td>
                             <td class="actions">
-                                <?= $this->Html->link(__('View'), ['controller' => 'Tags', 'action' => 'view', $tags->id]) ?>
-                                <?= $this->Html->link(__('Edit'), ['controller' => 'Tags', 'action' => 'edit', $tags->id]) ?>
-                                <?= $this->Form->postLink(__('Delete'), ['controller' => 'Tags', 'action' => 'delete', $tags->id], ['confirm' => __('Are you sure you want to delete # {0}?', $tags->id)]) ?>
+                                <?= $this->Html->link(__('View'), [
+                                    'controller' => 'Tags',
+                                    'action' => 'view',
+                                    $tags->id,
+                                ]) ?>
+                                <?= $this->Html->link(__('Edit'), [
+                                    'controller' => 'Tags',
+                                    'action' => 'edit',
+                                    $tags->id,
+                                ]) ?>
+                                <?= $this->Form->postLink(__('Delete'), [
+                                    'controller' => 'Tags',
+                                    'action' => 'delete',
+                                    $tags->id,
+                                ], [
+                                    'confirm' => __('Are you sure you want to delete # {0}?', $tags->id),
+                                ]) ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>

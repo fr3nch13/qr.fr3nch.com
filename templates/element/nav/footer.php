@@ -18,7 +18,10 @@
                         ], [
                             'class' => 'text-reset text-primary-hover',
                         ]) ?></li>
-                        <li class="list-inline-item mb-1"><a href="https://twitter.com/Fr3nchLLC" class="text-reset text-primary-hover">twitter</a></li>
+                        <li class="list-inline-item mb-1"><a
+                            href="https://twitter.com/Fr3nchLLC"
+                            class="text-reset text-primary-hover"
+                        >X (twitter)</a></li>
                     </ul>
                 </div>
                 <div class="col-md-6 col-lg-4 text-center text-md-end order-lg-3">

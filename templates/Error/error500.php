@@ -35,7 +35,10 @@ if (Configure::read('debug')) :
         <?php $file = $error->getFile() ?>
         <?php $line = $error->getLine() ?>
     <strong>Error in: </strong>
-        <?= $this->Html->link(sprintf('%s, line %s', Debugger::trimPath($file), $line), Debugger::editorUrl($file, $line)); ?>
+        <?= $this->Html->link(
+            sprintf('%s, line %s', Debugger::trimPath($file), $line),
+            Debugger::editorUrl($file, $line)
+        ); ?>
     <?php endif; ?>
     <?php
     echo $this->element('auto_table_warning');

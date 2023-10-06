@@ -32,7 +32,12 @@ if (!$this->getRequest()->is('ajax')) {
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $source->id]) ?>
                         <?= $this->Html->link(__('Edit'), ['action' => 'edit', $source->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $source->id], ['confirm' => __('Are you sure you want to delete # {0}?', $source->id)]) ?>
+                        <?= $this->Form->postLink(__('Delete'), [
+                            'action' => 'delete',
+                            $source->id,
+                        ], [
+                            'confirm' => __('Are you sure you want to delete # {0}?', $source->id),
+                        ]) ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
@@ -47,7 +52,8 @@ if (!$this->getRequest()->is('ajax')) {
             <?= $this->Paginator->next(__('next') . ' >') ?>
             <?= $this->Paginator->last(__('last') . ' >>') ?>
         </ul>
-        <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')) ?></p>
+        <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, ' .
+            'showing {{current}} record(s) out of {{count}} total')) ?></p>
     </div>
 </div>
 <?= $this->Template->templateComment(false, __FILE__); ?>

@@ -10,25 +10,35 @@ if ($this->getLayout() === 'login') {
     $navClasses = 'qr-navbar-top navbar navbar-expand-lg navbar-sticky navbar-dark';
     $logoImage = 'logo_light.png';
 }
+$logoImage = $this->Html->image($logoImage, ['class' => 'logo-top']);
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <nav id="mainNav" class="<?= $navClasses; ?>">
     <div class="container">
-        <?= $this->Html->link($this->Html->image($logoImage, ['class' => 'logo-top']), '/', ['class' => 'navbar-brand', 'escape' => false]); ?>
+        <?= $this->Html->link($logoImage, '/', ['class' => 'navbar-brand', 'escape' => false]); ?>
 
         <!-- secondary -->
         <ul class="navbar-nav navbar-nav-secondary order-lg-3">
             <!-- Controls the Mobile Nav below -->
             <li class="nav-item d-lg-none">
-                <a class="nav-link nav-icon" href="" role="button" data-bs-toggle="collapse" data-bs-target="#userNav" aria-expanded="false">
-                    <i class="bi bi-person"></i>
+                <a
+                    class="nav-link nav-icon"
+                    href=""
+                    role="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#userNav"
+                    aria-expanded="false"><i class="bi bi-person"></i>
                 </a>
             </li>
             <?php if ($this->ActiveUser->getUser()) : ?>
             <!-- The user icon and dropdown for user-specific pages -->
             <li class="nav-item dropdown dropdown-hover d-none d-lg-block">
-                <a class="nav-link nav-icon" role="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-person"></i>
+                <a
+                    class="nav-link nav-icon"
+                    role="button"
+                    id="dropdownMenuButton1"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"><i class="bi bi-person"></i>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                     <li><a class="dropdown-item active" href="./account.html">Dashboard</a></li>
@@ -43,8 +53,14 @@ if ($this->getLayout() === 'login') {
             </li>
             <?php endif; ?>
             <li class="nav-item d-lg-none">
-                <a class="nav-link nav-icon" href="" role="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="bi bi-list"></span>
+                <a
+                    class="nav-link nav-icon"
+                    href="" role="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbar"
+                    aria-controls="navbar"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"><span class="bi bi-list"></span>
                 </a>
             </li>
             <?php if (!$this->ActiveUser->getUser()) : ?>
