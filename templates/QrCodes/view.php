@@ -61,6 +61,14 @@ if (!$this->getRequest()->is('ajax')) {
                             "items": 1
                         }'>
                         <?php foreach ($qrCode->qr_images as $qrImage) : ?>
+                            <?php
+                            // make sure it's active, and exists
+                            if (!$qrImage->is_active || !$qrImage->path) {
+                                continue;
+                            }
+                            ?>
+
+                            <?= $this->Template->objectComment('QrImage/show/large') ?>
                         <div class="item text-center">
                             <img
                                 class="img-fluid"
@@ -86,6 +94,13 @@ if (!$this->getRequest()->is('ajax')) {
                 <div class="col-md-2 order-md-1">
                     <div class="carousel-thumbs d-flex flex-row flex-md-column" id="nav-images">
                         <?php foreach ($qrCode->qr_images as $qrImage) : ?>
+                            <?php
+                            // make sure it's active, and exists
+                            if (!$qrImage->is_active || !$qrImage->path) {
+                                continue;
+                            }
+                            ?>
+                            <?= $this->Template->objectComment('QrImage/show/thumb') ?>
                         <div>
                             <img
                                 class="img-fluid"
