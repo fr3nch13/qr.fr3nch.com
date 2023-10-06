@@ -21,7 +21,6 @@ class TagsController extends AppController
      */
     public function beforeFilter(EventInterface $event): void
     {
-
         //Allow anyone to view the list of tags, and their details page.
         $this->Authentication->addUnauthenticatedActions(['index', 'view']);
 

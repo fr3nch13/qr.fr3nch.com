@@ -22,7 +22,6 @@ class QrCodesController extends AppController
      */
     public function beforeFilter(EventInterface $event): void
     {
-
         // allowed actions for anyone.
         $this->Authentication->addUnauthenticatedActions(['forward', 'show', 'index', 'view']);
 

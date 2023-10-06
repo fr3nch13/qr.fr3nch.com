@@ -396,7 +396,7 @@ class QrCodesTableTest extends TestCase
 
         // test existing qr_code with missing image
         // test that it gets generated.
-        $path = Configure::read('App.paths.qr_codes')  . DS . '3.png';
+        $path = Configure::read('App.paths.qr_codes') . DS . '3.png';
         if (file_exists($path)) {
             unlink($path);
         }
@@ -407,7 +407,7 @@ class QrCodesTableTest extends TestCase
         $this->assertTrue(is_readable($path));
 
         // new entity, check that it gets generated on a new save.
-        $path = Configure::read('App.paths.qr_codes')  . DS . '5.png';
+        $path = Configure::read('App.paths.qr_codes') . DS . '5.png';
         if (file_exists($path)) {
             unlink($path);
         }
@@ -431,7 +431,7 @@ class QrCodesTableTest extends TestCase
 
         // test nonexistant entity
         $this->expectException(RecordNotFoundException::class);
-        $path = Configure::read('App.paths.qr_codes')  . DS . '10.png';
+        $path = Configure::read('App.paths.qr_codes') . DS . '10.png';
         if (file_exists($path)) {
             unlink($path);
         }
@@ -440,10 +440,10 @@ class QrCodesTableTest extends TestCase
         $this->assertTrue(is_readable($path));
         $this->assertSame($path, $qrCodeImagePath);
 
-        /// test unable to save the qr code file, because the folder doesn't exist.
+        /// TODO: test unable to save the qr code file, because the folder doesn't exist.
         // test existing qr_code with missing image
         // test that it gets generated.
-        $path = Configure::read('App.paths.qr_codes')  . DS . '3.png';
+        $path = Configure::read('App.paths.qr_codes') . DS . '3.png';
         if (file_exists($path)) {
             unlink($path);
         }
@@ -455,6 +455,7 @@ class QrCodesTableTest extends TestCase
         $entity = $this->QrCodes->get(3);
         $this->assertSame($path, $entity->path);
         $this->assertTrue(is_readable($path));
+        Configure::write('App.paths.qr_codes', $oldPath);
     }
 
     /**
@@ -468,7 +469,7 @@ class QrCodesTableTest extends TestCase
         Configure::write('debug', true);
 
         // existing entity
-        $path = Configure::read('App.paths.qr_codes')  . DS . '1.png';
+        $path = Configure::read('App.paths.qr_codes') . DS . '1.png';
         if (file_exists($path)) {
             unlink($path);
         }
@@ -494,7 +495,7 @@ class QrCodesTableTest extends TestCase
         Configure::write('debug', true);
 
         // test the Generator Directly
-        $path = Configure::read('App.paths.qr_codes')  . DS . '2.png';
+        $path = Configure::read('App.paths.qr_codes') . DS . '2.png';
         if (file_exists($path)) {
             unlink($path);
         }
