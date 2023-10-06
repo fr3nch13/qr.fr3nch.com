@@ -7,6 +7,12 @@ use App\Model\Table\UsersTable;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 
+/**
+ * Base Controller test for the other tests that use
+ * Controllers request/response to test code.
+ *
+ * @property \Cake\Http\Response $_response
+ */
 class BaseControllerTest extends TestCase
 {
     use IntegrationTestTrait;
@@ -179,9 +185,13 @@ class BaseControllerTest extends TestCase
     }
 
     /**
-     * Tests the right template is inlcuded.
+     * Tests for inserted template comments
      *
-     * @param string $templatePath If included, also look for the actual error path as well.
+     * This allows me to test that the templates are working and getting data,
+     * without having to specifically test html markup, as it will change.
+     *
+     * @param int $count The number of times this comment should exist.
+     * @param string $coment The coment string to look for
      * @param string $namespace The namespace of the template. Defaults to 'App'
      * @return void
      */

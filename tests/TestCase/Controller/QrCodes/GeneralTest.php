@@ -70,7 +70,7 @@ class GeneralTest extends BaseControllerTest
         $this->get('https://localhost/qr-codes/show/1');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
-        $headers = $this->_response->getHeaders(); // @phpstan-ignore-line
+        $headers = $this->_response->getHeaders();
         $this->assertSame('image/png', $headers['Content-Type'][0]);
         $this->assertGreaterThan(0, $headers['Content-Length'][0]);
     }
