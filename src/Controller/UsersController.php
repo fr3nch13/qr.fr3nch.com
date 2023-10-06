@@ -39,7 +39,7 @@ class UsersController extends AppController
      *
      * @return \Cake\Http\Response|null|void Renders view
      */
-    public function login(): Response|null
+    public function login(): ?Response
     {
         $this->request->allowMethod(['get', 'post']);
 
@@ -114,7 +114,7 @@ class UsersController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function profile(?string $id = null): Response|null
+    public function profile(?string $id = null): ?Response
     {
         $this->request->allowMethod(['get']);
 
@@ -132,7 +132,7 @@ class UsersController extends AppController
      *
      * @return \Cake\Http\Response|null|void Renders view
      */
-    public function index(): Response|null
+    public function index(): ?Response
     {
         $this->request->allowMethod(['get']);
 
@@ -153,7 +153,7 @@ class UsersController extends AppController
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view(?string $id = null): Response|null
+    public function view(?string $id = null): ?Response
     {
         if (!$id) {
             $id = $this->getActiveUser('id');
@@ -175,7 +175,7 @@ class UsersController extends AppController
      *
      * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
      */
-    public function add(): Response|null
+    public function add(): ?Response
     {
         $this->request->allowMethod(['get', 'post']);
 
@@ -211,7 +211,7 @@ class UsersController extends AppController
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function edit(?string $id = null): Response|null
+    public function edit(?string $id = null): ?Response
     {
         if (!$id) {
             $id = $this->getActiveUser('id');
@@ -251,7 +251,7 @@ class UsersController extends AppController
      * @return \Cake\Http\Response|null|void Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete(?string $id = null): Response|null
+    public function delete(?string $id = null): ?Response
     {
         $this->request->allowMethod(['delete']);
 
