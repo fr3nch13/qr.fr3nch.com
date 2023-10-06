@@ -6,6 +6,7 @@ namespace App\Test\TestCase\Controller;
 use App\Model\Table\UsersTable;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use HtmlValidator\Exception\ServerException as ValidatorServerException;
 use HtmlValidator\Validator as HtmlValidator;
 
 /**
@@ -142,7 +143,7 @@ class BaseControllerTest extends TestCase
             $this->assertFalse($result->hasWarnings(), (string)$result);
 
             // Incase validator.nu throws an error.
-        } catch(\HtmlValidator\Exception\ServerException $e) {
+        } catch (ValidatorServerException $e) {
             $this->assertTrue(true);
         }
     }
