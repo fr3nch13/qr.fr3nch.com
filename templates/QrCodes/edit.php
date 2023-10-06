@@ -26,7 +26,7 @@ if (!$this->getRequest()->is('ajax')) {
     </aside>
     <div class="column column-80">
         <div class="qrCodes form content">
-            <?= $this->Form->create($qrCode, ['method' => 'put']) ?>
+            <?= $this->Form->create($qrCode) ?>
             <fieldset>
                 <legend><?= __('Edit QR Code') ?></legend>
 
