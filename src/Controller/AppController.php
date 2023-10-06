@@ -76,6 +76,7 @@ class AppController extends Controller
 
         $this->viewBuilder()->setClassName($viewClass);
     }
+
     /**
      * Runs before the code in the actions
      */
