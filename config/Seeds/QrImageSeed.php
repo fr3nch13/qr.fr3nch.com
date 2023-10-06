@@ -106,16 +106,17 @@ class QrImageSeed extends AbstractSeed
         // add or change data here for the seeding.
 
         $table->insert($data)->save();
+
         // TODO: After they're been inserted, copy over their images.
         // labels: seeds, assets
         $source = TESTS . 'assets' . DS . 'qr_images';
         $dest = Configure::read('App.paths.qr_images');
         if (is_dir($dest)) {
             $this->rrmdir($dest);
-            sleep(1); // give it a second to catch up.
+            usleep( 500 * 1000 );  // give it a half second to catch up.
         }
         mkdir($dest);
-        sleep(1); // give it a second to catch up.
+        usleep( 500 * 1000 );  // give it a half second to catch up.
         $this->cpy($source, $dest);
     }
 

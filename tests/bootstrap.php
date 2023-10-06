@@ -67,4 +67,6 @@ session_id('cli');
 // use Cake\TestSuite\Fixture\SchemaLoader;
 // (new SchemaLoader())->loadSqlFiles('./tests/schema.sql', 'test');
 
+Configure::write('App.paths.qr_images', TMP . 'qr_images_test');
+
 (new Migrator())->run();
