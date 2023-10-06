@@ -23,7 +23,7 @@ footer img.logo-bottom {
 /**
  * Product details page.
  */
-.product-view {
+.product-view .product {
     position: relative;
 }
 
