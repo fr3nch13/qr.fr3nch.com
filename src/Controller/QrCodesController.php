@@ -215,6 +215,7 @@ class QrCodesController extends AppController
 
         if ($this->request->is('patch')) {
             $qrCode = $this->QrCodes->patchEntity($qrCode, $this->request->getData());
+            print_r($qrCode);
             if ($this->QrCodes->save($qrCode)) {
                 $this->Flash->success(__('The qr code has been saved.'));
 
@@ -228,7 +229,6 @@ class QrCodesController extends AppController
         }
 
         $errors = $qrCode->getErrors();
-        print_r($errors);
         $sources = $this->QrCodes->Sources->find('list', limit: 200)->all();
         $categories = $this->QrCodes->Categories->find('list', limit: 200)->all();
         $tags = $this->QrCodes->Tags->find('list', limit: 200)->all();
