@@ -222,25 +222,29 @@ class QrImagesTableTest extends TestCase
     /**
      * Copies assets into place
      *
+     * @param string $source The directory to copy
+     * @param string $dest The directory to copy the source to
      * @return void
      */
-    private function cpy($source, $dest): void
+    private function cpy(string $source, string $dest): void
     {
         if (is_dir($source)) {
             $dir_handle = opendir($source);
-            while ($file = readdir($dir_handle)) {
-                if ($file != '.' && $file != '..') {
-                    if (is_dir($source . DS . $file)) {
-                        if (!is_dir($dest . DS . $file)) {
-                            mkdir($dest . DS . $file);
+            if ($dir_handle) {
+                while ($file = readdir($dir_handle)) {
+                    if ($file != '.' && $file != '..') {
+                        if (is_dir($source . DS . $file)) {
+                            if (!is_dir($dest . DS . $file)) {
+                                mkdir($dest . DS . $file);
+                            }
+                            $this->cpy($source . DS . $file, $dest . DS . $file);
+                        } else {
+                            copy($source . DS . $file, $dest . DS . $file);
                         }
-                        $this->cpy($source . DS . $file, $dest . DS . $file);
-                    } else {
-                        copy($source . DS . $file, $dest . DS . $file);
                     }
                 }
+                closedir($dir_handle);
             }
-            closedir($dir_handle);
         } else {
             copy($source, $dest);
         }
@@ -249,18 +253,21 @@ class QrImagesTableTest extends TestCase
     /**
      * Removes copied assets
      *
+     * @param string $dir The directory to recursivly remove
      * @return void
      */
-    private function rrmdir($dir): void
+    private function rrmdir(string $dir): void
     {
         if (is_dir($dir)) {
             $objects = scandir($dir);
-            foreach ($objects as $object) {
-                if ($object != '.' && $object != '..') {
-                    if (is_dir($dir . DS . $object) && !is_link($dir . DS . $object)) {
-                        $this->rrmdir($dir . DS . $object);
-                    } else {
-                        unlink($dir . DS . $object);
+            if ($objects) {
+                foreach ($objects as $object) {
+                    if ($object != '.' && $object != '..') {
+                        if (is_dir($dir . DS . $object) && !is_link($dir . DS . $object)) {
+                            $this->rrmdir($dir . DS . $object);
+                        } else {
+                            unlink($dir . DS . $object);
+                        }
                     }
                 }
             }
