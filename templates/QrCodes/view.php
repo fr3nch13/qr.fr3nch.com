@@ -46,6 +46,9 @@ if (!$this->getRequest()->is('ajax')) {
 
     <!-- The QR Code Details -->
     <div class="row g-5 justify-content-center justify-content-lg-between product-<?= ($qrCode->is_active ? 'active' : 'inactive')?>">
+        <?php if (!$qrCode->is_active) : ?>
+        <div class="ribbon red"><span><?= __('Inactive') ?></span></div>
+        <?php endif; ?>
         <!-- The QR Code's images -->
         <div class="col-lg-6 position-relative">
             <div class="row g-1">
@@ -61,7 +64,7 @@ if (!$this->getRequest()->is('ajax')) {
                         }'>
                         <?php foreach ($qrCode->qr_images as $qrImage) : ?>
                             <?php
-                            // make sure it's active, and exists
+                            // make sure the image active, and exists
                             if (!$qrImage->is_active || !$qrImage->path) {
                                 continue;
                             }
@@ -126,9 +129,6 @@ if (!$this->getRequest()->is('ajax')) {
         <!-- QR Code details -->
 
         <div class="col-lg-6 col-xl-6">
-            <?php if (!$qrCode->is_active) : ?>
-            <div class="ribbon red"><span><?= __('Inactive') ?></span></div>
-            <?php endif; ?>
             <h1 class="mb-1"><?= h($qrCode->name) ?></h1>
 
             <p class="text-secondary mb-3"><?= $this->Text->autoParagraph(h($qrCode->description)); ?></p>
