@@ -42,7 +42,7 @@ class QrCodesController extends AppController
     /**
      * The method that handles the forwarding
      *
-     * @param string|null $key The QR Code key to lookup.
+     * @param ?string $key The QR Code key to lookup.
      * @return \Cake\Http\Response|null The response object.
      */
     public function forward(?string $key = null): ?Response
@@ -78,7 +78,7 @@ class QrCodesController extends AppController
      *
      * Shows the actual QR Code.
      *
-     * @param string|null $id QR Code id.
+     * @param ?string $id QR Code id.
      * @return \Cake\Http\Response Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -132,7 +132,7 @@ class QrCodesController extends AppController
     /**
      * View method
      *
-     * @param string|null $id QR Code id.
+     * @param ?string $id QR Code id.
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -190,7 +190,7 @@ class QrCodesController extends AppController
     /**
      * Edit method
      *
-     * @param string|null $id QR Code id.
+     * @param ?string $id QR Code id.
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -229,7 +229,7 @@ class QrCodesController extends AppController
     /**
      * Delete method
      *
-     * @param string|null $id QR Code id.
+     * @param ?string $id QR Code id.
      * @return \Cake\Http\Response|null|void Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */

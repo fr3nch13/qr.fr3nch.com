@@ -352,7 +352,7 @@ class BaseControllerTest extends TestCase
     /**
      * Tests that we're using the Error/error400 page
      *
-     * @param string|null $path If included, also look for the actual error path as well.
+     * @param ?string $path If included, also look for the actual error path as well.
      * @return void
      */
     public function helperTestError400(?string $path = null): void

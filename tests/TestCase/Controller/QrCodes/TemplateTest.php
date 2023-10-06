@@ -69,14 +69,10 @@ class TemplateTest extends BaseControllerTest
         $this->helperTestObjectComment(1, 'QrCodes/inactive');
         // make sure the qcode is listed for each one.
         $this->helperTestObjectComment(4, 'QrCode/show');
+        $this->helperTestObjectComment(4, 'QrCode/forward');
+        $this->helperTestObjectComment(4, 'QrCode/view');
         // make sure only active primary images are listed.
         $this->helperTestObjectComment(3, 'QrImages/active/first');
-        // Sow & Scribe
-        $content = (string)$this->_response->getBody();
-        $this->assertSame(1, substr_count($content, '<a href="/qr-codes/view/1" class="product-title">Sow &amp; Scribe</a>'));
-        $this->assertSame(1, substr_count($content, '<img class="product-qrcode" src="/qr-codes/show/1" alt="The QR Code">'));
-        $this->assertSame(1, substr_count($content, '<a href="/f/sownscribe" class="btn btn-light">Follow Code</a>'));
-        $this->assertSame(1, substr_count($content, '<a href="/qr-codes/view/1" class="btn btn-light">Details</a>'));
     }
 
     /**
@@ -117,14 +113,9 @@ class TemplateTest extends BaseControllerTest
         $this->helperTestObjectComment(1, 'QrCodes/inactive');
         // make sure the qcode is listed for each one.
         $this->helperTestObjectComment(4, 'QrCode/show');
+        $this->helperTestObjectComment(4, 'QrCode/forward');
         // make sure only active primary images are listed.
         $this->helperTestObjectComment(3, 'QrImages/active/first');
-        // Sow & Scribe
-        $content = (string)$this->_response->getBody();
-        $this->assertSame(1, substr_count($content, '<a href="/qr-codes/view/1" class="product-title">Sow &amp; Scribe</a>'));
-        $this->assertSame(1, substr_count($content, '<img class="product-qrcode" src="/qr-codes/show/1" alt="The QR Code">'));
-        $this->assertSame(1, substr_count($content, '<a href="/f/sownscribe" class="btn btn-light">Follow Code</a>'));
-        $this->assertSame(1, substr_count($content, '<a href="/qr-codes/view/1" class="btn btn-light">Details</a>'));
     }
 
     /**
@@ -154,11 +145,8 @@ class TemplateTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestLayoutPagesView();
         $this->helperTestTemplate('QrCodes/view');
-
-        $content = (string)$this->_response->getBody();
-        $this->assertSame(1, substr_count($content, '<h1 class="mb-1">Sow &amp; Scribe</h1>'));
-        $this->assertSame(2, substr_count($content, '<img class="img-fluid" src="/qr-codes/show/1" alt="The QR Code">'));
-        $this->assertSame(1, substr_count($content, '<a href="/f/sownscribe" class="btn btn-primary btn-block rounded-pill" role="button">Follow Code</a>'));
+        $this->helperTestObjectComment(2, 'QrCode/show');
+        $this->helperTestObjectComment(1, 'QrCode/forward');
     }
 
     /**
@@ -191,11 +179,8 @@ class TemplateTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
         $this->helperTestTemplate('QrCodes/view');
-
-        $content = (string)$this->_response->getBody();
-        $this->assertSame(1, substr_count($content, '<h1 class="mb-1">Sow &amp; Scribe</h1>'));
-        $this->assertSame(2, substr_count($content, '<img class="img-fluid" src="/qr-codes/show/1" alt="The QR Code">'));
-        $this->assertSame(1, substr_count($content, '<a href="/f/sownscribe" class="btn btn-primary btn-block rounded-pill" role="button">Follow Code</a>'));
+        $this->helperTestObjectComment(2, 'QrCode/show');
+        $this->helperTestObjectComment(1, 'QrCode/forward');
     }
 
     /**

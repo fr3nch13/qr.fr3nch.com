@@ -88,7 +88,7 @@ class AppController extends Controller
     /**
      * Gets the active/logged in user from the session.
      *
-     * @param string|null $field If the user exists, return this field
+     * @param ?string $field If the user exists, return this field
      * @param mixed|null $default If the field doesn't exist, or the users doesn't then return this.
      * @return mixed The logged in user, or $default if none, or the field doesn't exist.
      */

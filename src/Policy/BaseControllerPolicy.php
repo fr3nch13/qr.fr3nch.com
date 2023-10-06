@@ -18,7 +18,7 @@ class BaseControllerPolicy implements BeforePolicyInterface
     /**
      * Summary of before
      *
-     * @param mixed $identity The user or null
+     * @param ?\Authorization\IdentityInterface $identity The user or null
      * @param mixed $resource The controller
      * @param string $action The name of the action trying to be accessed
      * @return \Authorization\Policy\ResultInterface|bool|null

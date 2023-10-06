@@ -65,7 +65,7 @@ class QrCodePolicy
     public function canForward(?User $user, ?QrCode $QrCode): bool
     {
         // All users can view active.
-        if ($QrCode->is_active) {
+        if ($QrCode instanceof QrCode && $QrCode->is_active) {
             return true;
         }
 

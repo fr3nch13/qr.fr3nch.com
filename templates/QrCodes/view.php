@@ -73,6 +73,7 @@ if (!$this->getRequest()->is('ajax')) {
                         </div>
 
                         <div class="item text-center">
+                            <?= $this->Template->objectComment('QrCode/show') ?>
                             <img
                                 class="img-fluid"
                                 src="<?= $this->Url->build(['action' => 'show', $qrCode->id]) ?>"
@@ -94,6 +95,7 @@ if (!$this->getRequest()->is('ajax')) {
                             <img class="img-fluid" src="./assets/images/products/product-9-3.jpg" alt="Image">
                         </div>
                         <div>
+                            <?= $this->Template->objectComment('QrCode/show') ?>
                             <img
                                 class="img-fluid"
                                 src="<?= $this->Url->build(['action' => 'show', $qrCode->id]) ?>"
@@ -144,6 +146,7 @@ if (!$this->getRequest()->is('ajax')) {
             <div class="row g-1 align-items-center">
                 <div class="col" aria-label="QR Code Options">
                     <div class="d-grid">
+                    <?= $this->Template->objectComment('QrCode/forward') ?>
                         <?= $this->Html->link(
                             __('Follow Code'),
                             ['action' => 'forward', $qrCode->qrkey],

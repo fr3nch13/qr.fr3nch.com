@@ -110,7 +110,7 @@ class UsersController extends AppController
     /**
      * Public Profile method
      *
-     * @param string|null $id User id.
+     * @param ?string $id User id.
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -149,7 +149,7 @@ class UsersController extends AppController
     /**
      * Private View method
      *
-     * @param string|null $id User id.
+     * @param ?string $id User id.
      * @return \Cake\Http\Response|null|void Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -207,7 +207,7 @@ class UsersController extends AppController
     /**
      * Edit method
      *
-     * @param string|null $id User id.
+     * @param ?string $id User id.
      * @return \Cake\Http\Response|null|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -247,8 +247,8 @@ class UsersController extends AppController
     /**
      * Delete method
      *
-     * @param string|null $id User id.
-     * @return \Cake\Http\Response|null|void Redirects to index.
+     * @param ?string $id User id.
+     * @return ?\Cake\Http\Response Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete(?string $id = null): ?Response

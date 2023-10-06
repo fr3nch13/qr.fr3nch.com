@@ -124,11 +124,13 @@ if (!$this->getRequest()->is('ajax')) {
                             </a>
                         </figure>
                         <div class="btn-group btn-block product-options" role="group" aria-label="Product Options">
+                            <?= $this->Template->objectComment('QrCode/forward') ?>
                             <?= $this->Html->link(
                                 __('Follow Code'),
                                 ['action' => 'forward', $qrCode->qrkey],
                                 ['class' => 'btn btn-light']
                             ); ?>
+                            <?= $this->Template->objectComment('QrCode/view') ?>
                             <?= $this->Html->link(
                                 __('Details'),
                                 ['action' => 'view', $qrCode->id],

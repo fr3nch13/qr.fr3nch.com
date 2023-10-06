@@ -147,7 +147,7 @@ class QrImagesTable extends Table
      * Find Images owned by a Qr Code
      *
      * @param \Cake\ORM\Query\SelectQuery $query The initial query
-     * @param \App\Model\Entity\QrCode $qrCode The QrCode to find for.
+     * @param \App\Model\Entity\QrCode $QrCode The QrCode to find for.
      * @return \Cake\ORM\Query\SelectQuery $query The updated query
      */
     public function findQrCode(SelectQuery $query, QrCode $QrCode): SelectQuery
