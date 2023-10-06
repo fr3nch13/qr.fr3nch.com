@@ -89,7 +89,11 @@ class CategoriesController extends AppController
             if ($this->Categories->save($category)) {
                 $this->Flash->success(__('The category has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect([
+                    'action' => 'view',
+                    $category->id,
+                    '_ext' => $this->getRequest()->getParam('_ext')
+                ]);
             }
             $this->Flash->error(__('The category could not be saved. Please, try again.'));
         }
@@ -120,7 +124,11 @@ class CategoriesController extends AppController
             if ($this->Categories->save($category)) {
                 $this->Flash->success(__('The category has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect([
+                    'action' => 'view',
+                    $category->id,
+                    '_ext' => $this->getRequest()->getParam('_ext')
+                ]);
             }
             $this->Flash->error(__('The category could not be saved. Please, try again.'));
         }
@@ -151,7 +159,10 @@ class CategoriesController extends AppController
                 $category->name,
             ]));
 
-            return $this->redirect(['action' => 'index']);
+            return $this->redirect([
+                'action' => 'index',
+                '_ext' => $this->getRequest()->getParam('_ext')
+            ]);
         }
     }
 }

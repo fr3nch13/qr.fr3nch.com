@@ -161,7 +161,11 @@ class QrCodesController extends AppController
             if ($this->QrCodes->save($qrCode)) {
                 $this->Flash->success(__('The qr code has been saved.'));
 
-                return $this->redirect(['action' => 'view', $qrCode->id]);
+                return $this->redirect([
+                    'action' => 'view',
+                    $qrCode->id,
+                    '_ext' => $this->getRequest()->getParam('_ext')
+                ]);
             }
             $this->Flash->error(__('The qr code could not be saved. Please, try again.'));
         }
@@ -194,7 +198,11 @@ class QrCodesController extends AppController
             if ($this->QrCodes->save($qrCode)) {
                 $this->Flash->success(__('The qr code has been saved.'));
 
-                return $this->redirect(['action' => 'view', $qrCode->id]);
+                return $this->redirect([
+                    'action' => 'view',
+                    $qrCode->id,
+                    '_ext' => $this->getRequest()->getParam('_ext')
+                ]);
             }
             $this->Flash->error(__('The qr code could not be saved. Please, try again.'));
         }
@@ -227,7 +235,10 @@ class QrCodesController extends AppController
                 $qrCode->name,
             ]));
 
-            return $this->redirect(['action' => 'index']);
+            return $this->redirect([
+                'action' => 'index',
+                '_ext' => $this->getRequest()->getParam('_ext')
+            ]);
         }
     }
 }

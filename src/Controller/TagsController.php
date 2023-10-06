@@ -89,7 +89,11 @@ class TagsController extends AppController
             if ($this->Tags->save($tag)) {
                 $this->Flash->success(__('The tag has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect([
+                    'action' => 'view',
+                    $tag->id,
+                    '_ext' => $this->getRequest()->getParam('_ext')
+                ]);
             }
             $this->Flash->error(__('The tag could not be saved. Please, try again.'));
         }
@@ -120,7 +124,11 @@ class TagsController extends AppController
             if ($this->Tags->save($tag)) {
                 $this->Flash->success(__('The tag has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect([
+                    'action' => 'view',
+                    $tag->id,
+                    '_ext' => $this->getRequest()->getParam('_ext')
+                ]);
             }
             $this->Flash->error(__('The tag could not be saved. Please, try again.'));
         }
@@ -151,7 +159,10 @@ class TagsController extends AppController
                 $tag->name,
             ]));
 
-            return $this->redirect(['action' => 'index']);
+            return $this->redirect([
+                'action' => 'index',
+                '_ext' => $this->getRequest()->getParam('_ext')
+            ]);
         }
     }
 }

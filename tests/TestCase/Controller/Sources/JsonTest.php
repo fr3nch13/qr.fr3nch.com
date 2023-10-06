@@ -41,14 +41,14 @@ class JsonTest extends BaseControllerTest
      */
     public function testIndex(): void
     {
-        $this->get('https://localhost/sources');
+        $this->get('https://localhost/sources.json');
         $this->assertResponseOk();
 
         $content = (string)$this->_response->getBody();
         $content = json_decode($content, true);
 
         $this->assertTrue(isset($content['sources']));
-        $this->assertCount(2, $content['sources']);
+        $this->assertCount(3, $content['sources']);
 
         $item = $content['sources'][1];
         $this->assertSame(2, $item['id']);
@@ -64,7 +64,7 @@ class JsonTest extends BaseControllerTest
      */
     public function testView(): void
     {
-        $this->get('https://localhost/sources/view/2');
+        $this->get('https://localhost/sources/view/2.json');
         $this->assertResponseOk();
 
         $content = (string)$this->_response->getBody();
@@ -85,7 +85,7 @@ class JsonTest extends BaseControllerTest
     public function testAdd(): void
     {
         // a get
-        $this->get('https://localhost/sources/add');
+        $this->get('https://localhost/sources/add.json');
         $this->assertResponseOk();
 
         $content = (string)$this->_response->getBody();
@@ -124,7 +124,7 @@ class JsonTest extends BaseControllerTest
             'name' => 'New JSON source',
             'description' => 'Description of the Source',
         ]);
-                $this->assertRedirectEquals('https://localhost/sources');
+        $this->assertRedirectEquals('https://localhost/sources/view/4.json');
         $this->assertFlashMessage('The source has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -139,7 +139,7 @@ class JsonTest extends BaseControllerTest
     {
         // test with admin, get
         $this->loginUserAdmin();
-        $this->get('https://localhost/sources/edit/1');
+        $this->get('https://localhost/sources/edit/1.json');
         $this->assertResponseOk();
         $content = (string)$this->_response->getBody();
         $content = json_decode($content, true);
@@ -155,7 +155,7 @@ class JsonTest extends BaseControllerTest
             'name' => 'New JSON source',
             'description' => 'Description of the source',
         ]);
-                $this->assertRedirectEquals('https://localhost/sources');
+        $this->assertRedirectEquals('https://localhost/sources/view/1.json');
         $this->assertFlashMessage('The source has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }

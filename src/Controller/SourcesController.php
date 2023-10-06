@@ -85,7 +85,11 @@ class SourcesController extends AppController
             if ($this->Sources->save($source)) {
                 $this->Flash->success(__('The source has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect([
+                    'action' => 'view',
+                    $source->id,
+                    '_ext' => $this->getRequest()->getParam('_ext')
+                ]);
             }
             $this->Flash->error(__('The source could not be saved. Please, try again.'));
         }
@@ -115,7 +119,11 @@ class SourcesController extends AppController
             if ($this->Sources->save($source)) {
                 $this->Flash->success(__('The source has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect([
+                    'action' => 'view',
+                    $source->id,
+                    '_ext' => $this->getRequest()->getParam('_ext')
+                ]);
             }
             $this->Flash->error(__('The source could not be saved. Please, try again.'));
         }
@@ -145,7 +153,10 @@ class SourcesController extends AppController
                 $source->name,
             ]));
 
-            return $this->redirect(['action' => 'index']);
+            return $this->redirect([
+                'action' => 'index',
+                '_ext' => $this->getRequest()->getParam('_ext')
+            ]);
         }
     }
 }

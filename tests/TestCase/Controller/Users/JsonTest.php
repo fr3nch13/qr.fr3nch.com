@@ -125,7 +125,7 @@ class JsonTest extends BaseControllerTest
     public function testIndex(): void
     {
         $this->loginUserAdmin();
-        $this->get('https://localhost/users');
+        $this->get('https://localhost/users.json');
         $this->assertResponseOk();
 
         $content = (string)$this->_response->getBody();
@@ -148,7 +148,7 @@ class JsonTest extends BaseControllerTest
     public function testView(): void
     {
         $this->loginUserAdmin();
-        $this->get('https://localhost/users/view/2');
+        $this->get('https://localhost/users/view/2.json');
         $this->assertResponseOk();
 
         $content = (string)$this->_response->getBody();
@@ -168,7 +168,7 @@ class JsonTest extends BaseControllerTest
     public function testProfile(): void
     {
         $this->loginUserAdmin();
-        $this->get('https://localhost/users/profile/2');
+        $this->get('https://localhost/users/profile/2.json');
         $this->assertResponseOk();
 
         $content = (string)$this->_response->getBody();
@@ -189,7 +189,7 @@ class JsonTest extends BaseControllerTest
     {
         $this->loginUserAdmin();
         // a get
-        $this->get('https://localhost/users/add');
+        $this->get('https://localhost/users/add.json');
         $this->assertResponseOk();
 
         $content = (string)$this->_response->getBody();
@@ -232,7 +232,7 @@ class JsonTest extends BaseControllerTest
             'email' => 'newjsonuser@example.com',
             'password' => 'password',
         ]);
-        $this->assertRedirectEquals('https://localhost/users');
+        $this->assertRedirectEquals('https://localhost/users/view/4.json');
         $this->assertFlashMessage('The user has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -248,7 +248,7 @@ class JsonTest extends BaseControllerTest
         $this->loginUserAdmin();
         // test with admin, get
         $this->loginUserAdmin();
-        $this->get('https://localhost/users/edit/1');
+        $this->get('https://localhost/users/edit/1.json');
         $this->assertResponseOk();
         $content = (string)$this->_response->getBody();
         $content = json_decode($content, true);
@@ -264,7 +264,7 @@ class JsonTest extends BaseControllerTest
             'name' => 'New JSON Category',
             'description' => 'Description of the user',
         ]);
-        $this->assertRedirectEquals('https://localhost/users');
+        $this->assertRedirectEquals('https://localhost/users/view/1.json');
         $this->assertFlashMessage('The user has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }

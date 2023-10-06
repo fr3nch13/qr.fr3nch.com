@@ -41,20 +41,18 @@ class JsonTest extends BaseControllerTest
      */
     public function testIndex(): void
     {
-        $this->get('https://localhost/qr-codes');
+        $this->get('https://localhost/qr-codes.json');
         $this->assertResponseOk();
 
         $content = (string)$this->_response->getBody();
         $content = json_decode($content, true);
 
         $this->assertTrue(isset($content['qrCodes']));
-        $this->assertCount(2, $content['qrCodes']);
+        $this->assertCount(4, $content['qrCodes']);
 
         $first = reset($content['qrCodes']);
         $this->assertSame(1, $first['id']);
-        $this->assertTrue(isset($first['tags']));
-        $this->assertTrue(isset($first['categories']));
-        $this->assertTrue(isset($first['source']));
+        $this->assertTrue(isset($first['qr_images']));
         $this->assertFalse(isset($first['user_id']));
         $this->assertFalse(isset($first['user']));
     }
@@ -67,7 +65,7 @@ class JsonTest extends BaseControllerTest
      */
     public function testView(): void
     {
-        $this->get('https://localhost/qr-codes/view/1');
+        $this->get('https://localhost/qr-codes/view/1.json');
         $this->assertResponseOk();
 
         $content = (string)$this->_response->getBody();
@@ -78,6 +76,7 @@ class JsonTest extends BaseControllerTest
         $this->assertTrue(isset($content['qrCode']['tags']));
         $this->assertTrue(isset($content['qrCode']['categories']));
         $this->assertTrue(isset($content['qrCode']['source']));
+        $this->assertTrue(isset($content['qrCode']['qr_images']));
         $this->assertFalse(isset($content['qrCode']['user_id']));
         $this->assertFalse(isset($content['qrCode']['user']));
     }
@@ -91,7 +90,7 @@ class JsonTest extends BaseControllerTest
     public function testAdd(): void
     {
         // a get
-        $this->get('https://localhost/qr-codes/add');
+        $this->get('https://localhost/qr-codes/add.json');
         $this->assertResponseOk();
         $content = (string)$this->_response->getBody();
         $content = json_decode($content, true);
@@ -103,11 +102,11 @@ class JsonTest extends BaseControllerTest
         $this->assertTrue(empty($content['errors']));
 
         $this->assertTrue(isset($content['sources']));
-        $this->assertCount(2, $content['sources']);
+        $this->assertCount(3, $content['sources']);
         $this->assertTrue(isset($content['categories']));
         $this->assertCount(3, $content['categories']);
         $this->assertTrue(isset($content['tags']));
-        $this->assertCount(4, $content['tags']);
+        $this->assertCount(5, $content['tags']);
 
         // a post fail
         $this->post('https://localhost/qr-codes/add.json', []);
@@ -140,11 +139,11 @@ class JsonTest extends BaseControllerTest
         $this->assertSame($expected, $content['errors']);
 
         $this->assertTrue(isset($content['sources']));
-        $this->assertCount(2, $content['sources']);
+        $this->assertCount(3, $content['sources']);
         $this->assertTrue(isset($content['categories']));
         $this->assertCount(3, $content['categories']);
         $this->assertTrue(isset($content['tags']));
-        $this->assertCount(4, $content['tags']);
+        $this->assertCount(5, $content['tags']);
 
         // a post success
         $this->post('https://localhost/qr-codes/add.json', [
@@ -154,7 +153,7 @@ class JsonTest extends BaseControllerTest
             'url' => 'https://amazon.com/path/to/forward',
             'source_id' => 1,
         ]);
-                $this->assertRedirectEquals('https://localhost/');
+        $this->assertRedirectEquals('https://localhost/qr-codes/view/5.json');
         $this->assertFlashMessage('The qr code has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -169,7 +168,7 @@ class JsonTest extends BaseControllerTest
     {
         // test with admin, get
         $this->loginUserAdmin();
-        $this->get('https://localhost/qr-codes/edit/1');
+        $this->get('https://localhost/qr-codes/edit/1.json');
         $this->assertResponseOk();
         $content = (string)$this->_response->getBody();
         $content = json_decode($content, true);
@@ -181,11 +180,11 @@ class JsonTest extends BaseControllerTest
         $this->assertTrue(empty($content['errors']));
 
         $this->assertTrue(isset($content['sources']));
-        $this->assertCount(2, $content['sources']);
+        $this->assertCount(3, $content['sources']);
         $this->assertTrue(isset($content['categories']));
         $this->assertCount(3, $content['categories']);
         $this->assertTrue(isset($content['tags']));
-        $this->assertCount(4, $content['tags']);
+        $this->assertCount(5, $content['tags']);
 
         // a fail as qrkey can't be updated via forms/entities
         $this->patch('https://localhost/qr-codes/edit/1.json', [
@@ -208,11 +207,11 @@ class JsonTest extends BaseControllerTest
         $this->assertSame('QR Key can not be updated.', $content['errors']['qrkey']['update']);
 
         $this->assertTrue(isset($content['sources']));
-        $this->assertCount(2, $content['sources']);
+        $this->assertCount(3, $content['sources']);
         $this->assertTrue(isset($content['categories']));
         $this->assertCount(3, $content['categories']);
         $this->assertTrue(isset($content['tags']));
-        $this->assertCount(4, $content['tags']);
+        $this->assertCount(5, $content['tags']);
 
         // a patch success
         $this->patch('https://localhost/qr-codes/edit/1.json', [
@@ -221,7 +220,7 @@ class JsonTest extends BaseControllerTest
             'url' => 'https://amazon.com/path/to/forward',
             'source_id' => 1,
         ]);
-                $this->assertRedirectEquals('https://localhost/');
+        $this->assertRedirectEquals('https://localhost/qr-codes/view/1.json');
         $this->assertFlashMessage('The qr code has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
