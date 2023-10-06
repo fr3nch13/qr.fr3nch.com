@@ -228,6 +228,7 @@ class QrCodesController extends AppController
         }
 
         $errors = $qrCode->getErrors();
+        print_r($errors);
         $sources = $this->QrCodes->Sources->find('list', limit: 200)->all();
         $categories = $this->QrCodes->Categories->find('list', limit: 200)->all();
         $tags = $this->QrCodes->Tags->find('list', limit: 200)->all();
