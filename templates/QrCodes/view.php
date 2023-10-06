@@ -46,7 +46,9 @@ if (!$this->getRequest()->is('ajax')) {
 
     <!-- The QR Code Details -->
     <div class="row g-5 justify-content-center justify-content-lg-between">
-
+        <?php if (!$qrCode->is_active) : ?>
+        <div class="ribbon red"><span><?= __('Inactive') ?></span></div>
+        <?php endif; ?>
         <!-- The QR Code's images -->
         <div class="col-lg-6 position-relative">
             <div class="row g-1">
