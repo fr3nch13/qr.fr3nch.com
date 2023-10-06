@@ -97,11 +97,10 @@ if (!$this->getRequest()->is('ajax')) {
                 <div class="col-md-6 col-lg-4">
                     <div class="product<?= $qrCode->is_active ? ' active' : ' inactive' ?>">
 
-                        <div class="product-title"><?= $this->Html->link(
-                                $qrCode->name,
-                                ['action' => 'view', $qrCode->id],
-                                ['class' => 'product-title']
-                        ); ?></div>
+                        <div class="product-title"><?= $this->Html->link($qrCode->name, [
+                            'action' => 'view',
+                            $qrCode->id,
+                        ], ['class' => 'product-title']) ?></div>
 
                         <figure class="product-image">
                             <?php if (!$qrCode->is_active) : ?>

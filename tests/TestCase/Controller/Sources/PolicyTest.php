@@ -230,7 +230,7 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/sources/edit/3');
         $this->assertResponseOk();
         $this->helperTestTemplate('Sources/edit');
-        $this->helperTestFormTag('/sources/edit/3', 'patch');
+        $this->helperTestFormTag('/sources/edit/3', 'put');
 
         /// Missing IDs
 

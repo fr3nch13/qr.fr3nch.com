@@ -31,7 +31,7 @@ class GeneralTest extends BaseControllerTest
      * Test show method
      *
      * @return void
-     * @uses \App\Controller\QrCodesController::show()
+     * @uses \App\Controller\QrImagesController::show()
      */
     public function testShow(): void
     {
@@ -42,13 +42,15 @@ class GeneralTest extends BaseControllerTest
         $this->assertFalse(isset($headers['Cache-Control']));
         $this->assertSame('image/jpeg', $headers['Content-Type'][0]);
         $this->assertGreaterThan(0, $headers['Content-Length'][0]);
+        $this->assertTrue(isset($headers['Last-Modified']));
+        $this->assertNotNull($headers['Last-Modified'][0]);
     }
 
     /**
      * Test show method
      *
      * @return void
-     * @uses \App\Controller\QrCodesController::show()
+     * @uses \App\Controller\QrImagesController::show()
      */
     public function testShowHeadersNoDebug(): void
     {
@@ -61,6 +63,7 @@ class GeneralTest extends BaseControllerTest
         $this->assertTrue(isset($headers['Cache-Control']));
         $this->assertSame('public, max-age=3600', $headers['Cache-Control'][0]);
         $this->assertTrue(isset($headers['Last-Modified']));
+        $this->assertNotNull($headers['Last-Modified'][0]);
         $this->assertSame('image/jpeg', $headers['Content-Type'][0]);
         $this->assertGreaterThan(0, $headers['Content-Length'][0]);
         Configure::write('debug', true);

@@ -220,7 +220,7 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/tags/edit/4');
         $this->assertResponseOk();
         $this->helperTestTemplate('Tags/edit');
-        $this->helperTestFormTag('/tags/edit/4', 'patch');
+        $this->helperTestFormTag('/tags/edit/4', 'put');
 
         // test with reqular, not owner
         $this->loginUserRegular();
@@ -235,7 +235,7 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/tags/edit/1');
         $this->assertResponseOk();
         $this->helperTestTemplate('Tags/edit');
-        $this->helperTestFormTag('/tags/edit/1', 'patch');
+        $this->helperTestFormTag('/tags/edit/1', 'put');
 
         /// Missing IDs
 

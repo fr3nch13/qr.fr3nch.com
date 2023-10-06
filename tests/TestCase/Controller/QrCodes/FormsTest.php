@@ -79,12 +79,12 @@ class FormsTest extends BaseControllerTest
     public function testEdit(): void
     {
         // test fail, can't edit qrkey
-        $this->patch('https://localhost/qr-codes/edit/1', [
+        $this->put('https://localhost/qr-codes/edit/1', [
             'qrkey' => 'blahblah', // changed key
         ]);
         $this->assertResponseOk();
         $this->helperTestTemplate('QrCodes/edit');
-        $this->helperTestFormTag('/qr-codes/edit/1', 'patch');
+        $this->helperTestFormTag('/qr-codes/edit/1', 'put');
         $this->helperTestAlert('The qr code could not be saved. Please, try again.', 'danger');
         // test to make sure the fields that are required are actually tagged as so.
         // don't show the frontend an error as this shouldn't happen.
@@ -92,19 +92,19 @@ class FormsTest extends BaseControllerTest
         // $this->helperTestFormFieldError('Message here.', 'qrkey-error');
 
         // a test fail existing key
-        $this->patch('https://localhost/qr-codes/edit/1', [
+        $this->put('https://localhost/qr-codes/edit/1', [
             'qrkey' => 'witchinghour', // an existing record
         ]);
         $this->assertResponseOk();
         $this->helperTestTemplate('QrCodes/edit');
-        $this->helperTestFormTag('/qr-codes/edit/1', 'patch');
+        $this->helperTestFormTag('/qr-codes/edit/1', 'put');
         $this->helperTestAlert('The qr code could not be saved. Please, try again.', 'danger');
         // don't show the frontend an error as this shouldn't happen.
         // if it does, it's someone trying to be nefarious, don't give them more info.
         // $this->helperTestFormFieldError('Message here.', 'qrkey-error');
 
         // test success
-        $this->patch('https://localhost/qr-codes/edit/1', [
+        $this->put('https://localhost/qr-codes/edit/1', [
             'name' => 'New Qr Code',
             'description' => 'The Description',
             'url' => 'https://new.com/path/to/forward',
@@ -114,7 +114,7 @@ class FormsTest extends BaseControllerTest
             ],
             'tags' => [
                 '_ids' => [],
-            ]
+            ],
         ]);
         $this->assertRedirectEquals('https://localhost/qr-codes/view/1');
         $this->assertFlashMessage('The qr code has been saved.', 'flash');

@@ -367,21 +367,21 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/qr-images/edit/5');
         $this->assertResponseOk();
         $this->helperTestTemplate('QrImages/edit');
-        $this->helperTestFormTag('/qr-images/edit/5', 'patch', true);
+        $this->helperTestFormTag('/qr-images/edit/5', 'put', true);
 
         // test with admin, owner
         $this->loginUserAdmin();
         $this->get('https://localhost/qr-images/edit/1');
         $this->assertResponseOk();
         $this->helperTestTemplate('QrImages/edit');
-        $this->helperTestFormTag('/qr-images/edit/1', 'patch', true);
+        $this->helperTestFormTag('/qr-images/edit/1', 'put', true);
 
         // test with admin, not owner
         $this->loginUserAdmin();
         $this->get('https://localhost/qr-images/edit/5');
         $this->assertResponseOk();
         $this->helperTestTemplate('QrImages/edit');
-        $this->helperTestFormTag('/qr-images/edit/5', 'patch', true);
+        $this->helperTestFormTag('/qr-images/edit/5', 'put', true);
 
         /// Missing IDs
 

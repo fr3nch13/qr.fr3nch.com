@@ -190,13 +190,27 @@ class BaseControllerTest extends TestCase
      */
     public function helperTestFormTag(string $action, string $method = 'post', bool $isFile = false): void
     {
+        $content = (string)$this->_response->getBody();
+
         $fileString = '';
         if ($isFile) {
             $fileString = 'enctype="multipart/form-data" ';
         }
-        $formString = '<form ' . $fileString . 'method="' . $method . '" accept-charset="utf-8" role="form" action="' . $action . '">';
 
-        $content = (string)$this->_response->getBody();
+        // if the method is a put or a patch, look for the cake internal translation.
+        $otherMethod = null;
+        if (in_array(strtolower($method), ['put', 'patch'])) {
+            $otherMethod = $method;
+            $method = 'post';
+            // look for the hidenn method that cakephp uses
+            // <input type="hidden" name="_method" value="PUT">
+            $this->assertSame(1, substr_count($content, '<input type="hidden" name="_method" value="' .
+                strtoupper($otherMethod) . '">'));
+        }
+
+        $formString = '<form ' . $fileString . 'method="' . $method .
+            '" accept-charset="utf-8" role="form" action="' . $action . '">';
+
         $this->assertSame(1, substr_count($content, $formString));
     }
 

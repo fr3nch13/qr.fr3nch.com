@@ -178,16 +178,16 @@ class CrudTest extends BaseControllerTest
         $this->patch('https://localhost/qr-codes/edit/1', [
             'name' => 'Edited QrCode',
         ]);
-        $this->assertRedirectEquals('https://localhost/qr-codes/view/1');
-        $this->assertFlashMessage('The qr code has been saved.', 'flash');
-        $this->assertFlashElement('flash/success');
+        $this->assertResponseCode(405);
+        $this->assertResponseContains('Method Not Allowed');
 
         // put
         $this->put('https://localhost/qr-codes/edit/1', [
             'name' => 'Edited QrCode',
         ]);
-        $this->assertResponseCode(405);
-        $this->assertResponseContains('Method Not Allowed');
+        $this->assertRedirectEquals('https://localhost/qr-codes/view/1');
+        $this->assertFlashMessage('The qr code has been saved.', 'flash');
+        $this->assertFlashElement('flash/success');
 
         // delete
         $this->delete('https://localhost/qr-codes/edit/1');

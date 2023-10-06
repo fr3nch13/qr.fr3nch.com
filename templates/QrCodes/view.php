@@ -49,7 +49,14 @@ if (!$this->getRequest()->is('ajax')) {
     <?php endif; // Page Actions ?>
 
     <!-- The QR Code Details -->
-    <div class="row g-5 justify-content-center justify-content-lg-between product product-<?= ($qrCode->is_active ? 'active' : 'inactive')?>">
+    <div class="
+        row
+        g-5
+        justify-content-center
+        justify-content-lg-between
+        product
+        product-<?= ($qrCode->is_active ? 'active' : 'inactive')?>
+        ">
         <?php if (!$qrCode->is_active) : ?>
         <div class="ribbon red"><span><?= __('Inactive') ?></span></div>
         <?php endif; ?>

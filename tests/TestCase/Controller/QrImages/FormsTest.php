@@ -74,7 +74,7 @@ class FormsTest extends BaseControllerTest
     public function testEdit(): void
     {
         // test success
-        $this->patch('https://localhost/qr-images/edit/2', [
+        $this->put('https://localhost/qr-images/edit/2', [
             'name' => 'New Category',
         ]);
         $this->assertRedirectEquals('https://localhost/qr-images/qr-code/1');

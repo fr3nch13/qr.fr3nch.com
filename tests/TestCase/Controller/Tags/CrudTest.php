@@ -187,16 +187,16 @@ class CrudTest extends BaseControllerTest
         $this->patch('https://localhost/tags/edit/1', [
             'name' => 'Updated Tag',
         ]);
-        $this->assertRedirectEquals('https://localhost/tags/view/1');
-        $this->assertFlashMessage('The tag has been saved.', 'flash');
-        $this->assertFlashElement('flash/success');
+        $this->assertResponseCode(405);
+        $this->assertResponseContains('Method Not Allowed');
 
         // put
         $this->put('https://localhost/tags/edit/1', [
             'name' => 'Updated Tag',
         ]);
-        $this->assertResponseCode(405);
-        $this->assertResponseContains('Method Not Allowed');
+        $this->assertRedirectEquals('https://localhost/tags/view/1');
+        $this->assertFlashMessage('The tag has been saved.', 'flash');
+        $this->assertFlashElement('flash/success');
 
         // delete
         $this->delete('https://localhost/tags/edit/1');

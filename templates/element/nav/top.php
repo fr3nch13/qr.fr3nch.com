@@ -12,7 +12,7 @@ if ($this->getLayout() === 'login') {
 }
 $logoImage = $this->Html->image($logoImage, [
     'class' => 'logo-top',
-    'alt' => __('Fr3nch QR Code generator.')
+    'alt' => __('Fr3nch QR Code generator.'),
 ]);
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>

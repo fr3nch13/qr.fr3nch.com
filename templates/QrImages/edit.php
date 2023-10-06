@@ -10,7 +10,7 @@ if (!$this->getRequest()->is('ajax')) {
 // labels: images, templates
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
-<?= $this->Form->create($qrImage, ['method' => 'patch', 'type' => 'file']) ?>
+<?= $this->Form->create($qrImage, ['type' => 'file']) ?>
     <fieldset>
         <legend><?= __('Edit QR Image') ?></legend>
 

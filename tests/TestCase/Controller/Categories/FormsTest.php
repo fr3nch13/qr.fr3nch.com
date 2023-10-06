@@ -70,20 +70,20 @@ class FormsTest extends BaseControllerTest
     public function testEdit(): void
     {
         // test fail validationDefault
-        $this->patch('https://localhost/categories/edit/1', [
+        $this->put('https://localhost/categories/edit/1', [
             'name' => 'Journals', // an existing record
             'parent_id' => 4, // this doesn't exist
         ]);
         $this->assertResponseOk();
         $this->helperTestTemplate('Categories/edit');
-        $this->helperTestFormTag('/categories/edit/1', 'patch');
+        $this->helperTestFormTag('/categories/edit/1', 'put');
         $this->helperTestAlert('The category could not be saved. Please, try again.', 'danger');
         // test to make sure the fields that are required are actually tagged as so.
         $this->helperTestFormFieldError('This Name already exists.', 'name-error');
         $this->helperTestFormFieldError('This Parent Category doesn&#039;t exist.', 'parent-id-error');
 
         // test success
-        $this->patch('https://localhost/categories/edit/1', [
+        $this->put('https://localhost/categories/edit/1', [
             'name' => 'New Category',
             'description' => 'The Description',
             'parent_id' => 3, // this doesn't exist
