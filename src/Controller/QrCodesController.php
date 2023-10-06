@@ -208,16 +208,16 @@ class QrCodesController extends AppController
      */
     public function edit(?string $id = null): ?Response
     {
-        debug($this->request->is('POST'));
-        debug($this->request->is('post'));
+        debug($this->request->is('put'));
+        debug($this->request->is('put'));
         debug($this->request->is('GET'));
         debug($this->request->is('get'));
-        $this->request->allowMethod(['post', 'get']);
+        $this->request->allowMethod(['put', 'get']);
 
         $qrCode = $this->QrCodes->get((int)$id, contain: ['Categories', 'Tags']);
         $this->Authorization->authorize($qrCode);
 
-        if ($this->request->is('post')) {
+        if ($this->request->is('put')) {
             $qrCode = $this->QrCodes->patchEntity($qrCode, $this->request->getData());
             if ($this->QrCodes->save($qrCode)) {
                 $this->Flash->success(__('The qr code has been saved.'));
