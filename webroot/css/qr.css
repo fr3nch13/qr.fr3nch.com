@@ -6,7 +6,14 @@ footer img.logo-bottom {
 
 }
 
-/* Product listing page */
+/**
+ * Product listing page
+ */
+
+.products .product {
+    /* Here so the ribbon will work */
+    position: relative;
+}
 .products .product .product-title {
     font-size: 130%;
 }
@@ -15,6 +22,9 @@ footer img.logo-bottom {
     overflow: auto;
     max-height: 400px;
 }
+
+
+
 
 
 /** ribbons **/

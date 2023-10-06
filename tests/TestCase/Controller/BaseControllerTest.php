@@ -6,6 +6,7 @@ namespace App\Test\TestCase\Controller;
 use App\Model\Table\UsersTable;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use HtmlValidator\Validator as HtmlValidator;
 
 /**
  * Base Controller test for the other tests that use
@@ -124,6 +125,21 @@ class BaseControllerTest extends TestCase
                 'X-Requested-With' => 'XMLHttpRequest',
             ],
         ]);
+    }
+
+    /**
+     * Uses an HTML validator to validate the compiled html.
+     *
+     * @return void
+     */
+    public function helperValidateHTML(): void
+    {
+        $content = (string)$this->_response->getBody();
+        $validator = new HtmlValidator();
+        $result = $validator->validateDocument($content);
+
+        $this->assertFalse($result->hasErrors(), (string)$result);
+        $this->assertFalse($result->hasWarnings(), (string)$result);
     }
 
     /**
