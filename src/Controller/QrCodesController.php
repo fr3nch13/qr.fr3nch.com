@@ -98,7 +98,7 @@ class QrCodesController extends AppController
         // allow browser and proxy caching when debug is off
         if (!Configure::read('debug')) {
             $response = $response->withSharable(true, 3600);
-            //$response = $response->withModified(date ("Y-m-d H:i:s.", filemtime($qrCode->path)));
+            $response = $response->withModified(date ("Y-m-d H:i:s.", filemtime($qrCode->path)));
         }
 
         return $response;
