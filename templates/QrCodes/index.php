@@ -96,6 +96,10 @@ if (!$this->getRequest()->is('ajax')) {
                 <?= $this->Template->objectComment('QrCodes/' . ($qrCode->is_active ? 'active' : 'inactive')) ?>
                 <div class="col-md-6 col-lg-4">
                     <div class="product<?= $qrCode->is_active ? ' active' : ' inactive' ?>">
+                        <?php if (!$qrCode->is_active) : ?>
+                        <div class="ribbon red"><span><?= __('Inactive') ?></span>
+                        <?php endif; ?>
+
                         <div class="product-title">
                             <?= $this->Html->link(
                                 $qrCode->name,
