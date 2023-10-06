@@ -105,8 +105,16 @@ class FormsTest extends BaseControllerTest
 
         // test success
         $this->patch('https://localhost/qr-codes/edit/1', [
-            'name' => 'New Category',
+            'name' => 'New Qr Code',
             'description' => 'The Description',
+            'url' => 'https://new.com/path/to/forward',
+            'source_id' => 2,
+            'categories' => [
+                '_ids' => [],
+            ],
+            'tags' => [
+                '_ids' => [],
+            ]
         ]);
         $this->assertRedirectEquals('https://localhost/qr-codes/view/1');
         $this->assertFlashMessage('The qr code has been saved.', 'flash');
