@@ -21,7 +21,7 @@ if (!$this->getRequest()->is('ajax')) {
 ) : ?>
 <div class="product-view">
     <!-- Page Actions -->
-    <div class="row g-5 justify-content-center justify-content-lg-between">
+    <div class="row g-5 mb-4 justify-content-center justify-content-lg-between">
         <div class="col-md-12 text-md-end">
             <ul class="list-inline">
                 <li class="list-inline-item ms-2">
@@ -133,7 +133,7 @@ if (!$this->getRequest()->is('ajax')) {
         <!-- QR Code details -->
 
         <div class="col-lg-6 col-xl-6">
-            <h1 class="mb-1"><?= h($qrCode->name) ?></h1>
+            <h1 class="mb-1 <?= ($qrCode->is_active ? 'active' : 'inactive')?>"><?= h($qrCode->name) ?></h1>
 
             <p class="text-secondary mb-3"><?= $this->Text->autoParagraph(h($qrCode->description)); ?></p>
 
