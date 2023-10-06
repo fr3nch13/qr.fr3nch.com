@@ -66,6 +66,7 @@ class QrImagesFixture extends CoreFixture
                 'qr_code_id' => 2,
             ],
             [
+                // owned by reqular.
                 'id' => 5,
                 'name' => 'In Hand',
                 'ext' => 'jpg',
@@ -75,6 +76,7 @@ class QrImagesFixture extends CoreFixture
                 'qr_code_id' => 3,
             ],
             [
+                // owned by reqular.
                 'id' => 6,
                 'name' => 'Dimensions Top',
                 'ext' => 'jpg',

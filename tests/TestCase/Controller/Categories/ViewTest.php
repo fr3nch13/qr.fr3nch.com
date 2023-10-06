@@ -10,7 +10,10 @@ use Cake\Core\Configure;
  * App\Controller\CategoriesController Test Case
  *
  * Tests that the templates are being used coreectly.
- * Specifically in requests for regular, ajax, and json.
+ * Specifically in requests for regular, ajax.
+ *
+ * TODO: Test specific HTML once templates are done.
+ * labels: frontend, templates, tesing
  *
  * @uses \App\Controller\CategoriesController
  */

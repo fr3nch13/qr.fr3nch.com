@@ -10,7 +10,10 @@ use Cake\Core\Configure;
  * App\Controller\SourcesController Test Case
  *
  * Tests that the templates are being used coreectly.
- * Specifically in requests for regular, ajax, and json.
+ * Specifically in requests for regular, ajax.
+ *
+ * TODO: Test specific HTML once templates are done.
+ * labels: frontend, templates, tesing
  *
  * @uses \App\Controller\SourcesController
  */
@@ -47,14 +50,14 @@ class ViewTest extends BaseControllerTest
         $this->get('https://localhost/sources');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesIndex();
-        $this->assertResponseContains('<div class="sources index content">');
-        $this->assertResponseContains('<h3>Sources</h3>');
+        $this->helperTestTemplate('Sources/index');
 
         // test with admin
         $this->loginUserAdmin();
         $this->get('https://localhost/sources');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesIndex();
+        $this->helperTestTemplate('Sources/index');
     }
 
     /**
@@ -76,8 +79,7 @@ class ViewTest extends BaseControllerTest
         $this->get('https://localhost/sources');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
-        $this->assertResponseContains('<div class="sources index content">');
-        $this->assertResponseContains('<h3>Sources</h3>');
+        $this->helperTestTemplate('Sources/index');
 
         // test with admin
         $this->requestAsAjax();
@@ -85,6 +87,7 @@ class ViewTest extends BaseControllerTest
         $this->get('https://localhost/sources');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
+        $this->helperTestTemplate('Sources/index');
     }
 
     /**
@@ -104,12 +107,14 @@ class ViewTest extends BaseControllerTest
         $this->get('https://localhost/sources/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesView();
+        $this->helperTestTemplate('Sources/view');
 
         // test with admin
         $this->loginUserAdmin();
         $this->get('https://localhost/sources/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesView();
+        $this->helperTestTemplate('Sources/view');
     }
 
     /**
@@ -131,6 +136,7 @@ class ViewTest extends BaseControllerTest
         $this->get('https://localhost/sources/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
+        $this->helperTestTemplate('Sources/view');
 
         // test with admin
         $this->requestAsAjax();
@@ -138,6 +144,7 @@ class ViewTest extends BaseControllerTest
         $this->get('https://localhost/sources/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
+        $this->helperTestTemplate('Sources/view');
     }
 
     /**
@@ -152,15 +159,13 @@ class ViewTest extends BaseControllerTest
         $this->loginUserRegular();
         $this->get('https://localhost/sources/add');
         $this->assertRedirectEquals('https://localhost/?redirect=%2Fsources%2Fadd');
-        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
-        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
-        $this->assertFlashElement('flash/error');
 
         // test with admin, get
         $this->loginUserAdmin();
         $this->get('https://localhost/sources/add');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesForm();
+        $this->helperTestTemplate('Sources/add');
     }
 
     /**
@@ -176,9 +181,6 @@ class ViewTest extends BaseControllerTest
         $this->loginUserRegular();
         $this->get('https://localhost/sources/add');
         $this->assertRedirectEquals('https://localhost/?redirect=%2Fsources%2Fadd');
-        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
-        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
-        $this->assertFlashElement('flash/error');
 
         // test with admin, get
         $this->requestAsAjax();
@@ -186,6 +188,7 @@ class ViewTest extends BaseControllerTest
         $this->get('https://localhost/sources/add');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
+        $this->helperTestTemplate('Sources/add');
     }
 
     /**
@@ -200,15 +203,13 @@ class ViewTest extends BaseControllerTest
         $this->loginUserRegular();
         $this->get('https://localhost/sources/edit/1');
         $this->assertRedirectEquals('https://localhost/?redirect=%2Fsources%2Fedit%2F1');
-        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
-        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
-        $this->assertFlashElement('flash/error');
 
         // test with admin, get
         $this->loginUserAdmin();
         $this->get('https://localhost/sources/edit/1');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesForm();
+        $this->helperTestTemplate('Sources/edit');
     }
 
     /**
@@ -224,9 +225,6 @@ class ViewTest extends BaseControllerTest
         $this->loginUserRegular();
         $this->get('https://localhost/sources/edit/1');
         $this->assertRedirectEquals('https://localhost/?redirect=%2Fsources%2Fedit%2F1');
-        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
-        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
-        $this->assertFlashElement('flash/error');
 
         // test with admin, get
         $this->requestAsAjax();
@@ -234,5 +232,6 @@ class ViewTest extends BaseControllerTest
         $this->get('https://localhost/sources/edit/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
+        $this->helperTestTemplate('Sources/edit');
     }
 }

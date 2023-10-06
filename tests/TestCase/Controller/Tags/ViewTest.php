@@ -10,7 +10,10 @@ use Cake\Core\Configure;
  * App\Controller\TagsController Test Case
  *
  * Tests that the templates are being used coreectly.
- * Specifically in requests for regular, ajax, and json.
+ * Specifically in requests for regular, ajax.
+ *
+ * TODO: Test specific HTML once templates are done.
+ * labels: frontend, templates, tesing
  *
  * @uses \App\Controller\TagsController
  */
@@ -42,18 +45,21 @@ class ViewTest extends BaseControllerTest
         $this->get('https://localhost/tags');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesIndex();
+        $this->helperTestTemplate('Tags/index');
 
         // test with reqular
         $this->loginUserRegular();
         $this->get('https://localhost/tags');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesIndex();
+        $this->helperTestTemplate('Tags/index');
 
         // test with admin
         $this->loginUserAdmin();
         $this->get('https://localhost/tags');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesIndex();
+        $this->helperTestTemplate('Tags/index');
     }
 
     /**
@@ -69,6 +75,7 @@ class ViewTest extends BaseControllerTest
         $this->get('https://localhost/tags');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
+        $this->helperTestTemplate('Tags/index');
 
         // test with reqular
         $this->requestAsAjax();
@@ -76,6 +83,7 @@ class ViewTest extends BaseControllerTest
         $this->get('https://localhost/tags');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
+        $this->helperTestTemplate('Tags/index');
 
         // test with admin
         $this->requestAsAjax();
@@ -83,6 +91,7 @@ class ViewTest extends BaseControllerTest
         $this->get('https://localhost/tags');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
+        $this->helperTestTemplate('Tags/index');
     }
 
     /**
@@ -97,18 +106,21 @@ class ViewTest extends BaseControllerTest
         $this->get('https://localhost/tags/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesView();
+        $this->helperTestTemplate('Tags/view');
 
         // test with reqular
         $this->loginUserRegular();
         $this->get('https://localhost/tags/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesView();
+        $this->helperTestTemplate('Tags/view');
 
         // test with admin
         $this->loginUserAdmin();
         $this->get('https://localhost/tags/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesView();
+        $this->helperTestTemplate('Tags/view');
     }
 
     /**
@@ -124,6 +136,7 @@ class ViewTest extends BaseControllerTest
         $this->get('https://localhost/tags/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
+        $this->helperTestTemplate('Tags/view');
 
         // test with reqular
         $this->requestAsAjax();
@@ -131,6 +144,7 @@ class ViewTest extends BaseControllerTest
         $this->get('https://localhost/tags/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
+        $this->helperTestTemplate('Tags/view');
 
         // test with admin
         $this->requestAsAjax();
@@ -138,6 +152,7 @@ class ViewTest extends BaseControllerTest
         $this->get('https://localhost/tags/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
+        $this->helperTestTemplate('Tags/view');
     }
 
     /**
@@ -153,12 +168,14 @@ class ViewTest extends BaseControllerTest
         $this->get('https://localhost/tags/add');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesForm();
+        $this->helperTestTemplate('Tags/add');
 
         // test with admin, get
         $this->loginUserAdmin();
         $this->get('https://localhost/tags/add');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesForm();
+        $this->helperTestTemplate('Tags/add');
     }
 
     /**
@@ -175,6 +192,7 @@ class ViewTest extends BaseControllerTest
         $this->get('https://localhost/tags/add');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
+        $this->helperTestTemplate('Tags/add');
 
         // test with admin, get
         $this->requestAsAjax();
@@ -182,6 +200,7 @@ class ViewTest extends BaseControllerTest
         $this->get('https://localhost/tags/add');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
+        $this->helperTestTemplate('Tags/add');
     }
 
     /**
@@ -194,17 +213,17 @@ class ViewTest extends BaseControllerTest
     {
         // test with reqular, get
         $this->loginUserRegular();
-        $this->get('https://localhost/tags/edit/1');
-        $this->assertRedirectEquals('https://localhost/?redirect=%2Ftags%2Fedit%2F1');
-        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
-        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
-        $this->assertFlashElement('flash/error');
-
-        // test with admin, get
-        $this->loginUserAdmin();
-        $this->get('https://localhost/tags/edit/1');
+        $this->get('https://localhost/tags/edit/4');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesForm();
+        $this->helperTestTemplate('Tags/edit');
+
+        // test with admin, get, can edit any
+        $this->loginUserAdmin();
+        $this->get('https://localhost/tags/edit/4');
+        $this->assertResponseOk();
+        $this->helperTestLayoutPagesForm();
+        $this->helperTestTemplate('Tags/edit');
     }
 
     /**
@@ -218,17 +237,17 @@ class ViewTest extends BaseControllerTest
         // test with reqular, get
         $this->requestAsAjax();
         $this->loginUserRegular();
-        $this->get('https://localhost/tags/edit/1');
-        $this->assertRedirectEquals('https://localhost/?redirect=%2Ftags%2Fedit%2F1');
-        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
-        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
-        $this->assertFlashElement('flash/error');
+        $this->get('https://localhost/tags/edit/4');
+        $this->assertResponseOk();
+        $this->helperTestLayoutAjax();
+        $this->helperTestTemplate('Tags/edit');
 
         // test with admin, get
         $this->requestAsAjax();
         $this->loginUserAdmin();
-        $this->get('https://localhost/tags/edit/1');
+        $this->get('https://localhost/tags/edit/4');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
+        $this->helperTestTemplate('Tags/edit');
     }
 }

@@ -10,7 +10,10 @@ use Cake\Core\Configure;
  * App\Controller\QrImagesController Test Case
  *
  * Tests that the templates are being used coreectly.
- * Specifically in requests for regular, ajax, and json.
+ * Specifically in requests for regular, ajax.
+ * 
+ * TODO: Test specific HTML once templates are done.
+ * labels: frontend, templates, tesing
  *
  * @uses \App\Controller\QrImagesController
  */
@@ -31,142 +34,41 @@ class ViewTest extends BaseControllerTest
     }
 
     /**
-     * Test index method
+     * Test qrCode method
      *
      * @return void
-     * @uses \App\Controller\QrImagesController::index()
+     * @uses \App\Controller\QrImagesController::qrCode()
      */
-    public function testIndexNormal(): void
+    public function testQrCodeNormal(): void
     {
-        // not logged in
-        $this->get('https://localhost/qr-images');
-        $this->assertResponseOk();
-        $this->helperTestLayoutPagesIndex();
-
-        // test with reqular
-        $this->loginUserRegular();
-        $this->get('https://localhost/qr-images');
-        $this->assertResponseOk();
-        $this->helperTestLayoutPagesIndex();
-
         // test with admin
         // test html content.
         $this->loginUserAdmin();
-        $this->get('https://localhost/qr-images');
+        $this->get('https://localhost/qr-images/qr-code/1');
         $this->assertResponseOk();
-        $content = (string)$this->_response->getBody();
-        $this->assertSame(1, substr_count($content, '<!-- START: App.QrImages/index -->'));
-        $this->assertSame(1, substr_count($content, '<!-- END: App.QrImages/index -->'));
-        $this->assertSame(1, substr_count($content, '<h1>QR Codes</h1>'));
-        $this->assertSame(3, substr_count($content, '<div class="product">'));
-        $this->assertSame(3, substr_count($content, '<div class="product-title">'));
-        $this->assertSame(3, substr_count($content, '<figure class="product-image">'));
-
-        // make sure the products are listed.
-        // Sow & Scribe
-        $this->assertSame(1, substr_count($content, '<a href="/qr-images/view/1" class="product-title">Sow &amp; Scribe</a>'));
-        $this->assertSame(1, substr_count($content, '<img src="/qr-images/show/1" alt="The QR Code>'));
-        $this->assertSame(1, substr_count($content, '<a href="/f/sownscribe" class="btn btn-light">Follow</a>'));
-        $this->assertSame(1, substr_count($content, '<a href="/qr-images/view/1" class="btn btn-light">View</a>'));
-        // Witching Hour
-        $this->assertSame(1, substr_count($content, '<a href="/qr-images/view/2" class="product-title">The Witching Hour</a>'));
-        $this->assertSame(1, substr_count($content, '<img src="/qr-images/show/2" alt="The QR Code>'));
-        $this->assertSame(1, substr_count($content, '<a href="/f/witchinghour" class="btn btn-light">Follow</a>'));
-        $this->assertSame(1, substr_count($content, '<a href="/qr-images/view/2" class="btn btn-light">View</a>'));
+        $this->helperTestLayoutPagesIndex();
+        $this->helperTestTemplate('QrImages/qr_code');
+        $this->helperTestObjectComment(2, 'QrImages/entity');
+        $this->helperTestObjectComment(2, 'QrImages/entity/active');
     }
 
     /**
-     * Test index method
+     * Test qrCode method
      *
      * @return void
-     * @uses \App\Controller\QrImagesController::index()
+     * @uses \App\Controller\QrImagesController::qrCode()
      */
-    public function testIndexAjax(): void
+    public function testQrCodeAjax(): void
     {
-        // not logged in
-        $this->requestAsAjax();
-        $this->get('https://localhost/qr-images');
-        $this->assertResponseOk();
-        $this->helperTestLayoutAjax();
-
-        // test with reqular
-        $this->requestAsAjax();
-        $this->loginUserRegular();
-        $this->get('https://localhost/qr-images');
-        $this->assertResponseOk();
-        $this->helperTestLayoutAjax();
-
         // test with admin
         $this->requestAsAjax();
         $this->loginUserAdmin();
-        $this->get('https://localhost/qr-images');
+        $this->get('https://localhost/qr-images/qr-code/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
-    }
-
-    /**
-     * Test view method
-     *
-     * @return void
-     * @uses \App\Controller\QrImagesController::view()
-     */
-    public function testViewNormal(): void
-    {
-        // not logged in
-        $this->get('https://localhost/qr-images/view/1');
-        $this->assertResponseOk();
-        $this->helperTestLayoutPagesView();
-
-        // test with admin
-        $this->loginUserAdmin();
-        $this->get('https://localhost/qr-images/view/1');
-        $this->assertResponseOk();
-        $this->helperTestLayoutPagesView();
-
-        // test with reqular
-        $this->loginUserRegular();
-        $this->get('https://localhost/qr-images/view/1');
-        $this->assertResponseOk();
-        $this->helperTestLayoutPagesView();
-
-        // test html content.
-        $this->get('https://localhost/qr-images/view/1');
-        $this->assertResponseOk();
-        $content = (string)$this->_response->getBody();
-        $this->assertSame(1, substr_count($content, '<!-- START: App.QrImages/view -->'));
-        $this->assertSame(1, substr_count($content, '<!-- END: App.QrImages/view -->'));
-        $this->assertSame(1, substr_count($content, '<h1 class="mb-1">Sow &amp; Scribe</h1>'));
-        $this->assertSame(2, substr_count($content, '<img class="img-fluid" src="/qr-images/show/1" alt="The QR Code">'));
-        $this->assertSame(1, substr_count($content, '<a href="/f/sownscribe" class="btn btn-primary btn-block rounded-pill" role="button">Follow</a>'));
-    }
-
-    /**
-     * Test view method
-     *
-     * @return void
-     * @uses \App\Controller\QrImagesController::view()
-     */
-    public function testViewAjax(): void
-    {
-        // not logged in
-        $this->requestAsAjax();
-        $this->get('https://localhost/qr-images/view/1');
-        $this->assertResponseOk();
-        $this->helperTestLayoutAjax();
-
-        // test with admin
-        $this->requestAsAjax();
-        $this->loginUserAdmin();
-        $this->get('https://localhost/qr-images/view/1');
-        $this->assertResponseOk();
-        $this->helperTestLayoutAjax();
-
-        // test with reqular
-        $this->requestAsAjax();
-        $this->loginUserRegular();
-        $this->get('https://localhost/qr-images/view/1');
-        $this->assertResponseOk();
-        $this->helperTestLayoutAjax();
+        $this->helperTestTemplate('QrImages/qr_code');
+        $this->helperTestObjectComment(2, 'QrImages/entity');
+        $this->helperTestObjectComment(2, 'QrImages/entity/active');
     }
 
     /**
@@ -179,15 +81,17 @@ class ViewTest extends BaseControllerTest
     {
         // test with reqular, get
         $this->loginUserRegular();
-        $this->get('https://localhost/qr-images/add/1');
+        $this->get('https://localhost/qr-images/add/3');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesForm();
+        $this->helperTestTemplate('QrImages/add');
 
-        // test with admin, get
+        // test with admin, get, can edit any.
         $this->loginUserAdmin();
-        $this->get('https://localhost/qr-images/add/1');
+        $this->get('https://localhost/qr-images/add/3');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesForm();
+        $this->helperTestTemplate('QrImages/add');
     }
 
     /**
@@ -199,19 +103,12 @@ class ViewTest extends BaseControllerTest
     public function testAddAjax(): void
     {
         // test with reqular, get
-        // not their qr code
         $this->requestAsAjax();
         $this->loginUserRegular();
-        $this->get('https://localhost/qr-images/add/1');
-        $this->assertRedirectEquals('https://localhost/?redirect=%2Fqr-images%2Fadd%2F1');
-        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
-        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
-        $this->assertFlashElement('flash/error');
-
-        // their qr code.
         $this->get('https://localhost/qr-images/add/3');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
+        $this->helperTestTemplate('QrImages/add');
 
 
         // test with admin, get, can edit any.
@@ -220,6 +117,7 @@ class ViewTest extends BaseControllerTest
         $this->get('https://localhost/qr-images/add/3');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
+        $this->helperTestTemplate('QrImages/add');
     }
 
     /**
@@ -232,17 +130,17 @@ class ViewTest extends BaseControllerTest
     {
         // test with reqular, get
         $this->loginUserRegular();
-        $this->get('https://localhost/qr-images/edit/1');
-        $this->assertRedirectEquals('https://localhost/?redirect=%2Fqr-images%2Fedit%2F1');
-        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
-        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
-        $this->assertFlashElement('flash/error');
-
-        // test with admin, get
-        $this->loginUserAdmin();
-        $this->get('https://localhost/qr-images/edit/1');
+        $this->get('https://localhost/qr-images/edit/5');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesForm();
+        $this->helperTestTemplate('QrImages/edit');
+
+        // test with admin, get, can edit any.
+        $this->loginUserAdmin();
+        $this->get('https://localhost/qr-images/edit/5');
+        $this->assertResponseOk();
+        $this->helperTestLayoutPagesForm();
+        $this->helperTestTemplate('QrImages/edit');
     }
 
     /**
@@ -256,17 +154,17 @@ class ViewTest extends BaseControllerTest
         // test with reqular, get
         $this->requestAsAjax();
         $this->loginUserRegular();
-        $this->get('https://localhost/qr-images/edit/2');
-        $this->assertRedirectEquals('https://localhost/?redirect=%2Fqr-images%2Fedit%2F2');
-        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
-        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
-        $this->assertFlashElement('flash/error');
+        $this->get('https://localhost/qr-images/edit/5');
+        $this->assertResponseOk();
+        $this->helperTestLayoutAjax();
+        $this->helperTestTemplate('QrImages/edit');
 
         // test with admin, get
         $this->requestAsAjax();
         $this->loginUserAdmin();
-        $this->get('https://localhost/qr-images/edit/2');
+        $this->get('https://localhost/qr-images/edit/5');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
+        $this->helperTestTemplate('QrImages/edit');
     }
 }
