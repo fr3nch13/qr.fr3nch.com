@@ -212,7 +212,7 @@ class QrCodesController extends AppController
 
         $qrCode = $this->QrCodes->get((int)$id, contain: ['Categories', 'Tags']);
         $this->Authorization->authorize($qrCode);
-        print_r($this->request->is('patch'));
+        print_r((string)$this->request->is('patch'));
         print_r($this->request->getMethod());
 
         if ($this->request->is('patch')) {
