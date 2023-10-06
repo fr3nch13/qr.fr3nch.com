@@ -100,13 +100,12 @@ if (!$this->getRequest()->is('ajax')) {
                         <div class="ribbon red"><span><?= __('Inactive') ?></span>
                         <?php endif; ?>
 
-                        <div class="product-title">
-                            <?= $this->Html->link(
+                        <div class="product-title"><?= $this->Html->link(
                                 $qrCode->name,
                                 ['action' => 'view', $qrCode->id],
                                 ['class' => 'product-title']
-                            ); ?>
-                        </div>
+                        ); ?></div>
+
                         <figure class="product-image">
                             <a href="<?= $this->Url->build(['action' => 'view', $qrCode->id]) ?>">
                                 <?php if (!empty($qrCode->qr_images)) : ?>
