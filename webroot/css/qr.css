@@ -11,7 +11,7 @@ footer img.logo-bottom {
     font-size: 130%;
 }
 
-.product .product-image .product-qrimage {
+.product .product-qrimage {
     overflow: auto;
     max-height: 400px;
   }
