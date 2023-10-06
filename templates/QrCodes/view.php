@@ -111,7 +111,7 @@ if (!$this->getRequest()->is('ajax')) {
 
         <!-- QR Code details -->
 
-        <div class="col-lg-7 col-xl-5">
+        <div class="col-lg-7 col-xl-7">
             <h1 class="mb-1"><?= h($qrCode->name) ?></h1>
 
             <p class="text-secondary mb-3"><?= $this->Text->autoParagraph(h($qrCode->description)); ?></p>
