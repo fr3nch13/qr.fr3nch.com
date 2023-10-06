@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Test\TestCase\Controller\Tags;
+namespace App\Test\TestCase\Controller\Sources;
 
 use App\Test\TestCase\Controller\BaseControllerTest;
 use Cake\Core\Configure;
 
 /**
- * App\Controller\TagsController Test Case
+ * App\Controller\SourcesController Test Case
  *
  * Tests that the templates are being used coreectly.
  * Specifically in requests for regular, ajax.
@@ -15,9 +15,9 @@ use Cake\Core\Configure;
  * TODO: Test specific HTML once templates are done.
  * labels: frontend, templates, tesing
  *
- * @uses \App\Controller\TagsController
+ * @uses \App\Controller\SourcesController
  */
-class ViewTest extends BaseControllerTest
+class TemplateTest extends BaseControllerTest
 {
     /**
      * setUp method
@@ -37,217 +37,201 @@ class ViewTest extends BaseControllerTest
      * Test index method
      *
      * @return void
-     * @uses \App\Controller\TagsController::index()
+     * @uses \App\Controller\SourcesController::index()
      */
     public function testIndexNormal(): void
     {
         // not logged in
-        $this->get('https://localhost/tags');
-        $this->assertResponseOk();
-        $this->helperTestLayoutPagesIndex();
-        $this->helperTestTemplate('Tags/index');
+        $this->get('https://localhost/sources');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fsources');
 
         // test with reqular
         $this->loginUserRegular();
-        $this->get('https://localhost/tags');
+        $this->get('https://localhost/sources');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesIndex();
-        $this->helperTestTemplate('Tags/index');
+        $this->helperTestTemplate('Sources/index');
 
         // test with admin
         $this->loginUserAdmin();
-        $this->get('https://localhost/tags');
+        $this->get('https://localhost/sources');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesIndex();
-        $this->helperTestTemplate('Tags/index');
+        $this->helperTestTemplate('Sources/index');
     }
 
     /**
      * Test index method
      *
      * @return void
-     * @uses \App\Controller\TagsController::index()
+     * @uses \App\Controller\SourcesController::index()
      */
     public function testIndexAjax(): void
     {
         // not logged in
         $this->requestAsAjax();
-        $this->get('https://localhost/tags');
-        $this->assertResponseOk();
-        $this->helperTestLayoutAjax();
-        $this->helperTestTemplate('Tags/index');
+        $this->get('https://localhost/sources');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fsources');
 
         // test with reqular
         $this->requestAsAjax();
         $this->loginUserRegular();
-        $this->get('https://localhost/tags');
+        $this->get('https://localhost/sources');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
-        $this->helperTestTemplate('Tags/index');
+        $this->helperTestTemplate('Sources/index');
 
         // test with admin
         $this->requestAsAjax();
         $this->loginUserAdmin();
-        $this->get('https://localhost/tags');
+        $this->get('https://localhost/sources');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
-        $this->helperTestTemplate('Tags/index');
+        $this->helperTestTemplate('Sources/index');
     }
 
     /**
      * Test view method
      *
      * @return void
-     * @uses \App\Controller\TagsController::view()
+     * @uses \App\Controller\SourcesController::view()
      */
     public function testViewNormal(): void
     {
         // not logged in
-        $this->get('https://localhost/tags/view/1');
-        $this->assertResponseOk();
-        $this->helperTestLayoutPagesView();
-        $this->helperTestTemplate('Tags/view');
+        $this->get('https://localhost/sources/view/1');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fsources%2Fview%2F1');
 
         // test with reqular
         $this->loginUserRegular();
-        $this->get('https://localhost/tags/view/1');
+        $this->get('https://localhost/sources/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesView();
-        $this->helperTestTemplate('Tags/view');
+        $this->helperTestTemplate('Sources/view');
 
         // test with admin
         $this->loginUserAdmin();
-        $this->get('https://localhost/tags/view/1');
+        $this->get('https://localhost/sources/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesView();
-        $this->helperTestTemplate('Tags/view');
+        $this->helperTestTemplate('Sources/view');
     }
 
     /**
      * Test view method
      *
      * @return void
-     * @uses \App\Controller\TagsController::view()
+     * @uses \App\Controller\SourcesController::view()
      */
     public function testViewAjax(): void
     {
         // not logged in
         $this->requestAsAjax();
-        $this->get('https://localhost/tags/view/1');
-        $this->assertResponseOk();
-        $this->helperTestLayoutAjax();
-        $this->helperTestTemplate('Tags/view');
+        $this->get('https://localhost/sources/view/1');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fsources%2Fview%2F1');
 
         // test with reqular
         $this->requestAsAjax();
         $this->loginUserRegular();
-        $this->get('https://localhost/tags/view/1');
+        $this->get('https://localhost/sources/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
-        $this->helperTestTemplate('Tags/view');
+        $this->helperTestTemplate('Sources/view');
 
         // test with admin
         $this->requestAsAjax();
         $this->loginUserAdmin();
-        $this->get('https://localhost/tags/view/1');
+        $this->get('https://localhost/sources/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
-        $this->helperTestTemplate('Tags/view');
+        $this->helperTestTemplate('Sources/view');
     }
 
     /**
      * Test add method
      *
      * @return void
-     * @uses \App\Controller\TagsController::add()
+     * @uses \App\Controller\SourcesController::add()
      */
     public function testAddNormal(): void
     {
         // test with reqular, get
         $this->loginUserRegular();
-        $this->get('https://localhost/tags/add');
-        $this->assertResponseOk();
-        $this->helperTestLayoutPagesForm();
-        $this->helperTestTemplate('Tags/add');
+        $this->get('https://localhost/sources/add');
+        $this->assertRedirectEquals('https://localhost/?redirect=%2Fsources%2Fadd');
 
         // test with admin, get
         $this->loginUserAdmin();
-        $this->get('https://localhost/tags/add');
+        $this->get('https://localhost/sources/add');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesForm();
-        $this->helperTestTemplate('Tags/add');
+        $this->helperTestTemplate('Sources/add');
     }
 
     /**
      * Test add method
      *
      * @return void
-     * @uses \App\Controller\TagsController::add()
+     * @uses \App\Controller\SourcesController::add()
      */
     public function testAddAjax(): void
     {
         // test with reqular, get
         $this->requestAsAjax();
         $this->loginUserRegular();
-        $this->get('https://localhost/tags/add');
-        $this->assertResponseOk();
-        $this->helperTestLayoutAjax();
-        $this->helperTestTemplate('Tags/add');
+        $this->get('https://localhost/sources/add');
+        $this->assertRedirectEquals('https://localhost/?redirect=%2Fsources%2Fadd');
 
         // test with admin, get
         $this->requestAsAjax();
         $this->loginUserAdmin();
-        $this->get('https://localhost/tags/add');
+        $this->get('https://localhost/sources/add');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
-        $this->helperTestTemplate('Tags/add');
+        $this->helperTestTemplate('Sources/add');
     }
 
     /**
      * Test edit method
      *
      * @return void
-     * @uses \App\Controller\TagsController::edit()
+     * @uses \App\Controller\SourcesController::edit()
      */
     public function testEditNormal(): void
     {
         // test with reqular, get
         $this->loginUserRegular();
-        $this->get('https://localhost/tags/edit/4');
-        $this->assertResponseOk();
-        $this->helperTestLayoutPagesForm();
-        $this->helperTestTemplate('Tags/edit');
+        $this->get('https://localhost/sources/edit/1');
+        $this->assertRedirectEquals('https://localhost/?redirect=%2Fsources%2Fedit%2F1');
 
-        // test with admin, get, can edit any
+        // test with admin, get
         $this->loginUserAdmin();
-        $this->get('https://localhost/tags/edit/4');
+        $this->get('https://localhost/sources/edit/1');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesForm();
-        $this->helperTestTemplate('Tags/edit');
+        $this->helperTestTemplate('Sources/edit');
     }
 
     /**
      * Test edit method
      *
      * @return void
-     * @uses \App\Controller\TagsController::edit()
+     * @uses \App\Controller\SourcesController::edit()
      */
     public function testEditAjax(): void
     {
         // test with reqular, get
         $this->requestAsAjax();
         $this->loginUserRegular();
-        $this->get('https://localhost/tags/edit/4');
-        $this->assertResponseOk();
-        $this->helperTestLayoutAjax();
-        $this->helperTestTemplate('Tags/edit');
+        $this->get('https://localhost/sources/edit/1');
+        $this->assertRedirectEquals('https://localhost/?redirect=%2Fsources%2Fedit%2F1');
 
         // test with admin, get
         $this->requestAsAjax();
         $this->loginUserAdmin();
-        $this->get('https://localhost/tags/edit/4');
+        $this->get('https://localhost/sources/edit/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
-        $this->helperTestTemplate('Tags/edit');
+        $this->helperTestTemplate('Sources/edit');
     }
 }

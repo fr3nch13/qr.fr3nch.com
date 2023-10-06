@@ -17,7 +17,7 @@ use Cake\Core\Configure;
  *
  * @uses \App\Controller\UsersController
  */
-class ViewTest extends BaseControllerTest
+class TemplateTest extends BaseControllerTest
 {
     /**
      * setUp method

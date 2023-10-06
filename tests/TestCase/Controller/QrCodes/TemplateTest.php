@@ -17,7 +17,7 @@ use Cake\Core\Configure;
  *
  * @uses \App\Controller\QrCodesController
  */
-class ViewTest extends BaseControllerTest
+class TemplateTest extends BaseControllerTest
 {
     /**
      * setUp method

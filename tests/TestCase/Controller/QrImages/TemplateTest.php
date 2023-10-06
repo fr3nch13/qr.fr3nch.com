@@ -11,13 +11,13 @@ use Cake\Core\Configure;
  *
  * Tests that the templates are being used coreectly.
  * Specifically in requests for regular, ajax.
- * 
+ *
  * TODO: Test specific HTML once templates are done.
  * labels: frontend, templates, tesing
  *
  * @uses \App\Controller\QrImagesController
  */
-class ViewTest extends BaseControllerTest
+class TemplateTest extends BaseControllerTest
 {
     /**
      * setUp method
