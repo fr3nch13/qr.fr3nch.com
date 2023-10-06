@@ -25,8 +25,6 @@ class GeneralTest extends BaseControllerTest
         parent::setUp();
         Configure::write('debug', true);
         $this->enableRetainFlashMessages();
-        $this->enableCsrfToken();
-        $this->enableSecurityToken();
     }
 
     /**
@@ -71,7 +69,30 @@ class GeneralTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
+        $this->assertFalse(isset($headers['Cache-Control']));
         $this->assertSame('image/png', $headers['Content-Type'][0]);
         $this->assertGreaterThan(0, $headers['Content-Length'][0]);
+    }
+
+    /**
+     * Test show method
+     *
+     * @return void
+     * @uses \App\Controller\QrCodesController::show()
+     */
+    public function testShowHeadersNoDebug(): void
+    {
+        // check cache policy when debug is off.
+        Configure::write('debug', false);
+        $this->get('https://localhost/qr-codes/show/1');
+        $this->assertResponseOk();
+        $this->assertResponseNotEmpty();
+        $headers = $this->_response->getHeaders();
+        $this->assertTrue(isset($headers['Cache-Control']));
+        $this->assertSame('public, max-age=3600', $headers['Cache-Control'][0]);
+        $this->assertTrue(isset($headers['Last-Modified']));
+        $this->assertSame('image/png', $headers['Content-Type'][0]);
+        $this->assertGreaterThan(0, $headers['Content-Length'][0]);
+        Configure::write('debug', true);
     }
 }

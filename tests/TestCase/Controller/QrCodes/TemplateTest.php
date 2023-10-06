@@ -46,6 +46,11 @@ class TemplateTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestLayoutPagesIndex();
         $this->helperTestTemplate('QrCodes/index');
+        // TODO: add more html validation, but do it locally.
+        // Maybe with github actions?
+        // @link https://github.com/marketplace/actions/html5-validator
+        // labels: testing, frontend, validation
+        $this->helperValidateHTML();
 
         // test with reqular
         $this->loginUserRegular();
