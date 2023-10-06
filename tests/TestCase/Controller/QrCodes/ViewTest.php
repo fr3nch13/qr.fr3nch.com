@@ -28,6 +28,7 @@ class ViewTest extends BaseControllerTest
         $this->enableRetainFlashMessages();
         $this->enableCsrfToken();
         $this->enableSecurityToken();
+        $this->loginUserAdmin();
     }
 
     /**
@@ -40,40 +41,40 @@ class ViewTest extends BaseControllerTest
     {
         // not logged in
         $this->get('https://localhost/qr-codes');
-        $content = (string)$this->_response->getBody();
         $this->assertResponseOk();
         $this->helperTestLayoutPagesIndex();
+        $this->helperTestTemplate('QrCodes/index');
 
         // test with reqular
         $this->loginUserRegular();
         $this->get('https://localhost/qr-codes');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesIndex();
+        $this->helperTestTemplate('QrCodes/index');
 
         // test with admin
         // test html content.
         $this->loginUserAdmin();
         $this->get('https://localhost/qr-codes');
         $this->assertResponseOk();
-        $content = (string)$this->_response->getBody();
-        $this->assertSame(1, substr_count($content, '<!-- START: App.QrCodes/index -->'));
-        $this->assertSame(1, substr_count($content, '<!-- END: App.QrCodes/index -->'));
-        $this->assertSame(1, substr_count($content, '<h1>QR Codes</h1>'));
-        $this->assertSame(3, substr_count($content, '<div class="product">'));
-        $this->assertSame(3, substr_count($content, '<div class="product-title">'));
-        $this->assertSame(3, substr_count($content, '<figure class="product-image">'));
+        $this->helperTestLayoutPagesIndex();
+        $this->helperTestTemplate('QrCodes/index');
 
         // make sure the products are listed.
+        // make sure all are listed.
+        // this may change to include all active, and inactive, scoped to the user.
+        $this->helperTestObjectComment(3, 'QrCodes/active');
+        $this->helperTestObjectComment(1, 'QrCodes/inactive');
+        // make sure the qcode is listed for each one.
+        $this->helperTestObjectComment(4, 'QrCode/show');
+        // make sure only active primary images are listed.
+        $this->helperTestObjectComment(3, 'QrImages/active/first');
         // Sow & Scribe
+        $content = (string)$this->_response->getBody();
         $this->assertSame(1, substr_count($content, '<a href="/qr-codes/view/1" class="product-title">Sow &amp; Scribe</a>'));
-        $this->assertSame(1, substr_count($content, '<img src="/qr-codes/show/1" alt="The QR Code>'));
-        $this->assertSame(1, substr_count($content, '<a href="/f/sownscribe" class="btn btn-light">Follow</a>'));
-        $this->assertSame(1, substr_count($content, '<a href="/qr-codes/view/1" class="btn btn-light">View</a>'));
-        // Witching Hour
-        $this->assertSame(1, substr_count($content, '<a href="/qr-codes/view/2" class="product-title">The Witching Hour</a>'));
-        $this->assertSame(1, substr_count($content, '<img src="/qr-codes/show/2" alt="The QR Code>'));
-        $this->assertSame(1, substr_count($content, '<a href="/f/witchinghour" class="btn btn-light">Follow</a>'));
-        $this->assertSame(1, substr_count($content, '<a href="/qr-codes/view/2" class="btn btn-light">View</a>'));
+        $this->assertSame(1, substr_count($content, '<img class="product-qrcode" src="/qr-codes/show/1" alt="The QR Code">'));
+        $this->assertSame(1, substr_count($content, '<a href="/f/sownscribe" class="btn btn-light">Follow Code</a>'));
+        $this->assertSame(1, substr_count($content, '<a href="/qr-codes/view/1" class="btn btn-light">Details</a>'));
     }
 
     /**
@@ -89,13 +90,7 @@ class ViewTest extends BaseControllerTest
         $this->get('https://localhost/qr-codes');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
-
-        // test with admin
-        $this->requestAsAjax();
-        $this->loginUserAdmin();
-        $this->get('https://localhost/qr-codes');
-        $this->assertResponseOk();
-        $this->helperTestLayoutAjax();
+        $this->helperTestTemplate('QrCodes/index');
 
         // test with reqular
         $this->requestAsAjax();
@@ -103,6 +98,31 @@ class ViewTest extends BaseControllerTest
         $this->get('https://localhost/qr-codes');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
+        $this->helperTestTemplate('QrCodes/index');
+
+        // test with admin
+        $this->requestAsAjax();
+        $this->loginUserAdmin();
+        $this->get('https://localhost/qr-codes');
+        $this->assertResponseOk();
+        $this->helperTestLayoutAjax();
+        $this->helperTestTemplate('QrCodes/index');
+
+        // make sure the products are listed.
+        // make sure all are listed.
+        // this may change to include all active, and inactive, scoped to the user.
+        $this->helperTestObjectComment(3, 'QrCodes/active');
+        $this->helperTestObjectComment(1, 'QrCodes/inactive');
+        // make sure the qcode is listed for each one.
+        $this->helperTestObjectComment(4, 'QrCode/show');
+        // make sure only active primary images are listed.
+        $this->helperTestObjectComment(3, 'QrImages/active/first');
+        // Sow & Scribe
+        $content = (string)$this->_response->getBody();
+        $this->assertSame(1, substr_count($content, '<a href="/qr-codes/view/1" class="product-title">Sow &amp; Scribe</a>'));
+        $this->assertSame(1, substr_count($content, '<img class="product-qrcode" src="/qr-codes/show/1" alt="The QR Code">'));
+        $this->assertSame(1, substr_count($content, '<a href="/f/sownscribe" class="btn btn-light">Follow Code</a>'));
+        $this->assertSame(1, substr_count($content, '<a href="/qr-codes/view/1" class="btn btn-light">Details</a>'));
     }
 
     /**
@@ -117,28 +137,26 @@ class ViewTest extends BaseControllerTest
         $this->get('https://localhost/qr-codes/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesView();
+        $this->helperTestTemplate('QrCodes/view');
 
         // test with reqular
         $this->loginUserRegular();
         $this->get('https://localhost/qr-codes/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesView();
+        $this->helperTestTemplate('QrCodes/view');
 
         // test with admin
         $this->loginUserAdmin();
         $this->get('https://localhost/qr-codes/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesView();
+        $this->helperTestTemplate('QrCodes/view');
 
-        // test html content.
-        $this->get('https://localhost/qr-codes/view/1');
-        $this->assertResponseOk();
         $content = (string)$this->_response->getBody();
-        $this->assertSame(1, substr_count($content, '<!-- START: App.QrCodes/view -->'));
-        $this->assertSame(1, substr_count($content, '<!-- END: App.QrCodes/view -->'));
         $this->assertSame(1, substr_count($content, '<h1 class="mb-1">Sow &amp; Scribe</h1>'));
         $this->assertSame(2, substr_count($content, '<img class="img-fluid" src="/qr-codes/show/1" alt="The QR Code">'));
-        $this->assertSame(1, substr_count($content, '<a href="/f/sownscribe" class="btn btn-primary btn-block rounded-pill" role="button">Follow</a>'));
+        $this->assertSame(1, substr_count($content, '<a href="/f/sownscribe" class="btn btn-primary btn-block rounded-pill" role="button">Follow Code</a>'));
     }
 
     /**
@@ -154,13 +172,7 @@ class ViewTest extends BaseControllerTest
         $this->get('https://localhost/qr-codes/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
-
-        // test with admin
-        $this->requestAsAjax();
-        $this->loginUserAdmin();
-        $this->get('https://localhost/qr-codes/view/1');
-        $this->assertResponseOk();
-        $this->helperTestLayoutAjax();
+        $this->helperTestTemplate('QrCodes/view');
 
         // test with reqular
         $this->requestAsAjax();
@@ -168,6 +180,20 @@ class ViewTest extends BaseControllerTest
         $this->get('https://localhost/qr-codes/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
+        $this->helperTestTemplate('QrCodes/view');
+
+        // test with admin
+        $this->requestAsAjax();
+        $this->loginUserAdmin();
+        $this->get('https://localhost/qr-codes/view/1');
+        $this->assertResponseOk();
+        $this->helperTestLayoutAjax();
+        $this->helperTestTemplate('QrCodes/view');
+
+        $content = (string)$this->_response->getBody();
+        $this->assertSame(1, substr_count($content, '<h1 class="mb-1">Sow &amp; Scribe</h1>'));
+        $this->assertSame(2, substr_count($content, '<img class="img-fluid" src="/qr-codes/show/1" alt="The QR Code">'));
+        $this->assertSame(1, substr_count($content, '<a href="/f/sownscribe" class="btn btn-primary btn-block rounded-pill" role="button">Follow Code</a>'));
     }
 
     /**
@@ -183,12 +209,14 @@ class ViewTest extends BaseControllerTest
         $this->get('https://localhost/qr-codes/add');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesForm();
+        $this->helperTestTemplate('QrCodes/add');
 
         // test with admin, get
         $this->loginUserAdmin();
         $this->get('https://localhost/qr-codes/add');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesForm();
+        $this->helperTestTemplate('QrCodes/add');
     }
 
     /**
@@ -205,6 +233,7 @@ class ViewTest extends BaseControllerTest
         $this->get('https://localhost/qr-codes/add');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
+        $this->helperTestTemplate('QrCodes/add');
 
         // test with admin, get
         $this->requestAsAjax();
@@ -212,6 +241,7 @@ class ViewTest extends BaseControllerTest
         $this->get('https://localhost/qr-codes/add');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
+        $this->helperTestTemplate('QrCodes/add');
     }
 
     /**
@@ -224,17 +254,17 @@ class ViewTest extends BaseControllerTest
     {
         // test with reqular, get
         $this->loginUserRegular();
-        $this->get('https://localhost/qr-codes/edit/1');
-        $this->assertRedirectEquals('https://localhost/?redirect=%2Fqr-codes%2Fedit%2F1');
-        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
-        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
-        $this->assertFlashElement('flash/error');
+        $this->get('https://localhost/qr-codes/edit/3');
+        $this->assertResponseOk();
+        $this->helperTestLayoutPagesForm();
+        $this->helperTestTemplate('QrCodes/edit');
 
         // test with admin, get
         $this->loginUserAdmin();
         $this->get('https://localhost/qr-codes/edit/1');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesForm();
+        $this->helperTestTemplate('QrCodes/edit');
     }
 
     /**
@@ -248,11 +278,10 @@ class ViewTest extends BaseControllerTest
         // test with reqular, get
         $this->requestAsAjax();
         $this->loginUserRegular();
-        $this->get('https://localhost/qr-codes/edit/1');
-        $this->assertRedirectEquals('https://localhost/?redirect=%2Fqr-codes%2Fedit%2F1');
-        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
-        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
-        $this->assertFlashElement('flash/error');
+        $this->get('https://localhost/qr-codes/edit/3');
+        $this->assertResponseOk();
+        $this->helperTestLayoutAjax();
+        $this->helperTestTemplate('QrCodes/edit');
 
         // test with admin, get
         $this->requestAsAjax();
@@ -260,5 +289,6 @@ class ViewTest extends BaseControllerTest
         $this->get('https://localhost/qr-codes/edit/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
+        $this->helperTestTemplate('QrCodes/edit');
     }
 }
