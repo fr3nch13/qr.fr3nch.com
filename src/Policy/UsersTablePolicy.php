@@ -18,8 +18,8 @@ class UsersTablePolicy
      * This is already limited to Admins.
      *
      * @param \App\Model\Entity\User|null $user The identity object.
-     * @param \Cake\ORM\Query\SelectQuery $query
-     * @return bool
+     * @param \Cake\ORM\Query\SelectQuery $query The initial query.
+     * @return \Cake\ORM\Query\SelectQuery The updated query.
      */
     public function scopeIndex(?User $user, SelectQuery $query): SelectQuery
     {

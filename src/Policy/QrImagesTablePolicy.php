@@ -16,8 +16,8 @@ class QrImagesTablePolicy
      * Right now, any logged in user can view a list of all images.
      *
      * @param \App\Model\Entity\User $user The identity object.
-     * @param \Cake\ORM\Query\SelectQuery $query
-     * @return bool
+     * @param \Cake\ORM\Query\SelectQuery $query The initial query.
+     * @return \Cake\ORM\Query\SelectQuery The updated query.
      */
     public function scopeQrCode(User $user, SelectQuery $query, mixed ...$optionalArgs): SelectQuery
     {
