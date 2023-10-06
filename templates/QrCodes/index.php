@@ -101,7 +101,7 @@ if (!$this->getRequest()->is('ajax')) {
                         <?php endif; ?>
 
                         <div class="product-title"><?= $this->Html->link(
-                                $qrCode->name,
+                                h($qrCode->name),
                                 ['action' => 'view', $qrCode->id],
                                 ['class' => 'product-title']
                         ); ?></div>
@@ -117,7 +117,7 @@ if (!$this->getRequest()->is('ajax')) {
                                             'action' => 'show',
                                             $qrCode->qr_images[0]->id,
                                         ]) ?>"
-                                        alt="<?= $qrCode->qr_images[0]->name ?>">
+                                        alt="<?= h($qrCode->qr_images[0]->name) ?>">
                                 <?php endif; ?>
                                 <?= $this->Template->objectComment('QrCode/show') ?>
                                 <img
