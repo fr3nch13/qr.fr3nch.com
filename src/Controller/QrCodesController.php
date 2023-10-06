@@ -214,6 +214,7 @@ class QrCodesController extends AppController
         $this->Authorization->authorize($qrCode);
         print_r((string)$this->request->is('put'));
         print_r($this->request->getMethod());
+        exit;
 
         if ($this->request->is('put')) {
             $qrCode = $this->QrCodes->patchEntity($qrCode, $this->request->getData());
