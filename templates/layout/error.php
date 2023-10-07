@@ -27,12 +27,10 @@ $this->start('layout');
         </div>
       </div>
     </div>
-    <!--
     <figure
         class="background background-overlay"
         style="background-image: url('<?= $this->Url->image('login_bg.jpg'); ?>')">
     </figure>
-    -->
   </section>
 
 <?= $this->Template->templateComment(false, __FILE__); ?>
