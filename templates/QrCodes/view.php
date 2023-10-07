@@ -192,7 +192,7 @@ if (!$this->getRequest()->is('ajax')) {
             <!-- Tags -->
             <div class="row g-1">
                 <div class="col" aria-label="Tags">
-                    <h4 class="mt-2"><?= __('Tags') ?></h4>
+                    <h5 class="mt-2"><?= __('Tags') ?></h5>
                 </div>
             </div>
 
