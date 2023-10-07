@@ -93,17 +93,14 @@ class QrCodesTable extends Table
                 'wildcardOne' => '?',
                 'fields' => ['name', 'description'],
             ])
-            // add filtering by tag name
-            ->callback('s', [
-                'callback' => function (SelectQuery $query, array $args,  Base $filter) {
-                    $query
-                        ->contain('Sources', function (SelectQuery $query) use ($args) {
-                            return $query->where(['Sources.name LIKE' => $args['s']]);
-                        })
-                        ->group('QrCodes.id');
-
-                    return true;
-                }
+            ->add('s', 'Search.Like', [
+                'before' => true,
+                'after' => true,
+                'fieldMode' => 'OR',
+                'comparison' => 'LIKE',
+                'wildcardAny' => '*',
+                'wildcardOne' => '?',
+                'fields' => ['Sources.name'],
             ])
             // add filtering by tag name
             ->callback('t', [

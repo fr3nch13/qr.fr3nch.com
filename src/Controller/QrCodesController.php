@@ -146,6 +146,7 @@ class QrCodesController extends AppController
         $query = $this->QrCodes->find('all')
             ->find('search', search: $this->request->getQueryParams())
             ->contain([
+                'Sources',
                 'QrImages' => function (SelectQuery $q) {
                     // only include the first active one
                     return $q
