@@ -46,20 +46,21 @@ if (!$this->getRequest()->is('ajax')) {
 
         <div class="container">
             <div class="row g-3 g-lg-5 tags">
-
-            <?php foreach ($tags as $tag) : ?>
-                <?= $this->Html->link(
-                    $tag->name,
-                    [
-                        'action' => 'view',
-                        $tag->id,
-                    ],
-                    [
-                        'class' => 'btn btn-primary',
-                        'role' => 'button',
-                    ]
-                ); ?>
-            <?php endforeach; ?>
+                <div class="col text-center">
+                <?php foreach ($tags as $tag) : ?>
+                    <?= $this->Html->link(
+                        $tag->name,
+                        [
+                            'action' => 'view',
+                            $tag->id,
+                        ],
+                        [
+                            'class' => 'btn btn-primary',
+                            'role' => 'button',
+                        ]
+                    ); ?>
+                <?php endforeach; ?>
+                </div>
             </div>
 
             <div class="row mt-6">
