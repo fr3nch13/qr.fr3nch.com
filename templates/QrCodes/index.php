@@ -165,11 +165,11 @@ if (!$this->getRequest()->is('ajax')) {
         <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="offcanvasFilterLabel"><?= __('Filters') ?></h5>
             <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
             <?php if ($this->Search->isSearch()) : ?>
                 <?= $this->Search->resetLink(__('Reset'), ['class' => 'underline text-dark']); ?>
             <?php endif; ?>
+        </div>
+        <div class="offcanvas-body">
             <div class="widget">
             <?= $this->Form->create(null, [
                 'valueSources' => 'query',
