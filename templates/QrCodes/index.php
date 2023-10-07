@@ -215,10 +215,7 @@ if (!$this->getRequest()->is('ajax')) {
                 <span class="d-flex eyebrow text-muted mb-2"><?= __('Source') ?></span>
                     <div class="row g-0">
                         <div class="col">
-                            <?= $this->Form->select('s', [
-                                'class' => 'form-select',
-                                'options' => $sources->toArray(),
-                            ]); ?>
+                            <?= $this->Form->select('s', $sources,['class' => 'form-select']); ?>
                         </div>
                     </div>
             </div>
