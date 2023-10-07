@@ -179,6 +179,7 @@ if (!$this->getRequest()->is('ajax')) {
                 <?= $this->Search->resetLink(__('Clear'), ['class' => 'btn btn-sm btn-light float-right rounded-pill']); ?>
             </div>
             <?php endif; ?>
+            <!-- Search Form -->
             <div class="widget">
                 <?= $this->Form->create(null, [
                     'valueSources' => 'query',
@@ -201,6 +202,10 @@ if (!$this->getRequest()->is('ajax')) {
                     </div>
                 </div>
                 <?= $this->Form->end(); ?>
+            </div>
+            <!-- Tags -->
+            <div class="widget">
+                <span class="d-flex eyebrow text-muted mb-2">Tags</span>
             </div>
         </div>
     </div>
