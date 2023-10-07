@@ -91,7 +91,7 @@ class QrCodesTable extends Table
                 'wildcardAny' => '*',
                 'wildcardOne' => '?',
                 'fields' => ['name', 'description'],
-            ])
+            ]);
     }
 
     /**

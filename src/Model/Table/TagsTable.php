@@ -68,7 +68,7 @@ class TagsTable extends Table
                 'wildcardAny' => '*',
                 'wildcardOne' => '?',
                 'fields' => ['name'],
-            ])
+            ]);
     }
 
     /**
