@@ -164,12 +164,14 @@ if (!$this->getRequest()->is('ajax')) {
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasFilter" aria-labelledby="offcanvasFilterLabel">
         <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="offcanvasFilterLabel"><?= __('Filters') ?></h5>
-            <?php if ($this->Search->isSearch()) : ?>
-                <?= $this->Search->resetLink(__('Clear'), ['class' => 'underline text-dark']); ?>
-            <?php endif; ?>
             <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
+            <?php if ($this->Search->isSearch()) : ?>
+            <div class="widget justify-content-end">
+                <?= $this->Search->resetLink(__('Clear'), ['class' => 'btn btn-sm btn-secondary']); ?>
+            </div>
+            <?php endif; ?>
             <div class="widget">
             <?= $this->Form->create(null, [
                 'valueSources' => 'query',
