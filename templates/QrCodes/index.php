@@ -180,7 +180,7 @@ if (!$this->getRequest()->is('ajax')) {
                         ]); ?>
                     </div>
                     <div class="col-auto d-grid">
-                        <?= $this->Form->button('i class="bi bi-search"></i>', [
+                        <?= $this->Form->button('<i class="bi bi-search"></i>', [
                             'type' => 'submit',
                             'class' => 'btn btn-primary btn-lg btn-icon rounded-circle',
                             'escape' => false,
