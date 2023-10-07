@@ -160,7 +160,8 @@ if (!$this->getRequest()->is('ajax')) {
             </div>
         </div>
 
-  <!-- offcanvas - filters -->
+    <?php $this->start('offcanvas') ?>
+    <!-- offcanvas - filters -->
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasFilter" aria-labelledby="offcanvasFilterLabel">
         <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="offcanvasFilterLabel"><?= __('Filters') ?></h5>
@@ -173,28 +174,29 @@ if (!$this->getRequest()->is('ajax')) {
             </div>
             <?php endif; ?>
             <div class="widget">
-            <?= $this->Form->create(null, [
-                'valueSources' => 'query',
-            ]); ?>
-            <div class="grouped-inputs p-1 rounded-pill border">
-                <div class="row g-0">
-                    <div class="col">
-                        <?= $this->Form->text('q', [
-                            'class' => 'form-control form-control px-4 text-primary',
-                            'placeholder' => __('What are you looking for ?'),
-                        ]); ?>
-                    </div>
-                    <div class="col-auto d-grid">
-                        <?= $this->Form->button('<i class="bi bi-search"></i>', [
-                            'type' => 'submit',
-                            'class' => 'btn btn-primary btn-icon rounded-circle',
-                            'escapeTitle' => false,
-                        ]); ?>
+                <?= $this->Form->create(null, [
+                    'valueSources' => 'query',
+                ]); ?>
+                <div class="grouped-inputs p-1 rounded-pill border">
+                    <div class="row g-0">
+                        <div class="col">
+                            <?= $this->Form->text('q', [
+                                'class' => 'form-control form-control px-4 text-primary',
+                                'placeholder' => __('What are you looking for ?'),
+                            ]); ?>
+                        </div>
+                        <div class="col-auto d-grid">
+                            <?= $this->Form->button('<i class="bi bi-search"></i>', [
+                                'type' => 'submit',
+                                'class' => 'btn btn-primary btn-icon rounded-circle',
+                                'escapeTitle' => false,
+                            ]); ?>
+                        </div>
                     </div>
                 </div>
+                <?= $this->Form->end(); ?>
             </div>
-            <?= $this->Form->end(); ?>
         </div>
     </div>
-  </div>
+    <?php $this->end(); // offcanvas ?>
 <?= $this->Template->templateComment(false, __FILE__); ?>

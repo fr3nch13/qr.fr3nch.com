@@ -31,6 +31,7 @@
 </head>
 <body>
 
+<?= $this->fetch('offcanvas') ?>
 <?= $this->fetch('layout'); ?>
 <?= $this->Html->script([
     'vendor.bundle',
