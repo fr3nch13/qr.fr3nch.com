@@ -13,7 +13,7 @@ $this->start('layout');
 <?= $this->element('nav/top'); ?>
 
     <div class="offcanvas-wrap">
-        <section class="py-15 py-xl-15 bg-white overflow-hidden pages-index">
+        <section class="py-15 py-xl-15 bg-white overflow-hidden pages-index level-3">
             <div class="container mt-5">
                 <?= $this->Flash->render() ?>
             </div>
