@@ -14,7 +14,7 @@ $this->start('layout');
 <?= $this->element('nav/top'); ?>
 
   <!-- hero -->
-  <section class="inverted bg-red has-bg-img overflow-hidden">
+  <section class="inverted bg-red overflow-hidden">
     <div class="d-flex flex-column container min-vh-100 py-20 level-3">
       <div class="row align-items-center justify-content-center justify-content-lg-between my-auto">
         <div class="col-lg-6 order-lg-2">
