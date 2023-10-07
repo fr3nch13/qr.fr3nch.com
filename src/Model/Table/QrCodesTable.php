@@ -77,6 +77,21 @@ class QrCodesTable extends Table
             ->setForeignKey('qr_code_id')
             ->setTargetForeignKey('tag_id')
             ->setThrough('QrCodesTags');
+
+        // Friendsofcake/search
+        $this->addBehavior('Search.Search');
+
+        // Setup search filter using search manager
+        $this->searchManager()
+            ->add('q', 'Search.Like', [
+                'before' => true,
+                'after' => true,
+                'fieldMode' => 'OR',
+                'comparison' => 'LIKE',
+                'wildcardAny' => '*',
+                'wildcardOne' => '?',
+                'fields' => ['name', 'description'],
+            ])
     }
 
     /**

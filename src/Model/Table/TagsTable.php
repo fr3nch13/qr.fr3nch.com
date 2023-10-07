@@ -43,8 +43,6 @@ class TagsTable extends Table
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
-        $this->addBehavior('Timestamp');
-
         $this->belongsTo('Users')
             ->setClassName('Users')
             ->setForeignKey('user_id');
@@ -54,6 +52,23 @@ class TagsTable extends Table
             ->setForeignKey('tag_id')
             ->setTargetForeignKey('qr_code_id')
             ->setThrough('QrCodesTags');
+
+        $this->addBehavior('Timestamp');
+
+        // Friendsofcake/search
+        $this->addBehavior('Search.Search');
+
+        // Setup search filter using search manager
+        $this->searchManager()
+            ->add('q', 'Search.Like', [
+                'before' => true,
+                'after' => true,
+                'fieldMode' => 'OR',
+                'comparison' => 'LIKE',
+                'wildcardAny' => '*',
+                'wildcardOne' => '?',
+                'fields' => ['name'],
+            ])
     }
 
     /**

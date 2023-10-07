@@ -17,6 +17,24 @@ use Cake\ORM\Query\SelectQuery;
 class QrCodesController extends AppController
 {
     /**
+     * Init method
+     *
+     * Mainly here to add the Search Component.
+     *
+     * @return void
+     */
+    public function initialize(): void
+    {
+        parent::initialize();
+
+        $this->loadComponent('Search.Search', [
+            // This is default config. You can modify "actions" as needed to make
+            // the Search component work only for specified methods.
+            'actions' => ['index'],
+        ]);
+    }
+
+    /**
      * Runs before the code in the actions
      *
      * @return void
@@ -126,6 +144,7 @@ class QrCodesController extends AppController
         }
 
         $query = $this->QrCodes->find('all')
+            ->find('search', search: $this->request->getQueryParams())
             ->contain([
                 'QrImages' => function (SelectQuery $q) {
                     // only include the first active one

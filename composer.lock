@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "de5aa6d60c7d8722c768d7bc4ea82437",
+    "content-hash": "f609c9daabfa30e73cd428fd16b63e12",
     "packages": [
         {
             "name": "cakephp/authentication",
@@ -695,6 +695,64 @@
                 "source": "http://github.com/friendsofcake/bootstrap-ui"
             },
             "time": "2023-09-13T16:21:18+00:00"
+        },
+        {
+            "name": "friendsofcake/search",
+            "version": "7.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/FriendsOfCake/search.git",
+                "reference": "acf6cde0555383193549204ddd84de5b59460d2e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/FriendsOfCake/search/zipball/acf6cde0555383193549204ddd84de5b59460d2e",
+                "reference": "acf6cde0555383193549204ddd84de5b59460d2e",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/cakephp": "^5.0"
+            },
+            "require-dev": {
+                "cakephp/bake": "^3.0",
+                "cakephp/cakephp-codesniffer": "^5.0",
+                "cakephp/twig-view": "^2.0",
+                "phpunit/phpunit": "^10.1"
+            },
+            "type": "cakephp-plugin",
+            "autoload": {
+                "psr-4": {
+                    "Search\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Christian Winther",
+                    "role": "Author"
+                },
+                {
+                    "name": "ADmad",
+                    "homepage": "https://github.com/admad",
+                    "role": "Contributor"
+                }
+            ],
+            "description": "CakePHP Search plugin using PRG pattern",
+            "homepage": "https://github.com/FriendsOfCake/search",
+            "keywords": [
+                "cakephp",
+                "filter",
+                "prg",
+                "search"
+            ],
+            "support": {
+                "issues": "https://github.com/FriendsOfCake/search/issues",
+                "source": "https://github.com/FriendsOfCake/search"
+            },
+            "time": "2023-09-13T16:46:52+00:00"
         },
         {
             "name": "laminas/laminas-diactoros",
