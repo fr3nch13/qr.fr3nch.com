@@ -48,7 +48,6 @@ if (!$this->getRequest()->is('ajax')) {
             <div class="row g-3 g-lg-5 tags">
 
             <?php foreach ($tags as $tag) : ?>
-                <div class="col-md-4 col-lg-2">
                 <?= $this->Html->link(
                     $tag->name,
                     [
@@ -60,7 +59,6 @@ if (!$this->getRequest()->is('ajax')) {
                         'role' => 'button',
                     ]
                 ); ?>
-                </div>
             <?php endforeach; ?>
             </div>
 
