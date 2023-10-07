@@ -193,7 +193,7 @@ if (!$this->getRequest()->is('ajax')) {
             <!-- Search Form -->
             <div class="widget mb-2">
                 <span class="d-flex eyebrow text-muted mb-2"><?= __('Search') ?></span>
-                <div class="grouped-inputs p-1 rounded-pill border">
+                <div class="grouped-inputs p-1 border">
                     <div class="row g-0">
                         <div class="col">
                             <?= $this->Form->text('q', [
