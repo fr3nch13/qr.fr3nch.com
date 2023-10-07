@@ -169,7 +169,7 @@ if (!$this->getRequest()->is('ajax')) {
         <div class="offcanvas-body">
             <?php if ($this->Search->isSearch()) : ?>
             <div class="widget mb-2">
-                <?= $this->Search->resetLink(__('Clear'), ['class' => 'btn btn-sm btn-secondary float-right']); ?>
+                <?= $this->Search->resetLink(__('Clear'), ['class' => 'btn btn-sm btn-light float-right rounded-pill']); ?>
             </div>
             <?php endif; ?>
             <div class="widget">
