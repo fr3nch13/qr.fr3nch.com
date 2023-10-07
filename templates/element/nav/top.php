@@ -71,7 +71,7 @@ $logoImage = $this->Html->image($logoImage, [
             <li class="nav-item d-none d-lg-block">
                 <?php
                 $classes = 'btn btn-primary rounded-pill ms-2';
-                if ($this->getLayout() === 'login') {
+                if (in_array($this->getLayout(), ['login', 'error'])) {
                     $classes = 'btn btn-outline-white rounded-pill ms-2';
                 }
                 echo $this->Html->link(__('Sign In'), [
@@ -128,7 +128,7 @@ $logoImage = $this->Html->image($logoImage, [
                 <li class="nav-item">
                     <?php
                     $classes = 'btn btn-primary rounded-pill ms-2';
-                    if ($this->getLayout() === 'login') {
+                    if (in_array($this->getLayout(), ['login', 'error'])) {
                         $classes = 'btn btn-outline-white rounded-pill ms-2';
                     }
                     echo $this->Html->link(__('Sign In'), [
