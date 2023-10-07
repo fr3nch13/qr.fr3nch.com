@@ -193,7 +193,6 @@ if (!$this->getRequest()->is('ajax')) {
             <!-- Search Form -->
             <div class="widget mb-2">
                 <span class="d-flex eyebrow text-muted mb-2"><?= __('Search') ?></span>
-                <legend><?= __('Search') ?></legend>
                 <div class="grouped-inputs p-1 rounded-pill border">
                     <div class="row g-0">
                         <div class="col">
@@ -215,7 +214,6 @@ if (!$this->getRequest()->is('ajax')) {
             <?= $this->Form->end(); ?>
             <!-- Sources -->
             <!-- Tags
-            <?= $this->Form->control('source_id', ['options' => $sources]); ?>
             <div class="widget">
                 <span class="d-flex eyebrow text-muted mb-2">Tags</span>
             </div> -->
