@@ -203,8 +203,10 @@ if (!$this->getRequest()->is('ajax')) {
                         <?= $this->Html->link(
                             $tag->name,
                             [
-                                'action' => 'view',
-                                $tag->id,
+                                'action' => 'index',
+                                '?' => [
+                                    'tag' => $tag->name,
+                                ]
                             ],
                             [
                                 'class' => 'me-1 btn btn-sm btn-light btn-outline-secondary rounded-pill',
