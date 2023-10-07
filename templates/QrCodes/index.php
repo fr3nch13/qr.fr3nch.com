@@ -81,11 +81,6 @@ if (!$this->getRequest()->is('ajax')) {
                             Filters
                             </a>
                         </li>
-                        <?php if ($this->Search->isSearch()) : ?>
-                        <li class="list-inline-item ms-2">
-                            <?= $this->Search->resetLink(__('Reset'), ['class' => 'underline text-dark']); ?>
-                        </li>
-                        <?php endif; ?>
                     </ul>
                 </div>
             </div>
@@ -172,6 +167,9 @@ if (!$this->getRequest()->is('ajax')) {
             <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
+            <?php if ($this->Search->isSearch()) : ?>
+                <?= $this->Search->resetLink(__('Reset'), ['class' => 'underline text-dark']); ?>
+            <?php endif; ?>
             <div class="widget">
             <?= $this->Form->create(null, [
                 'valueSources' => 'query',
@@ -187,7 +185,7 @@ if (!$this->getRequest()->is('ajax')) {
                     <div class="col-auto d-grid">
                         <?= $this->Form->button('<i class="bi bi-search"></i>', [
                             'type' => 'submit',
-                            'class' => 'btn btn-primary btn btn-icon rounded-circle',
+                            'class' => 'btn btn-primary btn-icon rounded-circle',
                             'escapeTitle' => false,
                         ]); ?>
                     </div>
