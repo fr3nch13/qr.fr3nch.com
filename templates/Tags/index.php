@@ -56,7 +56,7 @@ if (!$this->getRequest()->is('ajax')) {
                             '?' => ['t' => $tag->name],
                         ],
                         [
-                            'class' => 'me-2 btn btn-light btn-outline-secondary rounded-pill',
+                            'class' => 'my-2 mx-2 btn btn-light btn-outline-secondary rounded-pill',
                             'role' => 'button',
                         ]
                     ); ?>
