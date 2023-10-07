@@ -6,7 +6,7 @@
 
 $navClasses = 'qr-navbar-top navbar navbar-expand-lg navbar-sticky navbar-light border-bottom';
 $logoImage = 'logo_dark.png';
-if ($this->getLayout() === 'login') {
+if (in_array($this->getLayout(), ['login', 'error'])) {
     $navClasses = 'qr-navbar-top navbar navbar-expand-lg navbar-sticky navbar-dark';
     $logoImage = 'logo_light.png';
 }
