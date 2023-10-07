@@ -213,23 +213,15 @@ if (!$this->getRequest()->is('ajax')) {
             </div>
             <div class="widget mb-2">
                 <span class="d-flex eyebrow text-muted mb-2"><?= __('Source') ?></span>
-                <div class="grouped-inputs p-1 rounded-pill border">
                     <div class="row g-0">
                         <div class="col">
-                            <?= $this->Form->text('q', [
-                                'class' => 'form-control form-control px-4 text-primary',
+                            <?= $this->Form->select('s', [
+                                'class' => 'form-select',
                                 'placeholder' => __('What are you looking for ?'),
-                            ]); ?>
-                        </div>
-                        <div class="col-auto d-grid">
-                            <?= $this->Form->button('<i class="bi bi-search"></i>', [
-                                'type' => 'submit',
-                                'class' => 'btn btn-primary btn-icon rounded-circle',
-                                'escapeTitle' => false,
+                                'options' => $sources,
                             ]); ?>
                         </div>
                     </div>
-                </div>
             </div>
             <?= $this->Form->end(); ?>
             <!-- Sources -->
