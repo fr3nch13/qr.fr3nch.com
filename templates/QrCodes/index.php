@@ -175,14 +175,14 @@ if (!$this->getRequest()->is('ajax')) {
                 <div class="row g-0">
                     <div class="col">
                         <?= $this->Form->text('q', [
-                            'class' => 'form-control form-control-lg px-4 text-primary',
+                            'class' => 'form-control form-control px-4 text-primary',
                             'placeholder' => __('What are you looking for ?'),
                         ]); ?>
                     </div>
                     <div class="col-auto d-grid">
                         <?= $this->Form->button('<i class="bi bi-search"></i>', [
                             'type' => 'submit',
-                            'class' => 'btn btn-primary btn-lg btn-icon rounded-circle',
+                            'class' => 'btn btn-primary btn btn-icon rounded-circle',
                             'escapeTitle' => false,
                         ]); ?>
                     </div>
