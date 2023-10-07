@@ -1,4 +1,5 @@
 <?php
+use App\View\Helper\FormHelper;
 /**
  * @var \App\View\AppView $this
  * @var iterable<\App\Model\Entity\QrCode> $qrCodes
