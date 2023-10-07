@@ -55,7 +55,7 @@ if (!$this->getRequest()->is('ajax')) {
                         $tag->id,
                     ],
                     [
-                        'class' => 'btn btn-primary rounded-pill',
+                        'class' => 'btn btn-primary',
                         'role' => 'button',
                     ]
                 ); ?>
