@@ -23,12 +23,14 @@ $this->start('layout');
         <div class="col-md-8 col-lg-6 order-lg-1 text-center text-lg-start">
             <?= $this->Flash->render() ?>
             <?= $this->fetch('content') ?>
-            <?= $this->Html->link(__('Go back to homepage'), [
-                'controller' => 'QrCodes',
-                'action' => 'index'
-            ], [
-                'class' => 'btn btn-rounded btn-outline-white rounded-pill',
-            ]) ?>
+            <p>
+                <?= $this->Html->link(__('Go back to homepage'), [
+                    'controller' => 'QrCodes',
+                    'action' => 'index'
+                ], [
+                    'class' => 'btn btn-rounded btn-outline-white rounded-pill',
+                ]) ?>
+            </p>
         </div>
       </div>
     </div>
