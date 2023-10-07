@@ -189,6 +189,30 @@ if (!$this->getRequest()->is('ajax')) {
                 </div>
             </div>
 
+            <!-- Tags -->
+            <div class="row g-1 align-items-center">
+                <div class="col" aria-label="Tags">
+                    <h3><?= __('Tags') ?></h3>
+                </div>
+            </div>
+
+            <div class="row g-1 align-items-center">
+                <div class="col text-center">
+                    <?php foreach ($qrCode->tags as $tag) : ?>
+                        <?= $this->Html->link(
+                            $tag->name,
+                            [
+                                'action' => 'view',
+                                $tag->id,
+                            ],
+                            [
+                                'class' => 'me-1 btn btn-sm btn-light btn-outline-secondary rounded-pill',
+                                'role' => 'button',
+                            ]
+                        ); ?>
+                    <?php endforeach; ?>
+                    </div>
+            </div>
         </div>
     </div>
 </div>
