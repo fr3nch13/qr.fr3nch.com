@@ -14,7 +14,7 @@ $this->start('layout');
 <?= $this->element('nav/top'); ?>
 
   <!-- hero -->
-  <section class="inverted bg-red overflow-hidden">
+  <section class="inverted bg-red has-bg-img overflow-hidden">
     <div class="d-flex flex-column container min-vh-100 py-20 level-3">
       <div class="row align-items-center justify-content-center justify-content-lg-between my-auto">
         <div class="col-lg-6 order-lg-2">
@@ -23,7 +23,12 @@ $this->start('layout');
         <div class="col-md-8 col-lg-5 order-lg-1 text-center text-lg-start">
             <?= $this->Flash->render() ?>
             <?= $this->fetch('content') ?>
-            <a href="index.html" class="btn btn-rounded btn-outline-white rounded-pill">Go back to homepage</a>
+            <?= $this->Html->link(__('Go back to homepage'), [
+                'controller' => 'QrCodes',
+                'action' => 'index'
+            ], [
+                'class' => 'btn btn-rounded btn-outline-white rounded-pill',
+            ]) ?>
         </div>
       </div>
     </div>
