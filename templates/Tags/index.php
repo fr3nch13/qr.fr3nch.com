@@ -53,7 +53,7 @@ if (!$this->getRequest()->is('ajax')) {
                         [
                             'controller' => 'QrCodes',
                             'action' => 'index',
-                            '?' => ['tag' => $tag->name],
+                            '?' => ['t' => $tag->name],
                         ],
                         [
                             'class' => 'me-2 btn btn-light btn-outline-secondary rounded-pill',

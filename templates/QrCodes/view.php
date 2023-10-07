@@ -163,7 +163,13 @@ if (!$this->getRequest()->is('ajax')) {
 
                                 <dt class="col-sm-3"><?= __('Source') ?></dt>
                                 <dd class="col-sm-9"><?= $qrCode->hasValue('source') ?
-                                    $qrCode->source->name :
+                                    $this->Html->link(
+                                        $qrCode->source->name,
+                                        [
+                                            'action' => 'index',
+                                            '?' => ['s' => $qrCode->source->name],
+                                        ]
+                                    ) :
                                 '' ?></dd>
 
                                 <dt class="col-sm-3"><?= __('Created') ?></dt>
@@ -192,7 +198,7 @@ if (!$this->getRequest()->is('ajax')) {
                                             $tag->name,
                                             [
                                                 'action' => 'index',
-                                                '?' => ['tag' => $tag->name],
+                                                '?' => ['t' => $tag->name],
                                             ],
                                             [
                                                 'class' => 'me-1 btn btn-sm btn-light btn-outline-secondary rounded-pill',

@@ -94,11 +94,22 @@ class QrCodesTable extends Table
                 'fields' => ['name', 'description'],
             ])
             // add filtering by tag name
-            ->callback('tag', [
+            ->callback('s', [
+                'callback' => function (SelectQuery $query, array $args,  Base $filter) {
+                    $query
+                        ->contain('Sources', function (SelectQuery $query) use ($args) {
+                            return $query->where(['Sources.name LIKE' => $args['s']]);
+                        });
+
+                    return true;
+                }
+            ])
+            // add filtering by tag name
+            ->callback('t', [
                 'callback' => function (SelectQuery $query, array $args,  Base $filter) {
                     $query
                         ->innerJoinWith('Tags', function (SelectQuery $query) use ($args) {
-                            return $query->where(['Tags.name LIKE' => $args['tag']]);
+                            return $query->where(['Tags.name LIKE' => $args['t']]);
                         })
                         ->group('QrCodes.id');
 
