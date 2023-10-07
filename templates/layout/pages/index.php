@@ -13,17 +13,12 @@ $this->start('layout');
 <?= $this->element('nav/top'); ?>
 
     <div class="offcanvas-wrap">
-        <section class="py-15 py-xl-15 overflow-hidden pages-index level-3">
+        <section class="py-15 py-xl-15 pages-index">
             <div class="container mt-5">
                 <?= $this->Flash->render() ?>
             </div>
             <?= $this->fetch('content') ?>
         </section>
-
-        <figure
-            class="background background-overlay"
-            style="opacity:.3; background-image: url('<?= $this->Url->image('login_bg.jpg'); ?>')">
-        </figure>
     </div>
 <?= $this->element('nav/footer'); ?>
 <?= $this->Template->templateComment(false, __FILE__); ?>
