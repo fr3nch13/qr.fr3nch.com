@@ -8,52 +8,77 @@ if (!$this->getRequest()->is('ajax')) {
 }
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
-<div class="tags index content">
-    <?= $this->Html->link(__('New Tag'), ['action' => 'add'], ['class' => 'button float-right']) ?>
-    <h3><?= __('Tags') ?></h3>
-    <div class="table-responsive">
-        <table>
-            <thead>
-                <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
-                    <th><?= $this->Paginator->sort('name') ?></th>
-                    <th><?= $this->Paginator->sort('created') ?></th>
-                    <th><?= $this->Paginator->sort('modified') ?></th>
-                    <th class="actions"><?= __('Actions') ?></th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($tags as $tag) : ?>
-                <tr>
-                    <td><?= $this->Number->format($tag->id) ?></td>
-                    <td><?= h($tag->name) ?></td>
-                    <td><?= h($tag->created) ?></td>
-                    <td><?= h($tag->modified) ?></td>
-                    <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $tag->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $tag->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), [
-                            'action' => 'delete',
-                            $tag->id,
-                        ], [
-                            'confirm' => __('Are you sure you want to delete # {0}?', $tag->id),
-                        ]) ?>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    </div>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, ' .
-            'showing {{current}} record(s) out of {{count}} total')) ?></p>
-    </div>
-</div>
+
+<div class="container mt-5">
+            <div class="row g-3 g-md-5 align-items-end mb-5">
+                <div class="col-md-6">
+                    <h1><?= __('Tags') ?></h1>
+                    <!--
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Shop</a></li>
+                            <li class="breadcrumb-item"><a href="#">Category</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Equipment</li>
+                        </ol>
+                    </nav>
+                    -->
+                </div>
+
+                <?php
+                // TODO: Create a page options element to generate page options.
+                ?>
+                <div class="col-md-6 text-md-end">
+                    <ul class="list-inline">
+                        <?php if ($this->ActiveUser->getUser()) : ?>
+                        <li class="list-inline-item ms-2">
+                            <?= $this->Html->link(__('Add a Tag'), [
+                                'controller' => 'Tags',
+                                'action' => 'add',
+                            ], [
+                                'class' => 'underline text-black',
+                            ]); ?>
+                        </li>
+                        <?php endif; ?>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row g-3 g-lg-5 justify-content-between products">
+
+            <?php foreach ($tags as $tag) : ?>
+
+                <?= $this->Html->link(
+                            $tag->name,
+                            [
+                                'action' => 'view',
+                                $tag->id,
+                            ],
+                            [
+                                'class' => 'btn btn-primary rounded-pill',
+                                'role' => 'button',
+                            ]
+                        ); ?>
+
+            <?php endforeach; ?>
+            </div>
+
+            <div class="row mt-6">
+                <div class="col text-center">
+                    <nav aria-label="Pagination">
+                        <ul class="pagination">
+                            <?= $this->Paginator->first('&laquo;', ['label' => 'First']) ?>
+                            <?= $this->Paginator->prev('<', ['label' => 'Previous']) ?>
+                            <?= $this->Paginator->numbers() ?>
+                            <?= $this->Paginator->next('>', ['label' => 'Next']) ?>
+                            <?= $this->Paginator->last('&laquo;', ['label' => 'Last']) ?>
+                        </ul>
+                        <!--
+                            <p><?= $this->Paginator->counter(__('{{page}}/{{pages}}, {{current}} of {{count}}')) ?></p>
+                        -->
+                    </nav>
+                </div>
+            </div>
+        </div>
 <?= $this->Template->templateComment(false, __FILE__); ?>
