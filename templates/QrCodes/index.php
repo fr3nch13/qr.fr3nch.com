@@ -164,10 +164,10 @@ if (!$this->getRequest()->is('ajax')) {
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasFilter" aria-labelledby="offcanvasFilterLabel">
         <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="offcanvasFilterLabel"><?= __('Filters') ?></h5>
-            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             <?php if ($this->Search->isSearch()) : ?>
-                <?= $this->Search->resetLink(__('Reset'), ['class' => 'underline text-dark']); ?>
+                <?= $this->Search->resetLink(__('Clear'), ['class' => 'underline text-dark']); ?>
             <?php endif; ?>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
             <div class="widget">
