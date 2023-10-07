@@ -80,7 +80,7 @@ if (!$this->getRequest()->is('ajax')) {
                                 aria-controls="offcanvasFilter">
                                 <?= __('Filters') ?>
                                 <?php if ($this->Search->isSearch()) : ?>
-                                <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+                                <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
                                     <span class="visually-hidden"><?= __('Filters are applied') ?></span>
                                 </span>
                                 <?php endif; ?>
