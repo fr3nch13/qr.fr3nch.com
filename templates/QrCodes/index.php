@@ -34,13 +34,13 @@ if (!$this->getRequest()->is('ajax')) {
                                 <a
                                     class="underline text-black"
                                     href="#" role="button"
-                                    id="dropdownMenuLink"
+                                    id="indexPageOptions"
                                     data-bs-toggle="dropdown"
                                     aria-expanded="false">
                                     Sort <i class="bi bi-chevron-down"></i>
                                 </a>
 
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <ul class="dropdown-menu" aria-labelledby="indexPageOptions">
                                     <li><?= $this->Html->fixPaginatorSort($this->Paginator->sort(
                                         'QrCodes.name',
                                         [
