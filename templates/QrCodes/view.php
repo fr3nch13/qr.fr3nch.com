@@ -146,6 +146,33 @@ if (!$this->getRequest()->is('ajax')) {
 
             <div class="accordion mb-3" id="accordion-1">
 
+                <!-- Details -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading-1-2">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapse-1-2" aria-expanded="false" aria-controls="collapse-1-2">
+                            <?= __('Additional Information') ?>
+                        </button>
+                    </h2>
+                    <div id="collapse-1-2" class="accordion-collapse collapse" aria-labelledby="heading-1-2"
+                    data-bs-parent="#accordion-1">
+                        <div class="accordion-body">
+                            <dl class="row">
+                                <dt class="col-sm-3"><?= __('Key') ?></dt>
+                                <dd class="col-sm-9"><?= h($qrCode->qrkey) ?></dd>
+
+                                <dt class="col-sm-3"><?= __('Source') ?></dt>
+                                <dd class="col-sm-9"><?= $qrCode->hasValue('source') ?
+                                    $qrCode->source->name :
+                                '' ?></dd>
+
+                                <dt class="col-sm-3"><?= __('Created') ?></dt>
+                                <dd class="col-sm-9"><?= h($qrCode->created) ?></dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Tags -->
                 <?php if (!empty($qrCode->tags)) : ?>
                 <div class="accordion-item">
@@ -179,33 +206,6 @@ if (!$this->getRequest()->is('ajax')) {
                     </div>
                 </div>
                 <?php endif; ?>
-
-                <!-- Details -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="heading-1-2">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapse-1-2" aria-expanded="false" aria-controls="collapse-1-2">
-                            <?= __('Additional Information') ?>
-                        </button>
-                    </h2>
-                    <div id="collapse-1-2" class="accordion-collapse collapse" aria-labelledby="heading-1-2"
-                    data-bs-parent="#accordion-1">
-                        <div class="accordion-body">
-                            <dl class="row">
-                                <dt class="col-sm-3"><?= __('Key') ?></dt>
-                                <dd class="col-sm-9"><?= h($qrCode->qrkey) ?></dd>
-
-                                <dt class="col-sm-3"><?= __('Source') ?></dt>
-                                <dd class="col-sm-9"><?= $qrCode->hasValue('source') ?
-                                    $qrCode->source->name :
-                                '' ?></dd>
-
-                                <dt class="col-sm-3"><?= __('Created') ?></dt>
-                                <dd class="col-sm-9"><?= h($qrCode->created) ?></dd>
-                            </dl>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <!-- Action Items -->
