@@ -34,7 +34,7 @@ $this->start('layout');
     </div>
     <figure
         class="background background-overlay"
-        style="background-image: url('<?= $this->Url->image('login_bg.jpg'); ?>')">
+        style="opacity:.7; background-image: url('<?= $this->Url->image('login_bg.jpg'); ?>')">
     </figure>
   </section>
 
