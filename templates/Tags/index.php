@@ -51,8 +51,9 @@ if (!$this->getRequest()->is('ajax')) {
                     <?= $this->Html->link(
                         $tag->name,
                         [
-                            'action' => 'view',
-                            $tag->id,
+                            'controller' => 'QrCodes',
+                            'action' => 'index',
+                            '?' => ['tag' => $tag->name],
                         ],
                         [
                             'class' => 'me-2 btn btn-light btn-outline-secondary rounded-pill',

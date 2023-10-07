@@ -204,9 +204,7 @@ if (!$this->getRequest()->is('ajax')) {
                             $tag->name,
                             [
                                 'action' => 'index',
-                                '?' => [
-                                    'tag' => $tag->name,
-                                ]
+                                '?' => ['tag' => $tag->name],
                             ],
                             [
                                 'class' => 'me-1 btn btn-sm btn-light btn-outline-secondary rounded-pill',
