@@ -43,8 +43,6 @@ class SourcesTable extends Table
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
-        $this->addBehavior('Timestamp');
-
         $this->belongsTo('Users')
             ->setClassName('Users')
             ->setForeignKey('user_id');
@@ -52,6 +50,8 @@ class SourcesTable extends Table
         $this->hasMany('QrCodes')
             ->setClassName('QrCodes')
             ->setForeignKey('source_id');
+
+        $this->addBehavior('Timestamp');
     }
 
     /**

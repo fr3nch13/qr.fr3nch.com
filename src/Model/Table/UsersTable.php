@@ -45,8 +45,6 @@ class UsersTable extends Table
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
-        $this->addBehavior('Timestamp');
-
         $this->hasMany('Categories')
             ->setClassName('Categories')
             ->setForeignKey('user_id');
@@ -62,6 +60,8 @@ class UsersTable extends Table
         $this->hasMany('Tags')
             ->setClassName('Tags')
             ->setForeignKey('user_id');
+
+        $this->addBehavior('Timestamp');
     }
 
     /**
