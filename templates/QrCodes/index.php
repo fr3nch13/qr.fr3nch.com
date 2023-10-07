@@ -175,7 +175,7 @@ if (!$this->getRequest()->is('ajax')) {
             // Match the search param in your table configuration
             echo $this->Form->control('q', [
                 'label' => [
-                    'value' => __('Search'),
+                    'text' => __('Search'),
                     'floating' => true,
                 ],
             ]);
