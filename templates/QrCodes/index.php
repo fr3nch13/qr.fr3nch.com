@@ -168,8 +168,8 @@ if (!$this->getRequest()->is('ajax')) {
         </div>
         <div class="offcanvas-body">
             <?php if ($this->Search->isSearch()) : ?>
-            <div class="widget justify-content-end">
-                <?= $this->Search->resetLink(__('Clear'), ['class' => 'btn btn-sm btn-secondary']); ?>
+            <div class="widget mb-2">
+                <?= $this->Search->resetLink(__('Clear'), ['class' => 'btn btn-sm btn-secondary float-right']); ?>
             </div>
             <?php endif; ?>
             <div class="widget">
