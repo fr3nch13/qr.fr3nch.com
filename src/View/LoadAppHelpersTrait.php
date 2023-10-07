@@ -26,5 +26,6 @@ trait LoadAppHelpersTrait
         $this->loadHelper('Paginator', ['className' => 'BootstrapUI.Paginator']);
         $this->addHelper('Template');
         $this->addHelper('Url');
+        $this->loadHelper('Search.Search');
     }
 }

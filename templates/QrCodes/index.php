@@ -81,6 +81,11 @@ if (!$this->getRequest()->is('ajax')) {
                             Filters
                             </a>
                         </li>
+                        <?php if ($this->Search->isSearch()) : ?>
+                        <li class="list-inline-item ms-2">
+                            <?= $this->Search->resetLink(__('Reset'), ['class' => 'underline text-dark']); ?>
+                        </li>
+                        <?php endif; ?>
                     </ul>
                 </div>
             </div>
