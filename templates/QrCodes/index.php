@@ -197,7 +197,7 @@ if (!$this->getRequest()->is('ajax')) {
                     <div class="row g-0">
                         <div class="col">
                             <?= $this->Form->text('q', [
-                                'class' => 'form-control form-control px-2 text-primary',
+                                'class' => 'form-control form-control text-primary',
                                 'placeholder' => __('What are you looking for ?'),
                             ]); ?>
                         </div>
