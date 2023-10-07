@@ -60,9 +60,10 @@ class SearchTest extends BaseControllerTest
             '<a href="/qr-codes/view/2" class="product-title">The Witching Hour</a></div>'));
 
         $content = (string)$this->_response->getBody();
+        debug($content);
         // finally look for the input in the offcanvas that has the filter set.
         $this->assertSame(1, substr_count($content, '<input type="text" name="q" ' .
-            'class="form-control form-control px-4 text-primary" ' .
+            'class="form-control form-control text-primary" ' .
             'placeholder="What are you looking for ?" ' .
             'value="witch">'));
     }
@@ -98,7 +99,7 @@ class SearchTest extends BaseControllerTest
 
         // finally look for the input in the offcanvas that has the filter set.
         $this->assertSame(1, substr_count($content, '<input type="text" name="q" ' .
-            'class="form-control form-control px-4 text-primary" ' .
+            'class="form-control form-control text-primary" ' .
             'placeholder="What are you looking for ?">'));
 
         // TODO: Add the tags elelent to the offcanvase filter
@@ -143,7 +144,7 @@ class SearchTest extends BaseControllerTest
 
         // finally look for the input in the offcanvas that has the filter set.
         $this->assertSame(1, substr_count($content, '<input type="text" name="q" ' .
-            'class="form-control form-control px-4 text-primary" ' .
+            'class="form-control form-control text-primary" ' .
             'placeholder="What are you looking for ?">'));
 
         // TODO: Add the Source elelent to the offcanvase filter

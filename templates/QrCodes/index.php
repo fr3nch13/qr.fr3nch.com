@@ -217,8 +217,7 @@ if (!$this->getRequest()->is('ajax')) {
                         <div class="col">
                             <?= $this->Form->select('s', [
                                 'class' => 'form-select',
-                                'placeholder' => __('What are you looking for ?'),
-                                'options' => $sources,
+                                'options' => $sources->toArray(),
                             ]); ?>
                         </div>
                     </div>
