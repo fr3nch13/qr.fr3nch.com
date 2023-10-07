@@ -22,7 +22,7 @@ $this->start('layout');
 
         <figure
             class="background background-overlay"
-            style="background-image: url('<?= $this->Url->image('login_bg.jpg'); ?>')">
+            style="opacity:.3; background-image: url('<?= $this->Url->image('login_bg.jpg'); ?>')">
         </figure>
     </div>
 <?= $this->element('nav/footer'); ?>
