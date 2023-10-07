@@ -189,6 +189,7 @@ if (!$this->getRequest()->is('ajax')) {
                 </div>
             </div>
 
+            <?php if (!empty($qrCode->tags)) : ?>
             <!-- Tags -->
             <div class="row g-1">
                 <div class="col" aria-label="Tags">
@@ -213,6 +214,7 @@ if (!$this->getRequest()->is('ajax')) {
                     <?php endforeach; ?>
                     </div>
             </div>
+            <?php endif; ?>
         </div>
     </div>
 </div>
