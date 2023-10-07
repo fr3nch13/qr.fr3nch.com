@@ -13,6 +13,7 @@ use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Search\Model\Filter\Base;
 
 /**
  * QrCodes Model
@@ -91,6 +92,18 @@ class QrCodesTable extends Table
                 'wildcardAny' => '*',
                 'wildcardOne' => '?',
                 'fields' => ['name', 'description'],
+            ])
+            // add filtering by tag name
+            ->callback('tag', [
+                'callback' => function (SelectQuery $query, array $args,  Base $filter) {
+                    $query
+                        ->innerJoinWith('Tags', function (SelectQuery $query) use ($args) {
+                            return $query->where(['Tags.name LIKE' => $args['tag']]);
+                        })
+                        ->group('QrCodes.id');
+
+                    return true;
+                }
             ]);
     }
 
