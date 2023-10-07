@@ -217,7 +217,7 @@ if (!$this->getRequest()->is('ajax')) {
                         <div class="col">
                             <?= $this->Form->select('s', $sources,[
                                 'empty' => __('Select a Source'),
-                                'id' => 'filterSOurce',
+                                'id' => 'filterSource',
                             ]); ?>
                         </div>
                     </div>
