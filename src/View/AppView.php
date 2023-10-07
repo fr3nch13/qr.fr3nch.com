@@ -18,11 +18,12 @@ use Cake\View\View;
  * @property \App\View\Helper\FormHelper $Form
  * @property \App\View\Helper\HtmlHelper $Html
  * @property \App\View\Helper\TemplateHelper $Template
+ * @property \Authentication\View\Helper\IdentityHelper $Identity
+ * @property \BootstrapUI\View\Helper\BreadcrumbsHelper $Breadcrumbs
  * @property \BootstrapUI\View\Helper\FlashHelper $Flash
  * @property \BootstrapUI\View\Helper\PaginatorHelper $Paginator
- * @property \BootstrapUI\View\Helper\BreadcrumbsHelper $Breadcrumbs
- * @property \Authentication\View\Helper\IdentityHelper $Identity
  * @property \Cake\View\Helper\UrlHelper $Url
+ * @property \Search\View\Helper\SearchHelper $Search
  */
 class AppView extends View
 {

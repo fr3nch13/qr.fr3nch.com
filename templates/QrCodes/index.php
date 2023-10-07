@@ -78,7 +78,12 @@ if (!$this->getRequest()->is('ajax')) {
                                 href="#offcanvasFilter"
                                 role="button"
                                 aria-controls="offcanvasFilter">
-                            Filters
+                                <?= __('Filters') ?>
+                                <?php if ($this->Search->isSearch()) : ?>
+                                <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+                                    <span class="visually-hidden"><?= __('Filters are applied') ?></span>
+                                </span>
+                                <?php endif; ?>
                             </a>
                         </li>
                     </ul>
