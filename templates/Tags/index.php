@@ -57,7 +57,7 @@ if (!$this->getRequest()->is('ajax')) {
                             ],
                             [
                                 'class' => 'btn btn-primary rounded-pill',
-                                'role' => 'button',
+                                //'role' => 'button',
                             ]
                         ); ?>
 
