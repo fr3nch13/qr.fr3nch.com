@@ -215,7 +215,10 @@ if (!$this->getRequest()->is('ajax')) {
                 <span class="d-flex eyebrow text-muted mb-2"><?= __('Source') ?></span>
                     <div class="row g-0">
                         <div class="col">
-                            <?= $this->Form->select('s', $sources,['class' => 'form-select']); ?>
+                            <?= $this->Form->select('s', $sources,[
+                                'empty' => __('Select a Source'),
+                                'onchange' => 'alert($(this).text());',
+                            ]); ?>
                         </div>
                     </div>
             </div>

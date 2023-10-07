@@ -301,6 +301,18 @@ class BaseControllerTest extends TestCase
         $this->assertSame(1, substr_count($content, '<link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">'));
         $this->assertSame(1, substr_count($content, '<link rel="manifest" href="/img/site.webmanifest">'));
 
+        // css
+        $this->assertSame(1, substr_count($content, '<link rel="stylesheet" href="/css/libs.bundle.css" '));
+        $this->assertSame(1, substr_count($content, '<link rel="stylesheet" href="/css/index.bundle.css" '));
+        $this->assertSame(1, substr_count($content, '<link rel="stylesheet" href="/css/qr.css" '));
+
+        // js
+        $this->assertSame(1, substr_count($content, '<script src="/js/vendor.bundle.js" '));
+        $this->assertSame(1, substr_count($content, '<script src="/js/index.bundle.js" '));
+        $this->assertSame(1, substr_count($content, '<script src="/assets/npm-asset/jquery/dist/jquery.min.js" '));
+        $this->assertSame(1, substr_count($content, '<script src="/js/qr.js" '));
+
+
         $this->assertSame(1, substr_count($content, '</body>'));
         $this->assertSame(1, substr_count($content, '</html>'));
     }

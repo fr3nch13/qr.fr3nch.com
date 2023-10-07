@@ -60,7 +60,7 @@ class SearchTest extends BaseControllerTest
             '<a href="/qr-codes/view/2" class="product-title">The Witching Hour</a></div>'));
 
         $content = (string)$this->_response->getBody();
-        debug($content);
+        //debug($content);
         // finally look for the input in the offcanvas that has the filter set.
         $this->assertSame(1, substr_count($content, '<input type="text" name="q" ' .
             'class="form-control form-control text-primary" ' .
