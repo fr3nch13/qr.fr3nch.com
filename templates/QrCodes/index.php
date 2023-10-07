@@ -1,5 +1,4 @@
 <?php
-use App\View\Helper\FormHelper;
 /**
  * @var \App\View\AppView $this
  * @var iterable<\App\Model\Entity\QrCode> $qrCodes
@@ -80,7 +79,15 @@ if (!$this->getRequest()->is('ajax')) {
                                 aria-controls="offcanvasFilter">
                                 <?= __('Filters') ?>
                                 <?php if ($this->Search->isSearch()) : ?>
-                                <span class="position-absolute top-0 start-100 translate-middle rounded-pill text-red p-1">
+                                <span
+                                    class="
+                                        position-absolute
+                                        top-0
+                                        start-100
+                                        translate-middle
+                                        rounded-pill
+                                        text-red
+                                        p-1">
                                     <i class="bi bi-check"></i>
                                     <span class="visually-hidden"><?= __('Filters are applied') ?></span>
                                 </span>
@@ -176,7 +183,9 @@ if (!$this->getRequest()->is('ajax')) {
         <div class="offcanvas-body">
             <?php if ($this->Search->isSearch()) : ?>
             <div class="widget mb-2">
-                <?= $this->Search->resetLink(__('Clear'), ['class' => 'btn btn-sm btn-light float-right rounded-pill']); ?>
+                <?= $this->Search->resetLink(__('Clear'), [
+                    'class' => 'btn btn-sm btn-light float-right rounded-pill',
+                ]); ?>
             </div>
             <?php endif; ?>
             <!-- Search Form -->
@@ -203,10 +212,10 @@ if (!$this->getRequest()->is('ajax')) {
                 </div>
                 <?= $this->Form->end(); ?>
             </div>
-            <!-- Tags -->
+            <!-- Tags
             <div class="widget">
                 <span class="d-flex eyebrow text-muted mb-2">Tags</span>
-            </div>
+            </div> -->
         </div>
     </div>
     <?php $this->end(); // offcanvas ?>

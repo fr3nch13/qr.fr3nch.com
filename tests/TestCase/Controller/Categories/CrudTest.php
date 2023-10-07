@@ -45,8 +45,11 @@ class CrudTest extends BaseControllerTest
 
         // post
         $this->post('https://localhost/categories');
-        $this->assertResponseCode(405);
-        $this->assertResponseContains('Method Not Allowed');
+        $this->assertRedirectEquals('https://localhost/categories');
+        // changed because we added friendsofcake/search
+        // which does a Post-Redirect-Get
+        // $this->assertResponseCode(405);
+        // $this->assertResponseContains('Method Not Allowed');
 
         // patch
         $this->patch('https://localhost/categories');

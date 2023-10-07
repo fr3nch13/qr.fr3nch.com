@@ -102,13 +102,17 @@ class QrImagesFixture extends CoreFixture
     }
 
     /**
-     * @inheritDoc
+     * Inserts the records into the database before each test.
+     *
+     * TODO: Remove this fixture from places that don't need it
+     * Since it copies files and slows down tests.
+     * labels: fixtures, tests
+     *
+     * @return bool
      */
     public function insert(ConnectionInterface $connection): bool
     {
         if (parent::insert($connection)) {
-            // TODO: After they're been inserted, copy over their images.
-            // labels: seeds, assets
             $source = TESTS . 'assets' . DS . 'qr_images';
             $dest = Configure::read('App.paths.qr_images');
             if (is_dir($dest)) {

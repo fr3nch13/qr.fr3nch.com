@@ -38,12 +38,6 @@ class CrudTest extends BaseControllerTest
      */
     public function testIndex(): void
     {
-        Configure::write('debug', true);
-        $this->enableRetainFlashMessages();
-        $this->enableCsrfToken();
-        $this->enableSecurityToken();
-        $this->loginUserAdmin();
-
         // get
         $this->get('https://localhost/tags');
         $this->assertResponseOk();
@@ -51,8 +45,11 @@ class CrudTest extends BaseControllerTest
 
         // post
         $this->post('https://localhost/tags');
-        $this->assertResponseCode(405);
-        $this->assertResponseContains('Method Not Allowed');
+        $this->assertRedirectEquals('https://localhost/tags');
+        // changed because we added friendsofcake/search
+        // which does a Post-Redirect-Get
+        // $this->assertResponseCode(405);
+        // $this->assertResponseContains('Method Not Allowed');
 
         // patch
         $this->patch('https://localhost/tags');
@@ -78,12 +75,6 @@ class CrudTest extends BaseControllerTest
      */
     public function testView(): void
     {
-        Configure::write('debug', true);
-        $this->enableRetainFlashMessages();
-        $this->enableCsrfToken();
-        $this->enableSecurityToken();
-        $this->loginUserAdmin();
-
         // test get
         $this->get('https://localhost/tags/view/1');
         $this->assertResponseOk();
@@ -118,12 +109,6 @@ class CrudTest extends BaseControllerTest
      */
     public function testAdd(): void
     {
-        Configure::write('debug', true);
-        $this->enableRetainFlashMessages();
-        $this->enableCsrfToken();
-        $this->enableSecurityToken();
-        $this->loginUserAdmin();
-
         // test get
         $this->get('https://localhost/tags/add');
         $this->assertResponseOk();
@@ -165,12 +150,6 @@ class CrudTest extends BaseControllerTest
      */
     public function testEdit(): void
     {
-        Configure::write('debug', true);
-        $this->enableRetainFlashMessages();
-        $this->enableCsrfToken();
-        $this->enableSecurityToken();
-        $this->loginUserAdmin();
-
         // test get
         $this->get('https://localhost/tags/edit/1');
         $this->assertResponseOk();
@@ -212,12 +191,6 @@ class CrudTest extends BaseControllerTest
      */
     public function testDelete(): void
     {
-        Configure::write('debug', true);
-        $this->enableRetainFlashMessages();
-        $this->enableCsrfToken();
-        $this->enableSecurityToken();
-        $this->loginUserAdmin();
-
         // test get
         $this->get('https://localhost/tags/delete/1');
         $this->assertResponseCode(405);

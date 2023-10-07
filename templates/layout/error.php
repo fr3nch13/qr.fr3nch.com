@@ -26,7 +26,7 @@ $this->start('layout');
             <p>
                 <?= $this->Html->link(__('Go back to homepage'), [
                     'controller' => 'QrCodes',
-                    'action' => 'index'
+                    'action' => 'index',
                 ], [
                     'class' => 'btn btn-rounded btn-outline-white rounded-pill',
                 ]) ?>

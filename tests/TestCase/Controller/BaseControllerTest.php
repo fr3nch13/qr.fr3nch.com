@@ -399,7 +399,7 @@ class BaseControllerTest extends TestCase
         $this->assertSame(1, substr_count($content, '<!-- END: App.Error/error400 -->'));
 
         if ($path) {
-            $this->assertSame(1, substr_count($content, 'The requested address <strong>\'' . $path . '\'</strong> was not found on this server.'));
+            $this->assertSame(1, substr_count($content, 'The requested address <strong>\'' . $path . '\'</strong> was not found.'));
         }
 
         // test other specific to this layout.

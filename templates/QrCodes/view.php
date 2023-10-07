@@ -1,5 +1,4 @@
 <?php
-use Cake\Routing\Router;
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\QrCode $qrCode
@@ -170,7 +169,7 @@ if (!$this->getRequest()->is('ajax')) {
                                             '?' => ['s' => $qrCode->source->name],
                                         ]
                                     ) :
-                                '' ?></dd>
+                                                     '' ?></dd>
 
                                 <dt class="col-sm-3"><?= __('Created') ?></dt>
                                 <dd class="col-sm-9"><?= h($qrCode->created) ?></dd>
@@ -201,7 +200,8 @@ if (!$this->getRequest()->is('ajax')) {
                                                 '?' => ['t' => $tag->name],
                                             ],
                                             [
-                                                'class' => 'mr-1 mb-1 btn btn-sm btn-light btn-outline-secondary rounded-pill',
+                                                'class' => 'mr-1 mb-1 rounded-pill ' .
+                                                    'btn btn-sm btn-light btn-outline-secondary',
                                                 'role' => 'button',
                                             ]
                                         ); ?>

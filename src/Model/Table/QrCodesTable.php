@@ -36,6 +36,7 @@ use Search\Model\Filter\Base;
  * @method \App\Model\Entity\QrCode[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
  * @method \App\Model\Entity\QrCode[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
+ * @mixin \Search\Model\Behavior\SearchBehavior
  */
 class QrCodesTable extends Table
 {
@@ -104,7 +105,7 @@ class QrCodesTable extends Table
             ])
             // add filtering by tag name
             ->callback('t', [
-                'callback' => function (SelectQuery $query, array $args,  Base $filter) {
+                'callback' => function (SelectQuery $query, array $args, Base $filter) {
                     $query
                         ->innerJoinWith('Tags', function (SelectQuery $query) use ($args) {
                             return $query->where(['Tags.name LIKE' => $args['t']]);
@@ -112,7 +113,7 @@ class QrCodesTable extends Table
                         ->group('QrCodes.id');
 
                     return true;
-                }
+                },
             ]);
     }
 
