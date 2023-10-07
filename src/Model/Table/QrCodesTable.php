@@ -99,7 +99,8 @@ class QrCodesTable extends Table
                     $query
                         ->contain('Sources', function (SelectQuery $query) use ($args) {
                             return $query->where(['Sources.name LIKE' => $args['s']]);
-                        });
+                        })
+                        ->group('QrCodes.id');
 
                     return true;
                 }
