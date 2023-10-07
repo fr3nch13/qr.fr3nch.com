@@ -168,23 +168,27 @@ if (!$this->getRequest()->is('ajax')) {
         </div>
         <div class="offcanvas-body">
             <div class="widget">
-            <?php
-            echo $this->Form->create(null, [
+            <?= $this->Form->create(null, [
                 'valueSources' => 'query',
-            ]);
-            // Match the search param in your table configuration
-            echo $this->Form->control('q', [
-                'label' => [
-                    'text' => __('Search'),
-                    'floating' => true,
-                ],
-            ]);
-            echo $this->Form->button('Filter', ['type' => 'submit']);
-            echo $this->Html->link('Reset', ['action' => 'index']);
-            echo $this->Form->end();
-            ?>
+            ]); ?>
+            <div class="grouped-inputs p-1 rounded-pill border">
+                <div class="row g-0">
+                    <div class="col">
+                        <?= $this->Form->text('q', [
+                            'class' => 'form-control form-control-lg px-4 text-primary',
+                            'placeholder' => __('What are you looking for ?'),
+                        ]); ?>
+                    </div>
+                    <div class="col-auto d-grid">
+                        <?= $this->Form->button('i class="bi bi-search"></i>', [
+                            'type' => 'submit',
+                            'class' => 'btn btn-primary btn-lg btn-icon rounded-circle',
+                            'escape' => false,
+                        ]); ?>
+                    </div>
+                </div>
             </div>
-
+            <?= $this->Form->end(); ?>
     <!--
       <div class="widget">
         <span class="d-flex eyebrow text-muted mb-2">Brands</span>
