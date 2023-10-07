@@ -183,7 +183,7 @@ if (!$this->getRequest()->is('ajax')) {
                         <?= $this->Form->button('<i class="bi bi-search"></i>', [
                             'type' => 'submit',
                             'class' => 'btn btn-primary btn-lg btn-icon rounded-circle',
-                            'escape' => false,
+                            'escapeTitle' => false,
                         ]); ?>
                     </div>
                 </div>
