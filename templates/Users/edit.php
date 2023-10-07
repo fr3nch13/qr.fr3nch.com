@@ -22,7 +22,7 @@ if (!$this->getRequest()->is('ajax')) {
     </aside>
     <div class="column column-80">
         <div class="users form content">
-            <?= $this->Form->create($user, ['method' => 'patch']) ?>
+            <?= $this->Form->create($user) ?>
             <fieldset>
                 <legend><?= __('Edit User') ?></legend>
 

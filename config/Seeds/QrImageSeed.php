@@ -113,10 +113,10 @@ class QrImageSeed extends AbstractSeed
         $dest = Configure::read('App.paths.qr_images');
         if (is_dir($dest)) {
             $this->rrmdir($dest);
-            usleep( 500 * 1000 );  // give it a half second to catch up.
+            //usleep( 500 * 1000 );  // give it a half second to catch up.
         }
         mkdir($dest);
-        usleep( 500 * 1000 );  // give it a half second to catch up.
+        //usleep( 500 * 1000 );  // give it a half second to catch up.
         $this->cpy($source, $dest);
     }
 

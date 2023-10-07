@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Core\Configure;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
@@ -94,6 +95,14 @@ class QrCodesController extends AppController
         }
 
         $response = $this->response->withFile($qrCode->path);
+        $modified = date('Y-m-d H:i:s.', filemtime($qrCode->path) ?: null);
+        $response = $response->withModified($modified);
+
+        // allow browser and proxy caching when debug is off
+        if (!Configure::read('debug')) {
+            $response = $response->withSharable(true, 3600);
+            $response = $response->withExpires('+5 minutes');
+        }
 
         return $response;
     }
@@ -200,12 +209,12 @@ class QrCodesController extends AppController
      */
     public function edit(?string $id = null): ?Response
     {
-        $this->request->allowMethod(['get', 'patch']);
+        $this->request->allowMethod(['get', 'put']);
 
         $qrCode = $this->QrCodes->get((int)$id, contain: ['Categories', 'Tags']);
         $this->Authorization->authorize($qrCode);
 
-        if ($this->request->is('patch')) {
+        if ($this->request->is('put')) {
             $qrCode = $this->QrCodes->patchEntity($qrCode, $this->request->getData());
             if ($this->QrCodes->save($qrCode)) {
                 $this->Flash->success(__('The qr code has been saved.'));

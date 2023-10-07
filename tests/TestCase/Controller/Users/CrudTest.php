@@ -290,16 +290,16 @@ class CrudTest extends BaseControllerTest
         $this->patch('https://localhost/users/edit/3', [
             'name' => 'Updated User',
         ]);
-        $this->assertRedirectEquals('https://localhost/users/view/3');
-        $this->assertFlashMessage('The user has been saved.', 'flash');
-        $this->assertFlashElement('flash/success');
+        $this->assertResponseCode(405);
+        $this->assertResponseContains('Method Not Allowed');
 
         // put
         $this->put('https://localhost/users/edit/3', [
             'name' => 'Updated User',
         ]);
-        $this->assertResponseCode(405);
-        $this->assertResponseContains('Method Not Allowed');
+        $this->assertRedirectEquals('https://localhost/users/view/3');
+        $this->assertFlashMessage('The user has been saved.', 'flash');
+        $this->assertFlashElement('flash/success');
 
         // delete
         $this->delete('https://localhost/users/edit/3');

@@ -219,12 +219,12 @@ class UsersController extends AppController
             $id = $this->getActiveUser('id');
         }
 
-        $this->request->allowMethod(['get', 'patch']);
+        $this->request->allowMethod(['get', 'put']);
 
         $user = $this->Users->get((int)$id, contain: []);
         $this->Authorization->authorize($user);
 
-        if ($this->request->is('patch')) {
+        if ($this->request->is('put')) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));

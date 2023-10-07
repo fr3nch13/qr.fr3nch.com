@@ -173,17 +173,17 @@ class CrudTest extends BaseControllerTest
             'name' => 'New Category',
             'description' => 'The Description',
         ]);
-        $this->assertRedirectEquals('https://localhost/categories/view/1');
-        $this->assertFlashMessage('The category has been saved.', 'flash');
-        $this->assertFlashElement('flash/success');
+        $this->assertResponseCode(405);
+        $this->assertResponseContains('Method Not Allowed');
 
         // put
         $this->put('https://localhost/categories/edit/1', [
             'name' => 'New Category',
             'description' => 'The Description',
         ]);
-        $this->assertResponseCode(405);
-        $this->assertResponseContains('Method Not Allowed');
+        $this->assertRedirectEquals('https://localhost/categories/view/1');
+        $this->assertFlashMessage('The category has been saved.', 'flash');
+        $this->assertFlashElement('flash/success');
 
         // delete
         $this->delete('https://localhost/categories/edit/1');

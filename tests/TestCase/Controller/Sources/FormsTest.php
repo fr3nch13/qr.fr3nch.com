@@ -82,18 +82,18 @@ class FormsTest extends BaseControllerTest
     public function testEdit(): void
     {
         // test fail
-        $this->patch('https://localhost/sources/edit/1', [
+        $this->put('https://localhost/sources/edit/1', [
             'name' => 'Etsy', // an existing record
         ]);
         $this->assertResponseOk();
         $this->helperTestTemplate('Sources/edit');
-        $this->helperTestFormTag('/sources/edit/1', 'patch');
+        $this->helperTestFormTag('/sources/edit/1', 'put');
         $this->helperTestAlert('The source could not be saved. Please, try again.', 'danger');
         // test to make sure the fields that are required are actually tagged as so.
         $this->helperTestFormFieldError('This Name already exists.', 'name-error');
 
-        // test success
-        $this->patch('https://localhost/sources/edit/1', [
+        // test put success
+        $this->put('https://localhost/sources/edit/1', [
             'name' => 'New Source',
             'description' => 'The Description',
         ]);

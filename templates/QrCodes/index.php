@@ -34,13 +34,13 @@ if (!$this->getRequest()->is('ajax')) {
                                 <a
                                     class="underline text-black"
                                     href="#" role="button"
-                                    id="dropdownMenuLink"
+                                    id="indexPageOptions"
                                     data-bs-toggle="dropdown"
                                     aria-expanded="false">
                                     Sort <i class="bi bi-chevron-down"></i>
                                 </a>
 
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <ul class="dropdown-menu" aria-labelledby="indexPageOptions">
                                     <li><?= $this->Html->fixPaginatorSort($this->Paginator->sort(
                                         'QrCodes.name',
                                         [
@@ -96,14 +96,16 @@ if (!$this->getRequest()->is('ajax')) {
                 <?= $this->Template->objectComment('QrCodes/' . ($qrCode->is_active ? 'active' : 'inactive')) ?>
                 <div class="col-md-6 col-lg-4">
                     <div class="product<?= $qrCode->is_active ? ' active' : ' inactive' ?>">
-                        <div class="product-title">
-                            <?= $this->Html->link(
-                                $qrCode->name,
-                                ['action' => 'view', $qrCode->id],
-                                ['class' => 'product-title']
-                            ); ?>
-                        </div>
+
+                        <div class="product-title"><?= $this->Html->link($qrCode->name, [
+                            'action' => 'view',
+                            $qrCode->id,
+                        ], ['class' => 'product-title']) ?></div>
+
                         <figure class="product-image">
+                            <?php if (!$qrCode->is_active) : ?>
+                            <div class="ribbon red"><span><?= __('Inactive') ?></span></div>
+                            <?php endif; ?>
                             <a href="<?= $this->Url->build(['action' => 'view', $qrCode->id]) ?>">
                                 <?php if (!empty($qrCode->qr_images)) : ?>
                                     <?= $this->Template->objectComment('QrImages/active/first') ?>
@@ -114,7 +116,7 @@ if (!$this->getRequest()->is('ajax')) {
                                             'action' => 'show',
                                             $qrCode->qr_images[0]->id,
                                         ]) ?>"
-                                        alt="<?= $qrCode->qr_images[0]->name ?>">
+                                        alt="<?= h($qrCode->qr_images[0]->name) ?>">
                                 <?php endif; ?>
                                 <?= $this->Template->objectComment('QrCode/show') ?>
                                 <img

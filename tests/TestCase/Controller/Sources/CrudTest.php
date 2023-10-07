@@ -194,17 +194,17 @@ class CrudTest extends BaseControllerTest
             'name' => 'New Source',
             'description' => 'The Description',
         ]);
-        $this->assertRedirectEquals('https://localhost/sources/view/3');
-        $this->assertFlashMessage('The source has been saved.', 'flash');
-        $this->assertFlashElement('flash/success');
+        $this->assertResponseCode(405);
+        $this->assertResponseContains('Method Not Allowed');
 
         // put
         $this->put('https://localhost/sources/edit/3', [
             'name' => 'New Source',
             'description' => 'The Description',
         ]);
-        $this->assertResponseCode(405);
-        $this->assertResponseContains('Method Not Allowed');
+        $this->assertRedirectEquals('https://localhost/sources/view/3');
+        $this->assertFlashMessage('The source has been saved.', 'flash');
+        $this->assertFlashElement('flash/success');
 
         // delete
         $this->delete('https://localhost/sources/edit/3');

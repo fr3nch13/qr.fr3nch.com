@@ -6,6 +6,8 @@ namespace App\Test\TestCase\Controller;
 use App\Model\Table\UsersTable;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use HtmlValidator\Exception\ServerException as ValidatorServerException;
+use HtmlValidator\Validator as HtmlValidator;
 
 /**
  * Base Controller test for the other tests that use
@@ -127,6 +129,26 @@ class BaseControllerTest extends TestCase
     }
 
     /**
+     * Uses an HTML validator to validate the compiled html.
+     *
+     * @return void
+     */
+    public function helperValidateHTML(): void
+    {
+        $content = (string)$this->_response->getBody();
+        try {
+            $validator = new HtmlValidator();
+            $result = $validator->validateDocument($content);
+            $this->assertFalse($result->hasErrors(), (string)$result);
+            $this->assertFalse($result->hasWarnings(), (string)$result);
+
+            // Incase validator.nu throws an error.
+        } catch (ValidatorServerException $e) {
+            $this->assertTrue(true);
+        }
+    }
+
+    /**
      * Tests alerts
      *
      * @param string $message The alert message.
@@ -174,13 +196,27 @@ class BaseControllerTest extends TestCase
      */
     public function helperTestFormTag(string $action, string $method = 'post', bool $isFile = false): void
     {
+        $content = (string)$this->_response->getBody();
+
         $fileString = '';
         if ($isFile) {
             $fileString = 'enctype="multipart/form-data" ';
         }
-        $formString = '<form ' . $fileString . 'method="' . $method . '" accept-charset="utf-8" role="form" action="' . $action . '">';
 
-        $content = (string)$this->_response->getBody();
+        // if the method is a put or a patch, look for the cake internal translation.
+        $otherMethod = null;
+        if (in_array(strtolower($method), ['put', 'patch'])) {
+            $otherMethod = $method;
+            $method = 'post';
+            // look for the hidenn method that cakephp uses
+            // <input type="hidden" name="_method" value="PUT">
+            $this->assertSame(1, substr_count($content, '<input type="hidden" name="_method" value="' .
+                strtoupper($otherMethod) . '">'));
+        }
+
+        $formString = '<form ' . $fileString . 'method="' . $method .
+            '" accept-charset="utf-8" role="form" action="' . $action . '">';
+
         $this->assertSame(1, substr_count($content, $formString));
     }
 

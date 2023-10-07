@@ -187,7 +187,7 @@ class JsonTest extends BaseControllerTest
         $this->assertCount(5, $content['tags']);
 
         // a fail as qrkey can't be updated via forms/entities
-        $this->patch('https://localhost/qr-codes/edit/1.json', [
+        $this->put('https://localhost/qr-codes/edit/1.json', [
             'qrkey' => 'newjsonkey',
             'name' => 'New JSON QR Code',
             'description' => 'Description of the code',
@@ -213,8 +213,8 @@ class JsonTest extends BaseControllerTest
         $this->assertTrue(isset($content['tags']));
         $this->assertCount(5, $content['tags']);
 
-        // a patch success
-        $this->patch('https://localhost/qr-codes/edit/1.json', [
+        // a put success
+        $this->put('https://localhost/qr-codes/edit/1.json', [
             'name' => 'New JSON QR Code',
             'description' => 'Description of the code',
             'url' => 'https://amazon.com/path/to/forward',

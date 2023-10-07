@@ -41,6 +41,7 @@ class QrImage extends Entity
         'modified' => true,
         'is_active' => true,
         'imorder' => true,
+        'path' => true,
         'qr_code_id' => true,
         'qr_code' => true,
     ];

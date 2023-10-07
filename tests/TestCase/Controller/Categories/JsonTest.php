@@ -166,8 +166,8 @@ class JsonTest extends BaseControllerTest
         $this->assertTrue(isset($content['parentCategories']));
         $this->assertCount(3, $content['parentCategories']);
 
-        // a patch success
-        $this->patch('https://localhost/categories/edit/1.json', [
+        // a put success
+        $this->put('https://localhost/categories/edit/1.json', [
             'name' => 'New JSON Category',
             'description' => 'Description of the category',
         ]);

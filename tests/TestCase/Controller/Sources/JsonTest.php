@@ -150,8 +150,8 @@ class JsonTest extends BaseControllerTest
         $this->assertTrue(isset($content['errors']));
         $this->assertTrue(empty($content['errors']));
 
-        // a patch success
-        $this->patch('https://localhost/sources/edit/1.json', [
+        // a put success
+        $this->put('https://localhost/sources/edit/1.json', [
             'name' => 'New JSON source',
             'description' => 'Description of the source',
         ]);

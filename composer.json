@@ -17,14 +17,15 @@
         "paragonie/csp-builder": "~2.9"
     },
     "require-dev": {
-        "cakephp/cakephp": "5.x-dev as 5.0.1",
         "cakephp/bake": "~3.0",
+        "cakephp/cakephp": "5.x-dev as 5.0.1",
         "cakephp/cakephp-codesniffer": "~5.1",
         "cakephp/debug_kit": "~5.0",
         "fr3nch13/pushover-bash": "~1.0",
         "josegonzalez/dotenv": "~4.0",
         "phpstan/phpstan": "~1.10",
-        "phpunit/phpunit": "~10.3"
+        "phpunit/phpunit": "~10.3",
+        "rexxars/html-validator": "^2.3"
     },
     "suggest": {
         "markstory/asset_compress": "An asset compression plugin which provides file concatenation and a flexible filter system for preprocessing and minification.",

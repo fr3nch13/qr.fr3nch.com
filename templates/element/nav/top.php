@@ -10,7 +10,10 @@ if ($this->getLayout() === 'login') {
     $navClasses = 'qr-navbar-top navbar navbar-expand-lg navbar-sticky navbar-dark';
     $logoImage = 'logo_light.png';
 }
-$logoImage = $this->Html->image($logoImage, ['class' => 'logo-top']);
+$logoImage = $this->Html->image($logoImage, [
+    'class' => 'logo-top',
+    'alt' => __('Fr3nch QR Code generator.'),
+]);
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <nav id="mainNav" class="<?= $navClasses; ?>">

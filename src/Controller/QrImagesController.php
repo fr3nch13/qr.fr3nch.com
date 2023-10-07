@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Core\Configure;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
@@ -59,6 +60,14 @@ class QrImagesController extends AppController
         }
 
         $response = $this->response->withFile($qrImage->path);
+        $modified = date('Y-m-d H:i:s.', filemtime($qrImage->path) ?: null);
+        $response = $response->withModified($modified);
+
+        // allow browser and proxy caching when debug is off
+        if (!Configure::read('debug')) {
+            $response = $response->withSharable(true, 3600);
+            $response = $response->withExpires('+5 minutes');
+        }
 
         return $response;
     }
@@ -141,12 +150,12 @@ class QrImagesController extends AppController
      */
     public function edit(?string $id = null): ?Response
     {
-        $this->request->allowMethod(['get', 'patch']);
+        $this->request->allowMethod(['get', 'put']);
 
         $qrImage = $this->QrImages->get((int)$id, contain: ['QrCodes']);
         $this->Authorization->authorize($qrImage);
 
-        if ($this->request->is('patch')) {
+        if ($this->request->is('put')) {
             $qrImage = $this->QrImages->patchEntity($qrImage, $this->request->getData());
             if ($this->QrImages->save($qrImage)) {
                 $this->Flash->success(__('The image has been saved.'));

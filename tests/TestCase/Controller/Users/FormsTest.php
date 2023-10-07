@@ -147,18 +147,18 @@ class FormsTest extends BaseControllerTest
         $this->loginUserAdmin();
 
         // test fail
-        $this->patch('https://localhost/users/edit/3', [
+        $this->put('https://localhost/users/edit/3', [
             'name' => 'Regular', // an existing record, can have same name,
             'email' => 'regular@example.com', // existing record, should be unique
         ]);
         $this->assertResponseOk();
         $this->helperTestTemplate('Users/edit');
-        $this->helperTestFormTag('/users/edit/3', 'patch');
+        $this->helperTestFormTag('/users/edit/3', 'put');
         $this->helperTestAlert('The user could not be saved. Please, try again.', 'danger');
         // test to make sure the fields that are required are actually tagged as so.
         $this->helperTestFormFieldError('This Email already exists.', 'email-error');
-        // test success
-        $this->patch('https://localhost/users/edit/3', [
+        // test put success
+        $this->put('https://localhost/users/edit/3', [
             'name' => 'New User',
             'description' => 'The Description',
         ]);

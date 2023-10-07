@@ -360,14 +360,14 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/users/edit/2');
         $this->assertResponseOk();
         $this->helperTestTemplate('Users/edit');
-        $this->helperTestFormTag('/users/edit/2', 'patch');
+        $this->helperTestFormTag('/users/edit/2', 'put');
 
         // test with admin
         $this->loginUserAdmin();
         $this->get('https://localhost/users/edit/2');
         $this->assertResponseOk();
         $this->helperTestTemplate('Users/edit');
-        $this->helperTestFormTag('/users/edit/2', 'patch');
+        $this->helperTestFormTag('/users/edit/2', 'put');
 
         /// Missing IDs
 
@@ -384,14 +384,14 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/users/edit');
         $this->assertResponseOk();
         $this->helperTestTemplate('Users/edit');
-        $this->helperTestFormTag('/users/edit', 'patch');
+        $this->helperTestFormTag('/users/edit', 'put');
 
         // test with admin
         $this->loginUserAdmin();
         $this->get('https://localhost/users/edit');
         $this->assertResponseOk();
         $this->helperTestTemplate('Users/edit');
-        $this->helperTestFormTag('/users/edit', 'patch');
+        $this->helperTestFormTag('/users/edit', 'put');
 
         // Debug Off
         Configure::write('debug', false);

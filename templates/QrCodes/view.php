@@ -14,10 +14,14 @@ if (!$this->getRequest()->is('ajax')) {
 
     <?php if (
         $this->ActiveUser->getUser() &&
-        $this->ActiveUser->getUser('id') === $qrCode->user_id
+        (
+            $this->ActiveUser->getUser('id') === $qrCode->user_id ||
+            $this->ActiveUser->getUser('is_admin') == true
+        )
 ) : ?>
+<div class="product-view">
     <!-- Page Actions -->
-    <div class="row g-5 justify-content-center justify-content-lg-between">
+    <div class="row g-5 mb-4 justify-content-center justify-content-lg-between">
         <div class="col-md-12 text-md-end">
             <ul class="list-inline">
                 <li class="list-inline-item ms-2">
@@ -45,8 +49,17 @@ if (!$this->getRequest()->is('ajax')) {
     <?php endif; // Page Actions ?>
 
     <!-- The QR Code Details -->
-    <div class="row g-5 justify-content-center justify-content-lg-between">
-
+    <div class="
+        row
+        g-5
+        justify-content-center
+        justify-content-lg-between
+        product
+        product-<?= ($qrCode->is_active ? 'active' : 'inactive')?>
+        ">
+        <?php if (!$qrCode->is_active) : ?>
+        <div class="ribbon red"><span><?= __('Inactive') ?></span></div>
+        <?php endif; ?>
         <!-- The QR Code's images -->
         <div class="col-lg-6 position-relative">
             <div class="row g-1">
@@ -60,17 +73,25 @@ if (!$this->getRequest()->is('ajax')) {
                             "loop": true,
                             "items": 1
                         }'>
-                        <div class="item text-center">
-                            <img class="img-fluid" src="./assets/images/products/product-9.jpg" alt="Image">
-                        </div>
+                        <?php foreach ($qrCode->qr_images as $qrImage) : ?>
+                            <?php
+                            // make sure the image active, and exists
+                            if (!$qrImage->is_active || !$qrImage->path) {
+                                continue;
+                            }
+                            ?>
 
+                            <?= $this->Template->objectComment('QrImage/show/large') ?>
                         <div class="item text-center">
-                            <img class="img-fluid" src="./assets/images/products/product-9-2.jpg" alt="Image">
+                            <img
+                                class="img-fluid img-thumbnail"
+                                src="<?= $this->Url->build([
+                                    'controller' => 'QrImages',
+                                    'action' => 'show', $qrImage->id,
+                                    ]) ?>"
+                                alt="<?= $qrImage->name ?>">
                         </div>
-
-                        <div class="item text-center">
-                            <img class="img-fluid" src="./assets/images/products/product-9-3.jpg" alt="Image">
-                        </div>
+                        <?php endforeach; ?>
 
                         <div class="item text-center">
                             <?= $this->Template->objectComment('QrCode/show') ?>
@@ -85,15 +106,24 @@ if (!$this->getRequest()->is('ajax')) {
                 </div>
                 <div class="col-md-2 order-md-1">
                     <div class="carousel-thumbs d-flex flex-row flex-md-column" id="nav-images">
+                        <?php foreach ($qrCode->qr_images as $qrImage) : ?>
+                            <?php
+                            // make sure it's active, and exists
+                            if (!$qrImage->is_active || !$qrImage->path) {
+                                continue;
+                            }
+                            ?>
+                            <?= $this->Template->objectComment('QrImage/show/thumb') ?>
                         <div>
-                            <img class="img-fluid" src="./assets/images/products/product-9.jpg" alt="Image">
+                            <img
+                                class="img-fluid"
+                                src="<?= $this->Url->build([
+                                    'controller' => 'QrImages',
+                                    'action' => 'show', $qrImage->id,
+                                    ]) ?>"
+                                alt="<?= $qrImage->name ?>">
                         </div>
-                        <div>
-                            <img class="img-fluid" src="./assets/images/products/product-9-2.jpg" alt="Image">
-                        </div>
-                        <div>
-                            <img class="img-fluid" src="./assets/images/products/product-9-3.jpg" alt="Image">
-                        </div>
+                        <?php endforeach; ?>
                         <div>
                             <?= $this->Template->objectComment('QrCode/show') ?>
                             <img
@@ -109,8 +139,8 @@ if (!$this->getRequest()->is('ajax')) {
 
         <!-- QR Code details -->
 
-        <div class="col-lg-6 col-xl-5">
-            <h1 class="mb-1"><?= h($qrCode->name) ?></h1>
+        <div class="col-lg-6 col-xl-6">
+            <h1 class="mb-1 <?= ($qrCode->is_active ? 'active' : 'inactive')?>"><?= h($qrCode->name) ?></h1>
 
             <p class="text-secondary mb-3"><?= $this->Text->autoParagraph(h($qrCode->description)); ?></p>
 
@@ -159,9 +189,35 @@ if (!$this->getRequest()->is('ajax')) {
                 </div>
             </div>
 
+            <?php if (!empty($qrCode->tags)) : ?>
+            <!-- Tags -->
+            <div class="row g-1">
+                <div class="col" aria-label="Tags">
+                    <h5 class="mt-2"><?= __('Tags') ?></h5>
+                </div>
+            </div>
+
+            <div class="row g-1 align-items-center">
+                <div class="col text-center">
+                    <?php foreach ($qrCode->tags as $tag) : ?>
+                        <?= $this->Html->link(
+                            $tag->name,
+                            [
+                                'action' => 'view',
+                                $tag->id,
+                            ],
+                            [
+                                'class' => 'me-1 btn btn-sm btn-light btn-outline-secondary rounded-pill',
+                                'role' => 'button',
+                            ]
+                        ); ?>
+                    <?php endforeach; ?>
+                    </div>
+            </div>
+            <?php endif; ?>
         </div>
     </div>
-
+</div>
 
 <!--
 <div class="row">

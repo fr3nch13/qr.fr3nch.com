@@ -122,12 +122,12 @@ class TagsController extends AppController
      */
     public function edit(?string $id = null): ?Response
     {
-        $this->request->allowMethod(['get', 'patch']);
+        $this->request->allowMethod(['get', 'put']);
 
         $tag = $this->Tags->get((int)$id, contain: ['QrCodes']);
         $this->Authorization->authorize($tag);
 
-        if ($this->request->is('patch')) {
+        if ($this->request->is('put')) {
             $tag = $this->Tags->patchEntity($tag, $this->request->getData());
             if ($this->Tags->save($tag)) {
                 $this->Flash->success(__('The tag has been saved.'));

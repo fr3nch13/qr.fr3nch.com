@@ -231,7 +231,7 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/categories/edit/1');
         $this->assertResponseOk();
         $this->helperTestTemplate('Categories/edit');
-        $this->helperTestFormTag('/categories/edit/1', 'patch');
+        $this->helperTestFormTag('/categories/edit/1', 'put');
 
         /// Missing IDs
 

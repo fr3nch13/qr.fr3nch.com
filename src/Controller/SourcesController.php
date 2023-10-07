@@ -118,12 +118,12 @@ class SourcesController extends AppController
      */
     public function edit(?string $id = null): ?Response
     {
-        $this->request->allowMethod(['get', 'patch']);
+        $this->request->allowMethod(['get', 'put']);
 
         $source = $this->Sources->get((int)$id, contain: []);
         $this->Authorization->authorize($source);
 
-        if ($this->request->is('patch')) {
+        if ($this->request->is('put')) {
             $source = $this->Sources->patchEntity($source, $this->request->getData());
             if ($this->Sources->save($source)) {
                 $this->Flash->success(__('The source has been saved.'));

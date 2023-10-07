@@ -23,7 +23,7 @@ if (!$this->getRequest()->is('ajax')) {
     </aside>
     <div class="column column-80">
         <div class="categories form content">
-            <?= $this->Form->create($category, ['method' => 'patch']) ?>
+            <?= $this->Form->create($category) ?>
             <fieldset>
                 <legend><?= __('Edit Category') ?></legend>
 

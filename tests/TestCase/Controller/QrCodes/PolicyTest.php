@@ -258,7 +258,7 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/qr-codes/edit/1');
         $this->assertResponseOk();
         $this->helperTestTemplate('QrCodes/edit');
-        $this->helperTestFormTag('/qr-codes/edit/1', 'patch');
+        $this->helperTestFormTag('/qr-codes/edit/1', 'put');
 
         /// Missing IDs
 
