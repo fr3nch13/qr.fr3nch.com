@@ -29,6 +29,16 @@ if (!$this->getRequest()->is('ajax')) {
                 ?>
                 <div class="col-md-6 text-md-end">
                     <ul class="list-inline">
+                        <?php if ($this->ActiveUser->getUser()) : ?>
+                        <li class="list-inline-item ms-2">
+                            <?= $this->Html->link(__('Add a QR Code'), [
+                                'controller' => 'QrCodes',
+                                'action' => 'add',
+                            ], [
+                                'class' => 'underline text-black',
+                            ]); ?>
+                        </li>
+                        <?php endif; ?>
                         <li class="list-inline-item">
                             <div class="dropdown">
                                 <a
@@ -60,19 +70,6 @@ if (!$this->getRequest()->is('ajax')) {
                                 </ul>
                             </div>
                         </li>
-                        <?php if ($this->ActiveUser->getUser()) : ?>
-                        <li class="list-inline-item ms-2">
-                            <?= $this->Html->link(__('Add a QR Code'), [
-                                'controller' => 'QrCodes',
-                                'action' => 'add',
-                            ], [
-                                'class' => 'underline text-black',
-                            ]); ?>
-                        </li>
-                        <?php endif; ?>
-                        <!--
-                        // TODO: Will add back when I include friendsofcake/search
-                        // labels: frontend
                         <li class="list-inline-item ms-2">
                             <a
                                 class=" underline text-black"
@@ -83,7 +80,6 @@ if (!$this->getRequest()->is('ajax')) {
                             Filters
                             </a>
                         </li>
-                        -->
                     </ul>
                 </div>
             </div>
@@ -164,14 +160,17 @@ if (!$this->getRequest()->is('ajax')) {
         </div>
 
   <!-- offcanvas - filters -->
-  <!-- Will add back when I include friendsofcake/search
-  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasFilter" aria-labelledby="offcanvasFilterLabel">
-    <div class="offcanvas-header">
-      <h5 class="offcanvas-title" id="offcanvasFilterLabel">Filters</h5>
-      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body">
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasFilter" aria-labelledby="offcanvasFilterLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasFilterLabel"><?= __('Filters') ?></h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="widget">
+                    Search form here.
+            </div>
 
+    <!--
       <div class="widget">
         <span class="d-flex eyebrow text-muted mb-2">Brands</span>
         <ul class="list-unstyled">
@@ -201,7 +200,6 @@ if (!$this->getRequest()->is('ajax')) {
           </li>
         </ul>
       </div>
-
 
       <div class="widget mt-5">
         <span class="d-flex eyebrow text-muted mb-2">Color</span>
@@ -255,8 +253,7 @@ if (!$this->getRequest()->is('ajax')) {
         <div class="range-slider-selection">Price: <span class="range-slider-value" id="range-min"></span>
           &mdash; <span class="range-slider-value" id="range-max"></span></div>
       </div>
-
+        -->
     </div>
   </div>
-  -->
 <?= $this->Template->templateComment(false, __FILE__); ?>
