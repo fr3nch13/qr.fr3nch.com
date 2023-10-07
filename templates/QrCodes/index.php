@@ -73,7 +73,7 @@ if (!$this->getRequest()->is('ajax')) {
                         </li>
                         <li class="list-inline-item ms-2">
                             <a
-                                class=" underline text-black"
+                                class=" underline text-black position-relative"
                                 data-bs-toggle="offcanvas"
                                 href="#offcanvasFilter"
                                 role="button"
