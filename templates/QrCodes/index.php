@@ -168,7 +168,21 @@ if (!$this->getRequest()->is('ajax')) {
         <div class="offcanvas-body">
             <div class="widget">
             <?php
-            echo $this->Form->create(null, ['valueSources' => 'query']);
+            echo $this->Form->create(null, [
+                'valueSources' => 'query',
+                'align' => [
+                    // column sizes for the `sm` screen-size/breakpoint
+                    'sm' => [
+                        FormHelper::GRID_COLUMN_ONE => 6,
+                        FormHelper::GRID_COLUMN_TWO => 6,
+                    ],
+                    // column sizes for the `md` screen-size/breakpoint
+                    'md' => [
+                        FormHelper::GRID_COLUMN_ONE => 4,
+                        FormHelper::GRID_COLUMN_TWO => 8,
+                    ],
+                ],
+            ]);
             // Match the search param in your table configuration
             echo $this->Form->control('q');
             echo $this->Form->button('Filter', ['type' => 'submit']);
