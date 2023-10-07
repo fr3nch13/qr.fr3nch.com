@@ -190,9 +190,9 @@ if (!$this->getRequest()->is('ajax')) {
             </div>
 
             <!-- Tags -->
-            <div class="row g-1 align-items-center">
+            <div class="row g-1">
                 <div class="col" aria-label="Tags">
-                    <h4 class="mb-1"><?= __('Tags') ?></h4>
+                    <h4 class="mt-2"><?= __('Tags') ?></h4>
                 </div>
             </div>
 
