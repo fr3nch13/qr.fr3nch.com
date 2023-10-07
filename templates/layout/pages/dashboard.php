@@ -15,6 +15,7 @@ $this->start('layout');
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <?= $this->element('nav/top'); ?>
 
+    <?= $this->Template->objectComment('OffCanvas/wrap') ?>
     <div class="offcanvas-wrap">
         <section class="py-15 py-xl-15 pages-index">
             <div class="container mt-5">

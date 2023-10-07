@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -118,5 +119,22 @@ class UsersTable extends Table
         //$rules->add($rules->isUnique(['email']), ['errorField' => 'email']);
 
         return $rules;
+    }
+
+    /**
+     * Custom finders
+     */
+
+    /**
+     * Find Active Users
+     *
+     * Here should be need to impliment it later.
+     *
+     * @param \Cake\ORM\Query\SelectQuery $query The initial query
+     * @return \Cake\ORM\Query\SelectQuery The updated query
+     */
+    public function findActive(SelectQuery $query): SelectQuery
+    {
+        return $query;
     }
 }

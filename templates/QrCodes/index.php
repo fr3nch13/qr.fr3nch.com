@@ -76,8 +76,7 @@ if (!$this->getRequest()->is('ajax')) {
                                 data-bs-toggle="offcanvas"
                                 href="#offcanvasFilter"
                                 role="button"
-                                aria-controls="offcanvasFilter">
-                                <?= __('Filters') ?>
+                                aria-controls="offcanvasFilter"><?= __('Filters') ?>
                                 <?php if ($this->Search->isSearch()) : ?>
                                 <span
                                     class="
@@ -88,7 +87,7 @@ if (!$this->getRequest()->is('ajax')) {
                                         rounded-pill
                                         text-red
                                         p-1">
-                                    <i class="bi bi-check"></i>
+                                    <i class="bi bi-check filtering-applied"></i>
                                     <span class="visually-hidden"><?= __('Filters are applied') ?></span>
                                 </span>
                                 <?php endif; ?>
@@ -174,7 +173,7 @@ if (!$this->getRequest()->is('ajax')) {
         </div>
 
     <?php $this->start('offcanvas') ?>
-    <!-- offcanvas - filters -->
+    <?= $this->Template->objectComment('OffCanvas/filters') ?>
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasFilter" aria-labelledby="offcanvasFilterLabel">
         <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="offcanvasFilterLabel"><?= __('Filters') ?></h5>
@@ -188,11 +187,13 @@ if (!$this->getRequest()->is('ajax')) {
                 ]); ?>
             </div>
             <?php endif; ?>
+            <?= $this->Form->create(null, [
+                'valueSources' => 'query',
+            ]); ?>
             <!-- Search Form -->
-            <div class="widget">
-                <?= $this->Form->create(null, [
-                    'valueSources' => 'query',
-                ]); ?>
+            <div class="widget mb-2">
+                <span class="d-flex eyebrow text-muted mb-2"><?= __('Search') ?></span>
+                <legend><?= __('Search') ?></legend>
                 <div class="grouped-inputs p-1 rounded-pill border">
                     <div class="row g-0">
                         <div class="col">
@@ -210,12 +211,15 @@ if (!$this->getRequest()->is('ajax')) {
                         </div>
                     </div>
                 </div>
-                <?= $this->Form->end(); ?>
             </div>
+            <?= $this->Form->end(); ?>
+            <!-- Sources -->
             <!-- Tags
+            <?= $this->Form->control('source_id', ['options' => $sources]); ?>
             <div class="widget">
                 <span class="d-flex eyebrow text-muted mb-2">Tags</span>
             </div> -->
+
         </div>
     </div>
     <?php $this->end(); // offcanvas ?>

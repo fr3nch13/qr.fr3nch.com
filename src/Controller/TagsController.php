@@ -124,7 +124,7 @@ class TagsController extends AppController
         }
 
         $errors = $tag->getErrors();
-        $qrCodes = $this->Tags->QrCodes->find('list', limit: 200)->all();
+        $qrCodes = $this->Tags->QrCodes->find('active')->find('list', limit: 200)->all();
 
         $this->set(compact('tag', 'qrCodes', 'errors'));
         $this->viewBuilder()->setOption('serialize', ['tag', 'qrCodes', 'errors']);
@@ -161,7 +161,7 @@ class TagsController extends AppController
         }
 
         $errors = $tag->getErrors();
-        $qrCodes = $this->Tags->QrCodes->find('list', limit: 200)->all();
+        $qrCodes = $this->Tags->QrCodes->find('active')->find('list', limit: 200)->all();
 
         $this->set(compact('tag', 'qrCodes', 'errors'));
         $this->viewBuilder()->setOption('serialize', ['tag', 'qrCodes', 'errors']);

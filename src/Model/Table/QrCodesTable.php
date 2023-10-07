@@ -85,6 +85,7 @@ class QrCodesTable extends Table
 
         // Setup search filter using search manager
         $this->searchManager()
+            // add filtering by just the qrcode
             ->add('q', 'Search.Like', [
                 'before' => true,
                 'after' => true,
@@ -94,6 +95,7 @@ class QrCodesTable extends Table
                 'wildcardOne' => '?',
                 'fields' => ['name', 'description'],
             ])
+            // add filtering by source name
             ->add('s', 'Search.Like', [
                 'before' => true,
                 'after' => true,

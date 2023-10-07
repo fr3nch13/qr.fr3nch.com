@@ -125,7 +125,7 @@ class CategoriesController extends AppController
         }
 
         $errors = $category->getErrors();
-        $parentCategories = $this->Categories->ParentCategories->find('list', limit: 200)->all();
+        $parentCategories = $this->Categories->ParentCategories->find('active')->find('list', limit: 200)->all();
 
         $this->set(compact('category', 'parentCategories', 'errors'));
         $this->viewBuilder()->setOption('serialize', ['category', 'parentCategories', 'errors']);
@@ -162,7 +162,7 @@ class CategoriesController extends AppController
         }
 
         $errors = $category->getErrors();
-        $parentCategories = $this->Categories->ParentCategories->find('list', limit: 200)->all();
+        $parentCategories = $this->Categories->ParentCategories->find('active')->find('list', limit: 200)->all();
 
         $this->set(compact('category', 'parentCategories', 'errors'));
         $this->viewBuilder()->setOption('serialize', ['category', 'parentCategories', 'errors']);
