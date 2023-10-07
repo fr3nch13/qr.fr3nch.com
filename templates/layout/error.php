@@ -18,7 +18,7 @@ $this->start('layout');
     <div class="d-flex flex-column container min-vh-100 py-20">
       <div class="row align-items-center justify-content-center justify-content-lg-between my-auto">
         <div class="col-lg-6 order-lg-2">
-          <img class="img-fluid" src="./assets/images/svg/404.svg" alt="Figure">
+          <img class="img-fluid" src="<?= $this->Url->image('404.svg') ?>" alt="Figure">
         </div>
         <div class="col-md-8 col-lg-5 order-lg-1 text-center text-lg-start">
             <?= $this->Flash->render() ?>
