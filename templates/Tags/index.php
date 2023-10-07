@@ -45,22 +45,22 @@ if (!$this->getRequest()->is('ajax')) {
         </div>
 
         <div class="container">
-            <div class="row g-3 g-lg-5 justify-content-between products">
+            <div class="row g-3 g-lg-5 tags">
 
             <?php foreach ($tags as $tag) : ?>
-
+                <div class="col-md-4 col-lg-2">
                 <?= $this->Html->link(
-                            $tag->name,
-                            [
-                                'action' => 'view',
-                                $tag->id,
-                            ],
-                            [
-                                'class' => 'btn btn-primary rounded-pill',
-                                //'role' => 'button',
-                            ]
-                        ); ?>
-
+                    $tag->name,
+                    [
+                        'action' => 'view',
+                        $tag->id,
+                    ],
+                    [
+                        'class' => 'btn btn-primary rounded-pill',
+                        'role' => 'button',
+                    ]
+                ); ?>
+                </div>
             <?php endforeach; ?>
             </div>
 
