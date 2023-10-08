@@ -205,7 +205,7 @@ if (!$this->getRequest()->is('ajax')) {
                     <?php endif; ?>
                     <?= $this->Form->button('Filter', [
                         'type' => 'submit',
-                        'class' => 'btn btn-sm btn-primary rounded-pill text-end',
+                        'class' => 'btn btn-sm btn-primary rounded-pill float-right',
                         'escapeTitle' => false,
                     ]); ?>
                 </div>
