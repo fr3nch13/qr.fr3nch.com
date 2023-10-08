@@ -194,7 +194,7 @@ if (!$this->getRequest()->is('ajax')) {
             <div class="widget mb-2">
                 <?= $this->Form->control('t',[
                     'options' => $tags,
-                    'empty' => true,
+                    'empty' => '&nbsp;',
                     'label' => [
                         'floating' => true,
                         'text' => __('Select a Tag'),
@@ -204,7 +204,7 @@ if (!$this->getRequest()->is('ajax')) {
             <div class="widget mb-2">
                 <?= $this->Form->control('s',[
                     'options' => $sources,
-                    'empty' => true,
+                    'empty' => '&nbsp;',
                     'label' => [
                         'floating' => true,
                         'text' => __('Select a Source'),
