@@ -30,7 +30,6 @@
         "cakephp/cakephp": "5.x-dev as 5.0.1",
         "cakephp/cakephp-codesniffer": "~5.1",
         "cakephp/debug_kit": "~5.0",
-        "fr3nch13/pushover-bash": "~1.0",
         "josegonzalez/dotenv": "~4.0",
         "phpstan/phpstan": "~1.10",
         "phpunit/phpunit": "~10.3",
@@ -58,15 +57,11 @@
     "scripts": {
         "post-install-cmd": "App\\Console\\Installer::postInstall",
         "post-create-project-cmd": "App\\Console\\Installer::postInstall",
-        "pushover": "./vendor/bin/pushover.sh",
-        "pushover-test": "@pushover -T QR.fr3nch.com: Unit Test -m Test complete",
-        "pushover-done": "@pushover -T QR.fr3nch.com: Composer done -m Composer done -p 2",
         "migrate": "bin/cake migrations migrate",
         "seed": "bin/cake migrations seed",
         "ci": [
             "@check",
-            "@coverage-text",
-            "@pushover -m QR.fr3nch.com CI done -p 1"
+            "@coverage-text"
         ],
         "check": [
             "@test",
