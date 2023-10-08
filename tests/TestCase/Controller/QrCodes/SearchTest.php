@@ -60,7 +60,7 @@ class SearchTest extends BaseControllerTest
             '<a href="/qr-codes/view/2" class="product-title">The Witching Hour</a></div>'));
 
         // finally look for the input in the offcanvas that has the filter set.
-        $this->assertSame(1, substr_count($content, '<input type="text" name="q" placeholder="What are you looking for ?" id="q" class="form-control" value="witch">'));
+        $this->assertSame(1, substr_count($content, '<input type="text" name="q" id="q" placeholder="What are you looking for ?" class="form-control" value="witch">'));
     }
 
     /**
@@ -93,13 +93,8 @@ class SearchTest extends BaseControllerTest
             '<a href="/qr-codes/view/1" class="product-title">Sow &amp; Scribe</a></div>'));
 
         // finally look for the input in the offcanvas that has the filter set.
-        debug($content);
-//        $this->assertSame(1, substr_count($content, '<input type="text" name="q" placeholder="What are you looking for ?" id="q" class="form-control" value="witch">'));
-
-        // TODO: Add the tags elelent to the offcanvase filter
-        // Have it indicate which Tag is being used, and the ability to remove or add them.
-        // ideally with a typeahead
-        // labels: templates, search, typeahead, tags
+        $this->assertSame(1, substr_count($content, '<select name="t" id="t" class="form-select">'));
+        $this->assertSame(1, substr_count($content, '<option value="Pig" selected="selected">Pig</option>'));
     }
 
     /**
@@ -137,11 +132,7 @@ class SearchTest extends BaseControllerTest
             '<a href="/qr-codes/view/4" class="product-title">Inactive Code</a></div>'));
 
         // finally look for the input in the offcanvas that has the filter set.
-        $this->assertSame(1, substr_count($content, '<select name="s" id="filterSource" class="form-select">'));
+        $this->assertSame(1, substr_count($content, '<select name="s" id="s" class="form-select">'));
         $this->assertSame(1, substr_count($content, '<option value="Etsy" selected="selected">Etsy</option>'));
-
-        // TODO: Add the Source elelent to the offcanvase filter
-        // Have it indicate which Source is being used, and the ability to change it.
-        // labels: templates, search, typeahead, tags
     }
 }
