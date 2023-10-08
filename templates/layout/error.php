@@ -1,41 +1,44 @@
 <?php
 /**
- * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * The default layout
  *
- * Licensed under The MIT License
- * For full copyright and license information, please see the LICENSE.txt
- * Redistributions of files must retain the above copyright notice.
- *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
- * @link          https://cakephp.org CakePHP(tm) Project
- * @since         0.10.0
- * @license       https://opensource.org/licenses/mit-license.php MIT License
  * @var \App\View\AppView $this
  */
+
+$this->extend('base');
+
+$this->start('layout');
+
 ?>
-<!DOCTYPE html>
-<html>
 <?= $this->Template->templateComment(true, __FILE__); ?>
-<head>
-    <?= $this->Html->charset() ?>
-    <title>
-        <?= $this->fetch('title') ?>
-    </title>
-    <?= $this->Html->meta('icon') ?>
+<?= $this->element('nav/top'); ?>
 
-    <?= $this->Html->css(['normalize.min', 'milligram.min', 'fonts', 'cake']) ?>
-
-    <?= $this->fetch('meta') ?>
-    <?= $this->fetch('css') ?>
-    <?= $this->fetch('script') ?>
-</head>
-<body>
-    <div class="error-container">
-        <?= $this->Flash->render() ?>
-        <?= $this->fetch('content') ?>
-        <?= $this->Html->link(__('Back'), 'javascript:history.back()') ?>
+  <!-- hero -->
+  <section class="inverted bg-red overflow-hidden">
+    <div class="d-flex flex-column container min-vh-100 py-20 level-3">
+      <div class="row align-items-center justify-content-center justify-content-lg-between my-auto">
+        <div class="col-lg-5 order-lg-2">
+          <img class="img-fluid" src="<?= $this->Url->image('404.svg') ?>" alt="<?= __('404 Icon') ?>">
+        </div>
+        <div class="col-md-8 col-lg-6 order-lg-1 text-center text-lg-start">
+            <?= $this->Flash->render() ?>
+            <?= $this->fetch('content') ?>
+            <p>
+                <?= $this->Html->link(__('Go back to homepage'), [
+                    'controller' => 'QrCodes',
+                    'action' => 'index',
+                ], [
+                    'class' => 'btn btn-rounded btn-outline-white rounded-pill',
+                ]) ?>
+            </p>
+        </div>
+      </div>
     </div>
-</body>
+    <figure
+        class="background background-overlay"
+        style="opacity:.7; background-image: url('<?= $this->Url->image('login_bg.jpg'); ?>')">
+    </figure>
+  </section>
+
 <?= $this->Template->templateComment(false, __FILE__); ?>
-</html>
+<?php $this->end() // layout ?>

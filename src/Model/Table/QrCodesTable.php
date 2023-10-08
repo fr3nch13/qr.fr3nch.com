@@ -13,6 +13,7 @@ use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Search\Model\Filter\Base;
 
 /**
  * QrCodes Model
@@ -35,6 +36,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\QrCode[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
  * @method \App\Model\Entity\QrCode[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
+ * @mixin \Search\Model\Behavior\SearchBehavior
  */
 class QrCodesTable extends Table
 {
@@ -77,6 +79,44 @@ class QrCodesTable extends Table
             ->setForeignKey('qr_code_id')
             ->setTargetForeignKey('tag_id')
             ->setThrough('QrCodesTags');
+
+        // Friendsofcake/search
+        $this->addBehavior('Search.Search');
+
+        // Setup search filter using search manager
+        $this->searchManager()
+            // add filtering by just the qrcode
+            ->add('q', 'Search.Like', [
+                'before' => true,
+                'after' => true,
+                'fieldMode' => 'OR',
+                'comparison' => 'LIKE',
+                'wildcardAny' => '*',
+                'wildcardOne' => '?',
+                'fields' => ['name', 'description'],
+            ])
+            // add filtering by source name
+            ->add('s', 'Search.Like', [
+                'before' => true,
+                'after' => true,
+                'fieldMode' => 'OR',
+                'comparison' => 'LIKE',
+                'wildcardAny' => '*',
+                'wildcardOne' => '?',
+                'fields' => ['Sources.name'],
+            ])
+            // add filtering by tag name
+            ->callback('t', [
+                'callback' => function (SelectQuery $query, array $args, Base $filter) {
+                    $query
+                        ->innerJoinWith('Tags', function (SelectQuery $query) use ($args) {
+                            return $query->where(['Tags.name LIKE' => $args['t']]);
+                        })
+                        ->group('QrCodes.id');
+
+                    return true;
+                },
+            ]);
     }
 
     /**

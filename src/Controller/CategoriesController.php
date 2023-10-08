@@ -15,6 +15,24 @@ use Cake\Http\Response;
 class CategoriesController extends AppController
 {
     /**
+     * Init method
+     *
+     * Mainly here to add the Search Component.
+     *
+     * @return void
+     */
+    public function initialize(): void
+    {
+        parent::initialize();
+
+        $this->loadComponent('Search.Search', [
+            // This is default config. You can modify "actions" as needed to make
+            // the Search component work only for specified methods.
+            'actions' => ['index'],
+        ]);
+    }
+
+    /**
      * Runs before the code in the actions
      *
      * @return void
@@ -48,6 +66,7 @@ class CategoriesController extends AppController
         $this->request->allowMethod(['get']);
 
         $query = $this->Categories->find('all')
+            ->find('search', search: $this->request->getQueryParams())
             ->contain(['QrCodes', 'ParentCategories']);
         $query = $this->Authorization->applyScope($query);
         $categories = $this->paginate($query);
@@ -106,7 +125,7 @@ class CategoriesController extends AppController
         }
 
         $errors = $category->getErrors();
-        $parentCategories = $this->Categories->ParentCategories->find('list', limit: 200)->all();
+        $parentCategories = $this->Categories->ParentCategories->find('active')->find('list', limit: 200)->all();
 
         $this->set(compact('category', 'parentCategories', 'errors'));
         $this->viewBuilder()->setOption('serialize', ['category', 'parentCategories', 'errors']);
@@ -143,7 +162,7 @@ class CategoriesController extends AppController
         }
 
         $errors = $category->getErrors();
-        $parentCategories = $this->Categories->ParentCategories->find('list', limit: 200)->all();
+        $parentCategories = $this->Categories->ParentCategories->find('active')->find('list', limit: 200)->all();
 
         $this->set(compact('category', 'parentCategories', 'errors'));
         $this->viewBuilder()->setOption('serialize', ['category', 'parentCategories', 'errors']);

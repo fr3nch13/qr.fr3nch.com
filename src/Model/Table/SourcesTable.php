@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -43,8 +44,6 @@ class SourcesTable extends Table
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
-        $this->addBehavior('Timestamp');
-
         $this->belongsTo('Users')
             ->setClassName('Users')
             ->setForeignKey('user_id');
@@ -52,6 +51,8 @@ class SourcesTable extends Table
         $this->hasMany('QrCodes')
             ->setClassName('QrCodes')
             ->setForeignKey('source_id');
+
+        $this->addBehavior('Timestamp');
     }
 
     /**
@@ -101,5 +102,22 @@ class SourcesTable extends Table
         ]);
 
         return $rules;
+    }
+
+    /**
+     * Custom finders
+     */
+
+    /**
+     * Find Active Sources
+     *
+     * Here should be need to impliment it later.
+     *
+     * @param \Cake\ORM\Query\SelectQuery $query The initial query
+     * @return \Cake\ORM\Query\SelectQuery The updated query
+     */
+    public function findActive(SelectQuery $query): SelectQuery
+    {
+        return $query;
     }
 }

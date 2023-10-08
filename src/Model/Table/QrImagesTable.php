@@ -47,6 +47,8 @@ class QrImagesTable extends Table
         $this->belongsTo('QrCodes')
             ->setClassName('QrCodes')
             ->setForeignKey('qr_code_id');
+
+        $this->addBehavior('Timestamp');
     }
 
     /**

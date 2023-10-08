@@ -221,6 +221,31 @@ class BaseControllerTest extends TestCase
     }
 
     /**
+     * Tests to make sure the filter elements are all there for an index page.
+     *
+     * @param bool $isFiltered If the request is a filtered one.
+     * @return void
+     */
+    public function helperTestFilterElements(bool $isFiltered = false): void
+    {
+        $content = (string)$this->_response->getBody();
+
+        // Make sure the page content is wrapped correctly.
+        $this->assertSame(1, substr_count($content, '<div class="offcanvas-wrap">'));
+        $this->helperTestObjectComment(1, 'OffCanvas/wrap');
+        // make sure the filters popup exists.
+        $this->helperTestObjectComment(1, 'OffCanvas/filters');
+
+        // Make sure the filter link is there.
+        $this->assertSame(1, substr_count($content, 'aria-controls="offcanvasFilter">Filters'));
+        if ($isFiltered) {
+            // make sure the check icon exists to indicate that filtering is in effect.
+            $this->assertSame(1, substr_count($content, '<i class="bi bi-check filtering-applied"></i>'));
+            $this->assertSame(1, substr_count($content, '<span class="visually-hidden">Filters are applied</span>'));
+        }
+    }
+
+    /**
      * Tests for inserted template comments
      *
      * This allows me to test that the templates are working and getting data,
@@ -274,6 +299,17 @@ class BaseControllerTest extends TestCase
         $this->assertSame(1, substr_count($content, '<link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">'));
         $this->assertSame(1, substr_count($content, '<link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">'));
         $this->assertSame(1, substr_count($content, '<link rel="manifest" href="/img/site.webmanifest">'));
+
+        // css
+        $this->assertSame(1, substr_count($content, '<link rel="stylesheet" href="/css/libs.bundle.css" '));
+        $this->assertSame(1, substr_count($content, '<link rel="stylesheet" href="/css/index.bundle.css" '));
+        $this->assertSame(1, substr_count($content, '<link rel="stylesheet" href="/css/qr.css" '));
+
+        // js
+        $this->assertSame(1, substr_count($content, '<script src="/js/vendor.bundle.js" '));
+        $this->assertSame(1, substr_count($content, '<script src="/js/index.bundle.js" '));
+        $this->assertSame(1, substr_count($content, '<script src="/assets/npm-asset/jquery/dist/jquery.min.js" '));
+        $this->assertSame(1, substr_count($content, '<script src="/js/qr.js" '));
 
         $this->assertSame(1, substr_count($content, '</body>'));
         $this->assertSame(1, substr_count($content, '</html>'));
@@ -399,7 +435,7 @@ class BaseControllerTest extends TestCase
         $this->assertSame(1, substr_count($content, '<!-- END: App.Error/error400 -->'));
 
         if ($path) {
-            $this->assertSame(1, substr_count($content, 'The requested address <strong>\'' . $path . '\'</strong> was not found on this server.'));
+            $this->assertSame(1, substr_count($content, 'The requested address <strong>\'' . $path . '\'</strong> was not found.'));
         }
 
         // test other specific to this layout.

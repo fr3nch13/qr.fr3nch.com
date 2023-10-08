@@ -24,11 +24,18 @@ if (!$this->getRequest()->is('ajax')) {
                     -->
                 </div>
 
-                <?php
-                // TODO: Create a page options element to generate page options.
-                ?>
                 <div class="col-md-6 text-md-end">
                     <ul class="list-inline">
+                        <?php if ($this->ActiveUser->getUser()) : ?>
+                        <li class="list-inline-item ms-2">
+                            <?= $this->Html->link(__('Add a QR Code'), [
+                                'controller' => 'QrCodes',
+                                'action' => 'add',
+                            ], [
+                                'class' => 'underline text-black',
+                            ]); ?>
+                        </li>
+                        <?php endif; ?>
                         <li class="list-inline-item">
                             <div class="dropdown">
                                 <a
@@ -60,30 +67,29 @@ if (!$this->getRequest()->is('ajax')) {
                                 </ul>
                             </div>
                         </li>
-                        <?php if ($this->ActiveUser->getUser()) : ?>
-                        <li class="list-inline-item ms-2">
-                            <?= $this->Html->link(__('Add a QR Code'), [
-                                'controller' => 'QrCodes',
-                                'action' => 'add',
-                            ], [
-                                'class' => 'underline text-black',
-                            ]); ?>
-                        </li>
-                        <?php endif; ?>
-                        <!--
-                        // TODO: Will add back when I include friendsofcake/search
-                        // labels: frontend
                         <li class="list-inline-item ms-2">
                             <a
-                                class=" underline text-black"
+                                class=" underline text-black position-relative"
                                 data-bs-toggle="offcanvas"
                                 href="#offcanvasFilter"
                                 role="button"
-                                aria-controls="offcanvasFilter">
-                            Filters
+                                aria-controls="offcanvasFilter"><?= __('Filters') ?>
+                                <?php if ($this->Search->isSearch()) : ?>
+                                <span
+                                    class="
+                                        position-absolute
+                                        top-0
+                                        start-100
+                                        translate-middle
+                                        rounded-pill
+                                        text-red
+                                        p-1">
+                                    <i class="bi bi-check filtering-applied"></i>
+                                    <span class="visually-hidden"><?= __('Filters are applied') ?></span>
+                                </span>
+                                <?php endif; ?>
                             </a>
                         </li>
-                        -->
                     </ul>
                 </div>
             </div>
@@ -163,100 +169,70 @@ if (!$this->getRequest()->is('ajax')) {
             </div>
         </div>
 
-  <!-- offcanvas - filters -->
-  <!-- Will add back when I include friendsofcake/search
-  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasFilter" aria-labelledby="offcanvasFilterLabel">
-    <div class="offcanvas-header">
-      <h5 class="offcanvas-title" id="offcanvasFilterLabel">Filters</h5>
-      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    <?php $this->start('offcanvas') ?>
+    <?= $this->Template->objectComment('OffCanvas/filters') ?>
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasFilter" aria-labelledby="offcanvasFilterLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasFilterLabel"><?= __('Filters') ?></h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <?= $this->Form->create(null, [
+                'valueSources' => 'query',
+            ]); ?>
+            <!-- Search Form -->
+            <div class="widget mb-2">
+                <?= $this->Form->control('q', [
+                    'spacing' => 'mb-2',
+                    'label' => [
+                        'floating' => true,
+                        'text' => __('What are you looking for ?'),
+                    ],
+                ]) ?>
+            </div>
+            <!-- Tags -->
+            <div class="widget mb-2">
+                <?= $this->Form->control('t', [
+                    'options' => $tags,
+                    'empty' => '[select]',
+                    'label' => [
+                        'floating' => true,
+                        'text' => __('Tags'),
+                    ],
+                ]); ?>
+            <!-- Sources -->
+            <div class="widget mb-2">
+                <?= $this->Form->control('s', [
+                    'options' => $sources,
+                    'empty' => '[select]',
+                    'label' => [
+                        'floating' => true,
+                        'text' => __('Sources'),
+                    ],
+                ]); ?>
+            </div>
+            </div>
+            <div class="widget text-end">
+                <div class="btn-group" role="group" aria-label="Filter Options">
+                    <?php if ($this->Search->isSearch()) : ?>
+                        <?= $this->Search->resetLink(__('Clear'), [
+                        'class' => 'btn btn-sm btn-light',
+                    ]); ?>
+                    <?php endif; ?>
+                    <?= $this->Form->button('Filter', [
+                        'type' => 'submit',
+                        'class' => 'btn btn-sm btn-primary',
+                        'escapeTitle' => false,
+                    ]); ?>
+                </div>
+            </div>
+            <?= $this->Form->end(); ?>
+            <!-- Tags
+            <div class="widget">
+                <span class="d-flex eyebrow text-muted mb-2">Tags</span>
+            </div> -->
+
+        </div>
     </div>
-    <div class="offcanvas-body">
-
-      <div class="widget">
-        <span class="d-flex eyebrow text-muted mb-2">Brands</span>
-        <ul class="list-unstyled">
-          <li>
-            <div class="form-check form-check-minimal">
-              <input class="form-check-input" type="checkbox" value="" id="brand-1">
-              <label class="form-check-label" for="brand-1">
-                Vans
-              </label>
-            </div>
-          </li>
-          <li class="mt-1">
-            <div class="form-check form-check-minimal">
-              <input class="form-check-input" type="checkbox" value="" id="brand-2">
-              <label class="form-check-label" for="brand-2">
-                Carhart WIP
-              </label>
-            </div>
-          </li>
-          <li class="mt-1">
-            <div class="form-check form-check-minimal">
-              <input class="form-check-input" type="checkbox" value="" id="brand-3">
-              <label class="form-check-label" for="brand-3">
-                Carhart WIP
-              </label>
-            </div>
-          </li>
-        </ul>
-      </div>
-
-
-      <div class="widget mt-5">
-        <span class="d-flex eyebrow text-muted mb-2">Color</span>
-        <ul class="list-unstyled">
-          <li>
-            <div class="form-check form-check-color">
-              <input class="form-check-input" type="checkbox" value="" id="color-1">
-              <label class="form-check-label" for="color-1">
-                <span class="bg-red"></span> Red
-              </label>
-            </div>
-          </li>
-          <li class="mt-1">
-            <div class="form-check form-check-color">
-              <input class="form-check-input" type="checkbox" value="" id="color-2">
-              <label class="form-check-label" for="color-2">
-                <span class="bg-blue"></span> Blue
-              </label>
-            </div>
-          </li>
-          <li class="mt-1">
-            <div class="form-check form-check-color">
-              <input class="form-check-input" type="checkbox" value="" id="color-3">
-              <label class="form-check-label" for="color-3">
-                <span class="bg-green"></span> Green
-              </label>
-            </div>
-          </li>
-          <li class="mt-1">
-            <div class="form-check form-check-color">
-              <input class="form-check-input" type="checkbox" value="" id="color-4">
-              <label class="form-check-label" for="color-4">
-                <span class="bg-yellow"></span> Yellow
-              </label>
-            </div>
-          </li>
-        </ul>
-      </div>
-
-      <div class="widget mt-5">
-        <span class="d-flex eyebrow text-muted mb-2">Price</span>
-        <div
-            class="range-slider"
-            data-range='{
-                "decimals": 0,
-                "step": 1,
-                "connect": true,
-                "start" : [20,80],
-                "range" : {"min": 0, "max" :100}
-            }'></div>
-        <div class="range-slider-selection">Price: <span class="range-slider-value" id="range-min"></span>
-          &mdash; <span class="range-slider-value" id="range-max"></span></div>
-      </div>
-
-    </div>
-  </div>
-  -->
+    <?php $this->end(); // offcanvas ?>
 <?= $this->Template->templateComment(false, __FILE__); ?>

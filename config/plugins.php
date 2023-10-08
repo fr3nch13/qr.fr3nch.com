@@ -1,5 +1,6 @@
 <?php
 return [
     'Migrations' => [],
-    'BootstrapUI' => []
+    'BootstrapUI' => [],
+    'Search' => []
 ];

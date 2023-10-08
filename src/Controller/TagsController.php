@@ -15,6 +15,24 @@ use Cake\Http\Response;
 class TagsController extends AppController
 {
     /**
+     * Init method
+     *
+     * Mainly here to add the Search Component.
+     *
+     * @return void
+     */
+    public function initialize(): void
+    {
+        parent::initialize();
+
+        $this->loadComponent('Search.Search', [
+            // This is default config. You can modify "actions" as needed to make
+            // the Search component work only for specified methods.
+            'actions' => ['index'],
+        ]);
+    }
+
+    /**
      * Runs before the code in the actions
      *
      * @return void
@@ -47,7 +65,8 @@ class TagsController extends AppController
     {
         $this->request->allowMethod(['get']);
 
-        $query = $this->Tags->find('all');
+        $query = $this->Tags->find('all')
+            ->find('search', search: $this->request->getQueryParams());
         $query = $this->Authorization->applyScope($query);
         $tags = $this->paginate($query);
 
@@ -105,7 +124,7 @@ class TagsController extends AppController
         }
 
         $errors = $tag->getErrors();
-        $qrCodes = $this->Tags->QrCodes->find('list', limit: 200)->all();
+        $qrCodes = $this->Tags->QrCodes->find('active')->find('list', limit: 200)->all();
 
         $this->set(compact('tag', 'qrCodes', 'errors'));
         $this->viewBuilder()->setOption('serialize', ['tag', 'qrCodes', 'errors']);
@@ -142,7 +161,7 @@ class TagsController extends AppController
         }
 
         $errors = $tag->getErrors();
-        $qrCodes = $this->Tags->QrCodes->find('list', limit: 200)->all();
+        $qrCodes = $this->Tags->QrCodes->find('active')->find('list', limit: 200)->all();
 
         $this->set(compact('tag', 'qrCodes', 'errors'));
         $this->viewBuilder()->setOption('serialize', ['tag', 'qrCodes', 'errors']);

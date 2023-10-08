@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Model\Table;
 
 use App\Model\Entity\Category;
+use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\Rule\ExistsIn;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -30,6 +31,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Category[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
  * @method \App\Model\Entity\Category[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
+ * @mixin \Search\Model\Behavior\SearchBehavior
  */
 class CategoriesTable extends Table
 {
@@ -46,8 +48,6 @@ class CategoriesTable extends Table
         $this->setTable('categories');
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
-
-        $this->addBehavior('Timestamp');
 
         $this->belongsTo('Users')
             ->setClassName('Users')
@@ -66,6 +66,23 @@ class CategoriesTable extends Table
             ->setForeignKey('category_id')
             ->setTargetForeignKey('qr_code_id')
             ->setThrough('CategoriesQrCodes');
+
+        $this->addBehavior('Timestamp');
+
+        // Friendsofcake/search
+        $this->addBehavior('Search.Search');
+
+        // Setup search filter using search manager
+        $this->searchManager()
+            ->add('q', 'Search.Like', [
+                'before' => true,
+                'after' => true,
+                'fieldMode' => 'OR',
+                'comparison' => 'LIKE',
+                'wildcardAny' => '*',
+                'wildcardOne' => '?',
+                'fields' => ['name', 'description'],
+            ]);
     }
 
     /**
@@ -174,5 +191,22 @@ class CategoriesTable extends Table
         ]);
 
         return $rule($entity, ['repository' => $this]);
+    }
+
+    /**
+     * Custom finders
+     */
+
+    /**
+     * Find Active Categories
+     *
+     * Here should be need to impliment it later.
+     *
+     * @param \Cake\ORM\Query\SelectQuery $query The initial query
+     * @return \Cake\ORM\Query\SelectQuery The updated query
+     */
+    public function findActive(SelectQuery $query): SelectQuery
+    {
+        return $query;
     }
 }

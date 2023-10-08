@@ -1,5 +1,4 @@
 <?php
-use Cake\Routing\Router;
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\QrCode $qrCode
@@ -145,14 +144,16 @@ if (!$this->getRequest()->is('ajax')) {
             <p class="text-secondary mb-3"><?= $this->Text->autoParagraph(h($qrCode->description)); ?></p>
 
             <div class="accordion mb-3" id="accordion-1">
+
+                <!-- Details -->
                 <div class="accordion-item">
-                    <h2 class="accordion-header" id="heading-1-1">
+                    <h2 class="accordion-header" id="heading-1-2">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapse-1-1" aria-expanded="false" aria-controls="collapse-1-1">
+                            data-bs-target="#collapse-1-2" aria-expanded="false" aria-controls="collapse-1-2">
                             <?= __('Additional Information') ?>
                         </button>
                     </h2>
-                    <div id="collapse-1-1" class="accordion-collapse collapse" aria-labelledby="heading-1-1"
+                    <div id="collapse-1-2" class="accordion-collapse collapse" aria-labelledby="heading-1-2"
                     data-bs-parent="#accordion-1">
                         <div class="accordion-body">
                             <dl class="row">
@@ -161,8 +162,14 @@ if (!$this->getRequest()->is('ajax')) {
 
                                 <dt class="col-sm-3"><?= __('Source') ?></dt>
                                 <dd class="col-sm-9"><?= $qrCode->hasValue('source') ?
-                                    $qrCode->source->name :
-                                '' ?></dd>
+                                    $this->Html->link(
+                                        $qrCode->source->name,
+                                        [
+                                            'action' => 'index',
+                                            '?' => ['s' => $qrCode->source->name],
+                                        ]
+                                    ) :
+                                                     '' ?></dd>
 
                                 <dt class="col-sm-3"><?= __('Created') ?></dt>
                                 <dd class="col-sm-9"><?= h($qrCode->created) ?></dd>
@@ -170,6 +177,41 @@ if (!$this->getRequest()->is('ajax')) {
                         </div>
                     </div>
                 </div>
+
+                <!-- Tags -->
+                <?php if (!empty($qrCode->tags)) : ?>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading-1-1">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapse-1-1" aria-expanded="false" aria-controls="collapse-1-1">
+                            <?= __('Tags') ?>
+                        </button>
+                    </h2>
+                    <div id="collapse-1-1" class="accordion-collapse collapse" aria-labelledby="heading-1-1"
+                    data-bs-parent="#accordion-1">
+                        <div class="accordion-body">
+                            <div class="row g-1 align-items-center">
+                                <div class="col text-center">
+                                    <?php foreach ($qrCode->tags as $tag) : ?>
+                                        <?= $this->Html->link(
+                                            $tag->name,
+                                            [
+                                                'action' => 'index',
+                                                '?' => ['t' => $tag->name],
+                                            ],
+                                            [
+                                                'class' => 'mr-1 mb-1 rounded-pill ' .
+                                                    'btn btn-sm btn-light btn-outline-secondary',
+                                                'role' => 'button',
+                                            ]
+                                        ); ?>
+                                    <?php endforeach; ?>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php endif; ?>
             </div>
 
             <!-- Action Items -->
@@ -188,199 +230,8 @@ if (!$this->getRequest()->is('ajax')) {
                     </div>
                 </div>
             </div>
-
-            <?php if (!empty($qrCode->tags)) : ?>
-            <!-- Tags -->
-            <div class="row g-1">
-                <div class="col" aria-label="Tags">
-                    <h5 class="mt-2"><?= __('Tags') ?></h5>
-                </div>
-            </div>
-
-            <div class="row g-1 align-items-center">
-                <div class="col text-center">
-                    <?php foreach ($qrCode->tags as $tag) : ?>
-                        <?= $this->Html->link(
-                            $tag->name,
-                            [
-                                'action' => 'view',
-                                $tag->id,
-                            ],
-                            [
-                                'class' => 'me-1 btn btn-sm btn-light btn-outline-secondary rounded-pill',
-                                'role' => 'button',
-                            ]
-                        ); ?>
-                    <?php endforeach; ?>
-                    </div>
-            </div>
-            <?php endif; ?>
         </div>
     </div>
 </div>
 
-<!--
-<div class="row">
-    <div class="column column-80">
-        <div class="qrCodes view content">
-            <h3><?= h($qrCode->name) ?></h3>
-            <div class="row">
-                <div class="column column-50">
-                        <table>
-                            <tr>
-                                <th><?= __('Key') ?></th>
-                                <td><?= h($qrCode->qrkey) ?></td>
-                            </tr>
-                            <tr>
-                                <th><?= __('Name') ?></th>
-                                <td><?= h($qrCode->name) ?></td>
-                            </tr>
-                            <tr>
-                                <th><?= __('Source') ?></th>
-                                <td><?= $qrCode->hasValue('source') ?
-                                    $this->Html->link($qrCode->source->name, [
-                                        'controller' => 'Sources',
-                                        'action' => 'view',
-                                        $qrCode->source->id,
-                                    ]) :
-                                    '' ?></td>
-                            </tr>
-                            <tr>
-                                <th><?= __('User') ?></th>
-                                <td><?= $qrCode->hasValue('user') ?
-                                    $this->Html->link($qrCode->user->name, [
-                                        'controller' => 'Users',
-                                        'action' => 'view',
-                                        $qrCode->user->id,
-                                    ]) :
-                                    '' ?></td>
-                            </tr>
-                            <tr>
-                                <th><?= __('Id') ?></th>
-                                <td><?= $this->Number->format($qrCode->id) ?></td>
-                            </tr>
-                            <tr>
-                                <th><?= __('Created') ?></th>
-                                <td><?= h($qrCode->created) ?></td>
-                            </tr>
-                            <tr>
-                                <th><?= __('Modified') ?></th>
-                                <td><?= h($qrCode->modified) ?></td>
-                            </tr>
-                        </table>
-                </div>
-                <div class="column column-50">
-                    <img src="<?= Router::url([
-                        'controller' => 'QrCodes',
-                        'action' => 'show',
-                        $qrCode->id,
-                    ]) ?>">
-                </div>
-            </div>
-            <div class="text">
-                <strong><?= __('Description') ?></strong>
-                <blockquote>
-                    <?= $this->Text->autoParagraph(h($qrCode->description)); ?>
-                </blockquote>
-            </div>
-            <div class="text">
-                <strong><?= __('Url') ?></strong>
-                <blockquote>
-                    <?= $this->Text->autoParagraph(h($qrCode->url)); ?>
-                </blockquote>
-            </div>
-            <div class="related">
-                <h4><?= __('Related Categories') ?></h4>
-                <?php if (!empty($qrCode->categories)) : ?>
-                <div class="table-responsive">
-                    <table>
-                        <tr>
-                            <th><?= __('Id') ?></th>
-                            <th><?= __('Name') ?></th>
-                            <th><?= __('Description') ?></th>
-                            <th><?= __('Created') ?></th>
-                            <th><?= __('Modified') ?></th>
-                            <th><?= __('Parent Id') ?></th>
-                            <th class="actions"><?= __('Actions') ?></th>
-                        </tr>
-                        <?php foreach ($qrCode->categories as $categories) : ?>
-                        <tr>
-                            <td><?= h($categories->id) ?></td>
-                            <td><?= h($categories->name) ?></td>
-                            <td><?= h($categories->description) ?></td>
-                            <td><?= h($categories->created) ?></td>
-                            <td><?= h($categories->modified) ?></td>
-                            <td><?= h($categories->parent_id) ?></td>
-                            <td class="actions">
-                                <?= $this->Html->link(__('View'), [
-                                    'controller' => 'Categories',
-                                    'action' => 'view',
-                                    $categories->id,
-                                ]) ?>
-                                <?= $this->Html->link(__('Edit'), [
-                                    'controller' => 'Categories',
-                                    'action' => 'edit',
-                                    $categories->id,
-                                ]) ?>
-                                <?= $this->Form->postLink(__('Delete'), [
-                                    'controller' => 'Categories',
-                                    'action' => 'delete',
-                                    $categories->id,
-                                ], [
-                                    'confirm' => __('Are you sure you want to delete # {0}?', $categories->id),
-                                ]) ?>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </table>
-                </div>
-                <?php endif; ?>
-            </div>
-            <div class="related">
-                <h4><?= __('Related Tags') ?></h4>
-                <?php if (!empty($qrCode->tags)) : ?>
-                <div class="table-responsive">
-                    <table>
-                        <tr>
-                            <th><?= __('Id') ?></th>
-                            <th><?= __('Name') ?></th>
-                            <th><?= __('Created') ?></th>
-                            <th><?= __('Modified') ?></th>
-                            <th class="actions"><?= __('Actions') ?></th>
-                        </tr>
-                        <?php foreach ($qrCode->tags as $tags) : ?>
-                        <tr>
-                            <td><?= h($tags->id) ?></td>
-                            <td><?= h($tags->name) ?></td>
-                            <td><?= h($tags->created) ?></td>
-                            <td><?= h($tags->modified) ?></td>
-                            <td class="actions">
-                                <?= $this->Html->link(__('View'), [
-                                    'controller' => 'Tags',
-                                    'action' => 'view',
-                                    $tags->id,
-                                ]) ?>
-                                <?= $this->Html->link(__('Edit'), [
-                                    'controller' => 'Tags',
-                                    'action' => 'edit',
-                                    $tags->id,
-                                ]) ?>
-                                <?= $this->Form->postLink(__('Delete'), [
-                                    'controller' => 'Tags',
-                                    'action' => 'delete',
-                                    $tags->id,
-                                ], [
-                                    'confirm' => __('Are you sure you want to delete # {0}?', $tags->id),
-                                ]) ?>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </table>
-                </div>
-                <?php endif; ?>
-            </div>
-        </div>
-    </div>
-</div>
--->
 <?= $this->Template->templateComment(false, __FILE__); ?>

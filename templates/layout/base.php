@@ -32,9 +32,12 @@
 <body>
 
 <?= $this->fetch('layout'); ?>
+<?= $this->fetch('offcanvas') ?>
 <?= $this->Html->script([
     'vendor.bundle',
     'index.bundle',
+    '/assets/npm-asset/jquery/dist/jquery.min.js',
+    'qr',
     ]) ?></body>
 <?= $this->Template->templateComment(false, __FILE__); ?>
 </html>

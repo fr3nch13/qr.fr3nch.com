@@ -17,6 +17,24 @@ use Cake\ORM\Query\SelectQuery;
 class QrCodesController extends AppController
 {
     /**
+     * Init method
+     *
+     * Mainly here to add the Search Component.
+     *
+     * @return void
+     */
+    public function initialize(): void
+    {
+        parent::initialize();
+
+        $this->loadComponent('Search.Search', [
+            // This is default config. You can modify "actions" as needed to make
+            // the Search component work only for specified methods.
+            'actions' => ['index'],
+        ]);
+    }
+
+    /**
      * Runs before the code in the actions
      *
      * @return void
@@ -126,7 +144,9 @@ class QrCodesController extends AppController
         }
 
         $query = $this->QrCodes->find('all')
+            ->find('search', search: $this->request->getQueryParams())
             ->contain([
+                'Sources',
                 'QrImages' => function (SelectQuery $q) {
                     // only include the first active one
                     return $q
@@ -136,8 +156,30 @@ class QrCodesController extends AppController
         $query = $this->Authorization->applyScope($query);
         $qrCodes = $this->paginate($query);
 
-        $this->set(compact('qrCodes'));
-        $this->viewBuilder()->setOption('serialize', ['qrCodes']);
+        // for the filters
+        $sources = $this->QrCodes->Sources
+            ->find('active')
+            ->find(
+                'list',
+                keyField: 'name',
+                valueField: 'name',
+                limit: 200
+            )
+            ->order(['name' => 'asc'])
+            ->all();
+        $tags = $this->QrCodes->Tags
+            ->find('active')
+            ->find(
+                'list',
+                keyField: 'name',
+                valueField: 'name',
+                limit: 200
+            )
+            ->order(['name' => 'asc'])
+            ->all();
+
+        $this->set(compact('qrCodes', 'sources', 'tags'));
+        $this->viewBuilder()->setOption('serialize', ['qrCodes', 'sources', 'tags']);
 
         return null;
     }
@@ -190,9 +232,9 @@ class QrCodesController extends AppController
         }
 
         $errors = $qrCode->getErrors();
-        $sources = $this->QrCodes->Sources->find('list', limit: 200)->all();
-        $categories = $this->QrCodes->Categories->find('list', limit: 200)->all();
-        $tags = $this->QrCodes->Tags->find('list', limit: 200)->all();
+        $sources = $this->QrCodes->Sources->find('active')->find('list', limit: 200)->all();
+        $categories = $this->QrCodes->Categories->find('active')->find('list', limit: 200)->all();
+        $tags = $this->QrCodes->Tags->find('active')->find('list', limit: 200)->all();
 
         $this->set(compact('qrCode', 'sources', 'categories', 'tags', 'errors'));
         $this->viewBuilder()->setOption('serialize', ['qrCode', 'sources', 'categories', 'tags', 'errors']);
@@ -229,9 +271,9 @@ class QrCodesController extends AppController
         }
 
         $errors = $qrCode->getErrors();
-        $sources = $this->QrCodes->Sources->find('list', limit: 200)->all();
-        $categories = $this->QrCodes->Categories->find('list', limit: 200)->all();
-        $tags = $this->QrCodes->Tags->find('list', limit: 200)->all();
+        $sources = $this->QrCodes->Sources->find('active')->find('list', limit: 200)->all();
+        $categories = $this->QrCodes->Categories->find('active')->find('list', limit: 200)->all();
+        $tags = $this->QrCodes->Tags->find('active')->find('list', limit: 200)->all();
 
         $this->set(compact('qrCode', 'sources', 'categories', 'tags', 'errors'));
         $this->viewBuilder()->setOption('serialize', ['qrCode', 'sources', 'categories', 'tags', 'errors']);

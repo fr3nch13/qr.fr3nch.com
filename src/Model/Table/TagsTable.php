@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -26,6 +27,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Tag[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
  * @method \App\Model\Entity\Tag[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
+ * @mixin \Search\Model\Behavior\SearchBehavior
  */
 class TagsTable extends Table
 {
@@ -43,8 +45,6 @@ class TagsTable extends Table
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
-        $this->addBehavior('Timestamp');
-
         $this->belongsTo('Users')
             ->setClassName('Users')
             ->setForeignKey('user_id');
@@ -54,6 +54,23 @@ class TagsTable extends Table
             ->setForeignKey('tag_id')
             ->setTargetForeignKey('qr_code_id')
             ->setThrough('QrCodesTags');
+
+        $this->addBehavior('Timestamp');
+
+        // Friendsofcake/search
+        $this->addBehavior('Search.Search');
+
+        // Setup search filter using search manager
+        $this->searchManager()
+            ->add('q', 'Search.Like', [
+                'before' => true,
+                'after' => true,
+                'fieldMode' => 'OR',
+                'comparison' => 'LIKE',
+                'wildcardAny' => '*',
+                'wildcardOne' => '?',
+                'fields' => ['name'],
+            ]);
     }
 
     /**
@@ -100,5 +117,22 @@ class TagsTable extends Table
         ]);
 
         return $rules;
+    }
+
+    /**
+     * Custom finders
+     */
+
+    /**
+     * Find Active Tags
+     *
+     * Here should be need to impliment it later.
+     *
+     * @param \Cake\ORM\Query\SelectQuery $query The initial query
+     * @return \Cake\ORM\Query\SelectQuery The updated query
+     */
+    public function findActive(SelectQuery $query): SelectQuery
+    {
+        return $query;
     }
 }
