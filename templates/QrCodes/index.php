@@ -194,8 +194,11 @@ if (!$this->getRequest()->is('ajax')) {
             <div class="widget mb-2">
                 <?= $this->Form->control('s',[
                     'options' => $sources,
-                    'empty' => __('Select a Source'),
-                    'label' => false,
+                    'empty' => ' ',
+                    'label' => [
+                        'floating' => true,
+                        'text' => __('Select a Source'),
+                    ],
                 ]); ?>
             </div>
             <div class="widget text-end">
