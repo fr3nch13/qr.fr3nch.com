@@ -196,7 +196,7 @@ if (!$this->getRequest()->is('ajax')) {
                     'id' => 'filterSource',
                 ]); ?>
             </div>
-            <div class="widget text-end">
+            <div class="widget ">
                 <div class="btn-group btn-block" role="group" aria-label="Filter Options">
                     <?php if ($this->Search->isSearch()) : ?>
                     <?= $this->Search->resetLink(__('Clear'), [
@@ -205,7 +205,7 @@ if (!$this->getRequest()->is('ajax')) {
                     <?php endif; ?>
                     <?= $this->Form->button('Filter', [
                         'type' => 'submit',
-                        'class' => 'btn btn-sm btn-primary rounded-pill',
+                        'class' => 'btn btn-sm btn-primary rounded-pill text-end',
                         'escapeTitle' => false,
                     ]); ?>
                 </div>
