@@ -89,6 +89,17 @@ class QrCodesController extends AppController
         }
         $this->Authorization->authorize($qrCode);
 
+        // if it's inactive, redirect to the index action.
+        if (!$qrCode->is_active) {
+            $this->Flash->warning(__('This QR Code is inactive.', [
+                $key,
+            ]));
+
+            return $this->redirect([
+                'action' => 'index',
+            ]);
+        }
+
         return $this->redirect($qrCode->url);
     }
 

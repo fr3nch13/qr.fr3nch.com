@@ -57,6 +57,7 @@ class QrCodePolicy
 
     /**
      * Check if the QR Code is allowed to be followed.
+     * Allowing as the forward method will do the checking.
      *
      * @param \App\Model\Entity\User|null $user The identity object.
      * @param \App\Model\Entity\QrCode|null $QrCode
@@ -64,11 +65,6 @@ class QrCodePolicy
      */
     public function canForward(?User $user, ?QrCode $QrCode): bool
     {
-        // All users can view active.
-        if ($QrCode instanceof QrCode && $QrCode->is_active) {
-            return true;
-        }
-
         return false;
     }
 
