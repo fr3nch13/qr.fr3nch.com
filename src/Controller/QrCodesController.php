@@ -163,7 +163,7 @@ class QrCodesController extends AppController
                 keyField: 'name',
                 valueField: 'name',
                 limit: 200)
-            ->order(['name' => 'DESC'])
+            ->order(['name' => 'asc'])
             ->all();
         $tags = $this->QrCodes->Tags
             ->find('active')
@@ -171,7 +171,7 @@ class QrCodesController extends AppController
                 keyField: 'name',
                 valueField: 'name',
                 limit: 200)
-            ->order(['name' => 'DESC'])
+            ->order(['name' => 'asc'])
             ->all();
 
         $this->set(compact('qrCodes', 'sources', 'tags'));
