@@ -190,6 +190,16 @@ if (!$this->getRequest()->is('ajax')) {
                     ],
                 ]) ?>
             </div>
+            <!-- Tags -->
+            <div class="widget mb-2">
+                <?= $this->Form->control('t',[
+                    'options' => $tags,
+                    'empty' => ' ',
+                    'label' => [
+                        'floating' => true,
+                        'text' => __('Select a Tag'),
+                    ],
+                ]); ?>
             <!-- Sources -->
             <div class="widget mb-2">
                 <?= $this->Form->control('s',[
@@ -200,6 +210,7 @@ if (!$this->getRequest()->is('ajax')) {
                         'text' => __('Select a Source'),
                     ],
                 ]); ?>
+            </div>
             </div>
             <div class="widget text-end">
                 <div class="btn-group" role="group" aria-label="Filter Options">

@@ -164,9 +164,16 @@ class QrCodesController extends AppController
                 valueField: 'name',
                 limit: 200)
             ->all();
+        $tags = $this->QrCodes->Tags
+            ->find('active')
+            ->find('list',
+                keyField: 'name',
+                valueField: 'name',
+                limit: 200)
+            ->all();
 
-        $this->set(compact('qrCodes', 'sources'));
-        $this->viewBuilder()->setOption('serialize', ['qrCodes', 'sources']);
+        $this->set(compact('qrCodes', 'sources', 'tags'));
+        $this->viewBuilder()->setOption('serialize', ['qrCodes', 'sources', 'tags']);
 
         return null;
     }
