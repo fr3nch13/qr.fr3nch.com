@@ -4,7 +4,6 @@
  * @var \App\Model\Entity\QrCode $qrCode
  * @var \Cake\Collection\CollectionInterface|array<string> $sources
  * @var \Cake\Collection\CollectionInterface|array<string> $users
- * @var \Cake\Collection\CollectionInterface|array<string> $categories
  * @var \Cake\Collection\CollectionInterface|array<string> $tags
  */
 if (!$this->getRequest()->is('ajax')) {
@@ -34,8 +33,6 @@ if (!$this->getRequest()->is('ajax')) {
                 <?= $this->Form->control('url'); ?>
 
                 <?= $this->Form->control('source_id', ['options' => $sources]); ?>
-
-                <?= $this->Form->control('categories._ids', ['options' => $categories]); ?>
 
                 <?= $this->Form->control('tags._ids', ['options' => $tags]); ?>
 

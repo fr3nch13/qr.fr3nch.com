@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\CategoriesTable;
 use App\Model\Table\QrCodesTable;
 use App\Model\Table\SourcesTable;
 use App\Model\Table\TagsTable;
@@ -31,7 +30,6 @@ class UsersTableTest extends TestCase
      */
     protected array $fixtures = [
         'app.Users',
-        'app.Categories',
         'app.Sources',
     ];
 
@@ -118,14 +116,6 @@ class UsersTableTest extends TestCase
         $Associations = $this->Users->associations();
 
         ////// foreach association.
-        // make sure the association exists
-        $this->assertNotNull($Associations->get('Categories'));
-        $this->assertInstanceOf(HasMany::class, $Associations->get('Categories'));
-        $this->assertInstanceOf(CategoriesTable::class, $Associations->get('Categories')->getTarget());
-        $Association = $this->Users->Categories;
-        $this->assertSame('Categories', $Association->getName());
-        $this->assertSame('user_id', $Association->getForeignKey());
-
         // make sure the association exists
         $this->assertNotNull($Associations->get('QrCodes'));
         $this->assertInstanceOf(HasMany::class, $Associations->get('QrCodes'));

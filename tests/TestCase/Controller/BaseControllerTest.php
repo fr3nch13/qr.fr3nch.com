@@ -27,11 +27,9 @@ class BaseControllerTest extends TestCase
     protected array $fixtures = [
         'app.Users',
         'app.Sources',
-        'app.Categories',
         'app.Tags',
         'app.QrCodes',
         'app.QrImages',
-        'app.CategoriesQrCodes',
         'app.QrCodesTags',
     ];
     /**

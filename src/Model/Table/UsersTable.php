@@ -11,7 +11,6 @@ use Cake\Validation\Validator;
 /**
  * Users Model
  *
- * @property \App\Model\Table\CategoriesTable&\Cake\ORM\Association\HasMany $Categories
  * @property \App\Model\Table\QrCodesTable&\Cake\ORM\Association\HasMany $QrCodes
  * @property \App\Model\Table\SourcesTable&\Cake\ORM\Association\HasMany $Sources
  * @property \App\Model\Table\TagsTable&\Cake\ORM\Association\HasMany $Tags
@@ -45,10 +44,6 @@ class UsersTable extends Table
         $this->setTable('users');
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
-
-        $this->hasMany('Categories')
-            ->setClassName('Categories')
-            ->setForeignKey('user_id');
 
         $this->hasMany('QrCodes')
             ->setClassName('QrCodes')

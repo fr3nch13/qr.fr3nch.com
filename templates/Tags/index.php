@@ -13,15 +13,6 @@ if (!$this->getRequest()->is('ajax')) {
             <div class="row g-3 g-md-5 align-items-end mb-5">
                 <div class="col-md-6">
                     <h1><?= __('Tags') ?></h1>
-                    <!--
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Shop</a></li>
-                            <li class="breadcrumb-item"><a href="#">Category</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Equipment</li>
-                        </ol>
-                    </nav>
-                    -->
                 </div>
 
                 <?php

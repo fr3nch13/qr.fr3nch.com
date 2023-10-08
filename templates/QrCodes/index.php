@@ -17,8 +17,7 @@ if (!$this->getRequest()->is('ajax')) {
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#">Shop</a></li>
-                            <li class="breadcrumb-item"><a href="#">Category</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Equipment</li>
+                            <li class="breadcrumb-item active" aria-current="page">QR Codes</li>
                         </ol>
                     </nav>
                     -->

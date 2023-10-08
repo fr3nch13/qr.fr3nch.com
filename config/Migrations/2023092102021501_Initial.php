@@ -88,44 +88,6 @@ class Initial extends AbstractMigration
             ]);
         $table->create();
 
-        $this->io->out(__('Creating table: {0}', ['categories']));
-        $table = $this->table('categories', $this->tableOptions());
-        $table->addColumn('id', 'integer', $this->primaryKeyOptions());
-        $table->addColumn('name', 'string', [
-            'default' => null,
-            'limit' => 255,
-            'null' => false,
-        ]);
-        $table->addColumn('description', 'text', [
-            'default' => null,
-            'null' => false,
-        ]);
-        $table->addColumn('created', 'datetime', [
-            'default' => null,
-            'null' => true,
-        ]);
-        $table->addColumn('modified', 'datetime', [
-            'default' => null,
-            'null' => true,
-        ]);
-        $table->addColumn('parent_id', 'integer', [
-            'default' => null,
-            'null' => true,
-        ])->addIndex(['parent_id']);
-        $table->addColumn('user_id', 'integer', [
-            'default' => null,
-            'null' => true,
-        ])->addIndex(['user_id']);
-        $this->io->out(__('Adding Foreign Key: {0} -> {1}.{2}', [
-            'user_id', 'users', 'id'
-        ]));
-        $table->addForeignKey('user_id', 'users', 'id', [
-                'update' => 'NO_ACTION',
-                'delete' => 'SET_NULL',
-                'constraint' => 'categories_user_id',
-            ]);
-        $table->create();
-
         $this->io->out(__('Creating table: {0}', ['qr_codes']));
         $table = $this->table('qr_codes', $this->tableOptions());
         $table->addColumn('id', 'integer', $this->primaryKeyOptions());
@@ -229,35 +191,6 @@ class Initial extends AbstractMigration
                 'update' => 'RESTRICT',
                 'delete' => 'CASCADE',
                 'constraint' => 'qr_images_qr_code_id',
-            ]);
-        $table->create();
-
-        $this->io->out(__('Creating table: {0}', ['categories_qr_codes']));
-        $table = $this->table('categories_qr_codes', $this->tableOptions());
-        $table->addColumn('id', 'integer', $this->primaryKeyOptions());
-        $table->addColumn('category_id', 'integer', [
-            'default' => null,
-            'null' => false,
-        ])->addIndex(['category_id']);
-        $table->addColumn('qr_code_id', 'integer', [
-            'default' => null,
-            'null' => false,
-        ])->addIndex(['qr_code_id']);
-        $this->io->out(__('Adding Foreign Key: {0} -> {1}.{2}', [
-            'category_id', 'categories', 'id'
-        ]));
-        $table->addForeignKey('category_id', 'categories', 'id', [
-                'update' => 'RESTRICT',
-                'delete' => 'CASCADE',
-                'constraint' => 'categories_qr_codes_category_id',
-            ]);
-        $this->io->out(__('Adding Foreign Key: {0} -> {1}.{2}', [
-            'qr_code_id', 'qr_codes', 'id'
-        ]));
-        $table->addForeignKey('qr_code_id', 'qr_codes', 'id', [
-                'update' => 'RESTRICT',
-                'delete' => 'CASCADE',
-                'constraint' => 'categories_qr_codes_qr_code_id',
             ]);
         $table->create();
 

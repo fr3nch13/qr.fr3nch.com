@@ -18,7 +18,6 @@ use Search\Model\Filter\Base;
 /**
  * QrCodes Model
  *
- * @property \App\Model\Table\CategoriesTable&\Cake\ORM\Association\BelongsToMany $Categories
  * @property \App\Model\Table\SourcesTable&\Cake\ORM\Association\BelongsTo $Sources
  * @property \App\Model\Table\TagsTable&\Cake\ORM\Association\BelongsToMany $Tags
  * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
@@ -67,12 +66,6 @@ class QrCodesTable extends Table
         $this->hasMany('QrImages')
             ->setClassName('QrImages')
             ->setForeignKey('qr_code_id');
-
-        $this->belongsToMany('Categories')
-            ->setClassName('Categories')
-            ->setForeignKey('qr_code_id')
-            ->setTargetForeignKey('category_id')
-            ->setThrough('CategoriesQrCodes');
 
         $this->belongsToMany('Tags')
             ->setClassName('Tags')

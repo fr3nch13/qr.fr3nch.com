@@ -27,8 +27,7 @@ use Cake\ORM\Entity;
  *
  * @property \App\Model\Entity\Source $source
  * @property \App\Model\Entity\User $user
- * @property \App\Model\Entity\Category[] $categories
- * @property \App\Model\Entity\QrImages[] $qr_images
+ * @property \App\Model\Entity\QrImage[] $qr_images
  * @property \App\Model\Entity\Tag[] $tags
  */
 class QrCode extends Entity
@@ -55,7 +54,6 @@ class QrCode extends Entity
         'user_id' => true,
         'source' => true,
         'user' => true,
-        'categories' => true,
         'qr_images' => true,
         'tags' => true,
     ];

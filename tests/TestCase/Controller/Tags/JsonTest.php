@@ -149,7 +149,7 @@ class JsonTest extends BaseControllerTest
 
         // a put success
         $this->put('https://localhost/tags/edit/1.json', [
-            'name' => 'New JSON Category',
+            'name' => 'New JSON Tag',
             'description' => 'Description of the tag',
         ]);
         $this->assertRedirectEquals('https://localhost/tags/view/1.json');

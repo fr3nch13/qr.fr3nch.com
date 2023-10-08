@@ -195,7 +195,7 @@ class QrCodesController extends AppController
     {
         $this->request->allowMethod(['get']);
 
-        $qrCode = $this->QrCodes->get((int)$id, contain: ['Sources', 'Users', 'Categories', 'Tags', 'QrImages']);
+        $qrCode = $this->QrCodes->get((int)$id, contain: ['Sources', 'Users', 'Tags', 'QrImages']);
         $this->Authorization->authorize($qrCode);
 
         $this->set(compact('qrCode'));
@@ -233,11 +233,10 @@ class QrCodesController extends AppController
 
         $errors = $qrCode->getErrors();
         $sources = $this->QrCodes->Sources->find('active')->find('list', limit: 200)->all();
-        $categories = $this->QrCodes->Categories->find('active')->find('list', limit: 200)->all();
         $tags = $this->QrCodes->Tags->find('active')->find('list', limit: 200)->all();
 
-        $this->set(compact('qrCode', 'sources', 'categories', 'tags', 'errors'));
-        $this->viewBuilder()->setOption('serialize', ['qrCode', 'sources', 'categories', 'tags', 'errors']);
+        $this->set(compact('qrCode', 'sources', 'tags', 'errors'));
+        $this->viewBuilder()->setOption('serialize', ['qrCode', 'sources', 'tags', 'errors']);
 
         return null;
     }
@@ -253,7 +252,7 @@ class QrCodesController extends AppController
     {
         $this->request->allowMethod(['get', 'put']);
 
-        $qrCode = $this->QrCodes->get((int)$id, contain: ['Categories', 'Tags']);
+        $qrCode = $this->QrCodes->get((int)$id, contain: ['Tags']);
         $this->Authorization->authorize($qrCode);
 
         if ($this->request->is('put')) {
@@ -272,11 +271,10 @@ class QrCodesController extends AppController
 
         $errors = $qrCode->getErrors();
         $sources = $this->QrCodes->Sources->find('active')->find('list', limit: 200)->all();
-        $categories = $this->QrCodes->Categories->find('active')->find('list', limit: 200)->all();
         $tags = $this->QrCodes->Tags->find('active')->find('list', limit: 200)->all();
 
-        $this->set(compact('qrCode', 'sources', 'categories', 'tags', 'errors'));
-        $this->viewBuilder()->setOption('serialize', ['qrCode', 'sources', 'categories', 'tags', 'errors']);
+        $this->set(compact('qrCode', 'sources', 'tags', 'errors'));
+        $this->viewBuilder()->setOption('serialize', ['qrCode', 'sources', 'tags', 'errors']);
 
         return null;
     }

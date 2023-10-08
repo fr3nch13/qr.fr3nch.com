@@ -74,7 +74,6 @@ class JsonTest extends BaseControllerTest
         $this->assertTrue(isset($content['qrCode']));
         $this->assertSame(1, $content['qrCode']['id']);
         $this->assertTrue(isset($content['qrCode']['tags']));
-        $this->assertTrue(isset($content['qrCode']['categories']));
         $this->assertTrue(isset($content['qrCode']['source']));
         $this->assertTrue(isset($content['qrCode']['qr_images']));
         $this->assertFalse(isset($content['qrCode']['user_id']));
@@ -103,8 +102,6 @@ class JsonTest extends BaseControllerTest
 
         $this->assertTrue(isset($content['sources']));
         $this->assertCount(3, $content['sources']);
-        $this->assertTrue(isset($content['categories']));
-        $this->assertCount(3, $content['categories']);
         $this->assertTrue(isset($content['tags']));
         $this->assertCount(5, $content['tags']);
 
@@ -140,8 +137,6 @@ class JsonTest extends BaseControllerTest
 
         $this->assertTrue(isset($content['sources']));
         $this->assertCount(3, $content['sources']);
-        $this->assertTrue(isset($content['categories']));
-        $this->assertCount(3, $content['categories']);
         $this->assertTrue(isset($content['tags']));
         $this->assertCount(5, $content['tags']);
 
@@ -181,8 +176,6 @@ class JsonTest extends BaseControllerTest
 
         $this->assertTrue(isset($content['sources']));
         $this->assertCount(3, $content['sources']);
-        $this->assertTrue(isset($content['categories']));
-        $this->assertCount(3, $content['categories']);
         $this->assertTrue(isset($content['tags']));
         $this->assertCount(5, $content['tags']);
 
@@ -208,8 +201,6 @@ class JsonTest extends BaseControllerTest
 
         $this->assertTrue(isset($content['sources']));
         $this->assertCount(3, $content['sources']);
-        $this->assertTrue(isset($content['categories']));
-        $this->assertCount(3, $content['categories']);
         $this->assertTrue(isset($content['tags']));
         $this->assertCount(5, $content['tags']);
 
