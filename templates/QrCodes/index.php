@@ -195,10 +195,7 @@ if (!$this->getRequest()->is('ajax')) {
                 <?= $this->Form->control('s',[
                     'options' => $sources,
                     'empty' => __('Select a Source'),
-                    'label' => [
-                        'floating' => true,
-                        'text' => __('Select a Source'),
-                    ],
+                    'label' => false,
                 ]); ?>
             </div>
             <div class="widget text-end">
