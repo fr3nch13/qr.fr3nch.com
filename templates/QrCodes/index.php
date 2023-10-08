@@ -24,9 +24,6 @@ if (!$this->getRequest()->is('ajax')) {
                     -->
                 </div>
 
-                <?php
-                // TODO: Create a page options element to generate page options.
-                ?>
                 <div class="col-md-6 text-md-end">
                     <ul class="list-inline">
                         <?php if ($this->ActiveUser->getUser()) : ?>
@@ -180,13 +177,6 @@ if (!$this->getRequest()->is('ajax')) {
             <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
-            <?php if ($this->Search->isSearch()) : ?>
-            <div class="widget mb-2">
-                <?= $this->Search->resetLink(__('Clear'), [
-                    'class' => 'btn btn-sm btn-light float-right rounded-pill',
-                ]); ?>
-            </div>
-            <?php endif; ?>
             <?= $this->Form->create(null, [
                 'valueSources' => 'query',
             ]); ?>
@@ -207,11 +197,18 @@ if (!$this->getRequest()->is('ajax')) {
                 ]); ?>
             </div>
             <div class="widget text-end">
-                <?= $this->Form->button('<i class="bi bi-search"></i>', [
-                    'type' => 'submit',
-                    'class' => 'btn btn-primary btn-icon rounded-circle',
-                    'escapeTitle' => false,
-                ]); ?>
+                <div class="btn-group btn-block" role="group" aria-label="Filter Options">
+                    <?php if ($this->Search->isSearch()) : ?>
+                    <?= $this->Search->resetLink(__('Clear'), [
+                        'class' => 'btn btn-sm btn-light rounded-pill',
+                    ]); ?>
+                    <?php endif; ?>
+                    <?= $this->Form->button('Filter', [
+                        'type' => 'submit',
+                        'class' => 'btn btn-sm btn-primary rounded-pill',
+                        'escapeTitle' => false,
+                    ]); ?>
+                </div>
             </div>
             <?= $this->Form->end(); ?>
             <!-- Tags
