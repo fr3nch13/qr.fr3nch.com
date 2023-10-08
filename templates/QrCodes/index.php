@@ -196,7 +196,7 @@ if (!$this->getRequest()->is('ajax')) {
                     'id' => 'filterSource',
                 ]); ?>
             </div>
-            <div class="widget align-right">
+            <div class="widget text-end">
                 <div class="btn-group" role="group" aria-label="Filter Options">
                     <?php if ($this->Search->isSearch()) : ?>
                     <?= $this->Search->resetLink(__('Clear'), [
