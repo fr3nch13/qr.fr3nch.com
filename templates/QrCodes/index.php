@@ -192,38 +192,28 @@ if (!$this->getRequest()->is('ajax')) {
             ]); ?>
             <!-- Search Form -->
             <div class="widget mb-2">
-                <span class="d-flex eyebrow text-muted mb-2"><?= __('Search') ?></span>
-                <div class="grouped-inputs p-1 border">
-                    <div class="row g-0">
-                        <div class="col">
-                            <?= $this->Form->text('q', [
-                                'class' => 'form-control form-control text-primary',
-                                'placeholder' => __('What are you looking for ?'),
-                            ]); ?>
-                        </div>
-                        <div class="col-auto d-grid">
-                            <?= $this->Form->button('<i class="bi bi-search"></i>', [
-                                'type' => 'submit',
-                                'class' => 'btn btn-primary btn-icon rounded-circle',
-                                'escapeTitle' => false,
-                            ]); ?>
-                        </div>
-                    </div>
-                </div>
+                <?= $this->Form->control('q', [
+                    'spacing' => 'mb-2',
+                    'placeholder' => __('What are you looking for ?'),
+                    'label' => ['floating' => true],
+                ]) ?>
             </div>
+            <!-- Sources -->
             <div class="widget mb-2">
-                <span class="d-flex eyebrow text-muted mb-2"><?= __('Source') ?></span>
-                    <div class="row g-0">
-                        <div class="col">
-                            <?= $this->Form->select('s', $sources,[
-                                'empty' => __('Select a Source'),
-                                'id' => 'filterSource',
-                            ]); ?>
-                        </div>
-                    </div>
+                <?= $this->Form->control('s',[
+                    'options' => $sources,
+                    'empty' => __('Select a Source'),
+                    'id' => 'filterSource',
+                ]); ?>
+            </div>
+            <div class="widget">
+                <?= $this->Form->button('<i class="bi bi-search"></i>', [
+                    'type' => 'submit',
+                    'class' => 'btn btn-primary btn-icon rounded-circle',
+                    'escapeTitle' => false,
+                ]); ?>
             </div>
             <?= $this->Form->end(); ?>
-            <!-- Sources -->
             <!-- Tags
             <div class="widget">
                 <span class="d-flex eyebrow text-muted mb-2">Tags</span>

@@ -157,7 +157,13 @@ class QrCodesController extends AppController
         $qrCodes = $this->paginate($query);
 
         // for the filters
-        $sources = $this->QrCodes->Sources->find('active')->find('list', limit: 200)->all();
+        $sources = $this->QrCodes->Sources
+            ->find('active')
+            ->find('list',
+                keyField: 'name',
+                valueField: 'name',
+                limit: 200)
+            ->all();
 
         $this->set(compact('qrCodes', 'sources'));
         $this->viewBuilder()->setOption('serialize', ['qrCodes', 'sources']);
