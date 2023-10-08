@@ -184,8 +184,10 @@ if (!$this->getRequest()->is('ajax')) {
             <div class="widget mb-2">
                 <?= $this->Form->control('q', [
                     'spacing' => 'mb-2',
-                    'placeholder' => __('What are you looking for ?'),
-                    'label' => ['floating' => true],
+                    'label' => [
+                        'floating' => true,
+                        'text' => __('What are you looking for ?'),
+                    ],
                 ]) ?>
             </div>
             <!-- Sources -->
@@ -193,7 +195,10 @@ if (!$this->getRequest()->is('ajax')) {
                 <?= $this->Form->control('s',[
                     'options' => $sources,
                     'empty' => __('Select a Source'),
-                    'id' => 'filterSource',
+                    'label' => [
+                        'floating' => true,
+                        'text' => __('Select a Source'),
+                    ],
                 ]); ?>
             </div>
             <div class="widget text-end">
