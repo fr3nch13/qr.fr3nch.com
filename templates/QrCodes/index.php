@@ -206,7 +206,7 @@ if (!$this->getRequest()->is('ajax')) {
                     'id' => 'filterSource',
                 ]); ?>
             </div>
-            <div class="widget">
+            <div class="widget text-end">
                 <?= $this->Form->button('<i class="bi bi-search"></i>', [
                     'type' => 'submit',
                     'class' => 'btn btn-primary btn-icon rounded-circle',
