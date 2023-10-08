@@ -50,7 +50,7 @@ class GeneralTest extends BaseControllerTest
         $this->get('https://localhost/f/inactive');
         $this->assertRedirectEquals('https://localhost/');
         $this->assertFlashMessage('This QR Code is inactive.', 'flash');
-        $this->assertFlashElement('flash/error');
+        $this->assertFlashElement('flash/warning');
 
         $this->get('https://localhost/?k=dontexist');
         $this->assertRedirectEquals('https://localhost/f/dontexist');
