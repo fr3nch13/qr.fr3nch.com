@@ -107,7 +107,6 @@ return function (RouteBuilder $routes): void {
     // milestone: 4
     // labels: routes
     $routes->scope('/api', function (RouteBuilder $routes) {
-        $routes->resources('Categories');
         $routes->resources('QrCodes');
         $routes->resources('Sources');
         $routes->resources('Tags');

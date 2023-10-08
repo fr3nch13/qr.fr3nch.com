@@ -56,7 +56,7 @@ class SourcesControllerPolicy extends BaseControllerPolicy
             return false;
         }
 
-        // Only admins can add a category
+        // Only admins can add a source
         return $user->isAdmin();
     }
 
@@ -74,7 +74,7 @@ class SourcesControllerPolicy extends BaseControllerPolicy
             return false;
         }
 
-        // Only admins can add a category
+        // Only admins can add a source
         return $user->isAdmin();
     }
 
@@ -92,7 +92,7 @@ class SourcesControllerPolicy extends BaseControllerPolicy
             return false;
         }
 
-        // Only admins can add a category
+        // Only admins can add a source
         return $user->isAdmin();
     }
 }

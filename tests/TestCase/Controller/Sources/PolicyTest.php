@@ -298,7 +298,7 @@ class PolicyTest extends BaseControllerTest
         $this->assertFlashMessage('The source `Delete Me` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
 
-        // test admin with another category
+        // test admin with another source
         $this->loginUserAdmin();
         $this->delete('https://localhost/sources/delete/2');
         $this->assertRedirectEquals('https://localhost/sources');

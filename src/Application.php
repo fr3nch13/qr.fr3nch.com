@@ -16,14 +16,12 @@ declare(strict_types=1);
  */
 namespace App;
 
-use App\Controller\CategoriesController;
 use App\Controller\PagesController;
 use App\Controller\QrCodesController;
 use App\Controller\QrImagesController;
 use App\Controller\SourcesController;
 use App\Controller\TagsController;
 use App\Controller\UsersController;
-use App\Policy\CategoriesControllerPolicy;
 use App\Policy\PagesControllerPolicy;
 use App\Policy\QrCodesControllerPolicy;
 use App\Policy\QrImagesControllerPolicy;
@@ -329,7 +327,6 @@ class Application extends BaseApplication implements
         $mapResolver = new MapResolver();
 
         // map the controllers
-        $mapResolver->map(CategoriesController::class, CategoriesControllerPolicy::class);
         $mapResolver->map(QrCodesController::class, QrCodesControllerPolicy::class);
         $mapResolver->map(QrImagesController::class, QrImagesControllerPolicy::class);
         $mapResolver->map(SourcesController::class, SourcesControllerPolicy::class);

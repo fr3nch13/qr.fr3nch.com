@@ -75,7 +75,7 @@ class FormsTest extends BaseControllerTest
     {
         // test success
         $this->put('https://localhost/qr-images/edit/2', [
-            'name' => 'New Category',
+            'name' => 'New Image',
         ]);
         $this->assertRedirectEquals('https://localhost/qr-images/qr-code/1');
         $this->assertFlashMessage('The image has been saved.', 'flash');

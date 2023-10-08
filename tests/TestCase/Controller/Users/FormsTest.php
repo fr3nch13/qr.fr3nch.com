@@ -67,11 +67,11 @@ class FormsTest extends BaseControllerTest
         $this->assertFlashElement('flash/success');
 
         // test success redirect
-        $this->post('https://localhost/users/login?redirect=%2Fcategories', [
+        $this->post('https://localhost/users/login?redirect=%2Ftags', [
             'email' => 'admin@example.com',
             'password' => 'admin',
         ]);
-        $this->assertRedirectEquals('https://localhost/categories');
+        $this->assertRedirectEquals('https://localhost/tags');
         $this->assertFlashMessage('Welcome back Admin', 'flash');
         $this->assertFlashElement('flash/success');
     }

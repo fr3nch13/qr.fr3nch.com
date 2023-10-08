@@ -111,7 +111,7 @@ class TagsTableTest extends TestCase
      * Test Associations
      *
      * @return void
-     * @uses \App\Model\Table\CategoriesTable::initialize()
+     * @uses \App\Model\Table\TagsTable::initialize()
      */
     public function testAssociations(): void
     {

@@ -90,11 +90,6 @@ $logoImage = $this->Html->image($logoImage, [
                 'action' => 'index',
             ], ['class' => 'nav-link']); ?></li>
 
-            <li class="nav-item"><?= $this->Html->link(__('Categories'), [
-                'controller' => 'Categories',
-                'action' => 'index',
-            ], ['class' => 'nav-link']); ?></li>
-
             <li class="nav-item"><?= $this->Html->link(__('Tags'), [
                 'controller' => 'Tags',
                 'action' => 'index',

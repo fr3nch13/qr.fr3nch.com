@@ -7,7 +7,6 @@ use App\Lib\GoogleQrGenerator;
 use App\Lib\LogoOptions;
 use App\Lib\PhpQrGenerator;
 use App\Lib\QRImageWithLogo;
-use App\Model\Table\CategoriesTable;
 use App\Model\Table\QrCodesTable;
 use App\Model\Table\SourcesTable;
 use App\Model\Table\TagsTable;
@@ -41,9 +40,7 @@ class QrCodesTableTest extends TestCase
     protected array $fixtures = [
         'app.Users',
         'app.Sources',
-        'app.Categories',
         'app.QrCodes',
-        'app.CategoriesQrCodes',
         'app.Tags',
         'app.QrCodesTags',
     ];
@@ -146,16 +143,6 @@ class QrCodesTableTest extends TestCase
         $Association = $this->QrCodes->Sources;
         $this->assertSame('Sources', $Association->getName());
         $this->assertSame('source_id', $Association->getForeignKey());
-
-        // make sure the association exists
-        $this->assertNotNull($Associations->get('Categories'));
-        $this->assertInstanceOf(BelongsToMany::class, $Associations->get('Categories'));
-        $this->assertInstanceOf(CategoriesTable::class, $Associations->get('Categories')->getTarget());
-        $Association = $this->QrCodes->Categories;
-        $this->assertSame('Categories', $Association->getName());
-        $this->assertSame('CategoriesQrCodes', $Association->getThrough());
-        $this->assertSame('qr_code_id', $Association->getForeignKey());
-        $this->assertSame('category_id', $Association->getTargetForeignKey());
 
         // make sure the association exists
         $this->assertNotNull($Associations->get('Tags'));

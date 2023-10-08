@@ -107,11 +107,11 @@ class JsonTest extends BaseControllerTest
         $this->logoutUser();
 
         // a post success
-        $this->post('https://localhost/users/login.json?redirect=categories', [
+        $this->post('https://localhost/users/login.json?redirect=%2Ftags', [
             'email' => 'admin@example.com',
             'password' => 'admin',
         ]);
-                $this->assertRedirectEquals('https://localhost/categories');
+                $this->assertRedirectEquals('https://localhost/tags');
         $this->assertFlashMessage('Welcome back Admin', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -261,8 +261,7 @@ class JsonTest extends BaseControllerTest
 
         // a put success
         $this->put('https://localhost/users/edit/1.json', [
-            'name' => 'New JSON Category',
-            'description' => 'Description of the user',
+            'name' => 'Updated JSON User',
         ]);
         $this->assertRedirectEquals('https://localhost/users/view/1.json');
         $this->assertFlashMessage('The user has been saved.', 'flash');
