@@ -243,7 +243,6 @@ class BaseControllerTest extends TestCase
             $this->assertSame(1, substr_count($content, '<i class="bi bi-check filtering-applied"></i>'));
             $this->assertSame(1, substr_count($content, '<span class="visually-hidden">Filters are applied</span>'));
         }
-
     }
 
     /**
@@ -311,7 +310,6 @@ class BaseControllerTest extends TestCase
         $this->assertSame(1, substr_count($content, '<script src="/js/index.bundle.js" '));
         $this->assertSame(1, substr_count($content, '<script src="/assets/npm-asset/jquery/dist/jquery.min.js" '));
         $this->assertSame(1, substr_count($content, '<script src="/js/qr.js" '));
-
 
         $this->assertSame(1, substr_count($content, '</body>'));
         $this->assertSame(1, substr_count($content, '</html>'));

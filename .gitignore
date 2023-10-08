@@ -55,3 +55,4 @@ yarn-debug.log
 yarn-error.log
 config/Migrations/schema-dump-default.lock
 testdb.sqlite
+pushover-config

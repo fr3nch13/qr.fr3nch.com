@@ -159,18 +159,22 @@ class QrCodesController extends AppController
         // for the filters
         $sources = $this->QrCodes->Sources
             ->find('active')
-            ->find('list',
+            ->find(
+                'list',
                 keyField: 'name',
                 valueField: 'name',
-                limit: 200)
+                limit: 200
+            )
             ->order(['name' => 'asc'])
             ->all();
         $tags = $this->QrCodes->Tags
             ->find('active')
-            ->find('list',
+            ->find(
+                'list',
                 keyField: 'name',
                 valueField: 'name',
-                limit: 200)
+                limit: 200
+            )
             ->order(['name' => 'asc'])
             ->all();
 

@@ -192,7 +192,7 @@ if (!$this->getRequest()->is('ajax')) {
             </div>
             <!-- Tags -->
             <div class="widget mb-2">
-                <?= $this->Form->control('t',[
+                <?= $this->Form->control('t', [
                     'options' => $tags,
                     'empty' => '[select]',
                     'label' => [
@@ -202,7 +202,7 @@ if (!$this->getRequest()->is('ajax')) {
                 ]); ?>
             <!-- Sources -->
             <div class="widget mb-2">
-                <?= $this->Form->control('s',[
+                <?= $this->Form->control('s', [
                     'options' => $sources,
                     'empty' => '[select]',
                     'label' => [
@@ -215,7 +215,7 @@ if (!$this->getRequest()->is('ajax')) {
             <div class="widget text-end">
                 <div class="btn-group" role="group" aria-label="Filter Options">
                     <?php if ($this->Search->isSearch()) : ?>
-                    <?= $this->Search->resetLink(__('Clear'), [
+                        <?= $this->Search->resetLink(__('Clear'), [
                         'class' => 'btn btn-sm btn-light',
                     ]); ?>
                     <?php endif; ?>
