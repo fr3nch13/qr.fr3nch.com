@@ -65,7 +65,7 @@ class QrCodePolicy
      */
     public function canForward(?User $user, ?QrCode $QrCode): bool
     {
-        return false;
+        return true;
     }
 
     /**
