@@ -89,7 +89,7 @@ class QrCodeSeed extends AbstractSeed
                 'qrkey' => 'inactiveadmin',
                 'name' => 'Inactive Code - Admin',
                 'description' => 'This QR Code is inactive',
-                'created' => new DateTime(),
+                'created' => (new DateTime())->format('Y-m-d H:i:s'),
                 'url' => 'https://google.com',
                 'is_active' => false,
                 'source_id' => 1, // amazon
