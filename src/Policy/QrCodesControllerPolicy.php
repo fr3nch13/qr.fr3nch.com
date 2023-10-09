@@ -13,6 +13,7 @@ class QrCodesControllerPolicy extends BaseControllerPolicy
 {
     /**
      * Anyone can be forwarded.
+     * Specific checks for inactive codes are done at the controller directly.
      *
      * @param \App\Model\Entity\User|null $user The identity object.
      * @param \App\Controller\QrCodesController $QrCodesController
