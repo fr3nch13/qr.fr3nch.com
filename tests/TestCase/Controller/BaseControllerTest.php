@@ -134,12 +134,12 @@ class BaseControllerTest extends TestCase
     public function helperValidateHTML(): void
     {
         $content = (string)$this->_response->getBody();
+
         try {
             $validator = new HtmlValidator();
             $result = $validator->validateDocument($content);
             $this->assertFalse($result->hasErrors(), (string)$result);
             $this->assertFalse($result->hasWarnings(), (string)$result);
-
             // Incase validator.nu throws an error.
         } catch (ValidatorServerException $e) {
             $this->assertTrue(true);
@@ -156,6 +156,7 @@ class BaseControllerTest extends TestCase
     public function helperTestAlert(string $message, string $type): void
     {
         $content = (string)$this->_response->getBody();
+
         // container
         $this->assertSame(1, substr_count($content, '<div role="alert" class="alert alert-dismissible ' .
             'fade show d-flex align-items-center alert-' . $type . '">'));
@@ -180,7 +181,6 @@ class BaseControllerTest extends TestCase
 
         // message
         $needle = '<div id="' . $id . '" class="ms-0 invalid-feedback">' . $message . '</div>';
-
         $this->assertSame(1, substr_count($content, $needle));
     }
 
@@ -200,7 +200,6 @@ class BaseControllerTest extends TestCase
         if ($isFile) {
             $fileString = 'enctype="multipart/form-data" ';
         }
-
         // if the method is a put or a patch, look for the cake internal translation.
         $otherMethod = null;
         if (in_array(strtolower($method), ['put', 'patch'])) {
@@ -211,10 +210,8 @@ class BaseControllerTest extends TestCase
             $this->assertSame(1, substr_count($content, '<input type="hidden" name="_method" value="' .
                 strtoupper($otherMethod) . '">'));
         }
-
         $formString = '<form ' . $fileString . 'method="' . $method .
             '" accept-charset="utf-8" role="form" action="' . $action . '">';
-
         $this->assertSame(1, substr_count($content, $formString));
     }
 
@@ -233,7 +230,6 @@ class BaseControllerTest extends TestCase
         $this->helperTestObjectComment(1, 'OffCanvas/wrap');
         // make sure the filters popup exists.
         $this->helperTestObjectComment(1, 'OffCanvas/filters');
-
         // Make sure the filter link is there.
         $this->assertSame(1, substr_count($content, 'aria-controls="offcanvasFilter">Filters'));
         if ($isFiltered) {
@@ -256,8 +252,9 @@ class BaseControllerTest extends TestCase
      */
     public function helperTestObjectComment(int $count, string $coment, string $namespace = 'App'): void
     {
-        $templateString = $namespace . '.' . $coment;
         $content = (string)$this->_response->getBody();
+
+        $templateString = $namespace . '.' . $coment;
         $this->assertSame($count, substr_count($content, '<!-- OBJECT_COMMENT: ' . $templateString . ' -->'));
     }
 
@@ -270,8 +267,9 @@ class BaseControllerTest extends TestCase
      */
     public function helperTestTemplate(string $templatePath, string $namespace = 'App'): void
     {
-        $templateString = $namespace . '.' . $templatePath;
         $content = (string)$this->_response->getBody();
+
+        $templateString = $namespace . '.' . $templatePath;
         $this->assertSame(1, substr_count($content, '<!-- START: ' . $templateString . ' -->'));
         $this->assertSame(1, substr_count($content, '<!-- END: ' . $templateString . ' -->'));
     }
@@ -284,31 +282,29 @@ class BaseControllerTest extends TestCase
     public function helperTestLayoutBase(): void
     {
         $content = (string)$this->_response->getBody();
+
         $this->assertSame(1, substr_count($content, '<!-- START: App.layout/base -->'));
         $this->assertSame(1, substr_count($content, '<!-- END: App.layout/base -->'));
         $this->assertSame(1, substr_count($content, '<html lang="en">'));
         $this->assertSame(1, substr_count($content, '<head>'));
         $this->assertSame(1, substr_count($content, '</head>'));
         $this->assertSame(1, substr_count($content, '<body>'));
-
         // favicons
         $this->assertSame(1, substr_count($content, '<link href="/favicon.ico" type="image/x-icon" rel="icon"><link href="/favicon.ico" type="image/x-icon" rel="shortcut icon">'));
         $this->assertSame(1, substr_count($content, '<link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">'));
         $this->assertSame(1, substr_count($content, '<link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">'));
         $this->assertSame(1, substr_count($content, '<link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">'));
         $this->assertSame(1, substr_count($content, '<link rel="manifest" href="/img/site.webmanifest">'));
-
         // css
         $this->assertSame(1, substr_count($content, '<link rel="stylesheet" href="/css/libs.bundle.css" '));
         $this->assertSame(1, substr_count($content, '<link rel="stylesheet" href="/css/index.bundle.css" '));
         $this->assertSame(1, substr_count($content, '<link rel="stylesheet" href="/css/qr.css" '));
-
         // js
         $this->assertSame(1, substr_count($content, '<script src="/js/vendor.bundle.js" '));
         $this->assertSame(1, substr_count($content, '<script src="/js/index.bundle.js" '));
         $this->assertSame(1, substr_count($content, '<script src="/assets/npm-asset/jquery/dist/jquery.min.js" '));
         $this->assertSame(1, substr_count($content, '<script src="/js/qr.js" '));
-
+        // end
         $this->assertSame(1, substr_count($content, '</body>'));
         $this->assertSame(1, substr_count($content, '</html>'));
     }
@@ -322,6 +318,7 @@ class BaseControllerTest extends TestCase
     {
         $this->helperTestLayoutBase();
         $content = (string)$this->_response->getBody();
+
         $this->assertSame(1, substr_count($content, '<!-- START: App.layout/default -->'));
         $this->assertSame(1, substr_count($content, '<!-- END: App.layout/default -->'));
 
@@ -338,6 +335,7 @@ class BaseControllerTest extends TestCase
     {
         $this->helperTestLayoutBase();
         $content = (string)$this->_response->getBody();
+
         $this->assertSame(1, substr_count($content, '<!-- START: App.layout/pages/generic -->'));
         $this->assertSame(1, substr_count($content, '<!-- END: App.layout/pages/generic -->'));
 
@@ -353,6 +351,7 @@ class BaseControllerTest extends TestCase
     {
         $this->helperTestLayoutBase();
         $content = (string)$this->_response->getBody();
+
         $this->assertSame(1, substr_count($content, '<!-- START: App.layout/pages/index -->'));
         $this->assertSame(1, substr_count($content, '<!-- END: App.layout/pages/index -->'));
 
@@ -368,6 +367,7 @@ class BaseControllerTest extends TestCase
     {
         $this->helperTestLayoutBase();
         $content = (string)$this->_response->getBody();
+
         $this->assertSame(1, substr_count($content, '<!-- START: App.layout/pages/view -->'));
         $this->assertSame(1, substr_count($content, '<!-- END: App.layout/pages/view -->'));
 
@@ -383,6 +383,7 @@ class BaseControllerTest extends TestCase
     {
         $this->helperTestLayoutBase();
         $content = (string)$this->_response->getBody();
+
         $this->assertSame(1, substr_count($content, '<!-- START: App.layout/pages/dashboard -->'));
         $this->assertSame(1, substr_count($content, '<!-- END: App.layout/pages/dashboard -->'));
 
@@ -398,6 +399,7 @@ class BaseControllerTest extends TestCase
     {
         $this->helperTestLayoutBase();
         $content = (string)$this->_response->getBody();
+
         $this->assertSame(1, substr_count($content, '<!-- START: App.layout/pages/form -->'));
         $this->assertSame(1, substr_count($content, '<!-- END: App.layout/pages/form -->'));
 
@@ -413,6 +415,7 @@ class BaseControllerTest extends TestCase
     {
         $this->helperTestLayoutBase();
         $content = (string)$this->_response->getBody();
+
         $this->assertSame(1, substr_count($content, '<!-- START: App.layout/login -->'));
         $this->assertSame(1, substr_count($content, '<!-- END: App.layout/login -->'));
 
@@ -429,6 +432,7 @@ class BaseControllerTest extends TestCase
     {
         $this->helperTestLayoutError();
         $content = (string)$this->_response->getBody();
+
         $this->assertSame(1, substr_count($content, '<!-- START: App.Error/error400 -->'));
         $this->assertSame(1, substr_count($content, '<!-- END: App.Error/error400 -->'));
 
@@ -448,6 +452,7 @@ class BaseControllerTest extends TestCase
     {
         $this->helperTestLayoutError();
         $content = (string)$this->_response->getBody();
+
         $this->assertSame(1, substr_count($content, '<!-- START: App.Error/error500 -->'));
         $this->assertSame(1, substr_count($content, '<!-- END: App.Error/error400 -->'));
 
@@ -462,7 +467,7 @@ class BaseControllerTest extends TestCase
     public function helperTestLayoutError(): void
     {
         $content = (string)$this->_response->getBody();
-        debug($content);
+
         $this->assertSame(1, substr_count($content, '<!-- START: App.layout/error -->'));
         $this->assertSame(1, substr_count($content, '<!-- END: App.layout/error -->'));
 
@@ -477,9 +482,9 @@ class BaseControllerTest extends TestCase
     public function helperTestLayoutAjax(): void
     {
         $content = (string)$this->_response->getBody();
+
         $this->assertSame(0, substr_count($content, '<!-- START: App.layout/default -->'));
         $this->assertSame(0, substr_count($content, '<!-- END: App.layout/default -->'));
-
         $this->assertSame(1, substr_count($content, '<!-- START: App.layout/ajax -->'));
         $this->assertSame(1, substr_count($content, '<!-- END: App.layout/ajax -->'));
         $this->assertSame(0, substr_count($content, '<html>'));
