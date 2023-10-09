@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Policy;
 
 use App\Model\Entity\User;
+use Cake\Database\Expression\QueryExpression;
 use Cake\ORM\Query\SelectQuery;
 
 /**
@@ -25,7 +26,14 @@ class QrCodesTablePolicy
     {
         if ($user) {
             if (!$user->is_admin) {
-                return $query->find('ownedBy', user: $user);
+                // either owner, or active.
+                return $query->where(function (QueryExpression $exp, SelectQuery $query) use ($user) {
+
+                    return $exp->or([
+                        ['QrCodes.user_id' => $user->id],
+                        ['QrCodes.is_active' => true],
+                    ]);
+                });
             }
 
             // admins

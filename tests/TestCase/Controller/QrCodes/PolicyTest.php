@@ -92,7 +92,6 @@ class PolicyTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestTemplate('QrCodes/index');
         // make sure all are listed.
-        // this may change to include all active, and inactive, scoped to the user.
         $this->helperTestObjectComment(3, 'QrCodes/active');
         $this->helperTestObjectComment(1, 'QrCodes/inactive');
         // make sure the qcode is listed for each one.
@@ -112,12 +111,12 @@ class PolicyTest extends BaseControllerTest
         // make sure all are listed.
         // this may change to include all active, and inactive, scoped to the user.
         $this->helperTestObjectComment(3, 'QrCodes/active');
-        $this->helperTestObjectComment(1, 'QrCodes/inactive');
+        $this->helperTestObjectComment(2, 'QrCodes/inactive');
         // make sure the qcode is listed for each one.
-        $this->helperTestObjectComment(4, 'QrCode/show');
+        $this->helperTestObjectComment(5, 'QrCode/show');
         // make sure only active primary images are listed.
         $this->helperTestObjectComment(3, 'QrImages/active/first');
-        // make sure the primary inactive one isn't listed.
+        // make sure the primary inactive image isn't listed.
         $content = (string)$this->_response->getBody();
         $this->assertSame(0, substr_count($content, '<img class="product-qrimage" src="/qr-images/show/3'));
 
