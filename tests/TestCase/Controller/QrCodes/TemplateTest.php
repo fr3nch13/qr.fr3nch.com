@@ -71,11 +71,11 @@ class TemplateTest extends BaseControllerTest
         // make sure all are listed.
         // this may change to include all active, and inactive, scoped to the user.
         $this->helperTestObjectComment(3, 'QrCodes/active');
-        $this->helperTestObjectComment(1, 'QrCodes/inactive');
+        $this->helperTestObjectComment(2, 'QrCodes/inactive');
         // make sure the qcode is listed for each one.
-        $this->helperTestObjectComment(4, 'QrCode/show');
-        $this->helperTestObjectComment(4, 'QrCode/forward');
-        $this->helperTestObjectComment(4, 'QrCode/view');
+        $this->helperTestObjectComment(5, 'QrCode/show');
+        $this->helperTestObjectComment(5, 'QrCode/forward');
+        $this->helperTestObjectComment(5, 'QrCode/view');
         // make sure only active primary images are listed.
         $this->helperTestObjectComment(3, 'QrImages/active/first');
     }
@@ -115,10 +115,10 @@ class TemplateTest extends BaseControllerTest
         // make sure all are listed.
         // this may change to include all active, and inactive, scoped to the user.
         $this->helperTestObjectComment(3, 'QrCodes/active');
-        $this->helperTestObjectComment(1, 'QrCodes/inactive');
+        $this->helperTestObjectComment(2, 'QrCodes/inactive');
         // make sure the qcode is listed for each one.
-        $this->helperTestObjectComment(4, 'QrCode/show');
-        $this->helperTestObjectComment(4, 'QrCode/forward');
+        $this->helperTestObjectComment(5, 'QrCode/show');
+        $this->helperTestObjectComment(5, 'QrCode/forward');
         // make sure only active primary images are listed.
         $this->helperTestObjectComment(3, 'QrImages/active/first');
     }

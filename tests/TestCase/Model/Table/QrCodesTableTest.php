@@ -394,7 +394,7 @@ class QrCodesTableTest extends TestCase
         $this->assertTrue(is_readable($path));
 
         // new entity, check that it gets generated on a new save.
-        $path = Configure::read('App.paths.qr_codes') . DS . '5.png';
+        $path = Configure::read('App.paths.qr_codes') . DS . '6.png';
         if (file_exists($path)) {
             unlink($path);
         }

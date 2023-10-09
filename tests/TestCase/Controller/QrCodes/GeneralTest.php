@@ -44,6 +44,14 @@ class GeneralTest extends BaseControllerTest
         $this->get('https://localhost/qr-codes/forward/sownscribe');
         $this->assertRedirectEquals('https://amazon.com/path/to/details/page');
 
+        $this->get('https://localhost/?k=inactive');
+        $this->assertRedirectEquals('https://localhost/f/inactive');
+
+        $this->get('https://localhost/f/inactive');
+        $this->assertRedirectEquals('https://localhost/');
+        $this->assertFlashMessage('This QR Code is inactive.', 'flash');
+        $this->assertFlashElement('flash/warning');
+
         $this->get('https://localhost/?k=dontexist');
         $this->assertRedirectEquals('https://localhost/f/dontexist');
 

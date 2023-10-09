@@ -72,6 +72,18 @@ class QrCodesFixture extends CoreFixture
                 'source_id' => 2, // etsy
                 'user_id' => 2, // regular
             ],
+            [
+                // this one also has no qr_images
+                'id' => 5,
+                'qrkey' => 'inactiveadmin',
+                'name' => 'Inactive Code - Admin',
+                'description' => 'This QR Code is inactive',
+                'created' => new DateTime(),
+                'url' => 'https://google.com',
+                'is_active' => false,
+                'source_id' => 1, // amazon
+                'user_id' => 1, // admin
+            ],
         ];
         parent::init();
     }
