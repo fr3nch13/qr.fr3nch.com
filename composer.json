@@ -20,7 +20,7 @@
         "chillerlan/php-qrcode": "~4.3",
         "friendsofcake/bootstrap-ui": "^5.0",
         "friendsofcake/search": "^7.0",
-        "mobiledetect/mobiledetectlib": "~3.74",
+        "mobiledetect/mobiledetectlib": "~4.8",
         "npm-asset/jquery": "^3.7",
         "oomphinc/composer-installers-extender": "^2.0",
         "paragonie/csp-builder": "~2.9"
