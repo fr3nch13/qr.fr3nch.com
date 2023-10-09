@@ -63,7 +63,7 @@ class FormsTest extends BaseControllerTest
             'source_id' => 1,
             'user_id' => 1,
         ]);
-        $this->assertRedirectEquals('https://localhost/qr-codes/view/5');
+        $this->assertRedirectEquals('https://localhost/qr-codes/view/6');
         $this->assertFlashMessage('The qr code has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }

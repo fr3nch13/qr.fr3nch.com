@@ -48,7 +48,7 @@ class JsonTest extends BaseControllerTest
         $content = json_decode($content, true);
 
         $this->assertTrue(isset($content['qrCodes']));
-        $this->assertCount(4, $content['qrCodes']);
+        $this->assertCount(5, $content['qrCodes']);
 
         $first = reset($content['qrCodes']);
         $this->assertSame(1, $first['id']);
@@ -148,7 +148,7 @@ class JsonTest extends BaseControllerTest
             'url' => 'https://amazon.com/path/to/forward',
             'source_id' => 1,
         ]);
-        $this->assertRedirectEquals('https://localhost/qr-codes/view/5.json');
+        $this->assertRedirectEquals('https://localhost/qr-codes/view/6.json');
         $this->assertFlashMessage('The qr code has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
