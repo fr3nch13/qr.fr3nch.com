@@ -54,8 +54,9 @@ class GeneralTest extends BaseControllerTest
         $this->assertFlashElement('flash/error');
 
         $this->get('https://localhost/admin/f/');
-        $this->assertResponseCode(404);
-        $this->assertResponseContains('Unknown ID');
+        $this->assertRedirectEquals('https://localhost/admin/qr-codes');
+        $this->assertFlashMessage('No key was given.', 'flash');
+        $this->assertFlashElement('flash/error');
     }
 
     /**

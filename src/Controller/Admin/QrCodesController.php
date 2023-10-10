@@ -43,7 +43,7 @@ class QrCodesController extends AppController
         // make sure we have an ID where needed.
         $action = $this->request->getParam('action');
         // admin actions
-        if (in_array($action, ['forward', 'show', 'view', 'edit', 'delete'])) {
+        if (in_array($action, ['show', 'view', 'edit', 'delete'])) {
             $pass = $this->request->getParam('pass');
             if (empty($pass) || !isset($pass['0'])) {
                 $event->stopPropagation();
@@ -68,6 +68,8 @@ class QrCodesController extends AppController
 
         // if no key given, redirect them to the index page.
         if (!$key) {
+            $this->Flash->error(__('No key was given.'));
+
             return $this->redirect([
                 'action' => 'index',
             ]);
