@@ -13,7 +13,7 @@ use Cake\Http\Exception\NotFoundException;
 /**
  * Base Controller policy
  */
-class BaseControllerPolicy implements BeforePolicyInterface
+class AppControllerPolicy implements BeforePolicyInterface
 {
     /**
      * Summary of before

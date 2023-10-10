@@ -116,7 +116,7 @@ class PolicyTest extends BaseControllerTest
         // test with reqular, not owner
         $this->loginUserRegular();
         $this->get('https://localhost/qr-images/qr-code/1');
-        $this->assertRedirectEquals('https://localhost/?redirect=%2Fqr-images%2Fqr-code%2F1');
+        $this->assertRedirectEquals('https://localhost/admin?redirect=%2Fqr-images%2Fqr-code%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -234,7 +234,7 @@ class PolicyTest extends BaseControllerTest
         // test with reqular, inactive image, not owner
         $this->loginUserRegular();
         $this->get('https://localhost/qr-images/show/3');
-        $this->assertRedirectEquals('https://localhost/?redirect=%2Fqr-images%2Fshow%2F3');
+        $this->assertRedirectEquals('https://localhost/admin?redirect=%2Fqr-images%2Fshow%2F3');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -281,7 +281,7 @@ class PolicyTest extends BaseControllerTest
         // test with reqular, not owner
         $this->loginUserRegular();
         $this->get('https://localhost/qr-images/add/1');
-        $this->assertRedirectEquals('https://localhost/?redirect=%2Fqr-images%2Fadd%2F1');
+        $this->assertRedirectEquals('https://localhost/admin?redirect=%2Fqr-images%2Fadd%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -357,7 +357,7 @@ class PolicyTest extends BaseControllerTest
         // test with reqular, not owner
         $this->loginUserRegular();
         $this->get('https://localhost/qr-images/edit/1');
-        $this->assertRedirectEquals('https://localhost/?redirect=%2Fqr-images%2Fedit%2F1');
+        $this->assertRedirectEquals('https://localhost/admin?redirect=%2Fqr-images%2Fedit%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -433,7 +433,7 @@ class PolicyTest extends BaseControllerTest
         // test with reqular, not owner
         $this->loginUserRegular();
         $this->delete('https://localhost/qr-images/delete/1');
-        $this->assertRedirectEquals('https://localhost/');
+        $this->assertRedirectEquals('https://localhost/admin');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');

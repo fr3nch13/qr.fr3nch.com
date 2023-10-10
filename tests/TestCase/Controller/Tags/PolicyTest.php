@@ -225,7 +225,7 @@ class PolicyTest extends BaseControllerTest
         // test with reqular, not owner
         $this->loginUserRegular();
         $this->get('https://localhost/tags/edit/1');
-        $this->assertRedirectEquals('https://localhost/?redirect=%2Ftags%2Fedit%2F1');
+        $this->assertRedirectEquals('https://localhost/admin?redirect=%2Ftags%2Fedit%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -290,7 +290,7 @@ class PolicyTest extends BaseControllerTest
         // test with reqular, not owner
         $this->loginUserRegular();
         $this->delete('https://localhost/tags/delete/3');
-        $this->assertRedirectEquals('https://localhost/');
+        $this->assertRedirectEquals('https://localhost/admin');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
