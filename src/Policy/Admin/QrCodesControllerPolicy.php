@@ -17,7 +17,7 @@ class QrCodesControllerPolicy extends AppControllerPolicy
      * not register a hit. This is so we can test our forwarding.
      *
      * @param \App\Model\Entity\User|null $user The identity object.
-     * @param \App\Controller\QrCodesController $QrCodesController
+     * @param \App\Controller\Admin\QrCodesController $QrCodesController
      * @return bool
      */
     public function canForward(?User $user, QrCodesController $QrCodesController): bool
