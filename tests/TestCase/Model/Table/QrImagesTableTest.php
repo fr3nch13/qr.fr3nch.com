@@ -244,6 +244,5 @@ class QrImagesTableTest extends TestCase
 
         $this->assertFalse($regular->can('edit', $admins_image));
         $this->assertFalse($regular->can('edit', $regulars_image));
-
     }
 }

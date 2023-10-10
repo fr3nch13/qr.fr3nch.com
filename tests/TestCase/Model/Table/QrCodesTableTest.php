@@ -531,7 +531,6 @@ class QrCodesTableTest extends TestCase
      */
     public function testImplementedGenerator6(): void
     {
-
         $originalPath = Configure::read('App.paths.qr_codes');
         Configure::write('App.paths.qr_codes', TMP . 'dontexist');
 
@@ -597,7 +596,7 @@ class QrCodesTableTest extends TestCase
         // test regenerating the image
         $this->expectException(NotFoundException::class);
         $this->expectExceptionMessage('Unable to find the QR Image for the QR Code `Sow & Scribe`');
-        $qrCodeImagePath = $this->QrCodes->getQrImagePath(1, true);
+        $this->QrCodes->getQrImagePath(1, true);
         $this->assertFalse(is_readable($path));
 
         Configure::write('App.paths.qr_codes', $originalPath);

@@ -39,7 +39,6 @@ class FormsTest extends BaseControllerTest
      */
     public function testLogin(): void
     {
-
         // test success, inactive
         $this->logoutUser();
         $this->post('https://localhost/users/login', [

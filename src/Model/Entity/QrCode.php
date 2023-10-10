@@ -5,6 +5,7 @@ namespace App\Model\Entity;
 
 use App\Lib\PhpQrGenerator;
 use Cake\Core\Configure;
+use Cake\Log\Log;
 use Cake\ORM\Entity;
 use chillerlan\QRCode\Output\QRCodeOutputException;
 
@@ -93,7 +94,7 @@ class QrCode extends Entity
                 $QR = new PhpQrGenerator($this);
                 $QR->generate();
             } catch (QRCodeOutputException $e) {
-                \Cake\Log\Log::write('error', __('Unable to generate a missing code to: `{0}`.' .
+                Log::write('error', __('Unable to generate a missing code to: `{0}`.' .
                     ' Exception: `{1}` Message: `{2}`', [
                     $path,
                     get_class($e),
