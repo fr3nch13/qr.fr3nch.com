@@ -143,15 +143,32 @@ class PolicyTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestTemplate('QrCodes/view');
 
+        // inactive
+        $this->get('https://localhost/qr-codes/view/4');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fqr-codes%2Fview%2F4');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
+
         // test with reqular
         $this->loginUserRegular();
         $this->get('https://localhost/qr-codes/view/1');
         $this->assertResponseOk();
         $this->helperTestTemplate('QrCodes/view');
 
+        // inactive
+        $this->get('https://localhost/qr-codes/view/4');
+        $this->assertResponseOk();
+        $this->helperTestTemplate('QrCodes/view');
+
         // test with admin
         $this->loginUserAdmin();
         $this->get('https://localhost/qr-codes/view/1');
+        $this->assertResponseOk();
+        $this->helperTestTemplate('QrCodes/view');
+
+        // inactive
+        $this->get('https://localhost/qr-codes/view/4');
         $this->assertResponseOk();
         $this->helperTestTemplate('QrCodes/view');
 

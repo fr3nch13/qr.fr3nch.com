@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller\QrImages;
 
+use App\Model\Table\QrImagesTable;
 use App\Test\TestCase\Controller\BaseControllerTest;
 use Cake\Core\Configure;
 
@@ -16,6 +17,13 @@ use Cake\Core\Configure;
 class GeneralTest extends BaseControllerTest
 {
     /**
+     * Test subject
+     *
+     * @var \App\Model\Table\QrImagesTable
+     */
+    protected $QrImages;
+
+    /**
      * setUp method
      *
      * @return void
@@ -25,6 +33,11 @@ class GeneralTest extends BaseControllerTest
         parent::setUp();
         Configure::write('debug', true);
         $this->enableRetainFlashMessages();
+
+        $config = $this->getTableLocator()->exists('QrImages') ? [] : ['className' => QrImagesTable::class];
+        /** @var \App\Model\Table\QrImagesTable $QrImages */
+        $QrImages = $this->getTableLocator()->get('QrImages', $config);
+        $this->QrImages = $QrImages;
     }
 
     /**
@@ -44,6 +57,63 @@ class GeneralTest extends BaseControllerTest
         $this->assertGreaterThan(0, $headers['Content-Length'][0]);
         $this->assertTrue(isset($headers['Last-Modified']));
         $this->assertNotNull($headers['Last-Modified'][0]);
+    }
+
+    /**
+     * Test show method
+     *
+     * @return void
+     * @uses \App\Controller\QrImagesController::show()
+     */
+    public function testShowInactive(): void
+    {
+        $this->get('https://localhost/qr-images/show/3');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fqr-images%2Fshow%2F3');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
+
+        $this->loginUserRegular();
+        $this->get('https://localhost/qr-images/show/3');
+        $this->assertRedirectEquals('https://localhost/admin?redirect=%2Fqr-images%2Fshow%2F3');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
+
+        $this->loginUserAdmin();
+        $this->get('https://localhost/qr-images/show/3');
+        $this->assertResponseOk();
+        $this->assertResponseNotEmpty();
+        $headers = $this->_response->getHeaders();
+        $this->assertFalse(isset($headers['Cache-Control']));
+        $this->assertSame('image/jpeg', $headers['Content-Type'][0]);
+        $this->assertGreaterThan(0, $headers['Content-Length'][0]);
+    }
+
+    /**
+     * Test show method
+     *
+     * @return void
+     * @uses \App\Controller\QrImagesController::show()
+     */
+    public function testShowMissingImage(): void
+    {
+        $qrImage = $this->QrImages->get(1, contain: ['QrCodes']);
+        $path = Configure::read('App.paths.qr_images') . DS . $qrImage->qr_code_id . DS . $qrImage->id . '.' . $qrImage->ext;
+        $this->assertTrue(is_readable($path));
+
+        unlink($path);
+        $this->assertFalse(is_readable($path));
+
+        $this->get('https://localhost/qr-images/show/1');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unable to find the image file.');
+
+        Configure::write('debug', false);
+        $this->get('https://localhost/qr-images/show/1');
+        $this->assertResponseCode(404);
+        $this->helperTestError400('/qr-images/show/1');
+        Configure::write('debug', true);
     }
 
     /**

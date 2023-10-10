@@ -73,6 +73,17 @@ class FormsTest extends BaseControllerTest
      */
     public function testEdit(): void
     {
+        // test fail
+        $this->put('https://localhost/admin/qr-images/edit/2', [
+            'name' => '',
+        ]);
+        $this->assertResponseOk();
+        $this->helperTestTemplate('Admin/QrImages/edit');
+        $this->helperTestFormTag('/admin/qr-images/edit/2', 'put', true);
+        $this->helperTestAlert('The image could not be saved. Please, try again.', 'danger');
+        // test to make sure the fields that are required are actually tagged as so.
+        $this->helperTestFormFieldError('This field cannot be left empty', 'name-error');
+
         // test success
         $this->put('https://localhost/admin/qr-images/edit/2', [
             'name' => 'New Image',

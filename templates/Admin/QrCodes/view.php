@@ -12,7 +12,7 @@ if (!$this->getRequest()->is('ajax')) {
 
 
     <?php if (
-        $this->ActiveUser->getUser() &&
+        $this->ActiveUser->isLoggedIn() &&
         (
             $this->ActiveUser->getUser('id') === $qrCode->user_id ||
             $this->ActiveUser->getUser('is_admin') == true

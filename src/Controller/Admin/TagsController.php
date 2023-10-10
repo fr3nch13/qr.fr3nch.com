@@ -184,10 +184,6 @@ class TagsController extends AppController
             $this->Flash->success(__('The tag `{0}` has been deleted.', [
                 $tag->name,
             ]));
-        } else {
-            $this->Flash->error(__('Unable to delete the tag `{0}`.', [
-                $tag->name,
-            ]));
         }
 
         return $this->redirect([

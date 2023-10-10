@@ -163,10 +163,6 @@ class SourcesController extends AppController
             $this->Flash->success(__('The source `{0}` has been deleted.', [
                 $source->name,
             ]));
-        } else {
-            $this->Flash->error(__('Unable to delete the source `{0}`.', [
-                $source->name,
-            ]));
         }
 
         return $this->redirect([

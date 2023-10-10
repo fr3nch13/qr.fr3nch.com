@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller\Admin\QrCodes;
 
+use App\Model\Table\QrCodesTable;
 use App\Test\TestCase\Controller\BaseControllerTest;
 use Cake\Core\Configure;
 
@@ -16,6 +17,13 @@ use Cake\Core\Configure;
 class GeneralTest extends BaseControllerTest
 {
     /**
+     * Test subject
+     *
+     * @var \App\Model\Table\QrCodesTable
+     */
+    protected $QrCodes;
+
+    /**
      * setUp method
      *
      * @return void
@@ -25,7 +33,11 @@ class GeneralTest extends BaseControllerTest
         parent::setUp();
         Configure::write('debug', true);
         $this->enableRetainFlashMessages();
-        $this->loginUserAdmin();
+
+        $config = $this->getTableLocator()->exists('QrCodes') ? [] : ['className' => QrCodesTable::class];
+        /** @var \App\Model\Table\QrCodesTable $QrCodes */
+        $QrCodes = $this->getTableLocator()->get('QrCodes', $config);
+        $this->QrCodes = $QrCodes;
     }
 
     /**
@@ -36,6 +48,27 @@ class GeneralTest extends BaseControllerTest
      */
     public function testForward(): void
     {
+        // guest
+        $this->get('https://localhost/admin/f/sownscribe');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fadmin%2Ff%2Fsownscribe');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
+
+        $this->get('https://localhost/admin/f/inactive');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fadmin%2Ff%2Finactive');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
+
+        $this->get('https://localhost/admin/f/dontexist');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fadmin%2Ff%2Fdontexist');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
+
+        $this->loginUserAdmin();
+
         $this->get('https://localhost/admin/f/sownscribe');
         $this->assertRedirectEquals('https://amazon.com/path/to/details/page');
 
@@ -67,6 +100,15 @@ class GeneralTest extends BaseControllerTest
      */
     public function testShow(): void
     {
+        // guest
+        $this->get('https://localhost/admin/qr-codes/show/1');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fadmin%2Fqr-codes%2Fshow%2F1');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
+
+        $this->loginUserAdmin();
+
         $this->get('https://localhost/admin/qr-codes/show/1');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
@@ -80,10 +122,45 @@ class GeneralTest extends BaseControllerTest
      * Test show method
      *
      * @return void
+     * @uses \App\Controller\Admin\QrImagesController::show()
+     */
+    public function testShowMissingImage(): void
+    {
+        $this->loginUserAdmin();
+
+        $qrCode = $this->QrCodes->get(1);
+        $originalPath = Configure::read('App.paths.qr_codes');
+
+        $path = Configure::read('App.paths.qr_codes') . DS . $qrCode->id . '.png';
+        $this->assertTrue(is_readable($path));
+
+        Configure::write('App.paths.qr_codes', TMP . 'dontexist');
+        $path = Configure::read('App.paths.qr_codes') . DS . $qrCode->id . '.png';
+
+        $this->assertFalse(is_readable($path));
+
+        $this->get('https://localhost/admin/qr-codes/show/1');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unable to find the image file.');
+
+        Configure::write('debug', false);
+        $this->get('https://localhost/admin/qr-codes/show/1');
+        $this->assertResponseCode(404);
+        $this->helperTestError400('/admin/qr-codes/show/1');
+        Configure::write('debug', true);
+        Configure::write('App.paths.qr_codes', $originalPath);
+    }
+
+    /**
+     * Test show method
+     *
+     * @return void
      * @uses \App\Controller\Admin\QrCodesController::show()
      */
     public function testShowHeadersNoDebug(): void
     {
+        $this->loginUserAdmin();
+
         // check cache policy when debug is off.
         Configure::write('debug', false);
         $this->get('https://localhost/admin/qr-codes/show/1');

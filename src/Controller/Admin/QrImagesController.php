@@ -193,10 +193,6 @@ class QrImagesController extends AppController
                 $qrImage->name,
                 $qrImage->qr_code->name,
             ]));
-        } else {
-            $this->Flash->error(__('Unable to delete the image `{0}`.', [
-                $qrImage->name,
-            ]));
         }
 
         return $this->redirect(['action' => 'qrCode', $qrImage->qr_code->id]);

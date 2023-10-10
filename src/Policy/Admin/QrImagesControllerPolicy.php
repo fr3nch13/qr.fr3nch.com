@@ -44,22 +44,6 @@ class QrImagesControllerPolicy extends AppControllerPolicy
     }
 
     /**
-     * Must be an logged in to view an Image details page
-     *
-     * @param \App\Model\Entity\User|null $user The identity object.
-     * @param \App\Controller\Admin\QrImagesController $QrImagesController
-     * @return bool
-     */
-    public function canView(?User $user, QrImagesController $QrImagesController): bool
-    {
-        if (!$user) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
      * Must be an logged in to add an Image.
      *
      * @param \App\Model\Entity\User|null $user The identity object.

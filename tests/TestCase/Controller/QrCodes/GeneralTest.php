@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller\QrCodes;
 
+use App\Model\Table\QrCodesTable;
 use App\Test\TestCase\Controller\BaseControllerTest;
 use Cake\Core\Configure;
 
@@ -16,6 +17,13 @@ use Cake\Core\Configure;
 class GeneralTest extends BaseControllerTest
 {
     /**
+     * Test subject
+     *
+     * @var \App\Model\Table\QrCodesTable
+     */
+    protected $QrCodes;
+
+    /**
      * setUp method
      *
      * @return void
@@ -25,6 +33,11 @@ class GeneralTest extends BaseControllerTest
         parent::setUp();
         Configure::write('debug', true);
         $this->enableRetainFlashMessages();
+
+        $config = $this->getTableLocator()->exists('QrCodes') ? [] : ['className' => QrCodesTable::class];
+        /** @var \App\Model\Table\QrCodesTable $QrCodes */
+        $QrCodes = $this->getTableLocator()->get('QrCodes', $config);
+        $this->QrCodes = $QrCodes;
     }
 
     /**
@@ -80,6 +93,61 @@ class GeneralTest extends BaseControllerTest
         $this->assertFalse(isset($headers['Cache-Control']));
         $this->assertSame('image/png', $headers['Content-Type'][0]);
         $this->assertGreaterThan(0, $headers['Content-Length'][0]);
+    }
+
+    /**
+     * Test show method
+     *
+     * @return void
+     * @uses \App\Controller\QrCodesController::show()
+     */
+    public function testShowInactive(): void
+    {
+        $this->get('https://localhost/qr-codes/show/4');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fqr-codes%2Fshow%2F4');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
+
+        $this->loginUserRegular();
+        $this->get('https://localhost/qr-codes/show/4');
+        $this->assertResponseOk();
+        $this->assertResponseNotEmpty();
+        $headers = $this->_response->getHeaders();
+        $this->assertFalse(isset($headers['Cache-Control']));
+        $this->assertSame('image/png', $headers['Content-Type'][0]);
+        $this->assertGreaterThan(0, $headers['Content-Length'][0]);
+    }
+
+    /**
+     * Test show method
+     *
+     * @return void
+     * @uses \App\Controller\QrImagesController::show()
+     */
+    public function testShowMissingImage(): void
+    {
+        $qrCode = $this->QrCodes->get(1);
+        $originalPath = Configure::read('App.paths.qr_codes');
+
+        $path = Configure::read('App.paths.qr_codes') . DS . $qrCode->id . '.png';
+        $this->assertTrue(is_readable($path));
+
+        Configure::write('App.paths.qr_codes', TMP . 'dontexist');
+        $path = Configure::read('App.paths.qr_codes') . DS . $qrCode->id . '.png';
+
+        $this->assertFalse(is_readable($path));
+
+        $this->get('https://localhost/qr-codes/show/1');
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Unable to find the image file.');
+
+        Configure::write('debug', false);
+        $this->get('https://localhost/qr-codes/show/1');
+        $this->assertResponseCode(404);
+        $this->helperTestError400('/qr-codes/show/1');
+        Configure::write('debug', true);
+        Configure::write('App.paths.qr_codes', $originalPath);
     }
 
     /**

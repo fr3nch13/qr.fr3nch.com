@@ -82,10 +82,6 @@ class QrImagePolicy
     protected function isCreator(User $user, QrImage $QrImage): bool
     {
         // make sure the qr code is attached.
-        if (!is_int($QrImage->qr_code_id)) {
-            return false;
-        }
-
         if (!$QrImage->hasValue('qr_code')) {
             return false;
         }

@@ -20,7 +20,7 @@ if (!$this->getRequest()->is('ajax')) {
                 ?>
                 <div class="col-md-6 text-md-end">
                     <ul class="list-inline">
-                        <?php if ($this->ActiveUser->getUser()) : ?>
+                        <?php if ($this->ActiveUser->isLoggedIn()) : ?>
                         <li class="list-inline-item ms-2">
                             <?= $this->Html->link(__('Add a Tag'), [
                                 'controller' => 'Tags',
