@@ -6,6 +6,7 @@ namespace App\Test\TestCase\Model\Table;
 use App\Model\Table\QrCodesTable;
 use App\Model\Table\QrCodesTagsTable;
 use App\Model\Table\TagsTable;
+use Cake\Core\Configure;
 use Cake\ORM\Association\BelongsTo;
 use Cake\TestSuite\TestCase;
 

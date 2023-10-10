@@ -34,6 +34,7 @@ class UsersFixture extends CoreFixture
                 'email' => 'admin@example.com',
                 'password' => (new DefaultPasswordHasher())->hash('admin'),
                 'is_admin' => 1,
+                'is_active' => 1,
                 'created' => new DateTime(),
             ],
             [
@@ -42,6 +43,7 @@ class UsersFixture extends CoreFixture
                 'email' => 'regular@example.com',
                 'password' => (new DefaultPasswordHasher())->hash('regular'),
                 'is_admin' => 0,
+                'is_active' => 1,
                 'created' => new DateTime(),
             ],
             [
@@ -50,6 +52,16 @@ class UsersFixture extends CoreFixture
                 'email' => 'deleteme@example.com',
                 'password' => (new DefaultPasswordHasher())->hash('deleteme'),
                 'is_admin' => 0,
+                'is_active' => 1,
+                'created' => new DateTime(),
+            ],
+            [
+                'id' => 4,
+                'name' => 'Inactive User',
+                'email' => 'inactive@example.com',
+                'password' => (new DefaultPasswordHasher())->hash('inactive'),
+                'is_admin' => 0,
+                'is_active' => 0,
                 'created' => new DateTime(),
             ],
         ];

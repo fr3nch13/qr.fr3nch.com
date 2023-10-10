@@ -76,7 +76,7 @@ class JsonTest extends BaseControllerTest
         $content = json_decode($content, true);
 
         $this->assertTrue(isset($content['users']));
-        $this->assertCount(3, $content['users']);
+        $this->assertCount(4, $content['users']);
 
         $item = $content['users'][1];
         $this->assertSame(2, $item['id']);
@@ -156,7 +156,7 @@ class JsonTest extends BaseControllerTest
             'email' => 'newjsonuser@example.com',
             'password' => 'password',
         ]);
-        $this->assertRedirectEquals('https://localhost/admin/users/view/4.json');
+        $this->assertRedirectEquals('https://localhost/admin/users/view/5.json');
         $this->assertFlashMessage('The user has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }

@@ -134,15 +134,6 @@ class QrCodesController extends AppController
     {
         $this->request->allowMethod(['get']);
 
-        // look for an incoming key in the query,
-        // and redirect it to the forward action.
-        if ($this->request->getQuery('k')) {
-            $this->redirect([
-                'action' => 'forward',
-                $this->request->getQuery('k'),
-            ]);
-        }
-
         $query = $this->QrCodes->find('all')
             ->find('search', search: $this->request->getQueryParams())
             ->contain([

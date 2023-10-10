@@ -39,13 +39,25 @@ class FormsTest extends BaseControllerTest
      */
     public function testLogin(): void
     {
+
+        // test success, inactive
+        $this->logoutUser();
+        $this->post('https://localhost/users/login', [
+            'email' => 'inactive@example.com',
+            'password' => 'inactive',
+        ]);
+        $this->assertResponseOk();
+        $this->helperTestTemplate('Users/login');
+        $this->helperTestFormTag('/users/login');
+        $this->helperTestAlert('Invalid email or password, or your account may be inactive.', 'danger');
+
         // test failed
         $this->post('https://localhost/users/login', [
         ]);
         $this->assertResponseOk();
         $this->helperTestTemplate('Users/login');
         $this->helperTestFormTag('/users/login');
-        $this->helperTestAlert('Invalid email or password', 'danger');
+        $this->helperTestAlert('Invalid email or password, or your account may be inactive.', 'danger');
 
         // login fail
         $this->post('https://localhost/users/login', [
@@ -55,9 +67,9 @@ class FormsTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestTemplate('Users/login');
         $this->helperTestFormTag('/users/login');
-        $this->helperTestAlert('Invalid email or password', 'danger');
+        $this->helperTestAlert('Invalid email or password, or your account may be inactive.', 'danger');
 
-        // test success
+        // test success, admin
         $this->post('https://localhost/users/login', [
             'email' => 'admin@example.com',
             'password' => 'admin',
@@ -66,13 +78,22 @@ class FormsTest extends BaseControllerTest
         $this->assertFlashMessage('Welcome back Admin', 'flash');
         $this->assertFlashElement('flash/success');
 
-        // test success redirect
+        // test success, admin redirect
         $this->post('https://localhost/users/login?redirect=%2Ftags', [
             'email' => 'admin@example.com',
             'password' => 'admin',
         ]);
         $this->assertRedirectEquals('https://localhost/tags');
         $this->assertFlashMessage('Welcome back Admin', 'flash');
+        $this->assertFlashElement('flash/success');
+
+        // test success, regular
+        $this->post('https://localhost/users/login', [
+            'email' => 'regular@example.com',
+            'password' => 'regular',
+        ]);
+        $this->assertRedirectEquals('https://localhost/admin');
+        $this->assertFlashMessage('Welcome back Regular', 'flash');
         $this->assertFlashElement('flash/success');
     }
 }

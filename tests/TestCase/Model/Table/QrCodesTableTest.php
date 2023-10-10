@@ -13,6 +13,8 @@ use App\Model\Table\TagsTable;
 use App\Model\Table\UsersTable;
 use Cake\Core\Configure;
 use Cake\Datasource\Exception\RecordNotFoundException;
+use Cake\Http\Exception\InternalErrorException;
+use Cake\Http\Exception\NotFoundException;
 use Cake\ORM\Association\BelongsTo;
 use Cake\ORM\Association\BelongsToMany;
 use Cake\ORM\Behavior\TimestampBehavior;
@@ -53,6 +55,10 @@ class QrCodesTableTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        $this->loadRoutes();
+        Configure::write('debug', true);
+
         $config = $this->getTableLocator()->exists('QrCodes') ? [] : ['className' => QrCodesTable::class];
         /** @var \App\Model\Table\QrCodesTable $QrCodes */
         $QrCodes = $this->getTableLocator()->get('QrCodes', $config);
@@ -339,12 +345,60 @@ class QrCodesTableTest extends TestCase
     public function testFinderKey(): void
     {
         // test getting an existing record
-        $qrCode = $this->QrCodes->find('key', key: 'sownscribe') ->first();
+        $qrCode = $this->QrCodes->find('key', key: 'sownscribe')->first();
         $this->assertSame(1, $qrCode->id);
 
         // test getting a non-existant record
-        $qrCode = $this->QrCodes->find('key', key: 'dontexist') ->first();
+        $qrCode = $this->QrCodes->find('key', key: 'dontexist')->first();
         $this->assertNull($qrCode);
+    }
+
+    /**
+     * The custom finder
+     *
+     * @return void
+     */
+    public function testFinderOwnedBy(): void
+    {
+        // admin
+        $admin = $this->QrCodes->Users->get(1);
+        $qrCodes = $this->QrCodes->find('ownedBy', user: $admin);
+        $this->assertSame(3, $qrCodes->count());
+
+        // reqular
+        $reqular = $this->QrCodes->Users->get(2);
+        $qrCodes = $this->QrCodes->find('ownedBy', user: $reqular);
+        $this->assertSame(2, $qrCodes->count());
+
+        // deleteme
+        $reqular = $this->QrCodes->Users->get(3);
+        $qrCodes = $this->QrCodes->find('ownedBy', user: $reqular);
+        $this->assertSame(0, $qrCodes->count());
+    }
+
+    /**
+     * Test the image's file
+     *
+     * @return void
+     */
+    public function testEntityImagePath(): void
+    {
+        Configure::write('debug', true);
+        $this->loadRoutes();
+
+        $tmpdir = TMP . 'qr_codes';
+
+        // a successful test, code exists.
+        $entity = $this->QrCodes->get(1);
+        $entityPath = $tmpdir . DS . $entity->id . '.png';
+        $this->assertTrue(is_file($entityPath));
+        $this->assertSame($entityPath, $entity->path);
+
+        // test with a failed generation when envoking path
+        $originalPath = Configure::read('App.paths.qr_codes');
+        Configure::write('App.paths.qr_codes', TMP . 'dontexist');
+        $this->assertNull($entity->path);
+        Configure::write('App.paths.qr_codes', $originalPath);
     }
 
     /**
@@ -352,11 +406,8 @@ class QrCodesTableTest extends TestCase
      *
      * @return void
      */
-    public function testImplementedGenerator(): void
+    public function testImplementedGenerator1(): void
     {
-        $this->loadRoutes();
-        Configure::write('debug', true);
-
         // existing entity
         $path = Configure::read('App.paths.qr_codes') . DS . '1.png';
         if (file_exists($path)) {
@@ -380,7 +431,15 @@ class QrCodesTableTest extends TestCase
         $entity->name = 'Updated Name';
         $this->QrCodes->save($entity);
         $this->assertTrue(is_readable($path));
+    }
 
+    /**
+     * Test Implemented Generator
+     *
+     * @return void
+     */
+    public function testImplementedGenerator2(): void
+    {
         // test existing qr_code with missing image
         // test that it gets generated.
         $path = Configure::read('App.paths.qr_codes') . DS . '3.png';
@@ -392,7 +451,15 @@ class QrCodesTableTest extends TestCase
         $entity = $this->QrCodes->get(3);
         $this->assertSame($path, $entity->path);
         $this->assertTrue(is_readable($path));
+    }
 
+    /**
+     * Test Implemented Generator
+     *
+     * @return void
+     */
+    public function testImplementedGenerator3(): void
+    {
         // new entity, check that it gets generated on a new save.
         $path = Configure::read('App.paths.qr_codes') . DS . '6.png';
         if (file_exists($path)) {
@@ -400,8 +467,8 @@ class QrCodesTableTest extends TestCase
         }
         $this->assertFalse(is_readable($path));
         $entity = $this->QrCodes->newEntity([
-            'qrkey' => 'newentity',
-            'name' => 'new name',
+            'qrkey' => 'newentity6',
+            'name' => 'new name 6',
             'description' => 'description',
             'url' => 'https://www.amazon.com/path/to/product',
             'source_id' => 1,
@@ -415,7 +482,15 @@ class QrCodesTableTest extends TestCase
         // save the new entity
         $this->QrCodes->save($entity);
         $this->assertTrue(is_readable($path));
+    }
 
+    /**
+     * Test Implemented Generator
+     *
+     * @return void
+     */
+    public function testImplementedGenerator4(): void
+    {
         // test nonexistant entity
         $this->expectException(RecordNotFoundException::class);
         $path = Configure::read('App.paths.qr_codes') . DS . '10.png';
@@ -426,8 +501,15 @@ class QrCodesTableTest extends TestCase
         $qrCodeImagePath = $this->QrCodes->getQrImagePath(10);
         $this->assertTrue(is_readable($path));
         $this->assertSame($path, $qrCodeImagePath);
+    }
 
-        /// TODO: test unable to save the qr code file, because the folder doesn't exist.
+    /**
+     * Test Implemented Generator
+     *
+     * @return void
+     */
+    public function testImplementedGenerator5(): void
+    {
         // test existing qr_code with missing image
         // test that it gets generated.
         $path = Configure::read('App.paths.qr_codes') . DS . '3.png';
@@ -436,13 +518,89 @@ class QrCodesTableTest extends TestCase
         }
         $this->assertFalse(is_readable($path));
 
-        $oldPath = Configure::read('App.paths.qr_codes');
-        Configure::write('App.paths.qr_codes', TMP . 'dontexist');
-
         $entity = $this->QrCodes->get(3);
         $this->assertSame($path, $entity->path);
         $this->assertTrue(is_readable($path));
-        Configure::write('App.paths.qr_codes', $oldPath);
+        unlink($path);
+    }
+
+    /**
+     * Test Implemented Generator
+     *
+     * @return void
+     */
+    public function testImplementedGenerator6(): void
+    {
+
+        $originalPath = Configure::read('App.paths.qr_codes');
+        Configure::write('App.paths.qr_codes', TMP . 'dontexist');
+
+        // new entity, success, but can't generate code..
+        $path = Configure::read('App.paths.qr_codes') . DS . '7.png';
+        if (file_exists($path)) {
+            unlink($path);
+        }
+        $this->assertFalse(is_readable($path));
+        $entity = $this->QrCodes->newEntity([
+            'qrkey' => 'newentity7',
+            'name' => 'new name',
+            'description' => 'description',
+            'url' => 'https://www.amazon.com/path/to/product',
+            'source_id' => 1,
+            'user_id' => 1,
+        ]);
+        $result = $this->QrCodes->checkRules($entity);
+        $this->assertTrue($result);
+        $expected = [];
+        $this->assertSame($expected, $entity->getErrors());
+
+        // test with a failed generation when envoking path
+        $this->expectException(InternalErrorException::class);
+        $this->expectExceptionMessage('Unable to create QR Code.');
+        $this->QrCodes->save($entity);
+        $this->assertFalse(is_readable($path));
+        $this->assertNull($entity->path);
+        Configure::write('App.paths.qr_codes', $originalPath);
+    }
+
+    /**
+     * Test Implemented Generator
+     *
+     * @return void
+     */
+    public function testImplementedGenerator7(): void
+    {
+        // existing entity
+        $path = Configure::read('App.paths.qr_codes') . DS . '1.png';
+
+        // test regenerating the image
+        $this->assertTrue(is_readable($path));
+        $qrCodeImagePath = $this->QrCodes->getQrImagePath(1, true);
+        $this->assertTrue(is_readable($path));
+        $this->assertSame($path, $qrCodeImagePath);
+    }
+
+    /**
+     * Test Implemented Generator
+     *
+     * @return void
+     */
+    public function testImplementedGenerator8(): void
+    {
+        // existing entity
+        $path = Configure::read('App.paths.qr_codes') . DS . '1.png';
+        $this->assertTrue(is_readable($path));
+
+        $originalPath = Configure::read('App.paths.qr_codes');
+        Configure::write('App.paths.qr_codes', TMP . 'dontexist');
+
+        // test regenerating the image
+        $this->expectException(NotFoundException::class);
+        $this->expectExceptionMessage('Unable to find the QR Image for the QR Code `Sow & Scribe`');
+        $qrCodeImagePath = $this->QrCodes->getQrImagePath(1, true);
+        $this->assertFalse(is_readable($path));
+
+        Configure::write('App.paths.qr_codes', $originalPath);
     }
 
     /**
