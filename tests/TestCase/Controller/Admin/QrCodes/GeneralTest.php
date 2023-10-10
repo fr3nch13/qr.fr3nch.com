@@ -25,6 +25,7 @@ class GeneralTest extends BaseControllerTest
         parent::setUp();
         Configure::write('debug', true);
         $this->enableRetainFlashMessages();
+        $this->loginUserAdmin();
     }
 
     /**
@@ -35,28 +36,20 @@ class GeneralTest extends BaseControllerTest
      */
     public function testForward(): void
     {
-        $this->get('https://localhost/admin/?k=sownscribe');
-        $this->assertRedirectEquals('https://localhost/admin/f/sownscribe');
-
         $this->get('https://localhost/admin/f/sownscribe');
         $this->assertRedirectEquals('https://amazon.com/path/to/details/page');
 
         $this->get('https://localhost/admin/qr-codes/forward/sownscribe');
         $this->assertRedirectEquals('https://amazon.com/path/to/details/page');
 
-        $this->get('https://localhost/admin/?k=inactive');
-        $this->assertRedirectEquals('https://localhost/admin/f/inactive');
-
         $this->get('https://localhost/admin/f/inactive');
-        $this->assertRedirectEquals('https://localhost/admin/');
-        $this->assertFlashMessage('This QR Code is inactive.', 'flash');
-        $this->assertFlashElement('flash/warning');
+        $this->assertRedirectEquals('https://google.com');
 
-        $this->get('https://localhost/admin/?k=dontexist');
-        $this->assertRedirectEquals('https://localhost/admin/f/dontexist');
+        $this->get('https://localhost/admin/qr-codes/forward/inactive');
+        $this->assertRedirectEquals('https://google.com');
 
         $this->get('https://localhost/admin/f/dontexist');
-        $this->assertRedirectEquals('https://localhost/admin/');
+        $this->assertRedirectEquals('https://localhost/admin/qr-codes');
         $this->assertFlashMessage('A QR Code with the key: `dontexist` could not be found.', 'flash');
         $this->assertFlashElement('flash/error');
 

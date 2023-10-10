@@ -7,7 +7,6 @@ use Cake\Core\Configure;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
-use Cake\ORM\Query\SelectQuery;
 
 /**
  * QrCodes Controller
@@ -44,7 +43,7 @@ class QrCodesController extends AppController
         // make sure we have an ID where needed.
         $action = $this->request->getParam('action');
         // admin actions
-        if (in_array($action, ['show', 'view', 'edit', 'delete'])) {
+        if (in_array($action, ['forward', 'show', 'view', 'edit', 'delete'])) {
             $pass = $this->request->getParam('pass');
             if (empty($pass) || !isset($pass['0'])) {
                 $event->stopPropagation();
@@ -57,6 +56,8 @@ class QrCodesController extends AppController
 
     /**
      * The method that handles the forwarding
+     * In the admin, this will forward active, and inactive, but
+     * not register a hit. This is so we can test our forwarding.
      *
      * @param ?string $key The QR Code key to lookup.
      * @return \Cake\Http\Response|null The response object.
@@ -141,14 +142,19 @@ class QrCodesController extends AppController
         }
 
         $query = $this->QrCodes->find('all')
-            ->find('search', search: $this->request->getQueryParams());
+            ->find('search', search: $this->request->getQueryParams())
+            ->contain([
+                'Sources',
+                'QrImages',
+            ]);
         $query = $this->Authorization->applyScope($query);
         $qrCodes = $this->paginate($query);
 
         // for the filters
         $sources = $this->QrCodes->Sources
             ->find('active')
-            ->find('list',
+            ->find(
+                'list',
                 keyField: 'name',
                 valueField: 'name',
                 limit: 200

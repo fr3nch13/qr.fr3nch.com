@@ -232,7 +232,7 @@ class CrudTest extends BaseControllerTest
 
         // delete
         $this->delete('https://localhost/admin/qr-codes/delete/1');
-        $this->assertRedirectEquals('https://localhost/admin/');
+        $this->assertRedirectEquals('https://localhost/admin/qr-codes');
         $this->assertFlashMessage('The qr code `Sow & Scribe` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
     }

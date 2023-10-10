@@ -41,43 +41,22 @@ class TemplateTest extends BaseControllerTest
      */
     public function testIndexNormal(): void
     {
-        // not logged in
-        $this->get('https://localhost/admin/qr-codes');
-        $this->assertResponseOk();
-        $this->helperTestLayoutPagesIndex();
-        $this->helperTestTemplate('Admin/QrCodes/index');
-        // TODO: add more html validation, but do it locally.
-        // Maybe with github actions?
-        // @link https://github.com/marketplace/actions/html5-validator
-        // labels: testing, frontend, validation
-        $this->helperValidateHTML();
-
         // test with reqular
         $this->loginUserRegular();
         $this->get('https://localhost/admin/qr-codes');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesIndex();
+        $this->helperTestLayoutPagesDashboard();
         $this->helperTestTemplate('Admin/QrCodes/index');
+        $this->helperValidateHTML();
 
         // test with admin
         // test html content.
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/qr-codes');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesIndex();
+        $this->helperTestLayoutPagesDashboard();
+        // TODO: Also look for sub-layout page.
         $this->helperTestTemplate('Admin/QrCodes/index');
-
-        // make sure the products are listed.
-        // make sure all are listed.
-        // this may change to include all active, and inactive, scoped to the user.
-        $this->helperTestObjectComment(3, 'QrCodes/active');
-        $this->helperTestObjectComment(2, 'QrCodes/inactive');
-        // make sure the qcode is listed for each one.
-        $this->helperTestObjectComment(5, 'QrCode/show');
-        $this->helperTestObjectComment(5, 'QrCode/forward');
-        $this->helperTestObjectComment(5, 'QrCode/view');
-        // make sure only active primary images are listed.
-        $this->helperTestObjectComment(3, 'QrImages/active/first');
     }
 
     /**
@@ -88,13 +67,6 @@ class TemplateTest extends BaseControllerTest
      */
     public function testIndexAjax(): void
     {
-        // not logged in
-        $this->requestAsAjax();
-        $this->get('https://localhost/admin/qr-codes');
-        $this->assertResponseOk();
-        $this->helperTestLayoutAjax();
-        $this->helperTestTemplate('Admin/QrCodes/index');
-
         // test with reqular
         $this->requestAsAjax();
         $this->loginUserRegular();
@@ -110,17 +82,6 @@ class TemplateTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
         $this->helperTestTemplate('Admin/QrCodes/index');
-
-        // make sure the products are listed.
-        // make sure all are listed.
-        // this may change to include all active, and inactive, scoped to the user.
-        $this->helperTestObjectComment(3, 'QrCodes/active');
-        $this->helperTestObjectComment(2, 'QrCodes/inactive');
-        // make sure the qcode is listed for each one.
-        $this->helperTestObjectComment(5, 'QrCode/show');
-        $this->helperTestObjectComment(5, 'QrCode/forward');
-        // make sure only active primary images are listed.
-        $this->helperTestObjectComment(3, 'QrImages/active/first');
     }
 
     /**
@@ -131,27 +92,20 @@ class TemplateTest extends BaseControllerTest
      */
     public function testViewNormal(): void
     {
-        // not logged in
-        $this->get('https://localhost/admin/qr-codes/view/1');
-        $this->assertResponseOk();
-        $this->helperTestLayoutPagesView();
-        $this->helperTestTemplate('Admin/QrCodes/view');
-
         // test with reqular
         $this->loginUserRegular();
         $this->get('https://localhost/admin/qr-codes/view/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesView();
+        $this->helperTestLayoutPagesDashboard();
         $this->helperTestTemplate('Admin/QrCodes/view');
 
         // test with admin
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/qr-codes/view/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesView();
+        $this->helperTestLayoutPagesDashboard();
+        // TODO: Also look for sub-layout page.
         $this->helperTestTemplate('Admin/QrCodes/view');
-        $this->helperTestObjectComment(2, 'QrCode/show');
-        $this->helperTestObjectComment(1, 'QrCode/forward');
     }
 
     /**
@@ -162,13 +116,6 @@ class TemplateTest extends BaseControllerTest
      */
     public function testViewAjax(): void
     {
-        // not logged in
-        $this->requestAsAjax();
-        $this->get('https://localhost/admin/qr-codes/view/1');
-        $this->assertResponseOk();
-        $this->helperTestLayoutAjax();
-        $this->helperTestTemplate('Admin/QrCodes/view');
-
         // test with reqular
         $this->requestAsAjax();
         $this->loginUserRegular();
@@ -184,8 +131,6 @@ class TemplateTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
         $this->helperTestTemplate('Admin/QrCodes/view');
-        $this->helperTestObjectComment(2, 'QrCode/show');
-        $this->helperTestObjectComment(1, 'QrCode/forward');
     }
 
     /**

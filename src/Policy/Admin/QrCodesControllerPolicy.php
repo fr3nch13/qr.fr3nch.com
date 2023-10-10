@@ -12,6 +12,24 @@ use App\Model\Entity\User;
 class QrCodesControllerPolicy extends AppControllerPolicy
 {
     /**
+     * Must be an logged in to be forwarded.
+     * In the admin, this will forward active, and inactive, but
+     * not register a hit. This is so we can test our forwarding.
+     *
+     * @param \App\Model\Entity\User|null $user The identity object.
+     * @param \App\Controller\QrCodesController $QrCodesController
+     * @return bool
+     */
+    public function canForward(?User $user, QrCodesController $QrCodesController): bool
+    {
+        if (!$user) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Must be an logged in to view the QR Code Image.
      *
      * @param \App\Model\Entity\User|null $user The identity object.
