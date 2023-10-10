@@ -9,7 +9,7 @@ use App\Model\Entity\User;
 /**
  * QrCodes Controller policy
  */
-class QrCodesControllerPolicy extends BaseControllerPolicy
+class QrCodesControllerPolicy extends AppControllerPolicy
 {
     /**
      * Anyone can be forwarded.

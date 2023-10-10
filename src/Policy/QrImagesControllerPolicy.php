@@ -9,7 +9,7 @@ use App\Model\Entity\User;
 /**
  * QrImages Controller policy
  */
-class QrImagesControllerPolicy extends BaseControllerPolicy
+class QrImagesControllerPolicy extends AppControllerPolicy
 {
     /**
      * Must be an logged in to view a list of images related to a code.

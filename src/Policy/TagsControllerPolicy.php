@@ -9,7 +9,7 @@ use App\Model\Entity\User;
 /**
  * Tags Controller policy
  */
-class TagsControllerPolicy extends BaseControllerPolicy
+class TagsControllerPolicy extends AppControllerPolicy
 {
     /**
      * Anyone can view a list of tags.

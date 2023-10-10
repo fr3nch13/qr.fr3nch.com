@@ -16,12 +16,14 @@ declare(strict_types=1);
  */
 namespace App;
 
+use App\Controller\Admin\UsersController as AdminUsersController;
 use App\Controller\PagesController;
 use App\Controller\QrCodesController;
 use App\Controller\QrImagesController;
 use App\Controller\SourcesController;
 use App\Controller\TagsController;
 use App\Controller\UsersController;
+use App\Policy\Admin\UsersControllerPolicy as AdminUsersControllerPolicy;
 use App\Policy\PagesControllerPolicy;
 use App\Policy\QrCodesControllerPolicy;
 use App\Policy\QrImagesControllerPolicy;
@@ -175,7 +177,7 @@ class Application extends BaseApplication implements
                 },
                 'unauthorizedHandler' => [
                     'className' => 'CustomRedirect',
-                    'url' => Router::url('/', true),
+                    'url' => Router::url('/admin', true),
                     'queryParam' => 'redirect',
                     'exceptions' => [
                         MissingIdentityException::class,
@@ -255,7 +257,7 @@ class Application extends BaseApplication implements
         $authenticationService = new AuthenticationService([
             'unauthenticatedRedirect' => Router::url([
                 'prefix' => false,
-                'plugin' => null,
+                'plugin' => false,
                 'controller' => 'Users',
                 'action' => 'login',
             ]),
@@ -333,6 +335,9 @@ class Application extends BaseApplication implements
         $mapResolver->map(TagsController::class, TagsControllerPolicy::class);
         $mapResolver->map(UsersController::class, UsersControllerPolicy::class);
         $mapResolver->map(PagesController::class, PagesControllerPolicy::class);
+
+        // admin controllers
+        $mapResolver->map(AdminUsersController::class, AdminUsersControllerPolicy::class);
 
         $ormResolver = new OrmResolver();
 

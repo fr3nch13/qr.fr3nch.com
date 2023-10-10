@@ -158,7 +158,7 @@ class TemplateTest extends BaseControllerTest
         // test with reqular, get
         $this->loginUserRegular();
         $this->get('https://localhost/sources/add');
-        $this->assertRedirectEquals('https://localhost/?redirect=%2Fsources%2Fadd');
+        $this->assertRedirectEquals('https://localhost/admin?redirect=%2Fsources%2Fadd');
 
         // test with admin, get
         $this->loginUserAdmin();
@@ -180,7 +180,7 @@ class TemplateTest extends BaseControllerTest
         $this->requestAsAjax();
         $this->loginUserRegular();
         $this->get('https://localhost/sources/add');
-        $this->assertRedirectEquals('https://localhost/?redirect=%2Fsources%2Fadd');
+        $this->assertRedirectEquals('https://localhost/admin?redirect=%2Fsources%2Fadd');
 
         // test with admin, get
         $this->requestAsAjax();
@@ -202,7 +202,7 @@ class TemplateTest extends BaseControllerTest
         // test with reqular, get
         $this->loginUserRegular();
         $this->get('https://localhost/sources/edit/1');
-        $this->assertRedirectEquals('https://localhost/?redirect=%2Fsources%2Fedit%2F1');
+        $this->assertRedirectEquals('https://localhost/admin?redirect=%2Fsources%2Fedit%2F1');
 
         // test with admin, get
         $this->loginUserAdmin();
@@ -224,7 +224,7 @@ class TemplateTest extends BaseControllerTest
         $this->requestAsAjax();
         $this->loginUserRegular();
         $this->get('https://localhost/sources/edit/1');
-        $this->assertRedirectEquals('https://localhost/?redirect=%2Fsources%2Fedit%2F1');
+        $this->assertRedirectEquals('https://localhost/admin?redirect=%2Fsources%2Fedit%2F1');
 
         // test with admin, get
         $this->requestAsAjax();

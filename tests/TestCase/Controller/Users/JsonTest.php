@@ -100,7 +100,7 @@ class JsonTest extends BaseControllerTest
             'email' => 'admin@example.com',
             'password' => 'admin',
         ]);
-                $this->assertRedirectEquals('https://localhost/');
+        $this->assertRedirectEquals('https://localhost/admin');
         $this->assertFlashMessage('Welcome back Admin', 'flash');
         $this->assertFlashElement('flash/success');
 
@@ -111,52 +111,9 @@ class JsonTest extends BaseControllerTest
             'email' => 'admin@example.com',
             'password' => 'admin',
         ]);
-                $this->assertRedirectEquals('https://localhost/tags');
+        $this->assertRedirectEquals('https://localhost/tags');
         $this->assertFlashMessage('Welcome back Admin', 'flash');
         $this->assertFlashElement('flash/success');
-    }
-
-    /**
-     * Test index method
-     *
-     * @return void
-     * @uses \App\Controller\UsersController::index()
-     */
-    public function testIndex(): void
-    {
-        $this->loginUserAdmin();
-        $this->get('https://localhost/users.json');
-        $this->assertResponseOk();
-
-        $content = (string)$this->_response->getBody();
-        $content = json_decode($content, true);
-
-        $this->assertTrue(isset($content['users']));
-        $this->assertCount(3, $content['users']);
-
-        $item = $content['users'][1];
-        $this->assertSame(2, $item['id']);
-        $this->assertFalse(isset($item['password']));
-    }
-
-    /**
-     * Test view method
-     *
-     * @return void
-     * @uses \App\Controller\UsersController::view()
-     */
-    public function testView(): void
-    {
-        $this->loginUserAdmin();
-        $this->get('https://localhost/users/view/2.json');
-        $this->assertResponseOk();
-
-        $content = (string)$this->_response->getBody();
-        $content = json_decode($content, true);
-
-        $this->assertTrue(isset($content['user']));
-        $this->assertSame(2, $content['user']['id']);
-        $this->assertFalse(isset($content['user']['password']));
     }
 
     /**
@@ -177,94 +134,5 @@ class JsonTest extends BaseControllerTest
         $this->assertTrue(isset($content['user']));
         $this->assertSame(2, $content['user']['id']);
         $this->assertFalse(isset($content['user']['password']));
-    }
-
-    /**
-     * Test add method
-     *
-     * @return void
-     * @uses \App\Controller\UsersController::add()
-     */
-    public function testAdd(): void
-    {
-        $this->loginUserAdmin();
-        // a get
-        $this->get('https://localhost/users/add.json');
-        $this->assertResponseOk();
-
-        $content = (string)$this->_response->getBody();
-        $content = json_decode($content, true);
-
-        $this->assertTrue(isset($content['user']));
-        $this->assertTrue(empty($content['user']));
-
-        $this->assertTrue(isset($content['errors']));
-        $this->assertTrue(empty($content['errors']));
-
-        // a post fail
-        $this->post('https://localhost/users/add.json', []);
-        $this->assertResponseOk();
-        $content = (string)$this->_response->getBody();
-        $content = json_decode($content, true);
-
-        $this->assertTrue(isset($content['user']));
-        $this->assertTrue(empty($content['user']));
-
-        $this->assertTrue(isset($content['errors']));
-        $this->assertFalse(empty($content['errors']));
-
-        $expected = [
-            'name' => [
-                '_required' => 'This field is required',
-            ],
-            'email' => [
-                '_required' => 'This field is required',
-            ],
-            'password' => [
-                '_required' => 'This field is required',
-            ],
-        ];
-        $this->assertSame($expected, $content['errors']);
-
-        // a post success
-        $this->post('https://localhost/users/add.json', [
-            'name' => 'New JSON User',
-            'email' => 'newjsonuser@example.com',
-            'password' => 'password',
-        ]);
-        $this->assertRedirectEquals('https://localhost/users/view/4.json');
-        $this->assertFlashMessage('The user has been saved.', 'flash');
-        $this->assertFlashElement('flash/success');
-    }
-
-    /**
-     * Test edit method
-     *
-     * @return void
-     * @uses \App\Controller\UsersController::edit()
-     */
-    public function testEdit(): void
-    {
-        $this->loginUserAdmin();
-        // test with admin, get
-        $this->loginUserAdmin();
-        $this->get('https://localhost/users/edit/1.json');
-        $this->assertResponseOk();
-        $content = (string)$this->_response->getBody();
-        $content = json_decode($content, true);
-
-        $this->assertTrue(isset($content['user']));
-        $this->assertFalse(empty($content['user']));
-
-        $this->assertTrue(isset($content['errors']));
-        $this->assertTrue(empty($content['errors']));
-
-        // a put success
-        $this->put('https://localhost/users/edit/1.json', [
-            'name' => 'Updated JSON User',
-        ]);
-        $this->assertRedirectEquals('https://localhost/users/view/1.json');
-        $this->assertFlashMessage('The user has been saved.', 'flash');
-        $this->assertFlashElement('flash/success');
     }
 }

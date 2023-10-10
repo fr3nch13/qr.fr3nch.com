@@ -247,7 +247,7 @@ class PolicyTest extends BaseControllerTest
         // test with reqular
         $this->loginUserRegular();
         $this->get('https://localhost/qr-codes/edit/1');
-        $this->assertRedirectEquals('https://localhost/?redirect=%2Fqr-codes%2Fedit%2F1');
+        $this->assertRedirectEquals('https://localhost/admin?redirect=%2Fqr-codes%2Fedit%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -310,7 +310,7 @@ class PolicyTest extends BaseControllerTest
         $this->enableRetainFlashMessages();
         $this->loginUserRegular();
         $this->delete('https://localhost/qr-codes/delete/2');
-        $this->assertRedirectEquals('https://localhost/');
+        $this->assertRedirectEquals('https://localhost/admin');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -328,7 +328,7 @@ class PolicyTest extends BaseControllerTest
         $this->loginUserAdmin();
         // not 3 as it was deleted above.
         $this->delete('https://localhost/qr-codes/delete/2');
-        // qr-codes/index is the homepage.
+        // to the dashboard.
         $this->assertRedirectEquals('https://localhost/');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('The qr code `The Witching Hour` has been deleted.', 'flash');
