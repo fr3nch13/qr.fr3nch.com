@@ -1,21 +1,21 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Policy;
+namespace App\Policy\Admin;
 
-use App\Controller\SourcesController;
+use App\Controller\Admin\SourcesController;
 use App\Model\Entity\User;
 
 /**
- * Sources Controller policy
+ * Admin Sources Controller policy
  */
 class SourcesControllerPolicy extends AppControllerPolicy
 {
     /**
-     * Must be logged in to view a list of sources.
+     * Must be logged in to view a list of Sources.
      *
      * @param \App\Model\Entity\User|null $user The identity object.
-     * @param \App\Controller\SourcesController $SourcesController
+     * @param \App\Controller\Admin\SourcesController $SourcesController
      * @return bool
      */
     public function canIndex(?User $user, SourcesController $SourcesController): bool
@@ -28,10 +28,10 @@ class SourcesControllerPolicy extends AppControllerPolicy
     }
 
     /**
-     * Must be logged in to view a source.
+     * Must be logged in to view a Source.
      *
      * @param \App\Model\Entity\User|null $user The identity object.
-     * @param \App\Controller\SourcesController $SourcesController
+     * @param \App\Controller\Admin\SourcesController $SourcesController
      * @return bool
      */
     public function canView(?User $user, SourcesController $SourcesController): bool
@@ -44,10 +44,10 @@ class SourcesControllerPolicy extends AppControllerPolicy
     }
 
     /**
-     * Must be an admin to add a source
+     * Must be an admin to add a Source
      *
      * @param \App\Model\Entity\User|null $user The identity object.
-     * @param \App\Controller\SourcesController $SourcesController
+     * @param \App\Controller\Admin\SourcesController $SourcesController
      * @return bool
      */
     public function canAdd(?User $user, SourcesController $SourcesController): bool
@@ -61,11 +61,11 @@ class SourcesControllerPolicy extends AppControllerPolicy
     }
 
     /**
-     * Must be an admin edit a source
+     * Must be an admin edit a Source
      * Object policy to test editing the specific source is done in \App\Policy\SourcePolicy::canEdit()
      *
      * @param \App\Model\Entity\User|null $user The identity object.
-     * @param \App\Controller\SourcesController $SourcesController
+     * @param \App\Controller\Admin\SourcesController $SourcesController
      * @return bool
      */
     public function canEdit(?User $user, SourcesController $SourcesController): bool
@@ -79,11 +79,11 @@ class SourcesControllerPolicy extends AppControllerPolicy
     }
 
     /**
-     * Must be an admin to delete a source
+     * Must be an admin to delete a Source
      * Object policy to test editing the specific source is done in \App\Policy\SourcePolicy::canDelete()
      *
      * @param \App\Model\Entity\User|null $user The identity object.
-     * @param \App\Controller\SourcesController $SourcesController
+     * @param \App\Controller\Admin\SourcesController $SourcesController
      * @return bool
      */
     public function canDelete(?User $user, SourcesController $SourcesController): bool
