@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Test\TestCase\Controller\Tags;
+namespace App\Test\TestCase\Controller\Admin\Tags;
 
 use App\Test\TestCase\Controller\BaseControllerTest;
 use Cake\Core\Configure;
@@ -13,7 +13,7 @@ use Cake\Core\Configure;
  * and displaying the proper information to the end user.
  * Especially on an error.
  *
- * @uses \App\Controller\TagsController
+ * @uses \App\Controller\Admin\TagsController
  */
 class FormsTest extends BaseControllerTest
 {
@@ -36,25 +36,25 @@ class FormsTest extends BaseControllerTest
      * Test add method
      *
      * @return void
-     * @uses \App\Controller\TagsController::add()
+     * @uses \App\Controller\Admin\TagsController::add()
      */
     public function testAdd(): void
     {
         // test failed
-        $this->post('https://localhost/tags/add', [
+        $this->post('https://localhost/admin/tags/add', [
         ]);
         $this->assertResponseOk();
-        $this->helperTestTemplate('Tags/add');
-        $this->helperTestFormTag('/tags/add');
+        $this->helperTestTemplate('Admin/Tags/add');
+        $this->helperTestFormTag('/admin/tags/add');
         $this->helperTestAlert('The tag could not be saved. Please, try again.', 'danger');
         // test to make sure the fields that are required are actually tagged as so.
         $this->helperTestFormFieldError('This field is required', 'name-error');
 
         // test success
-        $this->post('https://localhost/tags/add', [
+        $this->post('https://localhost/admin/tags/add', [
             'name' => 'new tag',
         ]);
-        $this->assertRedirectEquals('https://localhost/tags/view/6');
+        $this->assertRedirectEquals('https://localhost/admin/tags/view/6');
         $this->assertFlashMessage('The tag has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -63,27 +63,27 @@ class FormsTest extends BaseControllerTest
      * Test edit method
      *
      * @return void
-     * @uses \App\Controller\TagsController::edit()
+     * @uses \App\Controller\Admin\TagsController::edit()
      */
     public function testEdit(): void
     {
         // test fail
-        $this->put('https://localhost/tags/edit/1', [
+        $this->put('https://localhost/admin/tags/edit/1', [
             'name' => 'Amazon', // an existing record
         ]);
         $this->assertResponseOk();
-        $this->helperTestTemplate('Tags/edit');
-        $this->helperTestFormTag('/tags/edit/1', 'put');
+        $this->helperTestTemplate('Admin/Tags/edit');
+        $this->helperTestFormTag('/admin/tags/edit/1', 'put');
         $this->helperTestAlert('The tag could not be saved. Please, try again.', 'danger');
         // test to make sure the fields that are required are actually tagged as so.
         $this->helperTestFormFieldError('This Tag already exists.', 'name-error');
 
         // test put success
-        $this->put('https://localhost/tags/edit/1', [
+        $this->put('https://localhost/admin/tags/edit/1', [
             'name' => 'New Tag',
             'description' => 'The Description',
         ]);
-        $this->assertRedirectEquals('https://localhost/tags/view/1');
+        $this->assertRedirectEquals('https://localhost/admin/tags/view/1');
         $this->assertFlashMessage('The tag has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }

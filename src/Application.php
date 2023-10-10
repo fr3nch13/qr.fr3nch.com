@@ -16,6 +16,7 @@ declare(strict_types=1);
  */
 namespace App;
 
+use App\Controller\Admin\TagsController as AdminTagsController;
 use App\Controller\Admin\UsersController as AdminUsersController;
 use App\Controller\PagesController;
 use App\Controller\QrCodesController;
@@ -23,6 +24,7 @@ use App\Controller\QrImagesController;
 use App\Controller\SourcesController;
 use App\Controller\TagsController;
 use App\Controller\UsersController;
+use App\Policy\Admin\TagsControllerPolicy as AdminTagsControllerPolicy;
 use App\Policy\Admin\UsersControllerPolicy as AdminUsersControllerPolicy;
 use App\Policy\PagesControllerPolicy;
 use App\Policy\QrCodesControllerPolicy;
@@ -337,6 +339,7 @@ class Application extends BaseApplication implements
         $mapResolver->map(PagesController::class, PagesControllerPolicy::class);
 
         // admin controllers
+        $mapResolver->map(AdminTagsController::class, AdminTagsControllerPolicy::class);
         $mapResolver->map(AdminUsersController::class, AdminUsersControllerPolicy::class);
 
         $ormResolver = new OrmResolver();
