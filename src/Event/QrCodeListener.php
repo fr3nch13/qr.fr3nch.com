@@ -8,12 +8,15 @@ use App\Model\Table\QrCodesTable;
 use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\I18n\DateTime;
+use Cake\ORM\Locator\LocatorAwareTrait;
 
 /**
  * Handles events related to Qr Code Entities.
  */
 class QrCodeListener implements EventListenerInterface
 {
+    use LocatorAwareTrait;
+
     /**
      * Used to map the event names to the specific methods.
      *
@@ -35,20 +38,13 @@ class QrCodeListener implements EventListenerInterface
      */
     public function registerHit(Event $event, QrCode $qrCode): bool
     {
-        $subject = $event->getSubject();
+        $config = $this->getTableLocator()->exists('QrCodes') ? [] : ['className' => QrCodesTable::class];
+        /** @var \App\Model\Table\QrCodesTable $QrCodes */
+        $QrCodes = $this->getTableLocator()->get('QrCodes', $config);
 
-        // means it is an object that uses the LocatorAwareTrait.
-        if (method_exists($subject, 'getTableLocator')) {
-            $config = $subject->getTableLocator()->exists('QrCodes') ? [] : ['className' => QrCodesTable::class];
-            /** @var \App\Model\Table\QrCodesTable $QrCodes */
-            $QrCodes = $subject->getTableLocator()->get('QrCodes', $config);
+        $qrCode->hits = $qrCode->hits + 1;
+        $qrCode->last_hit = new DateTime();
 
-            $qrCode->hits = $qrCode->hits + 1;
-            $qrCode->last_hit = new DateTime();
-
-            return $QrCodes->save($qrCode) ? true : false;
-        }
-
-        return false;
+        return $QrCodes->save($qrCode) ? true : false;
     }
 }

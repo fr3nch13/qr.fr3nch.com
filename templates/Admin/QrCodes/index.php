@@ -29,15 +29,21 @@ if (!$this->getRequest()->is('ajax')) {
                                 <tbody>
                                 <?php foreach ($qrCodes as $qrCode) : ?>
                                     <tr  class="<?= $qrCode->is_active ? '' : 'text-muted' ?>">
-                                        <td><?= $qrCode->qrkey ?></td>
-                                        <td><?php
+                                        <td>
+                                            <?= $qrCode->qrkey ?>
+                                        </td>
+                                        <td>
+                                            <?php
                                             if ($qrCode->is_active) {
                                                 echo '<i class="bi bi-check2 text-success fs-6"></i>';
                                             } else {
                                                 echo '<i class="bi bi-x fs-6"></i>';
                                             }
-                                        ?></td>
-                                        <td><span class="badge badge-pill badge-primary"><?= $qrCode->hits ?></span></td>
+                                            ?>
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-pill badge-primary"><?= $qrCode->hits ?></span>
+                                        </td>
                                         <td class="text-center table-actions">
                                             <div class="dropdown">
                                                 <a
@@ -69,9 +75,6 @@ if (!$this->getRequest()->is('ajax')) {
                                     <?= $this->Paginator->next('>', ['label' => 'Next']) ?>
                                     <?= $this->Paginator->last('&laquo;', ['label' => 'Last']) ?>
                                 </ul>
-                                <!--
-                                    <p><?= $this->Paginator->counter(__('{{page}}/{{pages}}, {{current}} of {{count}}')) ?></p>
-                                -->
                             </nav>
                         </div>
                     </div>
