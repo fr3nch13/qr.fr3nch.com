@@ -27,7 +27,7 @@ class QrCodeListener implements EventListenerInterface
     }
 
     /**
-     * When a QR Code is scanned, we should regester it.
+     * When a QR Code is scanned, we should register it.
      *
      * @param \Cake\Event\Event<mixed> $event The triggered event.
      * @param \App\Model\Entity\QrCode $qrCode The Entity we need to update.
@@ -45,6 +45,9 @@ class QrCodeListener implements EventListenerInterface
 
             $qrCode->hits = $qrCode->hits + 1;
             $qrCode->last_hit = new DateTime();
+
+            debug($qrCode);
+            exit;
 
             return $QrCodes->save($qrCode) ? true : false;
         }
