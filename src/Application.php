@@ -118,8 +118,8 @@ class Application extends BaseApplication implements
         // the friendsofcake/bootstrapui plugin.
         $this->addPlugin('Search');
 
-        // register events.
-        $this->registerEvents();
+        // register the event listeners.
+        $this->registerEventListeners();
     }
 
     /**
@@ -363,7 +363,7 @@ class Application extends BaseApplication implements
      *
      * @return void
      */
-    protected function registerEvents(): void
+    protected function registerEventListeners(): void
     {
         // make sure they're only getting registered globally, once.
         // TODO: Hacky as we're tracking the event key, not if the listener itself is already registered.
