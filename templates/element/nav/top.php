@@ -44,11 +44,21 @@ $logoImage = $this->Html->image($logoImage, [
                     aria-expanded="false"><i class="bi bi-person"></i>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                    <li><a class="dropdown-item active" href="./account.html">Dashboard</a></li>
-                    <li><a class="dropdown-item " href="./account-settings.html">Settings</a></li>
-                    <li><a class="dropdown-item " href="./account-orders.html">Orders</a></li>
-                    <li><a class="dropdown-item " href="./account-billing.html">Billing</a></li>
+                    <li><?= $this->Html->link('Dashboard', [
+                        'plugin' => false,
+                        'prefix' => 'Admin',
+                        'controller' => 'Users',
+                        'action' => 'dashboard',
+                    ], ['class' => ['dropdown-item']]) ?></li>
+                    <li><?= $this->Html->link('Profile', [
+                        'plugin' => false,
+                        'prefix' => 'Admin',
+                        'controller' => 'Users',
+                        'action' => 'view',
+                    ], ['class' => ['dropdown-item']]) ?></li>
                     <li><?= $this->Html->link('Sign Out', [
+                        'plugin' => false,
+                        'prefix' => false,
                         'controller' => 'Users',
                         'action' => 'logout',
                     ], ['class' => 'dropdown-item text-red']); ?></li>
@@ -75,8 +85,10 @@ $logoImage = $this->Html->image($logoImage, [
                     $classes = 'btn btn-outline-white rounded-pill ms-2';
                 }
                 echo $this->Html->link(__('Sign In'), [
-                'controller' => 'Users',
-                'action' => 'login',
+                    'plugin' => false,
+                    'prefix' => false,
+                    'controller' => 'Users',
+                    'action' => 'login',
                 ], ['class' => $classes]); ?>
             </li>
             <?php endif; ?>
@@ -86,11 +98,15 @@ $logoImage = $this->Html->image($logoImage, [
         <div class="collapse navbar-collapse" id="navbar" data-bs-parent="#mainNav">
             <ul class="navbar-nav">
             <li class="nav-item"><?= $this->Html->link(__('QR Codes'), [
+                'plugin' => false,
+                'prefix' => false,
                 'controller' => 'QrCodes',
                 'action' => 'index',
             ], ['class' => 'nav-link']); ?></li>
 
             <li class="nav-item"><?= $this->Html->link(__('Tags'), [
+                'plugin' => false,
+                'prefix' => false,
                 'controller' => 'Tags',
                 'action' => 'index',
             ], ['class' => 'nav-link']); ?></li>
@@ -101,24 +117,24 @@ $logoImage = $this->Html->image($logoImage, [
         <div class="collapse account-collapse" id="userNav" data-bs-parent="#mainNav">
             <ul class="navbar-nav">
                 <?php if ($this->ActiveUser->isLoggedIn()) : ?>
-                <li class="nav-item">
-                    <a class="nav-link active" href="#">Dashboard</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="#">Settings</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="#">Orders</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="#">Billing</a>
-                </li>
-                <li class="nav-item">
-                    <?= $this->Html->link('Sign Out', [
-                        'controller' => 'Users',
-                        'action' => 'logout',
-                    ], ['class' => 'nav-link text-red']); ?>
-                </li>
+                <li class="nav-item"><?= $this->Html->link('Dashboard', [
+                    'plugin' => false,
+                    'prefix' => 'Admin',
+                    'controller' => 'Users',
+                    'action' => 'dashboard',
+                ], ['class' => ['nav-link']]) ?></li>
+                <li class="nav-item"><?= $this->Html->link('Profile', [
+                    'plugin' => false,
+                    'prefix' => 'Admin',
+                    'controller' => 'Users',
+                    'action' => 'view',
+                ], ['class' => ['nav-link']]) ?></li>
+                <li class="nav-item"><?= $this->Html->link('Sign Out', [
+                    'plugin' => false,
+                    'prefix' => false,
+                    'controller' => 'Users',
+                    'action' => 'logout',
+                ], ['class' => 'nav-link text-red']); ?></li>
                 <?php else : ?>
                 <li class="nav-item">
                     <?php
@@ -127,6 +143,8 @@ $logoImage = $this->Html->image($logoImage, [
                         $classes = 'btn btn-outline-white rounded-pill ms-2';
                     }
                     echo $this->Html->link(__('Sign In'), [
+                    'plugin' => false,
+                    'prefix' => false,
                     'controller' => 'Users',
                     'action' => 'login',
                     ], ['class' => $classes]); ?>

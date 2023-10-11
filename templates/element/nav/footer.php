@@ -12,6 +12,8 @@
                 <div class="col-md-6 col-lg-5 order-lg-2 text-center text-md-start">
                     <ul class="list-inline small">
                         <li class="list-inline-item mb-1"><?= $this->Html->link('About', [
+                            'plugin' => false,
+                            'prefix' => false,
                             'controller' => 'Pages',
                             'action' => 'display',
                             'about',
@@ -28,7 +30,7 @@
                     <span class="small">Henderson, NV 89002</span>
                 </div>
                 <div class="col-lg-3 order-lg-1 text-center text-md-start">
-                    <p class="small">Copyrights © <?= date('Y'); ?></p>
+                    <p class="small"><?= __('Copyrights') ?> © <?= date('Y'); ?></p>
                 </div>
             </div>
         </div>

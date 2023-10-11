@@ -48,12 +48,16 @@ class GeneralTest extends BaseControllerTest
      */
     public function testForward(): void
     {
+        $entity = $this->QrCodes->get(1);
+        $this->assertSame(0, $entity->hits);
         // guest
         $this->get('https://localhost/admin/f/sownscribe');
         $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fadmin%2Ff%2Fsownscribe');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
+        $entity = $this->QrCodes->get(1);
+        $this->assertSame(0, $entity->hits);
 
         $this->get('https://localhost/admin/f/inactive');
         $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fadmin%2Ff%2Finactive');
@@ -71,9 +75,13 @@ class GeneralTest extends BaseControllerTest
 
         $this->get('https://localhost/admin/f/sownscribe');
         $this->assertRedirectEquals('https://amazon.com/path/to/details/page');
+        $entity = $this->QrCodes->get(1);
+        $this->assertSame(0, $entity->hits);
 
         $this->get('https://localhost/admin/qr-codes/forward/sownscribe');
         $this->assertRedirectEquals('https://amazon.com/path/to/details/page');
+        $entity = $this->QrCodes->get(1);
+        $this->assertSame(0, $entity->hits);
 
         $this->get('https://localhost/admin/f/inactive');
         $this->assertRedirectEquals('https://google.com');
