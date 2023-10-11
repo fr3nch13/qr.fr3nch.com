@@ -47,7 +47,6 @@ if (!$this->getRequest()->is('ajax')) {
                                         <td>
                                             <div class="dropdown">
                                                 <a
-                                                    class="btn btn-light"
                                                     href="#"
                                                     role="button"
                                                     id="actions<?= $qrCode->id ?>"
