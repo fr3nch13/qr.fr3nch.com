@@ -72,6 +72,7 @@ class QrCodesController extends AppController
     {
         $this->request->allowMethod(['get']);
 
+        /** @var \App\Model\Entity\QrCode $qrCode */
         $qrCode = $this->QrCodes->find('key', key: $key)->first();
 
         // if we can't find it, redirect to index with an error message.

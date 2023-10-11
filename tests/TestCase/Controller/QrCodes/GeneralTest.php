@@ -50,6 +50,7 @@ class GeneralTest extends BaseControllerTest
     {
         $entity = $this->QrCodes->get(1);
         $this->assertSame(0, $entity->hits);
+        $this->assertNull($entity->last_hit);
         $this->get('https://localhost/?k=sownscribe');
         $this->assertRedirectEquals('https://localhost/f/sownscribe');
 
@@ -57,11 +58,13 @@ class GeneralTest extends BaseControllerTest
         $this->assertRedirectEquals('https://amazon.com/path/to/details/page');
         $entity = $this->QrCodes->get(1);
         $this->assertSame(1, $entity->hits);
+        $this->assertInstanceOf(\Cake\I18n\DateTime::class, $entity->last_hit);
 
         $this->get('https://localhost/qr-codes/forward/sownscribe');
         $this->assertRedirectEquals('https://amazon.com/path/to/details/page');
         $entity = $this->QrCodes->get(1);
         $this->assertSame(2, $entity->hits);
+        $this->assertInstanceOf(\Cake\I18n\DateTime::class, $entity->last_hit);
 
         $this->get('https://localhost/?k=inactive');
         $this->assertRedirectEquals('https://localhost/f/inactive');

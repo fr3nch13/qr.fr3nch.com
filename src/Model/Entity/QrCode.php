@@ -25,8 +25,7 @@ use chillerlan\QRCode\Output\QRCodeOutputException;
  * @property int|null $user_id see $user below.
  * @property \Cake\I18n\DateTime|null $last_hit The last time the code forwarded a user.
  *
- * Virtual field
- * @property string|null $path Path to the generated QR Code file.
+ * @property string|null $path (Virtual field) Path to the generated QR Code file.
  *
  * @property \App\Model\Entity\Source $source The source, mainly used internally to track where the product is located.
  * @property \App\Model\Entity\User $user The user that created and/or owns the code.
