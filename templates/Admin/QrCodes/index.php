@@ -44,18 +44,19 @@ if (!$this->getRequest()->is('ajax')) {
                                         <td>
                                             <span class="badge badge-pill badge-primary"><?= $qrCode->hits ?></span>
                                         </td>
-                                        <td class="text-center table-actions">
+                                        <td>
                                             <div class="dropdown">
                                                 <a
                                                     class="btn btn-light"
                                                     href="#"
                                                     role="button"
+                                                    id="actions<?= $qrCode->id ?>"
                                                     data-toggle="dropdown"
                                                     aria-haspopup="true"
                                                     aria-expanded="false">
                                                     <i class="bi bi-gear"></i>
                                                 </a>
-                                                <div class="dropdown-menu">
+                                                <div class="dropdown-menu" aria-labelledby="actions<?= $qrCode->id ?>">
                                                     <a class="dropdown-item" href="#">Details</a>
                                                     <a class="dropdown-item" href="#">Edit</a>
                                                     <a class="dropdown-item" href="#">Images</a>
