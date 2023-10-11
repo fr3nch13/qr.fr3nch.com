@@ -34,6 +34,7 @@ class UserSeed extends AbstractSeed
                 'email' => 'admin@example.com',
                 'password' => (new DefaultPasswordHasher())->hash('admin'),
                 'is_admin' => 1,
+                'is_active' => 1,
                 'created' => (new DateTime())->format('Y-m-d H:i:s'),
             ],
             [
@@ -42,6 +43,7 @@ class UserSeed extends AbstractSeed
                 'email' => 'regular@example.com',
                 'password' => (new DefaultPasswordHasher())->hash('regular'),
                 'is_admin' => 0,
+                'is_active' => 1,
                 'created' => (new DateTime())->format('Y-m-d H:i:s'),
             ],
             [
@@ -50,6 +52,16 @@ class UserSeed extends AbstractSeed
                 'email' => 'deleteme@example.com',
                 'password' => (new DefaultPasswordHasher())->hash('deleteme'),
                 'is_admin' => 0,
+                'is_active' => 1,
+                'created' => (new DateTime())->format('Y-m-d H:i:s'),
+            ],
+            [
+                'id' => 4,
+                'name' => 'Inactive User',
+                'email' => 'inactive@example.com',
+                'password' => (new DefaultPasswordHasher())->hash('inactive'),
+                'is_admin' => 0,
+                'is_active' => 0,
                 'created' => (new DateTime())->format('Y-m-d H:i:s'),
             ],
         ];
