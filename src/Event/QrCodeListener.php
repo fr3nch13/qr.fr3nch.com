@@ -44,7 +44,7 @@ class QrCodeListener implements EventListenerInterface
             $QrCodes = $subject->getTableLocator()->get('QrCodes', $config);
 
             $qrCode->hits = $qrCode->hits + 1;
-            $qrCode->last_hit = (new DateTime())->format('Y-m-d H:i:s');
+            $qrCode->last_hit = new DateTime();
 
             return $QrCodes->save($qrCode) ? true : false;
         }
