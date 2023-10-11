@@ -26,6 +26,7 @@ use App\Controller\QrCodesController;
 use App\Controller\QrImagesController;
 use App\Controller\TagsController;
 use App\Controller\UsersController;
+use App\Event\QrCodeListener;
 use App\Policy\Admin\QrCodesControllerPolicy as AdminQrCodesControllerPolicy;
 use App\Policy\Admin\QrImagesControllerPolicy as AdminQrImagesControllerPolicy;
 use App\Policy\Admin\SourcesControllerPolicy as AdminSourcesControllerPolicy;
@@ -80,6 +81,11 @@ class Application extends BaseApplication implements
     AuthorizationServiceProviderInterface
 {
     /**
+     * @var array<int, string> Ensure we're only registering listeners globally, one time.
+     */
+    private static array $registeredListeners = [];
+
+    /**
      * Load all the application configuration and bootstrap logic.
      *
      * @return void
@@ -116,6 +122,9 @@ class Application extends BaseApplication implements
 
         // the friendsofcake/bootstrapui plugin.
         $this->addPlugin('Search');
+
+        // register events.
+        $this->registerEvents();
     }
 
     /**
@@ -229,22 +238,6 @@ class Application extends BaseApplication implements
      */
     public function services(ContainerInterface $container): void
     {
-    }
-
-    /**
-     * Bootstrapping for CLI application.
-     *
-     * That is when running commands.
-     *
-     * @return void
-     */
-    protected function bootstrapCli(): void
-    {
-        $this->addOptionalPlugin('Bake');
-
-        $this->addPlugin('Migrations');
-
-        // Load more plugins here
     }
 
     /**
@@ -366,5 +359,37 @@ class Application extends BaseApplication implements
         ]);
 
         return new AuthorizationService($resolver);
+    }
+
+    /**
+     * Register event listeners globally.
+     *
+     * Called in self::bootstrap()
+     *
+     * @return void
+     */
+    protected function registerEvents(): void
+    {
+        // make sure they're only getting registered globally, once.
+        if (!in_array(QrCodeListener::class, static::$registeredListeners)) {
+            $this->getEventManager()->on(new QrCodeListener());
+            static::$registeredListeners[] = QrCodeListener::class;
+        }
+    }
+
+    /**
+     * Bootstrapping for CLI application.
+     *
+     * That is when running commands.
+     *
+     * @return void
+     */
+    protected function bootstrapCli(): void
+    {
+        $this->addOptionalPlugin('Bake');
+
+        $this->addPlugin('Migrations');
+
+        // Load more plugins here
     }
 }

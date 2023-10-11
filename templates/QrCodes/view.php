@@ -162,12 +162,12 @@ if (!$this->getRequest()->is('ajax')) {
 
                                 <dt class="col-sm-3"><?= __('Source') ?></dt>
                                 <dd class="col-sm-9"><?= $qrCode->hasValue('source') ? $this->Html->link(
-                                        $qrCode->source->name,
-                                        [
+                                    $qrCode->source->name,
+                                    [
                                             'action' => 'index',
                                             '?' => ['s' => $qrCode->source->name],
                                         ]
-                                    ) : '' ?> </dd>
+                                ) : '' ?> </dd>
 
                                 <dt class="col-sm-3"><?= __('Last Hit') ?></dt>
                                 <dd class="col-sm-9"><?= h($qrCode->last_hit) ?> </dd>

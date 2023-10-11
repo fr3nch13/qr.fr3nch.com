@@ -4,10 +4,10 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Core\Configure;
+use Cake\Event\Event;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
-use Cake\I18n\DateTime;
 use Cake\ORM\Query\SelectQuery;
 
 /**
@@ -98,9 +98,8 @@ class QrCodesController extends AppController
             ]);
         }
 
-        $qrCode->hits = $qrCode->hits + 1;
-        $qrCode->last_hit = (new DateTime())->format('Y-m-d H:i:s');
-        $this->QrCodes->save($qrCode);
+        $event = new Event('QrCode.onHit', $this, ['qrCode' => $qrCode]);
+        $this->getEventManager()->dispatch($event);
 
         return $this->redirect(trim($qrCode->url));
     }
