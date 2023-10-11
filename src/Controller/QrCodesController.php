@@ -7,6 +7,7 @@ use Cake\Core\Configure;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
+use Cake\I18n\DateTime;
 use Cake\ORM\Query\SelectQuery;
 
 /**
@@ -95,7 +96,9 @@ class QrCodesController extends AppController
                 'action' => 'index',
             ]);
         }
+
         $qrCode->hits = $qrCode->hits + 1;
+        $qrCode->last_hit = new DateTime();
         $this->QrCodes->save($qrCode);
 
         return $this->redirect(trim($qrCode->url));

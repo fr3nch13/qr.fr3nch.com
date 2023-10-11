@@ -11,4 +11,6 @@ if (!$this->getRequest()->is('ajax')) {
 
 <h1><?= __('Dashboard') ?></h1>
 
+<p>Stats go here.</p>
+
 <?= $this->Template->templateComment(false, __FILE__); ?>

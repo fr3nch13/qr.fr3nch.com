@@ -13,24 +13,25 @@ use chillerlan\QRCode\Output\QRCodeOutputException;
  * QrCode Entity
  *
  * @property int $id
- * @property string $qrkey
- * @property string $name
- * @property string $description
- * @property \Cake\I18n\DateTime|null $created
- * @property \Cake\I18n\DateTime|null $modified
- * @property string $url
- * @property int $hits
- * @property bool $is_active
- * @property int|null $source_id
- * @property int|null $user_id
+ * @property string $qrkey The unique string id for this code.
+ * @property string $name The human readable name
+ * @property string $description Description of the code.
+ * @property \Cake\I18n\DateTime|null $created Then it was created (handled by the Timestamp Behavior).
+ * @property \Cake\I18n\DateTime|null $modified Then it was last created (handled by the Timestamp Behavior).
+ * @property string $url The URL to forward the user to when they scan the code.
+ * @property int $hits How many times this code has forwarded a user.
+ * @property bool $is_active If this code is active/published.
+ * @property int|null $source_id See $source below.
+ * @property int|null $user_id see $user below.
+ * @property \Cake\I18n\DateTime|null $last_hit The last time the code forwarded a user.
  *
  * Virtual field
  * @property string|null $path Path to the generated QR Code file.
  *
- * @property \App\Model\Entity\Source $source
- * @property \App\Model\Entity\User $user
- * @property \App\Model\Entity\QrImage[] $qr_images
- * @property \App\Model\Entity\Tag[] $tags
+ * @property \App\Model\Entity\Source $source The source, mainly used internally to track where the product is located.
+ * @property \App\Model\Entity\User $user The user that created and/or owns the code.
+ * @property \App\Model\Entity\QrImage[] $qr_images List of Images that this code owns.
+ * @property \App\Model\Entity\Tag[] $tags List of Tags that this is assigned to.
  */
 class QrCode extends Entity
 {
@@ -54,6 +55,7 @@ class QrCode extends Entity
         'is_active' => true,
         'source_id' => true,
         'user_id' => true,
+        'last_hit' => true,
         'source' => true,
         'user' => true,
         'qr_images' => true,
