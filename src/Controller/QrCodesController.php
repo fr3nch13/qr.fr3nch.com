@@ -95,6 +95,8 @@ class QrCodesController extends AppController
                 'action' => 'index',
             ]);
         }
+        $qrCode->hits = $qrCode->hits + 1;
+        $this->QrCodes->save($qrCode);
 
         return $this->redirect(trim($qrCode->url));
     }

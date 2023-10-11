@@ -48,14 +48,20 @@ class GeneralTest extends BaseControllerTest
      */
     public function testForward(): void
     {
+        $entity = $this->QrCodes->get(1);
+        $this->assertSame(0, $entity->hits);
         $this->get('https://localhost/?k=sownscribe');
         $this->assertRedirectEquals('https://localhost/f/sownscribe');
 
         $this->get('https://localhost/f/sownscribe');
         $this->assertRedirectEquals('https://amazon.com/path/to/details/page');
+        $entity = $this->QrCodes->get(1);
+        $this->assertSame(1, $entity->hits);
 
         $this->get('https://localhost/qr-codes/forward/sownscribe');
         $this->assertRedirectEquals('https://amazon.com/path/to/details/page');
+        $entity = $this->QrCodes->get(1);
+        $this->assertSame(2, $entity->hits);
 
         $this->get('https://localhost/?k=inactive');
         $this->assertRedirectEquals('https://localhost/f/inactive');
