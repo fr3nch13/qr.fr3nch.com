@@ -18,7 +18,7 @@ $this->start('layout');
 
     <?= $this->Template->objectComment('OffCanvas/wrap') ?>
     <div class="offcanvas-wrap">
-        <section class="split">
+        <section class="split py-15 py-xl-15">
             <div class="container">
                 <div class="row justify-content-between">
                     <?= $this->Flash->render() ?>
