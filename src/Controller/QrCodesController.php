@@ -99,7 +99,7 @@ class QrCodesController extends AppController
         }
 
         $qrCode->hits = $qrCode->hits + 1;
-        $qrCode->last_hit = new DateTime();
+        $qrCode->last_hit = (new DateTime())->format('Y-m-d H:i:s');
         $this->QrCodes->save($qrCode);
 
         return $this->redirect(trim($qrCode->url));
