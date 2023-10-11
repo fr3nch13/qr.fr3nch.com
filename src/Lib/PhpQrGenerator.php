@@ -208,9 +208,9 @@ class PhpQrGenerator
             $hexCode = $hexCode[0] . $hexCode[0] . $hexCode[1] . $hexCode[1] . $hexCode[2] . $hexCode[2];
         }
 
-        $r = hexdec($hexCode[0] . $hexCode[1]);
-        $g = hexdec($hexCode[2] . $hexCode[3]);
-        $b = hexdec($hexCode[4] . $hexCode[5]);
+        $r = (int)hexdec($hexCode[0] . $hexCode[1]);
+        $g = (int)hexdec($hexCode[2] . $hexCode[3]);
+        $b = (int)hexdec($hexCode[4] . $hexCode[5]);
 
         return [$r, $g, $b];
     }
