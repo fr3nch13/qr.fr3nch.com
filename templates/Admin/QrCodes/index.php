@@ -30,7 +30,6 @@ if (!$this->getRequest()->is('ajax')) {
                                 <?php foreach ($qrCodes as $qrCode) : ?>
                                     <tr  class="<?= $qrCode->is_active ? '' : 'text-muted' ?>">
                                         <td><?= $qrCode->qrkey ?></td>
-                                        <td><?= $qrCode->qrkey ?></td>
                                         <td><?php
                                             if ($qrCode->is_active) {
                                                 echo '<i class="bi bi-check2 text-success fs-6"></i>';
@@ -49,7 +48,7 @@ if (!$this->getRequest()->is('ajax')) {
                                                     data-toggle="dropdown"
                                                     aria-haspopup="true"
                                                     aria-expanded="false">
-                                                    <i class="bi bi-gear fs-6"></i>
+                                                    <i class="bi bi-gear"></i>
                                                 </a>
                                                 <div class="dropdown-menu" aria-labelledby="actions-<?= $qrCode->id ?>">
                                                     <a class="dropdown-item" href="#">Details</a>
