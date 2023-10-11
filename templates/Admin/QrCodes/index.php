@@ -41,7 +41,7 @@ if (!$this->getRequest()->is('ajax')) {
                                         <td class="text-center table-actions">
                                             <div class="dropdown">
                                                 <a
-                                                    class="btn btn-secondary"
+                                                    class="btn btn-secondary dropdown-toggle"
                                                     href="#"
                                                     role="button"
                                                     id="actions-<?= $qrCode->id ?>"
