@@ -31,7 +31,7 @@ class QrCodeListener implements EventListenerInterface
      *
      * @param \Cake\Event\Event<mixed> $event The triggered event.
      * @param \App\Model\Entity\QrCode $qrCode The Entity we need to update.
-     * @param bool If the Hit was registered as expected.
+     * @return bool If the Hit was registered as expected.
      */
     public function registerHit(Event $event, QrCode $qrCode): bool
     {
