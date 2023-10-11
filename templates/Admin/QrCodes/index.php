@@ -44,13 +44,12 @@ if (!$this->getRequest()->is('ajax')) {
                                                     class="btn btn-secondary dropdown-toggle"
                                                     href="#"
                                                     role="button"
-                                                    id="actions-<?= $qrCode->id ?>"
                                                     data-toggle="dropdown"
                                                     aria-haspopup="true"
                                                     aria-expanded="false">
                                                     <i class="bi bi-gear"></i>
                                                 </a>
-                                                <div class="dropdown-menu" aria-labelledby="actions-<?= $qrCode->id ?>">
+                                                <div class="dropdown-menu">
                                                     <a class="dropdown-item" href="#">Details</a>
                                                     <a class="dropdown-item" href="#">Edit</a>
                                                     <a class="dropdown-item" href="#">Images</a>
