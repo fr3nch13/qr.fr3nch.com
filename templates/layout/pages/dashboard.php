@@ -18,10 +18,10 @@ $this->start('layout');
 
     <?= $this->Template->objectComment('OffCanvas/wrap') ?>
     <div class="offcanvas-wrap">
-        <section class="split py-15 py-xl-15">
+        <section class="split">
             <div class="container">
                 <div class="row justify-content-between">
-                    <?= $this->Flash->render() ?>
+
                     <aside class="col-lg-3 split-sidebar">
                         <nav class="sticky-top d-none d-lg-block">
                             <ul class="nav nav-minimal flex-column" id="dashboard-nav">
@@ -69,6 +69,7 @@ $this->start('layout');
                     </aside>
 
                     <div class="col-lg-9 split-content">
+                        <?= $this->Flash->render() ?>
                         <?= $this->fetch('content') ?>
                     </div>
 
