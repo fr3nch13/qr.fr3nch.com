@@ -12,19 +12,19 @@ use App\Model\Entity\User;
 class TagPolicy
 {
     /**
-     * All users can view Tag
+     * Admins and Creators can view Tag
      *
-     * @param \App\Model\Entity\User|null $user The identity object.
+     * @param \App\Model\Entity\User $user The identity object.
      * @param \App\Model\Entity\Tag $Tag
      * @return bool
      */
-    public function canView(?User $user, Tag $Tag): bool
+    public function canView(User $user, Tag $Tag): bool
     {
-        return true;
+        return $this->isCreator($user, $Tag) || $user->isAdmin();
     }
 
     /**
-     * All Users can add Tag
+     * Logged in can add Tag
      *
      * @param \App\Model\Entity\User $user The identity object.
      * @param \App\Model\Entity\Tag $Tag
@@ -37,7 +37,7 @@ class TagPolicy
     }
 
     /**
-     * Admins and Createors can edit Tag
+     * Admins and Creators can edit Tag
      *
      * @param \App\Model\Entity\User $user The identity object.
      * @param \App\Model\Entity\Tag $Tag
@@ -49,7 +49,7 @@ class TagPolicy
     }
 
     /**
-     * Admins and Createors can delete Tag
+     * Admins and Creators can delete Tag
      *
      * @param \App\Model\Entity\User $user The identity object.
      * @param \App\Model\Entity\Tag $Tag

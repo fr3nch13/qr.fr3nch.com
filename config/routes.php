@@ -57,6 +57,9 @@ return function (RouteBuilder $routes): void {
             $builder->connect('/', ['controller' => 'Users', 'action' => 'dashboard']);
             $builder->connect('/dashboard', ['controller' => 'Users', 'action' => 'dashboard']);
 
+            // the forward shorthand
+            $builder->connect('/f/*', ['controller' => 'QrCodes', 'action' => 'forward']);
+
             $builder->fallbacks(DashedRoute::class);
         });
 

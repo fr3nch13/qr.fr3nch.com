@@ -3,9 +3,11 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Model\Table;
 
+use App\Application;
 use App\Model\Table\QrCodesTable;
 use App\Model\Table\QrImagesTable;
 use Cake\Core\Configure;
+use Cake\Http\ServerRequest;
 use Cake\ORM\Association\BelongsTo;
 use Cake\TestSuite\TestCase;
 
@@ -198,5 +200,49 @@ class QrImagesTableTest extends TestCase
         $entityPath = $tmpdir . DS . $entity->qr_code_id . DS . $entity->id . '.' . $entity->ext;
         $this->assertFalse(is_file($entityPath));
         $this->assertNull($entity->path);
+    }
+
+    /**
+     * Test the entity itself
+     *
+     * @return void
+     * @uses \App\Model\Entity\User
+     */
+    public function testEntityOwnership(): void
+    {
+        // admin user
+        $admin = $this->QrImages->QrCodes->Users->get(1);
+        // regular user
+        $regular = $this->QrImages->QrCodes->Users->get(2);
+
+        // get a qr image they own.
+        $admins_image = $this->QrImages->get(1, contain: ['QrCodes']);
+        // don't own
+        $regulars_image = $this->QrImages->get(5, contain: ['QrCodes']);
+
+        $this->assertTrue($admin->isMe($admins_image->qr_code));
+        $this->assertFalse($admin->isMe($regulars_image->qr_code));
+
+        $this->assertFalse($regular->isMe($admins_image->qr_code));
+        $this->assertTrue($regular->isMe($regulars_image->qr_code));
+
+        // pull it from the App\Application()
+        $App = new Application(CONFIG);
+        $admin->setAuthorization($App->getAuthorizationService(new ServerRequest()));
+        $regular->setAuthorization($App->getAuthorizationService(new ServerRequest()));
+
+        // test auth.
+        $this->assertTrue($admin->can('edit', $admins_image));
+        $this->assertTrue($admin->can('edit', $regulars_image));
+
+        $this->assertFalse($regular->can('edit', $admins_image));
+        $this->assertTrue($regular->can('edit', $regulars_image));
+
+        // missing qr_code
+        $admins_image = $this->QrImages->get(1);
+        $regulars_image = $this->QrImages->get(5);
+
+        $this->assertFalse($regular->can('edit', $admins_image));
+        $this->assertFalse($regular->can('edit', $regulars_image));
     }
 }

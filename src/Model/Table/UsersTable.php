@@ -123,13 +123,11 @@ class UsersTable extends Table
     /**
      * Find Active Users
      *
-     * Here should be need to impliment it later.
-     *
      * @param \Cake\ORM\Query\SelectQuery $query The initial query
      * @return \Cake\ORM\Query\SelectQuery The updated query
      */
     public function findActive(SelectQuery $query): SelectQuery
     {
-        return $query;
+        return $query->where(['Users.is_active' => true]);
     }
 }

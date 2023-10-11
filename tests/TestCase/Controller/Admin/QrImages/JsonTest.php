@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Test\TestCase\Controller\QrImages;
+namespace App\Test\TestCase\Controller\Admin\QrImages;
 
 use App\Test\TestCase\Controller\BaseControllerTest;
 use Cake\Core\Configure;
 
 /**
- * App\Controller\QrImagesController Test Case
+ * App\Controller\Admin\QrImagesController Test Case
  *
  * Test that the Json output is correct.
  * Specifically that fields are there that should be,
  * and not there that shouldn't be,
  *
- * @uses \App\Controller\QrImagesController
+ * @uses \App\Controller\Admin\QrImagesController
  */
 class JsonTest extends BaseControllerTest
 {
@@ -36,12 +36,12 @@ class JsonTest extends BaseControllerTest
     /**
      * Test index method
      *
-     * @uses \App\Controller\QrImagesController::qrCode()
+     * @uses \App\Controller\Admin\QrImagesController::qrCode()
      * @return void
      */
     public function testQrCode(): void
     {
-        $this->get('https://localhost/qr-images/qr-code/1.json');
+        $this->get('https://localhost/admin/qr-images/qr-code/1.json');
         $this->assertResponseOk();
 
         $content = (string)$this->_response->getBody();
@@ -61,13 +61,13 @@ class JsonTest extends BaseControllerTest
     /**
      * Test add method
      *
-     * @uses \App\Controller\QrImagesController::add()
+     * @uses \App\Controller\Admin\QrImagesController::add()
      * @return void
      */
     public function testAdd(): void
     {
         // a get
-        $this->get('https://localhost/qr-images/add/1.json');
+        $this->get('https://localhost/admin/qr-images/add/1.json');
         $this->assertResponseOk();
         $content = (string)$this->_response->getBody();
         $content = json_decode($content, true);
@@ -84,7 +84,7 @@ class JsonTest extends BaseControllerTest
         $this->assertTrue(empty($content['errors']));
 
         // a post fail
-        $this->post('https://localhost/qr-images/add/1.json', []);
+        $this->post('https://localhost/admin/qr-images/add/1.json', []);
         $this->assertResponseOk();
         $content = (string)$this->_response->getBody();
         $content = json_decode($content, true);
@@ -107,11 +107,11 @@ class JsonTest extends BaseControllerTest
         $this->assertSame($expected, $content['errors']);
 
         // a post success
-        $this->post('https://localhost/qr-images/add/1.json', [
+        $this->post('https://localhost/admin/qr-images/add/1.json', [
             'name' => 'New JSON QR Image',
             'ext' => 'jpg', // TODO: change this once we get file uploading working.
         ]);
-        $this->assertRedirectEquals('https://localhost/qr-images/qr-code/1.json');
+        $this->assertRedirectEquals('https://localhost/admin/qr-images/qr-code/1.json');
         $this->assertFlashMessage('The image has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -120,13 +120,13 @@ class JsonTest extends BaseControllerTest
      * Test edit method
      *
      * @return void
-     * @uses \App\Controller\QrImagesController::edit()
+     * @uses \App\Controller\Admin\QrImagesController::edit()
      */
     public function testEdit(): void
     {
         // test with admin, get
         $this->loginUserAdmin();
-        $this->get('https://localhost/qr-images/edit/1.json');
+        $this->get('https://localhost/admin/qr-images/edit/1.json');
         $this->assertResponseOk();
         $content = (string)$this->_response->getBody();
         $content = json_decode($content, true);
@@ -139,10 +139,10 @@ class JsonTest extends BaseControllerTest
         $this->assertTrue(empty($content['errors']));
 
         // a put success
-        $this->put('https://localhost/qr-images/edit/1.json', [
+        $this->put('https://localhost/admin/qr-images/edit/1.json', [
             'name' => 'New JSON QR Code',
         ]);
-        $this->assertRedirectEquals('https://localhost/qr-images/qr-code/1.json');
+        $this->assertRedirectEquals('https://localhost/admin/qr-images/qr-code/1.json');
         $this->assertFlashMessage('The image has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }

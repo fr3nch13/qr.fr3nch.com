@@ -5,7 +5,9 @@ namespace App\Model\Entity;
 
 use App\Lib\PhpQrGenerator;
 use Cake\Core\Configure;
+use Cake\Log\Log;
 use Cake\ORM\Entity;
+use chillerlan\QRCode\Output\QRCodeOutputException;
 
 /**
  * QrCode Entity
@@ -79,6 +81,7 @@ class QrCode extends Entity
 
     /**
      * Gets the path to the generated QR Code
+     * TODO: Add test for null return.
      *
      * @return string|null The path to the generated QR Code.
      */
@@ -87,8 +90,17 @@ class QrCode extends Entity
         // set in config/app.php or config/app_local.php
         $path = Configure::read('App.paths.qr_codes', TMP . 'qr_codes') . DS . $this->id . '.png';
         if (!file_exists($path) || $this->regenerate) {
-            $QR = new PhpQrGenerator($this);
-            $QR->generate();
+            try {
+                $QR = new PhpQrGenerator($this);
+                $QR->generate();
+            } catch (QRCodeOutputException $e) {
+                Log::write('error', __('Unable to generate a missing code to: `{0}`.' .
+                    ' Exception: `{1}` Message: `{2}`', [
+                    $path,
+                    get_class($e),
+                    $e->getMessage(),
+                ]));
+            }
         }
 
         if (is_readable($path)) {

@@ -54,17 +54,22 @@ class PhpQrGenerator
         $this->qrCode = $qrCode;
         $defaults = [
             'logoPath' => WWW_ROOT . 'img' . DS . 'qr_logo.png',
-            'positivecolor' => [0, 0, 0],
-            'negativecolor' => [255, 255, 255],
+            'positivecolor' => '000000',
+            'negativecolor' => 'FFFFFF',
             'scale' => 5,
         ];
 
         $this->config = Configure::read('QrCode', $defaults);
 
         // check some of the config options
-        $this->config['scale'] = $this->config['scale'] ?? 5;
-        $this->config['positivecolor'] = $this->config['positivecolor'] ?? [0, 0, 0];
-        $this->config['negativecolor'] = $this->config['negativecolor'] ?? [255, 255, 255];
+        $this->config['scale'] = $this->config['scale'] ?: 5;
+
+        $this->config['positivecolor'] = $this->config['positivecolor'] ?: '000000';
+        $this->config['positivecolor'] = $this->hexToRgb($this->config['positivecolor']);
+
+        $this->config['negativecolor'] = $this->config['negativecolor'] ?: 'FFFFFF';
+        $this->config['negativecolor'] = $this->hexToRgb($this->config['negativecolor']);
+
         $this->config['logoPath'] = $this->config['logoPath'] ?? WWW_ROOT . 'img' . DS . 'qr_logo.png';
 
         $this->qrImagePath = Configure::read('App.paths.qr_codes') . DS . $this->qrCode->id . '.png';
@@ -157,8 +162,9 @@ class PhpQrGenerator
     public function addBorder(): void
     {
         // defaults
-        $this->config['border_width'] = $this->config['border_width'] ?? 5;
-        $this->config['border_color'] = $this->config['border_color'] ?? [0, 0, 0];
+        $this->config['border_width'] = $this->config['border_width'] ?: 5;
+        $this->config['border_color'] = $this->config['border_color'] ?: '000000';
+        $this->config['border_color'] = $this->hexToRgb($this->config['border_color']);
 
         $img = imagecreatefrompng($this->qrImagePath);
         if ($img instanceof GdImage) {
@@ -182,5 +188,30 @@ class PhpQrGenerator
             imagepng($img, $this->qrImagePath);
             imagedestroy($img);
         }
+    }
+
+    /**
+     * Because the Configure class likes to merge, it's making 6 entries into the color arrays.
+     * So, we'll use hexdec values, and this will translate it to the rgb array
+     *
+     * @param string $hexCode The hexedicimal string to translate to an rgb array.
+     * @return array<int, int> The generated array for the QG stuff to understand.
+     */
+    public function hexToRgb(string $hexCode): array
+    {
+        if ($hexCode[0] == '#') {
+            $hexCode = substr($hexCode, 1);
+        }
+
+        // if gived a 3 char code.
+        if (!isset($hexCode[4])) {
+            $hexCode = $hexCode[0] . $hexCode[0] . $hexCode[1] . $hexCode[1] . $hexCode[2] . $hexCode[2];
+        }
+
+        $r = (int)hexdec($hexCode[0] . $hexCode[1]);
+        $g = (int)hexdec($hexCode[2] . $hexCode[3]);
+        $b = (int)hexdec($hexCode[4] . $hexCode[5]);
+
+        return [$r, $g, $b];
     }
 }

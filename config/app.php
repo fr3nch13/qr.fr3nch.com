@@ -411,4 +411,21 @@ return [
     'Session' => [
         'defaults' => 'php',
     ],
+
+    /**
+     * Settings to override the defaults in App\Lib\*QrGenerator classes
+     */
+    'QrCode' => [
+        // both
+        'logoPath' => WWW_ROOT . 'img' . DS . 'qr_logo.png',
+        // google qr code generator
+        'size' => '200',
+        // php gode generator
+        'positivecolor' => '0079A9', // darker blue
+        'negativecolor' => '#FFF', // white
+        'scale' => 5,
+        'use_border' => true,
+        'border_width' => 5,
+        'border_color' => '000000', // black
+    ],
 ];

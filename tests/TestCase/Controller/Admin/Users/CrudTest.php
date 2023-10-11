@@ -168,7 +168,7 @@ class CrudTest extends BaseControllerTest
             'email' => 'newuser@example.com',
             'password' => 'password',
         ]);
-        $this->assertRedirectEquals('https://localhost/admin/users/view/4');
+        $this->assertRedirectEquals('https://localhost/admin/users/view/5');
         $this->assertFlashMessage('The user has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 

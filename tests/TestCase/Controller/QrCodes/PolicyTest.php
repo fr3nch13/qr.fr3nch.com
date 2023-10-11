@@ -143,15 +143,32 @@ class PolicyTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestTemplate('QrCodes/view');
 
+        // inactive
+        $this->get('https://localhost/qr-codes/view/4');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fqr-codes%2Fview%2F4');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
+
         // test with reqular
         $this->loginUserRegular();
         $this->get('https://localhost/qr-codes/view/1');
         $this->assertResponseOk();
         $this->helperTestTemplate('QrCodes/view');
 
+        // inactive
+        $this->get('https://localhost/qr-codes/view/4');
+        $this->assertResponseOk();
+        $this->helperTestTemplate('QrCodes/view');
+
         // test with admin
         $this->loginUserAdmin();
         $this->get('https://localhost/qr-codes/view/1');
+        $this->assertResponseOk();
+        $this->helperTestTemplate('QrCodes/view');
+
+        // inactive
+        $this->get('https://localhost/qr-codes/view/4');
         $this->assertResponseOk();
         $this->helperTestTemplate('QrCodes/view');
 
@@ -179,193 +196,6 @@ class PolicyTest extends BaseControllerTest
         Configure::write('debug', false);
         $this->loginUserAdmin();
         $this->get('https://localhost/qr-codes/view');
-        $this->assertResponseCode(404);
-        $this->assertResponseContains('Unknown ID');
-        Configure::write('debug', true);
-    }
-
-    /**
-     * Test add method
-     *
-     * @return void
-     * @uses \App\Controller\QrCodesController::add()
-     */
-    public function testAdd(): void
-    {
-        $this->enableSecurityToken();
-
-        // not logged in
-        $this->loginGuest();
-        $this->get('https://localhost/qr-codes/add');
-        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fqr-codes%2Fadd');
-        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
-        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
-        $this->assertFlashElement('flash/error');
-
-        // test with reqular
-        $this->loginUserRegular();
-        $this->get('https://localhost/qr-codes/add');
-        $this->assertResponseOk();
-        $this->helperTestTemplate('QrCodes/add');
-        $this->helperTestFormTag('/qr-codes/add', 'post');
-
-        // test with admin
-        $this->loginUserAdmin();
-        $this->get('https://localhost/qr-codes/add');
-        $this->assertResponseOk();
-        $this->helperTestTemplate('QrCodes/add');
-        $this->helperTestFormTag('/qr-codes/add', 'post');
-
-        // Debug Off
-        Configure::write('debug', false);
-        $this->loginGuest();
-        $this->get('https://localhost/qr-codes/add');
-        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fqr-codes%2Fadd');
-        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
-        $this->assertFlashElement('flash/error');
-        Configure::write('debug', true);
-    }
-
-    /**
-     * Test edit method
-     *
-     * @return void
-     * @uses \App\Controller\QrCodesController::edit()
-     */
-    public function testEdit(): void
-    {
-        $this->enableSecurityToken();
-
-        // not logged
-        $this->loginGuest();
-        $this->get('https://localhost/qr-codes/edit/1');
-        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fqr-codes%2Fedit%2F1');
-        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
-        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
-        $this->assertFlashElement('flash/error');
-
-        // test with reqular
-        $this->loginUserRegular();
-        $this->get('https://localhost/qr-codes/edit/1');
-        $this->assertRedirectEquals('https://localhost/admin?redirect=%2Fqr-codes%2Fedit%2F1');
-        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
-        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
-        $this->assertFlashElement('flash/error');
-
-        // test with admin
-        $this->loginUserAdmin();
-        $this->get('https://localhost/qr-codes/edit/1');
-        $this->assertResponseOk();
-        $this->helperTestTemplate('QrCodes/edit');
-        $this->helperTestFormTag('/qr-codes/edit/1', 'put');
-
-        /// Missing IDs
-
-        // not logged in
-        $this->loginGuest();
-        $this->get('https://localhost/qr-codes/edit');
-        $this->assertResponseCode(404);
-        $this->assertResponseContains('Unknown ID');
-
-        // test with reqular
-        $this->loginUserRegular();
-        $this->get('https://localhost/qr-codes/edit');
-        $this->assertResponseCode(404);
-        $this->assertResponseContains('Unknown ID');
-
-        // test with admin
-        $this->loginUserAdmin();
-        $this->get('https://localhost/qr-codes/edit');
-        $this->assertResponseCode(404);
-        $this->assertResponseContains('Unknown ID');
-
-        // debug off
-        Configure::write('debug', false);
-        $this->loginUserAdmin();
-        $this->get('https://localhost/qr-codes/edit');
-        $this->assertResponseCode(404);
-        $this->assertResponseContains('Unknown ID');
-        Configure::write('debug', true);
-    }
-
-    /**
-     * Test delete method
-     *
-     * @return void
-     * @uses \App\Controller\QrCodesController::delete()
-     */
-    public function testDelete(): void
-    {
-        $this->enableSecurityToken();
-
-        // not logged
-        $this->loginGuest();
-        $this->delete('https://localhost/qr-codes/delete/3');
-        $this->assertRedirectEquals('https://localhost/users/login');
-        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
-        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
-        $this->assertFlashElement('flash/error');
-
-        // test with reqular, not owner
-        $this->enableRetainFlashMessages();
-        $this->loginUserRegular();
-        $this->delete('https://localhost/qr-codes/delete/2');
-        $this->assertRedirectEquals('https://localhost/admin');
-        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
-        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
-        $this->assertFlashElement('flash/error');
-
-        // test with reqular, owner
-        $this->loginUserRegular();
-        $this->delete('https://localhost/qr-codes/delete/3');
-        // qr-codes/index is the homepage.
-        $this->assertRedirectEquals('https://localhost/');
-        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
-        $this->assertFlashMessage('The qr code `American Flag Charm` has been deleted.', 'flash');
-        $this->assertFlashElement('flash/success');
-
-        // test with admin
-        $this->loginUserAdmin();
-        // not 3 as it was deleted above.
-        $this->delete('https://localhost/qr-codes/delete/2');
-        // to the dashboard.
-        $this->assertRedirectEquals('https://localhost/');
-        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
-        $this->assertFlashMessage('The qr code `The Witching Hour` has been deleted.', 'flash');
-        $this->assertFlashElement('flash/success');
-
-        /// Missing IDs
-
-        // not logged in
-        $this->loginGuest();
-        $this->delete('https://localhost/qr-codes/delete');
-        $this->assertResponseCode(404);
-        $this->assertResponseContains('Unknown ID');
-
-        // test with reqular
-        $this->loginUserRegular();
-        $this->delete('https://localhost/qr-codes/delete');
-        $this->assertResponseCode(404);
-        $this->assertResponseContains('Unknown ID');
-
-        // test with admin
-        $this->loginUserAdmin();
-        $this->delete('https://localhost/qr-codes/delete');
-        $this->assertResponseCode(404);
-        $this->assertResponseContains('Unknown ID');
-
-        // test with admin, debug off
-        Configure::write('debug', false);
-        $this->loginUserAdmin();
-        $this->delete('https://localhost/qr-codes/delete');
-        $this->assertResponseCode(404);
-        $this->assertResponseContains('Unknown ID');
-        Configure::write('debug', true);
-
-        // not logged in, debug off
-        Configure::write('debug', false);
-        $this->loginGuest();
-        $this->delete('https://localhost/qr-codes/delete');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
         Configure::write('debug', true);

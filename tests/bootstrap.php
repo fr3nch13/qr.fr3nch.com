@@ -67,6 +67,11 @@ session_id('cli');
 // use Cake\TestSuite\Fixture\SchemaLoader;
 // (new SchemaLoader())->loadSqlFiles('./tests/schema.sql', 'test');
 
+// So we don't overwrite images by accident
 Configure::write('App.paths.qr_images', TMP . 'qr_images_test');
+
+// To test to make sure we're translating colors correctly.
+// Test the PhpQrCodeGenerator() directly, if needed.
+Configure::write('QrCode.negativecolor', '#FFF');
 
 (new Migrator())->run();

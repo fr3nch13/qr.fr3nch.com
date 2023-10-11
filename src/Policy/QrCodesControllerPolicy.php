@@ -25,7 +25,7 @@ class QrCodesControllerPolicy extends AppControllerPolicy
     }
 
     /**
-     * Anyone can see the QR Code Image.
+     * Anyone can see the Qr Code Image.
      *
      * @param \App\Model\Entity\User|null $user The identity object.
      * @param \App\Controller\QrCodesController $QrCodesController
@@ -37,7 +37,7 @@ class QrCodesControllerPolicy extends AppControllerPolicy
     }
 
     /**
-     * Anyone can view a list of qr codes.
+     * Anyone can view a list of Qr Codes.
      *
      * @param \App\Model\Entity\User|null $user The identity object.
      * @param \App\Controller\QrCodesController $QrCodesController
@@ -49,7 +49,7 @@ class QrCodesControllerPolicy extends AppControllerPolicy
     }
 
     /**
-     * Anyone can view a qr code.
+     * Anyone can view a Qr Code.
      *
      * @param \App\Model\Entity\User|null $user The identity object.
      * @param \App\Controller\QrCodesController $QrCodesController
@@ -57,56 +57,6 @@ class QrCodesControllerPolicy extends AppControllerPolicy
      */
     public function canView(?User $user, QrCodesController $QrCodesController): bool
     {
-        return true;
-    }
-
-    /**
-     * Must be an logged in to add a qr code
-     *
-     * @param \App\Model\Entity\User|null $user The identity object.
-     * @param \App\Controller\QrCodesController $QrCodesController
-     * @return bool
-     */
-    public function canAdd(?User $user, QrCodesController $QrCodesController): bool
-    {
-        if (!$user) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Must be an logged in to edit a qr code
-     * Object policy to test editing the specific qr code is done in \App\Policy\QrCodePolicy::canEdit()
-     *
-     * @param \App\Model\Entity\User|null $user The identity object.
-     * @param \App\Controller\QrCodesController $QrCodesController
-     * @return bool
-     */
-    public function canEdit(?User $user, QrCodesController $QrCodesController): bool
-    {
-        if (!$user) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Must be an logged in to delete a qr code
-     * Object policy to test editing the specific qr code is done in \App\Policy\QrCodePolicy::canDelete()
-     *
-     * @param \App\Model\Entity\User|null $user The identity object.
-     * @param \App\Controller\QrCodesController $QrCodesController
-     * @return bool
-     */
-    public function canDelete(?User $user, QrCodesController $QrCodesController): bool
-    {
-        if (!$user) {
-            return false;
-        }
-
         return true;
     }
 }

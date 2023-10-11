@@ -16,18 +16,24 @@ declare(strict_types=1);
  */
 namespace App;
 
+use App\Controller\Admin\QrCodesController as AdminQrCodesController;
+use App\Controller\Admin\QrImagesController as AdminQrImagesController;
+use App\Controller\Admin\SourcesController as AdminSourcesController;
+use App\Controller\Admin\TagsController as AdminTagsController;
 use App\Controller\Admin\UsersController as AdminUsersController;
 use App\Controller\PagesController;
 use App\Controller\QrCodesController;
 use App\Controller\QrImagesController;
-use App\Controller\SourcesController;
 use App\Controller\TagsController;
 use App\Controller\UsersController;
+use App\Policy\Admin\QrCodesControllerPolicy as AdminQrCodesControllerPolicy;
+use App\Policy\Admin\QrImagesControllerPolicy as AdminQrImagesControllerPolicy;
+use App\Policy\Admin\SourcesControllerPolicy as AdminSourcesControllerPolicy;
+use App\Policy\Admin\TagsControllerPolicy as AdminTagsControllerPolicy;
 use App\Policy\Admin\UsersControllerPolicy as AdminUsersControllerPolicy;
 use App\Policy\PagesControllerPolicy;
 use App\Policy\QrCodesControllerPolicy;
 use App\Policy\QrImagesControllerPolicy;
-use App\Policy\SourcesControllerPolicy;
 use App\Policy\TagsControllerPolicy;
 use App\Policy\UsersControllerPolicy;
 use Authentication\AuthenticationService;
@@ -267,6 +273,11 @@ class Application extends BaseApplication implements
         // Load identifiers, ensure we check email and password fields
         $authenticationService->loadIdentifier('Authentication.Password', [
             'fields' => $fields,
+            'resolver' => [
+                'className' => 'Authentication.Orm',
+                'userModel' => 'Users',
+                'finder' => 'active',
+            ],
         ]);
 
         // Load the authenticators, you want session first
@@ -331,19 +342,26 @@ class Application extends BaseApplication implements
         // map the controllers
         $mapResolver->map(QrCodesController::class, QrCodesControllerPolicy::class);
         $mapResolver->map(QrImagesController::class, QrImagesControllerPolicy::class);
-        $mapResolver->map(SourcesController::class, SourcesControllerPolicy::class);
         $mapResolver->map(TagsController::class, TagsControllerPolicy::class);
         $mapResolver->map(UsersController::class, UsersControllerPolicy::class);
         $mapResolver->map(PagesController::class, PagesControllerPolicy::class);
 
         // admin controllers
+        $mapResolver->map(AdminQrCodesController::class, AdminQrCodesControllerPolicy::class);
+        $mapResolver->map(AdminQrImagesController::class, AdminQrImagesControllerPolicy::class);
+        $mapResolver->map(AdminSourcesController::class, AdminSourcesControllerPolicy::class);
+        $mapResolver->map(AdminTagsController::class, AdminTagsControllerPolicy::class);
         $mapResolver->map(AdminUsersController::class, AdminUsersControllerPolicy::class);
 
         $ormResolver = new OrmResolver();
 
         // @link https://book.cakephp.org/authorization/3/en/policy-resolvers.html#using-multiple-resolvers
         $resolver = new ResolverCollection([
-            $mapResolver, // make sure this one is first.
+            // make sure this one is first.
+            // we want to check the general controller actions,
+            $mapResolver,
+            // before we check the individual entities,
+            // or scopes for index pages.
             $ormResolver,
         ]);
 

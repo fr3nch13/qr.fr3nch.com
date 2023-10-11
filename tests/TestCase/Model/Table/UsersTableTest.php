@@ -3,10 +3,13 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Model\Table;
 
+use App\Application;
+use App\Model\Entity\User;
 use App\Model\Table\QrCodesTable;
 use App\Model\Table\SourcesTable;
 use App\Model\Table\TagsTable;
 use App\Model\Table\UsersTable;
+use Cake\Http\ServerRequest;
 use Cake\ORM\Association\HasMany;
 use Cake\ORM\Behavior\TimestampBehavior;
 use Cake\TestSuite\TestCase;
@@ -31,6 +34,7 @@ class UsersTableTest extends TestCase
     protected array $fixtures = [
         'app.Users',
         'app.Sources',
+        'app.QrCodes',
     ];
 
     /**
@@ -317,5 +321,58 @@ class UsersTableTest extends TestCase
             'password' => '',
         ]);
         $this->assertNull($entity->password);
+    }
+
+    /**
+     * Test the entity itself
+     *
+     * @return void
+     * @uses \App\Model\Entity\User
+     */
+    public function testEntityAdmin(): void
+    {
+        // admin user
+        $admin = $this->Users->get(1);
+        // regular user
+        $regular = $this->Users->get(2);
+
+        $this->assertTrue($admin->isAdmin());
+        $this->assertFalse($regular->isAdmin());
+    }
+
+    /**
+     * Test the entity itself
+     *
+     * @return void
+     * @uses \App\Model\Entity\User
+     */
+    public function testEntityOwnership(): void
+    {
+        // admin user
+        $admin = $this->Users->get(1);
+        // regular user
+        $regular = $this->Users->get(2);
+
+        // get a qr code they own.
+        $admins_code = $this->Users->QrCodes->get(1);
+        // don't own
+        $regulars_code = $this->Users->QrCodes->get(4);
+
+        $this->assertTrue($admin->isMe($admins_code));
+        $this->assertFalse($admin->isMe($regulars_code));
+
+        $this->assertFalse($regular->isMe($admins_code));
+        $this->assertTrue($regular->isMe($regulars_code));
+
+        // pull it from the App\Application()
+        $App = new Application(CONFIG);
+        $admin->setAuthorization($App->getAuthorizationService(new ServerRequest()));
+
+        // test auth.
+        $this->assertTrue($admin->can('edit', $admins_code));
+        $this->assertTrue($admin->can('edit', $regulars_code));
+        $this->assertSame(1, $admin->getIdentifier());
+        $this->assertInstanceOf(User::class, $admin->getOriginalData());
+        $this->assertSame(1, $admin->getOriginalData()->id);
     }
 }

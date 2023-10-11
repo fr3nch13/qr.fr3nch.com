@@ -33,7 +33,7 @@ $logoImage = $this->Html->image($logoImage, [
                     aria-expanded="false"><i class="bi bi-person"></i>
                 </a>
             </li>
-            <?php if ($this->ActiveUser->getUser()) : ?>
+            <?php if ($this->ActiveUser->isLoggedIn()) : ?>
             <!-- The user icon and dropdown for user-specific pages -->
             <li class="nav-item dropdown dropdown-hover d-none d-lg-block">
                 <a
@@ -66,7 +66,7 @@ $logoImage = $this->Html->image($logoImage, [
                     aria-label="Toggle navigation"><span class="bi bi-list"></span>
                 </a>
             </li>
-            <?php if (!$this->ActiveUser->getUser()) : ?>
+            <?php if (!$this->ActiveUser->isLoggedIn()) : ?>
             <!-- Signup Link -->
             <li class="nav-item d-none d-lg-block">
                 <?php
@@ -100,7 +100,7 @@ $logoImage = $this->Html->image($logoImage, [
         <!-- mobile user menu -->
         <div class="collapse account-collapse" id="userNav" data-bs-parent="#mainNav">
             <ul class="navbar-nav">
-                <?php if ($this->ActiveUser->getUser()) : ?>
+                <?php if ($this->ActiveUser->isLoggedIn()) : ?>
                 <li class="nav-item">
                     <a class="nav-link active" href="#">Dashboard</a>
                 </li>

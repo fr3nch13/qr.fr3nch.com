@@ -1,19 +1,37 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
 
 /**
- * Sources Controller
+ * Tags Controller
  *
- * @property \App\Model\Table\SourcesTable $Sources
+ * @property \App\Model\Table\TagsTable $Tags
  */
-class SourcesController extends AppController
+class TagsController extends AppController
 {
+    /**
+     * Init method
+     *
+     * Mainly here to add the Search Component.
+     *
+     * @return void
+     */
+    public function initialize(): void
+    {
+        parent::initialize();
+
+        $this->loadComponent('Search.Search', [
+            // This is default config. You can modify "actions" as needed to make
+            // the Search component work only for specified methods.
+            'actions' => ['index'],
+        ]);
+    }
+
     /**
      * Runs before the code in the actions
      *
@@ -44,12 +62,13 @@ class SourcesController extends AppController
     {
         $this->request->allowMethod(['get']);
 
-        $query = $this->Sources->find('all');
+        $query = $this->Tags->find('all')
+            ->find('search', search: $this->request->getQueryParams());
         $query = $this->Authorization->applyScope($query);
-        $sources = $this->paginate($query);
+        $tags = $this->paginate($query);
 
-        $this->set(compact('sources'));
-        $this->viewBuilder()->setOption('serialize', ['sources']);
+        $this->set(compact('tags'));
+        $this->viewBuilder()->setOption('serialize', ['tags']);
 
         return null;
     }
@@ -57,7 +76,7 @@ class SourcesController extends AppController
     /**
      * View method
      *
-     * @param ?string $id Source id.
+     * @param ?string $id Tag id.
      * @return ?\Cake\Http\Response Renders view
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -65,11 +84,11 @@ class SourcesController extends AppController
     {
         $this->request->allowMethod(['get']);
 
-        $source = $this->Sources->get((int)$id, contain: ['QrCodes']);
-        $this->Authorization->authorize($source);
+        $tag = $this->Tags->get((int)$id, contain: ['QrCodes']);
+        $this->Authorization->authorize($tag);
 
-        $this->set(compact('source'));
-        $this->viewBuilder()->setOption('serialize', ['source']);
+        $this->set(compact('tag'));
+        $this->viewBuilder()->setOption('serialize', ['tag']);
 
         return null;
     }
@@ -83,28 +102,29 @@ class SourcesController extends AppController
     {
         $this->request->allowMethod(['get', 'post']);
 
-        $source = $this->Sources->newEmptyEntity();
-        $this->Authorization->authorize($source);
+        $tag = $this->Tags->newEmptyEntity();
+        $this->Authorization->authorize($tag);
 
         if ($this->request->is('post')) {
-            $source = $this->Sources->patchEntity($source, $this->request->getData());
-            $source->user_id = $this->getActiveUser('id');
-            if ($this->Sources->save($source)) {
-                $this->Flash->success(__('The source has been saved.'));
+            $tag = $this->Tags->patchEntity($tag, $this->request->getData());
+            $tag->user_id = $this->getActiveUser('id');
+            if ($this->Tags->save($tag)) {
+                $this->Flash->success(__('The tag has been saved.'));
 
                 return $this->redirect([
                     'action' => 'view',
-                    $source->id,
+                    $tag->id,
                     '_ext' => $this->getRequest()->getParam('_ext'),
                 ]);
             }
-            $this->Flash->error(__('The source could not be saved. Please, try again.'));
+            $this->Flash->error(__('The tag could not be saved. Please, try again.'));
         }
 
-        $errors = $source->getErrors();
+        $errors = $tag->getErrors();
+        $qrCodes = $this->Tags->QrCodes->find('active')->find('list', limit: 200)->all();
 
-        $this->set(compact('source', 'errors'));
-        $this->viewBuilder()->setOption('serialize', ['source', 'errors']);
+        $this->set(compact('tag', 'qrCodes', 'errors'));
+        $this->viewBuilder()->setOption('serialize', ['tag', 'qrCodes', 'errors']);
 
         return null;
     }
@@ -112,7 +132,7 @@ class SourcesController extends AppController
     /**
      * Edit method
      *
-     * @param ?string $id Source id.
+     * @param ?string $id Tag id.
      * @return ?\Cake\Http\Response Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -120,27 +140,28 @@ class SourcesController extends AppController
     {
         $this->request->allowMethod(['get', 'put']);
 
-        $source = $this->Sources->get((int)$id, contain: []);
-        $this->Authorization->authorize($source);
+        $tag = $this->Tags->get((int)$id, contain: ['QrCodes']);
+        $this->Authorization->authorize($tag);
 
         if ($this->request->is('put')) {
-            $source = $this->Sources->patchEntity($source, $this->request->getData());
-            if ($this->Sources->save($source)) {
-                $this->Flash->success(__('The source has been saved.'));
+            $tag = $this->Tags->patchEntity($tag, $this->request->getData());
+            if ($this->Tags->save($tag)) {
+                $this->Flash->success(__('The tag has been saved.'));
 
                 return $this->redirect([
                     'action' => 'view',
-                    $source->id,
+                    $tag->id,
                     '_ext' => $this->getRequest()->getParam('_ext'),
                 ]);
             }
-            $this->Flash->error(__('The source could not be saved. Please, try again.'));
+            $this->Flash->error(__('The tag could not be saved. Please, try again.'));
         }
 
-        $errors = $source->getErrors();
+        $errors = $tag->getErrors();
+        $qrCodes = $this->Tags->QrCodes->find('active')->find('list', limit: 200)->all();
 
-        $this->set(compact('source', 'errors'));
-        $this->viewBuilder()->setOption('serialize', ['source', 'errors']);
+        $this->set(compact('tag', 'qrCodes', 'errors'));
+        $this->viewBuilder()->setOption('serialize', ['tag', 'qrCodes', 'errors']);
 
         return null;
     }
@@ -148,7 +169,7 @@ class SourcesController extends AppController
     /**
      * Delete method
      *
-     * @param ?string $id Source id.
+     * @param ?string $id Tag id.
      * @return ?\Cake\Http\Response Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -156,16 +177,12 @@ class SourcesController extends AppController
     {
         $this->request->allowMethod(['delete']);
 
-        $source = $this->Sources->get((int)$id);
-        $this->Authorization->authorize($source);
+        $tag = $this->Tags->get((int)$id);
+        $this->Authorization->authorize($tag);
 
-        if ($this->Sources->delete($source)) {
-            $this->Flash->success(__('The source `{0}` has been deleted.', [
-                $source->name,
-            ]));
-        } else {
-            $this->Flash->error(__('Unable to delete the source `{0}`.', [
-                $source->name,
+        if ($this->Tags->delete($tag)) {
+            $this->Flash->success(__('The tag `{0}` has been deleted.', [
+                $tag->name,
             ]));
         }
 

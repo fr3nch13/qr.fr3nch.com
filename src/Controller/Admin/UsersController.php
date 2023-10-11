@@ -186,10 +186,6 @@ class UsersController extends AppController
             $this->Flash->success(__('The user `{0}` has been deleted.', [
                 $user->name,
             ]));
-        } else {
-            $this->Flash->error(__('Unable to delete the user `{0}`.', [
-                $user->name,
-            ]));
         }
 
         return $this->redirect([

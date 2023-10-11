@@ -55,7 +55,7 @@ class UsersController extends AppController
                     $this->getActiveUser('name'),
                 ]));
 
-                // redirect to /qr-codes after login success
+                // redirect to the main dashboard after login success
                 $redirect = $this->request->getQuery('redirect', [
                     'prefix' => 'Admin',
                     'controller' => 'Users',
@@ -68,7 +68,7 @@ class UsersController extends AppController
 
         // display error if user submitted and authentication failed
         if ($this->request->is('post') && (!$result || !$result->isValid())) {
-            $this->Flash->error(__('Invalid email or password'));
+            $this->Flash->error(__('Invalid email or password, or your account may be inactive.'));
         }
 
         $errors = [];

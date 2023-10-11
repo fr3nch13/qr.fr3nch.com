@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Test\TestCase\Controller\Sources;
+namespace App\Test\TestCase\Controller\Admin\Sources;
 
 use App\Test\TestCase\Controller\BaseControllerTest;
 use Cake\Core\Configure;
 
 /**
- * App\Controller\SourcesController Test Case
+ * App\Controller\Admin\SourcesController Test Case
  *
  * Tests that the forms are working properly,
  * and displaying the proper information to the end user.
  * Especially on an error.
  *
- * @uses \App\Controller\SourcesController
+ * @uses \App\Controller\Admin\SourcesController
  */
 class FormsTest extends BaseControllerTest
 {
@@ -36,39 +36,39 @@ class FormsTest extends BaseControllerTest
      * Test add method
      *
      * @return void
-     * @uses \App\Controller\SourcesController::add()
+     * @uses \App\Controller\Admin\SourcesController::add()
      */
     public function testAdd(): void
     {
         // test failed
-        $this->post('https://localhost/sources/add', [
+        $this->post('https://localhost/admin/sources/add', [
         ]);
         $this->assertResponseOk();
-        $this->helperTestTemplate('Sources/add');
-        $this->helperTestFormTag('/sources/add');
+        $this->helperTestTemplate('Admin/Sources/add');
+        $this->helperTestFormTag('/admin/sources/add');
         $this->helperTestAlert('The source could not be saved. Please, try again.', 'danger');
         // test to make sure the fields that are required are actually tagged as so.
         $this->helperTestFormFieldError('This field is required', 'name-error');
         $this->helperTestFormFieldError('This field is required', 'description-error');
 
         // existing fail
-        $this->post('https://localhost/sources/add', [
+        $this->post('https://localhost/admin/sources/add', [
             'name' => 'Etsy',
             'description' => 'description',
         ]);
         $this->assertResponseOk();
-        $this->helperTestTemplate('Sources/add');
-        $this->helperTestFormTag('/sources/add');
+        $this->helperTestTemplate('Admin/Sources/add');
+        $this->helperTestFormTag('/admin/sources/add');
         $this->helperTestAlert('The source could not be saved. Please, try again.', 'danger');
         // test to make sure the fields that are required are actually tagged as so.
         $this->helperTestFormFieldError('This Name already exists.', 'name-error');
 
         // test success
-        $this->post('https://localhost/sources/add', [
+        $this->post('https://localhost/admin/sources/add', [
             'name' => 'new name',
             'description' => 'description',
         ]);
-        $this->assertRedirectEquals('https://localhost/sources/view/4');
+        $this->assertRedirectEquals('https://localhost/admin/sources/view/4');
         $this->assertFlashMessage('The source has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -77,27 +77,27 @@ class FormsTest extends BaseControllerTest
      * Test edit method
      *
      * @return void
-     * @uses \App\Controller\SourcesController::edit()
+     * @uses \App\Controller\Admin\SourcesController::edit()
      */
     public function testEdit(): void
     {
         // test fail
-        $this->put('https://localhost/sources/edit/1', [
+        $this->put('https://localhost/admin/sources/edit/1', [
             'name' => 'Etsy', // an existing record
         ]);
         $this->assertResponseOk();
-        $this->helperTestTemplate('Sources/edit');
-        $this->helperTestFormTag('/sources/edit/1', 'put');
+        $this->helperTestTemplate('Admin/Sources/edit');
+        $this->helperTestFormTag('/admin/sources/edit/1', 'put');
         $this->helperTestAlert('The source could not be saved. Please, try again.', 'danger');
         // test to make sure the fields that are required are actually tagged as so.
         $this->helperTestFormFieldError('This Name already exists.', 'name-error');
 
         // test put success
-        $this->put('https://localhost/sources/edit/1', [
+        $this->put('https://localhost/admin/sources/edit/1', [
             'name' => 'New Source',
             'description' => 'The Description',
         ]);
-        $this->assertRedirectEquals('https://localhost/sources/view/1');
+        $this->assertRedirectEquals('https://localhost/admin/sources/view/1');
         $this->assertFlashMessage('The source has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }

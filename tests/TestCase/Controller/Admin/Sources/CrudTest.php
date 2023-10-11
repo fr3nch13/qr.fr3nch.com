@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Test\TestCase\Controller\Sources;
+namespace App\Test\TestCase\Controller\Admin\Sources;
 
 use App\Test\TestCase\Controller\BaseControllerTest;
 use Cake\Core\Configure;
 
 /**
- * App\Controller\SourcesController Test Case
+ * App\Controller\Admin\SourcesController Test Case
  *
  * Tests that the proper http method is being used.
  *
- * @uses \App\Controller\SourcesController
+ * @uses \App\Controller\Admin\SourcesController
  */
 class CrudTest extends BaseControllerTest
 {
@@ -34,38 +34,32 @@ class CrudTest extends BaseControllerTest
      * Test index method
      *
      * @return void
-     * @uses \App\Controller\SourcesController::index()
+     * @uses \App\Controller\Admin\SourcesController::index()
      */
     public function testIndex(): void
     {
-        Configure::write('debug', true);
-        $this->enableRetainFlashMessages();
-        $this->enableCsrfToken();
-        $this->enableSecurityToken();
-        $this->loginUserAdmin();
-
         // get
-        $this->get('https://localhost/sources');
+        $this->get('https://localhost/admin/sources');
         $this->assertResponseOk();
-        $this->helperTestTemplate('Sources/index');
+        $this->helperTestTemplate('Admin/Sources/index');
 
         // post
-        $this->post('https://localhost/sources');
+        $this->post('https://localhost/admin/sources');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // patch
-        $this->patch('https://localhost/sources');
+        $this->patch('https://localhost/admin/sources');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('https://localhost/sources');
+        $this->put('https://localhost/admin/sources');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('https://localhost/sources');
+        $this->delete('https://localhost/admin/sources');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
     }
@@ -74,38 +68,32 @@ class CrudTest extends BaseControllerTest
      * Test view method
      *
      * @return void
-     * @uses \App\Controller\SourcesController::view()
+     * @uses \App\Controller\Admin\SourcesController::view()
      */
     public function testView(): void
     {
-        Configure::write('debug', true);
-        $this->enableRetainFlashMessages();
-        $this->enableCsrfToken();
-        $this->enableSecurityToken();
-        $this->loginUserAdmin();
-
         // test get
-        $this->get('https://localhost/sources/view/1');
+        $this->get('https://localhost/admin/sources/view/1');
         $this->assertResponseOk();
-        $this->helperTestTemplate('Sources/view');
+        $this->helperTestTemplate('Admin/Sources/view');
 
         // post
-        $this->post('https://localhost/sources/view/1');
+        $this->post('https://localhost/admin/sources/view/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // patch
-        $this->patch('https://localhost/sources/view/1');
+        $this->patch('https://localhost/admin/sources/view/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('https://localhost/sources/view/1');
+        $this->put('https://localhost/admin/sources/view/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('https://localhost/sources/view/1');
+        $this->delete('https://localhost/admin/sources/view/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
     }
@@ -114,32 +102,26 @@ class CrudTest extends BaseControllerTest
      * Test add method
      *
      * @return void
-     * @uses \App\Controller\SourcesController::add()
+     * @uses \App\Controller\Admin\SourcesController::add()
      */
     public function testAdd(): void
     {
-        Configure::write('debug', true);
-        $this->enableRetainFlashMessages();
-        $this->enableCsrfToken();
-        $this->enableSecurityToken();
-        $this->loginUserAdmin();
-
         // test get
-        $this->get('https://localhost/sources/add');
+        $this->get('https://localhost/admin/sources/add');
         $this->assertResponseOk();
-        $this->helperTestTemplate('Sources/add');
+        $this->helperTestTemplate('Admin/Sources/add');
 
         // post
-        $this->post('https://localhost/sources/add', [
+        $this->post('https://localhost/admin/sources/add', [
             'name' => 'new name',
             'description' => 'description',
         ]);
-        $this->assertRedirectEquals('https://localhost/sources/view/4');
+        $this->assertRedirectEquals('https://localhost/admin/sources/view/4');
         $this->assertFlashMessage('The source has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
         // patch
-        $this->patch('https://localhost/sources/add', [
+        $this->patch('https://localhost/admin/sources/add', [
             'name' => 'new name',
             'description' => 'description',
         ]);
@@ -147,7 +129,7 @@ class CrudTest extends BaseControllerTest
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('https://localhost/sources/add', [
+        $this->put('https://localhost/admin/sources/add', [
             'name' => 'new name',
             'description' => 'description',
         ]);
@@ -155,7 +137,7 @@ class CrudTest extends BaseControllerTest
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('https://localhost/sources/add');
+        $this->delete('https://localhost/admin/sources/add');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
     }
@@ -166,23 +148,17 @@ class CrudTest extends BaseControllerTest
      * TODO: TESt with #3, and check that the user_id was reset.
      *
      * @return void
-     * @uses \App\Controller\SourcesController::edit()
+     * @uses \App\Controller\Admin\SourcesController::edit()
      */
     public function testEdit(): void
     {
-        Configure::write('debug', true);
-        $this->enableRetainFlashMessages();
-        $this->enableCsrfToken();
-        $this->enableSecurityToken();
-        $this->loginUserAdmin();
-
         // test get
-        $this->get('https://localhost/sources/edit/3');
+        $this->get('https://localhost/admin/sources/edit/3');
         $this->assertResponseOk();
-        $this->helperTestTemplate('Sources/edit');
+        $this->helperTestTemplate('Admin/Sources/edit');
 
         // post
-        $this->post('https://localhost/sources/edit/3', [
+        $this->post('https://localhost/admin/sources/edit/3', [
             'name' => 'New Source',
             'description' => 'The Description',
         ]);
@@ -190,7 +166,7 @@ class CrudTest extends BaseControllerTest
         $this->assertResponseContains('Method Not Allowed');
 
         // patch
-        $this->patch('https://localhost/sources/edit/3', [
+        $this->patch('https://localhost/admin/sources/edit/3', [
             'name' => 'New Source',
             'description' => 'The Description',
         ]);
@@ -198,16 +174,16 @@ class CrudTest extends BaseControllerTest
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('https://localhost/sources/edit/3', [
+        $this->put('https://localhost/admin/sources/edit/3', [
             'name' => 'New Source',
             'description' => 'The Description',
         ]);
-        $this->assertRedirectEquals('https://localhost/sources/view/3');
+        $this->assertRedirectEquals('https://localhost/admin/sources/view/3');
         $this->assertFlashMessage('The source has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
         // delete
-        $this->delete('https://localhost/sources/edit/3');
+        $this->delete('https://localhost/admin/sources/edit/3');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
     }
@@ -216,39 +192,33 @@ class CrudTest extends BaseControllerTest
      * Test delete method
      *
      * @return void
-     * @uses \App\Controller\SourcesController::delete()
+     * @uses \App\Controller\Admin\SourcesController::delete()
      */
     public function testDelete(): void
     {
-        Configure::write('debug', true);
-        $this->enableRetainFlashMessages();
-        $this->enableCsrfToken();
-        $this->enableSecurityToken();
-        $this->loginUserAdmin();
-
         // test get
-        $this->get('https://localhost/sources/delete/1');
+        $this->get('https://localhost/admin/sources/delete/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // post
-        $this->post('https://localhost/sources/delete/1');
+        $this->post('https://localhost/admin/sources/delete/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // patch
-        $this->patch('https://localhost/sources/delete/1');
+        $this->patch('https://localhost/admin/sources/delete/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('https://localhost/sources/delete/1');
+        $this->put('https://localhost/admin/sources/delete/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('https://localhost/sources/delete/1');
-        $this->assertRedirectEquals('https://localhost/sources');
+        $this->delete('https://localhost/admin/sources/delete/1');
+        $this->assertRedirectEquals('https://localhost/admin/sources');
         $this->assertFlashMessage('The source `Amazon` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
     }
