@@ -6,10 +6,16 @@
 
 $navClasses = 'qr-navbar-top navbar navbar-expand-lg navbar-sticky navbar-light border-bottom';
 $logoImage = 'logo_dark.png';
+
 if (in_array($this->getLayout(), ['login', 'error'])) {
     $navClasses = 'qr-navbar-top navbar navbar-expand-lg navbar-sticky navbar-dark';
     $logoImage = 'logo_light.png';
 }
+
+if (in_array($this->getLayout(), ['pages/dashboard'])) {
+    $navClasses .= ' bg-light';
+}
+
 $logoImage = $this->Html->image($logoImage, [
     'class' => 'logo-top',
     'alt' => __('Fr3nch QR Code generator.'),

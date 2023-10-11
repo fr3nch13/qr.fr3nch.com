@@ -26,6 +26,7 @@ use App\Controller\QrCodesController;
 use App\Controller\QrImagesController;
 use App\Controller\TagsController;
 use App\Controller\UsersController;
+use App\Event\QrCodeListener;
 use App\Policy\Admin\QrCodesControllerPolicy as AdminQrCodesControllerPolicy;
 use App\Policy\Admin\QrImagesControllerPolicy as AdminQrImagesControllerPolicy;
 use App\Policy\Admin\SourcesControllerPolicy as AdminSourcesControllerPolicy;
@@ -116,6 +117,9 @@ class Application extends BaseApplication implements
 
         // the friendsofcake/bootstrapui plugin.
         $this->addPlugin('Search');
+
+        // register the event listeners.
+        $this->registerEventListeners();
     }
 
     /**
@@ -229,22 +233,6 @@ class Application extends BaseApplication implements
      */
     public function services(ContainerInterface $container): void
     {
-    }
-
-    /**
-     * Bootstrapping for CLI application.
-     *
-     * That is when running commands.
-     *
-     * @return void
-     */
-    protected function bootstrapCli(): void
-    {
-        $this->addOptionalPlugin('Bake');
-
-        $this->addPlugin('Migrations');
-
-        // Load more plugins here
     }
 
     /**
@@ -366,5 +354,39 @@ class Application extends BaseApplication implements
         ]);
 
         return new AuthorizationService($resolver);
+    }
+
+    /**
+     * Register event listeners globally.
+     *
+     * Called in self::bootstrap()
+     *
+     * @return void
+     */
+    protected function registerEventListeners(): void
+    {
+        /** @var \Cake\Event\EventManager $eventManager */
+        $eventManager = $this->getEventManager();
+        // make sure they're only getting registered globally, once.
+        // TODO: Hacky as we're tracking the event key, not if the listener itself is already registered.
+        if (empty($eventManager->prioritisedListeners('QrCode.onHit'))) {
+            $eventManager->on(new QrCodeListener());
+        }
+    }
+
+    /**
+     * Bootstrapping for CLI application.
+     *
+     * That is when running commands.
+     *
+     * @return void
+     */
+    protected function bootstrapCli(): void
+    {
+        $this->addOptionalPlugin('Bake');
+
+        $this->addPlugin('Migrations');
+
+        // Load more plugins here
     }
 }

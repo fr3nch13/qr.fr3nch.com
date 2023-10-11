@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Cake\Core\Configure;
+use Cake\Event\Event;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
@@ -71,6 +72,7 @@ class QrCodesController extends AppController
     {
         $this->request->allowMethod(['get']);
 
+        /** @var \App\Model\Entity\QrCode $qrCode */
         $qrCode = $this->QrCodes->find('key', key: $key)->first();
 
         // if we can't find it, redirect to index with an error message.
@@ -95,8 +97,9 @@ class QrCodesController extends AppController
                 'action' => 'index',
             ]);
         }
-        $qrCode->hits = $qrCode->hits + 1;
-        $this->QrCodes->save($qrCode);
+
+        $event = new Event('QrCode.onHit', $this, ['qrCode' => $qrCode]);
+        $this->getEventManager()->dispatch($event);
 
         return $this->redirect(trim($qrCode->url));
     }

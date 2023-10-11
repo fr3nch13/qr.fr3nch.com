@@ -6,6 +6,7 @@ namespace App\Test\TestCase\Controller\QrCodes;
 use App\Model\Table\QrCodesTable;
 use App\Test\TestCase\Controller\BaseControllerTest;
 use Cake\Core\Configure;
+use Cake\I18n\DateTime;
 
 /**
  * App\Controller\QrCodesController Test Case
@@ -48,20 +49,14 @@ class GeneralTest extends BaseControllerTest
      */
     public function testForward(): void
     {
-        $entity = $this->QrCodes->get(1);
-        $this->assertSame(0, $entity->hits);
         $this->get('https://localhost/?k=sownscribe');
         $this->assertRedirectEquals('https://localhost/f/sownscribe');
 
         $this->get('https://localhost/f/sownscribe');
         $this->assertRedirectEquals('https://amazon.com/path/to/details/page');
-        $entity = $this->QrCodes->get(1);
-        $this->assertSame(1, $entity->hits);
 
         $this->get('https://localhost/qr-codes/forward/sownscribe');
         $this->assertRedirectEquals('https://amazon.com/path/to/details/page');
-        $entity = $this->QrCodes->get(1);
-        $this->assertSame(2, $entity->hits);
 
         $this->get('https://localhost/?k=inactive');
         $this->assertRedirectEquals('https://localhost/f/inactive');
@@ -82,6 +77,32 @@ class GeneralTest extends BaseControllerTest
         $this->get('https://localhost/f/');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
+    }
+
+    /**
+     * Test to see if we get a hit recorded correctly.
+     *
+     * @return void
+     * @uses \App\Controller\QrCodesController::forward()
+     */
+    public function testForwardHit(): void
+    {
+        $entity = $this->QrCodes->get(1);
+        $this->assertSame(0, $entity->hits);
+        $this->assertNull($entity->last_hit);
+
+        $this->get('https://localhost/f/sownscribe');
+        $this->assertRedirectEquals('https://amazon.com/path/to/details/page');
+
+        $entity = $this->QrCodes->get(1);
+        $this->assertSame(1, $entity->hits);
+        $this->assertInstanceOf(DateTime::class, $entity->last_hit);
+
+        $this->get('https://localhost/qr-codes/forward/sownscribe');
+        $this->assertRedirectEquals('https://amazon.com/path/to/details/page');
+        $entity = $this->QrCodes->get(1);
+        $this->assertSame(2, $entity->hits);
+        $this->assertInstanceOf(DateTime::class, $entity->last_hit);
     }
 
     /**
