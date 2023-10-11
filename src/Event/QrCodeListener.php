@@ -47,6 +47,7 @@ class QrCodeListener implements EventListenerInterface
             $qrCode->last_hit = new DateTime();
 
             debug($qrCode);
+            $QrCodes->save($qrCode);
             debug($QrCodes->get($qrCode->id));
             exit;
 
