@@ -422,7 +422,7 @@ return [
         'size' => '200',
         // php gode generator
         'positivecolor' => '0079A9', // darker blue
-        'negativecolor' => 'FFFFFF', // white
+        'negativecolor' => '#FFF', // white
         'scale' => 5,
         'use_border' => true,
         'border_width' => 5,
