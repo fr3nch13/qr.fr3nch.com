@@ -81,11 +81,6 @@ class Application extends BaseApplication implements
     AuthorizationServiceProviderInterface
 {
     /**
-     * @var array<int, string> Ensure we're only registering listeners globally, one time.
-     */
-    private static array $registeredListeners = [];
-
-    /**
      * Load all the application configuration and bootstrap logic.
      *
      * @return void
@@ -371,9 +366,8 @@ class Application extends BaseApplication implements
     protected function registerEvents(): void
     {
         // make sure they're only getting registered globally, once.
-        if (!in_array(QrCodeListener::class, static::$registeredListeners)) {
+        if (empty($this->getEventManager()->prioritisedListeners('QrCode.onHit'))) {
             $this->getEventManager()->on(new QrCodeListener());
-            static::$registeredListeners[] = QrCodeListener::class;
         }
     }
 
