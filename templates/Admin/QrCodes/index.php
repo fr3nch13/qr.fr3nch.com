@@ -37,7 +37,7 @@ if (!$this->getRequest()->is('ajax')) {
                                                 echo '<i class="bi bi-x fs-6"></i>';
                                             }
                                         ?></td>
-                                        <td><span class="badge badge-pill badge-light"><?= $qrCode->hits ?></span></td>
+                                        <td><span class="badge badge-pill badge-primary"><?= $qrCode->hits ?></span></td>
                                         <td class="text-center table-actions">
                                             <div class="dropdown">
                                                 <a
