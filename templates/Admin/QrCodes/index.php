@@ -9,13 +9,14 @@ if (!$this->getRequest()->is('ajax')) {
 }
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
-<div class="container mt-5">
+<div class="container mt-md-5 px-0 px-md-3">
     <div class="row align-items-end mb-2">
-        <div class="col-md-6">
+        <div class="col">
             <h1><?= __('QR Codes') ?></h1>
         </div>
-
-        <div class="col-md-6 text-md-end">
+    </div>
+    <div class="row mb-2">
+        <div class="col text-end">
             <ul class="list-inline">
                 <li class="list-inline-item ms-2">
                     <?= $this->Html->link(__('Add a QR Code'), [
