@@ -56,12 +56,12 @@ if (!$this->getRequest()->is('ajax')) {
                                                     aria-expanded="false">
                                                     Actions
                                                 </a>
-                                                <div class="dropdown-menu" aria-labelledby="actions<?= $qrCode->id ?>">
-                                                    <a class="dropdown-item" href="#">Details</a>
-                                                    <a class="dropdown-item" href="#">Edit</a>
-                                                    <a class="dropdown-item" href="#">Images</a>
-                                                    <a class="dropdown-item" href="#">Toggle Active</a>
-                                                </div>
+                                                <ul class="dropdown-menu" aria-labelledby="actions<?= $qrCode->id ?>">
+                                                    <li><a class="dropdown-item" href="#">Details</a></li>
+                                                    <li><a class="dropdown-item" href="#">Edit</a></li>
+                                                    <li><a class="dropdown-item" href="#">Images</a></li>
+                                                    <li><a class="dropdown-item" href="#">Toggle Active</a></li>
+                                                </ul>
                                             </div>
                                         </td>
                                     </tr>
