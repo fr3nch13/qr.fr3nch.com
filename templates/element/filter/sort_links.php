@@ -5,7 +5,7 @@
  */
 
 if (!isset($class)) {
-    $class = 'btn btn-light';
+    $class = 'btn btn-light rounded-pill mx-1 my-1';
 }
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
