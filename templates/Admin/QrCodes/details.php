@@ -6,11 +6,11 @@
 if (!$this->getRequest()->is('ajax')) {
     $this->setLayout('dashboard/view');
 }
-$action = $this->getRequest()->getAttribute('action');
-print_r($action);
+$action = $this->getRequest()->getParam('action');
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <h2><?= $qrCode->name ?></h2>
+<h3><?= $action ?></h3>
 <ul class="nav nav-tabs">
   <li class="nav-item">
     <?= $this->Html->link(__('Details'), [
