@@ -124,7 +124,18 @@ class QrCodesController extends AppController
             throw new NotFoundException('Unable to find the image file.');
         }
 
-        $response = $this->response->withFile($qrCode->path);
+        $fileOptions = [];
+
+        // look for a download request.
+        // anything non-falsy
+        if ($this->request->getQuery('download') && $this->request->getQuery('download')) {
+            $fileOptions = [
+                'download' => true,
+                'name' => 'QR-' . $qrCode->qrkey . '.png',
+            ];
+        }
+
+        $response = $this->response->withFile($qrCode->path, $fileOptions);
         $modified = date('Y-m-d H:i:s.', filemtime($qrCode->path) ?: null);
         $response = $response->withModified($modified);
 

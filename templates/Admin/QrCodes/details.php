@@ -14,9 +14,29 @@ if ($qrCode->id) {
 
     $action = $this->getRequest()->getParam('action');
     $tabs = [
-        'view' => [__('Details'), ['controller' => 'QrCodes', 'action' => 'view', $qrCode->id]],
-        'edit' => [__('Edit'), ['controller' => 'QrCodes', 'action' => 'edit', $qrCode->id]],
-        'qrCode' => [__('Images'), ['controller' => 'QrImages', 'action' => 'qrCode', $qrCode->id]],
+        'view' => [__('Details'), [
+            'controller' => 'QrCodes',
+            'action' => 'view',
+            $qrCode->id,
+        ]],
+        'edit' => [__('Edit'), [
+            'controller' => 'QrCodes',
+            'action' => 'edit',
+            $qrCode->id,
+        ]],
+        'qrCode' => [__('Images'), [
+            'controller' => 'QrImages',
+            'action' => 'qrCode',
+            $qrCode->id,
+        ]],
+        'download' => [__('Download QR'), [
+            'plugin' => false,
+            'prefix' => false,
+            'controller' => 'QrCodes',
+            'action' => 'show',
+            $qrCode->id,
+            '?' => ['download' => true],
+        ]],
     ];
 
     ?>
