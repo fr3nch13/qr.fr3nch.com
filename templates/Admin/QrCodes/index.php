@@ -52,10 +52,10 @@ if (!$this->getRequest()->is('ajax')) {
                                             ]) ?>
                                         </div>
                                         <div class="col-auto d-grid">
-                                            <a
-                                                href=""
+                                            <button
+                                                type="submit"
                                                 class="btn btn-primary btn-xs btn-icon rounded-circle"
-                                            ><i class="bi bi-search"></i></a>
+                                            ><i class="bi bi-search"></i></button>
                                         </div>
                                     </div>
                                 </div>
