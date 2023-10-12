@@ -50,132 +50,67 @@ $this->start('page_options');
 $this->end(); // page_options
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
-<div class="card bg-opaque-white">
-    <div class="card-body bg-white">
-
-        <div class="table-responsive">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col" class="actions"><i class="bi bi-three-dots-vertical"></i></th>
-                        <th scope="col"><?= $this->Paginator->sort(
-                            'QrCodes.name',
-                            [
-                                'asc' => __('Name') . ' <i class="bi bi-chevron-down"></i>',
-                                'desc' => __('Name') . ' <i class="bi bi-chevron-up"></i>',
-                            ],
-                            [
-                                'escape' => false,
-                                'class' => 'btn btn-light',
-                            ]
-                        ) ?></th>
-                        <th scope="col"><?= $this->Paginator->sort(
-                            'QrCodes.qrkey',
-                            [
-                                'asc' => __('Key') . ' <i class="bi bi-chevron-down"></i>',
-                                'desc' => __('Key') . ' <i class="bi bi-chevron-up"></i>',
-                            ],
-                            [
-                                'escape' => false,
-                                'class' => 'underline text-black',
-                            ]
-                        ) ?></th>
-                        <th scope="col"><?= $this->Paginator->sort(
-                            'QrCodes.hits',
-                            [
-                                'asc' => __('Hits') . ' <i class="bi bi-chevron-down"></i>',
-                                'desc' => __('Hits') . ' <i class="bi bi-chevron-up"></i>',
-                            ],
-                            [
-                                'escape' => false,
-                                'class' => 'underline text-black',
-                            ]
-                        ) ?></th>
-                        <th scope="col"><?= $this->Paginator->sort(
-                            'QrCodes.is_active',
-                            [
-                                'asc' => __('Active') . ' <i class="bi bi-chevron-down"></i>',
-                                'desc' => __('Active') . ' <i class="bi bi-chevron-up"></i>',
-                            ],
-                            [
-                                'escape' => false,
-                                'class' => 'underline text-black',
-                            ]
-                        ) ?></th>
-                    </tr>
-                </thead>
-                <tbody>
-                <?php foreach ($qrCodes as $qrCode) : ?>
-                    <tr  class="<?= $qrCode->is_active ? '' : 'text-muted' ?>">
-                        <td class="text-center">
-                                <div class="dropdown">
-                                    <a
-                                        class="btn btn-sm btn-white btn-icon rounded-circle"
-                                        href="#"
-                                        role="button"
-                                        id="actions<?= $qrCode->id ?>"
-                                        data-bs-toggle="dropdown"
-                                        aria-haspopup="true"
-                                        aria-expanded="false">
-                                        <i class="bi bi-three-dots-vertical"></i>
-                                    </a>
-                                    <ul class="dropdown-menu" aria-labelledby="actions<?= $qrCode->id ?>">
-                                        <li><?= $this->Html->link(__('Details'), [
-                                            'controller' => 'QrCodes',
-                                            'action' => 'view',
-                                            $qrCode->id,
-                                        ], ['class' => 'dropdown-item']) ?></li>
-                                        <li><?= $this->Html->link(__('Edit'), [
-                                            'controller' => 'QrCodes',
-                                            'action' => 'edit',
-                                            $qrCode->id,
-                                        ], ['class' => 'dropdown-item']) ?></li>
-                                        <li><?= $this->Html->link(__('Images'), [
-                                            'controller' => 'QrImages',
-                                            'action' => 'qrCode',
-                                            $qrCode->id,
-                                        ], ['class' => 'dropdown-item']) ?></li>
-                                        <li><?= $this->Html->link(__('Toggle Active'), [
-                                            'controller' => 'QrCodes',
-                                            'action' => 'toggleActive',
-                                            $qrCode->id,
-                                        ], ['class' => 'dropdown-item']) ?></li>
-                                    </ul>
-                                </div>
-                            </td>
-                        <td>
-                            <?= $qrCode->name ?>
-                        </td>
-                        <td>
-                            <?= $qrCode->qrkey ?>
-                        </td>
-                        <td>
-                            <span class="badge bg-light text-dark rounded-pill"><?= $qrCode->hits ?></span>
-                        </td>
-                        <td>
-                            <?php
-                            if ($qrCode->is_active) {
-                                echo '<i class="bi bi-check2 text-success fs-6"></i>';
-                            } else {
-                                echo '<i class="bi bi-x fs-6"></i>';
-                            }
-                            ?>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-                </tbody>
-            </table>
-            <nav aria-label="Pagination" class="text-center">
-                <ul class="pagination">
-                    <?= $this->Paginator->first('&laquo;', ['label' => 'First']) ?>
-                    <?= $this->Paginator->prev('<', ['label' => 'Previous']) ?>
-                    <?= $this->Paginator->numbers() ?>
-                    <?= $this->Paginator->next('>', ['label' => 'Next']) ?>
-                    <?= $this->Paginator->last('&laquo;', ['label' => 'Last']) ?>
+<div class="container">
+    <?php foreach ($qrCodes as $qrCode) : ?>
+    <div class="row border-bottom">
+        <div class="col-2 qr-actions">
+            <div class="dropdown">
+                <a
+                    class="btn btn-sm btn-white btn-icon rounded-circle"
+                    href="#"
+                    role="button"
+                    id="actions<?= $qrCode->id ?>"
+                    data-bs-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false">
+                    <i class="bi bi-three-dots-vertical"></i>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="actions<?= $qrCode->id ?>">
+                    <li><?= $this->Html->link(__('Details'), [
+                        'controller' => 'QrCodes',
+                        'action' => 'view',
+                        $qrCode->id,
+                    ], ['class' => 'dropdown-item']) ?></li>
+                    <li><?= $this->Html->link(__('Edit'), [
+                        'controller' => 'QrCodes',
+                        'action' => 'edit',
+                        $qrCode->id,
+                    ], ['class' => 'dropdown-item']) ?></li>
+                    <li><?= $this->Html->link(__('Images'), [
+                        'controller' => 'QrImages',
+                        'action' => 'qrCode',
+                        $qrCode->id,
+                    ], ['class' => 'dropdown-item']) ?></li>
+                    <li><?= $this->Html->link(__('Toggle Active'), [
+                        'controller' => 'QrCodes',
+                        'action' => 'toggleActive',
+                        $qrCode->id,
+                    ], ['class' => 'dropdown-item']) ?></li>
                 </ul>
-            </nav>
+            </div>
+        </div>
+        <div class="col-10 qr-details <?= $qrCode->is_active ? '' : 'text-muted' ?>"">
+            <h5><?= $qrCode->name ?><small><?= $qrCode->qrkey ?></small></h5>
+            <?php
+            if ($qrCode->is_active) {
+                echo '<span class="badge bg-primary rounded-pill"><i class="bi bi-check2 text-success fs-6"></i></span>';
+            } else {
+                echo '<span class="badge bg-light text-dark rounded-pill"><i class="bi bi-x fs-6"></i></span>';
+            }
+            ?>
+            <span class="badge bg-light text-dark rounded-pill"><?= $qrCode->hits ?></span>
         </div>
     </div>
+    <?php endforeach; ?>
+    <nav aria-label="Pagination" class="text-center">
+        <ul class="pagination">
+            <?= $this->Paginator->first('&laquo;', ['label' => 'First']) ?>
+            <?= $this->Paginator->prev('<', ['label' => 'Previous']) ?>
+            <?= $this->Paginator->numbers() ?>
+            <?= $this->Paginator->next('>', ['label' => 'Next']) ?>
+            <?= $this->Paginator->last('&laquo;', ['label' => 'Last']) ?>
+        </ul>
+    </nav>
 </div>
 
 <?php $this->start('offcanvas') ?>
