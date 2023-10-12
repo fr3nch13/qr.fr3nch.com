@@ -7,11 +7,7 @@
 if (!isset($class)) {
     $class = 'btn btn-light rounded-pill mx-1 my-1';
 }
-$sort = null;
-$queryParams = $this->getRequest()->getQueryParams();
-if (isset($queryParams['sort'])) {
-    $sort = $queryParams['sort'];
-}
+$sort = $this->Paginator->param('sort');
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <?php foreach ($sorts as $key => $name) {
