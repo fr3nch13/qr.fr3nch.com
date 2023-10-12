@@ -40,6 +40,7 @@ $logoImage = $this->Html->image($logoImage, [
                 </a>
             </li>
             <?php if ($this->ActiveUser->isLoggedIn()) : ?>
+            <!-- The user icon and dropdown for user-specific pages -->
             <li class="nav-item dropdown dropdown-hover d-none d-lg-block">
                 <a
                     class="nav-link nav-icon"
@@ -48,57 +49,25 @@ $logoImage = $this->Html->image($logoImage, [
                     data-bs-toggle="dropdown"
                     aria-expanded="false"><i class="bi bi-person"></i>
                 </a>
-                <?php
-                    // The user icon and dropdown for user-specific pages
-                    // Make sure this matches the dashboard menu at:
-                    // layout/dashboard/base
-                ?>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                    <li><?= $this->Html->link('Dashboard', [
+                    <li><?= $this->Html->link(__('Dashboard'), [
                         'plugin' => false,
                         'prefix' => 'Admin',
                         'controller' => 'Users',
                         'action' => 'dashboard',
-                    ], ['class' => 'dropdown-item']) ?></li>
-                    <li><?= $this->Html->link('QR Codes', [
-                        'plugin' => false,
-                        'prefix' => 'Admin',
-                        'controller' => 'QrCodes',
-                        'action' => 'index',
-                    ], ['class' => 'dropdown-item']) ?></li>
-                    <li><?= $this->Html->link('Tags', [
-                        'plugin' => false,
-                        'prefix' => 'Admin',
-                        'controller' => 'Tags',
-                        'action' => 'index',
-                    ], ['class' => 'dropdown-item']) ?></li>
-                    <li><?= $this->Html->link('Sources', [
-                        'plugin' => false,
-                        'prefix' => 'Admin',
-                        'controller' => 'Sources',
-                        'action' => 'index',
-                    ], ['class' => 'dropdown-item']) ?></li>
-                    <li>
-                        <div class="dropdown-divider"></div>
-                    </li>
-                    <li><?= $this->Html->link('Profile', [
+                    ], ['class' => ['dropdown-item']]) ?></li>
+                    <li><?= $this->Html->link(__('Profile'), [
                         'plugin' => false,
                         'prefix' => 'Admin',
                         'controller' => 'Users',
                         'action' => 'view',
-                    ], ['class' => 'dropdown-item']) ?></li>
-                    <li><?= $this->Html->link('Settings', [
-                        'plugin' => false,
-                        'prefix' => 'Admin',
-                        'controller' => 'Users',
-                        'action' => 'edit',
-                    ], ['class' => 'dropdown-item']) ?></li>
-                    <li><?= $this->Html->link('Sign Out', [
+                    ], ['class' => ['dropdown-item']]) ?></li>
+                    <li><?= $this->Html->link(__('Sign Out'), [
                         'plugin' => false,
                         'prefix' => false,
                         'controller' => 'Users',
                         'action' => 'logout',
-                    ], ['class' => 'dropdown-item text-red']) ?></li>
+                    ], ['class' => 'dropdown-item text-red']); ?></li>
                 </ul>
             </li>
             <?php endif; ?>
@@ -154,24 +123,51 @@ $logoImage = $this->Html->image($logoImage, [
         <div class="collapse account-collapse" id="userNav" data-bs-parent="#mainNav">
             <ul class="navbar-nav">
                 <?php if ($this->ActiveUser->isLoggedIn()) : ?>
-                <li class="nav-item"><?= $this->Html->link('Dashboard', [
-                    'plugin' => false,
-                    'prefix' => 'Admin',
-                    'controller' => 'Users',
-                    'action' => 'dashboard',
-                ], ['class' => ['nav-link']]) ?></li>
-                <li class="nav-item"><?= $this->Html->link('Profile', [
-                    'plugin' => false,
-                    'prefix' => 'Admin',
-                    'controller' => 'Users',
-                    'action' => 'view',
-                ], ['class' => ['nav-link']]) ?></li>
-                <li class="nav-item"><?= $this->Html->link('Sign Out', [
-                    'plugin' => false,
-                    'prefix' => false,
-                    'controller' => 'Users',
-                    'action' => 'logout',
-                ], ['class' => 'nav-link text-red']); ?></li>
+                                <li class="nav-item"><?= $this->Html->link(__('Dashboard'), [
+                                    'plugin' => false,
+                                    'prefix' => 'Admin',
+                                    'controller' => 'Users',
+                                    'action' => 'dashboard',
+                                ], ['class' => 'nav-link fs-lg']) ?></li>
+                                <li class="nav-item"><?= $this->Html->link(__('QR Codes'), [
+                                    'plugin' => false,
+                                    'prefix' => 'Admin',
+                                    'controller' => 'QrCodes',
+                                    'action' => 'index',
+                                ], ['class' => 'nav-link fs-lg']) ?></li>
+                                <li class="nav-item"><?= $this->Html->link(__('Tags'), [
+                                    'plugin' => false,
+                                    'prefix' => 'Admin',
+                                    'controller' => 'Tags',
+                                    'action' => 'index',
+                                ], ['class' => 'nav-link fs-lg']) ?></li>
+                                <li class="nav-item"><?= $this->Html->link(__('Sources'), [
+                                    'plugin' => false,
+                                    'prefix' => 'Admin',
+                                    'controller' => 'Sources',
+                                    'action' => 'index',
+                                ], ['class' => 'nav-link fs-lg']) ?></li>
+                                <li class="nav-item">
+                                    <div class="dropdown-divider"></div>
+                                </li>
+                                <li class="nav-item"><?= $this->Html->link(__('Profile'), [
+                                    'plugin' => false,
+                                    'prefix' => 'Admin',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                ], ['class' => 'nav-link fs-lg']) ?></li>
+                                <li class="nav-item"><?= $this->Html->link(__('Settings'), [
+                                    'plugin' => false,
+                                    'prefix' => 'Admin',
+                                    'controller' => 'Users',
+                                    'action' => 'edit',
+                                ], ['class' => 'nav-link fs-lg']) ?></li>
+                                <li class="nav-item"><?= $this->Html->link(__('Sign Out'), [
+                                    'plugin' => false,
+                                    'prefix' => false,
+                                    'controller' => 'Users',
+                                    'action' => 'logout',
+                                ], ['class' => 'nav-link fs-lg text-red']) ?></li>
                 <?php else : ?>
                 <li class="nav-item">
                     <?php

@@ -26,27 +26,28 @@ $this->start('layout');
                         <nav class="sticky-top d-none d-lg-block">
                             <?php
                             // make sure this matches the user dropdown in element/nav/top
+                            // search for 'DashboardMenu'
                             ?>
                             <ul class="nav nav-minimal flex-column" id="dashboard-nav">
-                                <li class="nav-item"><?= $this->Html->link('Dashboard', [
+                                <li class="nav-item"><?= $this->Html->link(__('Dashboard'), [
                                     'plugin' => false,
                                     'prefix' => 'Admin',
                                     'controller' => 'Users',
                                     'action' => 'dashboard',
                                 ], ['class' => 'nav-link fs-lg']) ?></li>
-                                <li class="nav-item"><?= $this->Html->link('QR Codes', [
+                                <li class="nav-item"><?= $this->Html->link(__('QR Codes'), [
                                     'plugin' => false,
                                     'prefix' => 'Admin',
                                     'controller' => 'QrCodes',
                                     'action' => 'index',
                                 ], ['class' => 'nav-link fs-lg']) ?></li>
-                                <li class="nav-item"><?= $this->Html->link('Tags', [
+                                <li class="nav-item"><?= $this->Html->link(__('Tags'), [
                                     'plugin' => false,
                                     'prefix' => 'Admin',
                                     'controller' => 'Tags',
                                     'action' => 'index',
                                 ], ['class' => 'nav-link fs-lg']) ?></li>
-                                <li class="nav-item"><?= $this->Html->link('Sources', [
+                                <li class="nav-item"><?= $this->Html->link(__('Sources'), [
                                     'plugin' => false,
                                     'prefix' => 'Admin',
                                     'controller' => 'Sources',
@@ -55,19 +56,19 @@ $this->start('layout');
                                 <li class="nav-item">
                                     <div class="dropdown-divider"></div>
                                 </li>
-                                <li class="nav-item"><?= $this->Html->link('Profile', [
+                                <li class="nav-item"><?= $this->Html->link(__('Profile'), [
                                     'plugin' => false,
                                     'prefix' => 'Admin',
                                     'controller' => 'Users',
                                     'action' => 'view',
                                 ], ['class' => 'nav-link fs-lg']) ?></li>
-                                <li class="nav-item"><?= $this->Html->link('Settings', [
+                                <li class="nav-item"><?= $this->Html->link(__('Settings'), [
                                     'plugin' => false,
                                     'prefix' => 'Admin',
                                     'controller' => 'Users',
                                     'action' => 'edit',
                                 ], ['class' => 'nav-link fs-lg']) ?></li>
-                                <li class="nav-item"><?= $this->Html->link('Sign Out', [
+                                <li class="nav-item"><?= $this->Html->link(__('Sign Out'), [
                                     'plugin' => false,
                                     'prefix' => false,
                                     'controller' => 'Users',
