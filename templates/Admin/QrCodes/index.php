@@ -64,6 +64,7 @@ $this->end(); // page_options
             }
             ?>
             <span class="badge bg-light text-dark rounded-pill"><?= $qrCode->hits ?></span>
+            <span class="text-muted"><?= $qrCode->qrkey ?></spam>
         </div>
         <div class="col-1 qr-actions">
             <div class="dropdown">
