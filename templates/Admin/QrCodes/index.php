@@ -44,7 +44,7 @@ if (!$this->getRequest()->is('ajax')) {
                             <div class="grouped-inputs p-1 rounded-pill border">
                                 <div class="row g-0">
                                     <div class="col">
-                                    <input type="text" class="form-control form-control-sm px-2 text-primary"
+                                    <input type="text" class="form-control form-control-sm text-primary"
                                         aria-label="Text input with dropdown button" placeholder="What are you looking for ?">
                                     </div>
                                     <div class="col-auto d-grid">
