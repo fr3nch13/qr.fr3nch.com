@@ -41,6 +41,10 @@ if (!$this->getRequest()->is('ajax')) {
                 <div class="card bg-opaque-white">
                     <div class="card-body bg-white">
                         <form>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
+                                <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
+                            </div>
                             <div class="grouped-inputs p-1 border">
                                 <div class="row g-0">
                                     <div class="col">
