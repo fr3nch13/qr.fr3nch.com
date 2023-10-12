@@ -29,7 +29,7 @@ $this->start('page_options');
             href="#offcanvasFilter"
             role="button"
             aria-controls="offcanvasFilter"><?= __('Filters') ?>
-            <?php if ($this->Search->isSearch()) : ?>
+            <?php if ($this->Search->isSearch() || $this->Paginator->param('sort')) : ?>
             <span
                 class="
                     position-absolute
