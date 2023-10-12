@@ -53,18 +53,6 @@ $this->end(); // page_options
 <div class="container bg-white">
     <?php foreach ($qrCodes as $qrCode) : ?>
     <div class="row border-bottom py-1">
-        <div class="col-10 qr-details <?= $qrCode->is_active ? '' : 'text-muted' ?>"">
-            <h5><?= $qrCode->name ?></h5>
-            <?php
-            if ($qrCode->is_active) {
-                echo '<span class="badge bg-primary rounded-pill"><i class="bi bi-check2 fs-8"></i></span>';
-            } else {
-                echo '<span class="badge bg-light text-dark rounded-pill"><i class="bi bi-x fs-8"></i></span>';
-            }
-            ?>
-            <span class="badge bg-light text-dark rounded-pill"><?= $qrCode->hits ?></span>
-            <span class="text-muted"><?= $qrCode->qrkey ?></spam>
-        </div>
         <div class="col-1 qr-actions">
             <div class="dropdown">
                 <a
@@ -100,6 +88,18 @@ $this->end(); // page_options
                     ], ['class' => 'dropdown-item']) ?></li>
                 </ul>
             </div>
+        </div>
+        <div class="col-11 qr-details <?= $qrCode->is_active ? '' : 'text-muted' ?>"">
+            <h5><?= $qrCode->name ?></h5>
+            <?php
+            if ($qrCode->is_active) {
+                echo '<span class="badge bg-primary rounded-pill"><i class="bi bi-check2 fs-8"></i></span>';
+            } else {
+                echo '<span class="badge bg-light text-dark rounded-pill"><i class="bi bi-x fs-8"></i></span>';
+            }
+            ?>
+            <span class="badge bg-light text-dark rounded-pill"><?= $qrCode->hits ?></span>
+            <span class="text-muted"><?= $qrCode->qrkey ?></spam>
         </div>
     </div>
     <?php endforeach; ?>
