@@ -10,7 +10,7 @@ if (!$this->getRequest()->is('ajax')) {
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <div class="card bg-opaque-white">
-    <div class="card-body bg-white p-2 p-md-5">
+    <div class="card-body bg-white p-2 p-lg-5">
         <div class="row">
             <div class="col-lg-4 order-2 order-lg-1">
                 <img
