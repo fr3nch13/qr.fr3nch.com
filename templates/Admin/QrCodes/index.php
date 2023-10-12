@@ -41,13 +41,16 @@ if (!$this->getRequest()->is('ajax')) {
                 <div class="card bg-opaque-white">
                     <div class="card-body bg-white">
                         <form>
-                            <div class="form-row align-items-center">
-                                <div class="col-auto">
-                                    <label class="sr-only" for="inlineFormInput">Name</label>
-                                    <input type="text" class="form-control mb-2" id="inlineFormInput" placeholder="Jane Doe">
-                                </div>
-                                <div class="col-auto">
-                                    <button type="submit" class="btn btn-primary mb-2">Submit</button>
+                            <div class="grouped-inputs p-1 rounded-pill border">
+                                <div class="row g-0">
+                                    <div class="col">
+                                    <input type="text" class="form-control form-control-lg px-4 text-primary"
+                                        aria-label="Text input with dropdown button" placeholder="What are you looking for ?">
+                                    </div>
+                                    <div class="col-auto d-grid">
+                                    <a href="" class="btn btn-primary btn-lg btn-icon rounded-circle"><i
+                                        class="bi bi-search"></i></a>
+                                    </div>
                                 </div>
                             </div>
                         </form>
