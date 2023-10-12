@@ -78,7 +78,7 @@ $this->start('layout');
                         </nav>
                     </aside>
 
-                    <div class="col-lg-9 split-content pt-lg-20 py-2 py-lg-10">
+                    <div class="col-lg-9 split-content pt-lg-20 px-2 px-lg-10">
                         <?= $this->Flash->render() ?>
                         <?= $this->fetch('content') ?>
                     </div>
