@@ -10,13 +10,10 @@ if (!$this->getRequest()->is('ajax')) {
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <div class="row">
-    <div class="col-lg-7">
+    <div class="col-lg-8">
         <dl class="row">
             <dt class="col-sm-3"><?= __('Key') ?></dt>
             <dd class="col-sm-9"><?= h($qrCode->qrkey) ?> </dd>
-
-            <dt class="col-sm-3"><?= __('URL') ?></dt>
-            <dd class="col-sm-9"><?= $qrCode->url ?> </dd>
 
             <dt class="col-sm-3"><?= __('Hits') ?></dt>
             <dd class="col-sm-9"><?= h($qrCode->last_hit) ?> </dd>
@@ -37,7 +34,16 @@ if (!$this->getRequest()->is('ajax')) {
                 ]) : '' ?> </dd>
 
             <dt class="col-sm-3"><?= __('Owner') ?></dt>
-            <dd class="col-sm-9"><?= $qrCode->hasValue('user') ? $qrCode->user->name : '' ?> </dd>
+            <dd class="col-sm-9"><?= $qrCode->hasValue('user') ? $this->Html->link(
+                $qrCode->user->name,
+                [
+                    'controller' => 'Users',
+                    'action' => 'view',
+                    $qrCode->user->id
+                ]) : '' ?> </dd>
+
+            <dt class="col-sm-3"><?= __('URL') ?></dt>
+            <dd class="col-sm-9"><?= $qrCode->url ?> </dd>
         </dl>
     </div>
     <div class="col-lg-4">
