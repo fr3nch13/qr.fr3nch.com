@@ -57,9 +57,9 @@ $this->end(); // page_options
             <h5><?= $qrCode->name ?> <small class="h6 text-muted"><?= $qrCode->qrkey ?></small></h5>
             <?php
             if ($qrCode->is_active) {
-                echo '<span class="badge bg-primary rounded-pill"><i class="bi bi-check2 fs-4"></i></span>';
+                echo '<span class="badge bg-primary rounded-pill"><i class="bi bi-check2 fs-8"></i></span>';
             } else {
-                echo '<span class="badge bg-light text-dark rounded-pill"><i class="bi bi-x fs-4"></i></span>';
+                echo '<span class="badge bg-light text-dark rounded-pill"><i class="bi bi-x fs-8"></i></span>';
             }
             ?>
             <span class="badge bg-light text-dark rounded-pill"><?= $qrCode->hits ?></span>
