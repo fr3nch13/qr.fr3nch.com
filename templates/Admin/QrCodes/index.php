@@ -9,8 +9,6 @@ if (!$this->getRequest()->is('ajax')) {
 }
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
-    <h1><?= __('QR Codes') ?></h1>
-
     <section>
         <div class="row g-3 g-md-5 align-items-end mb-5">
             <div class="col-md-6">
@@ -25,7 +23,7 @@ if (!$this->getRequest()->is('ajax')) {
                 -->
             </div>
 
-            <div class="col-md-6 text-md-end py-1">
+            <div class="col-md-6 text-md-end">
                 <ul class="list-inline">
                     <li class="list-inline-item ms-2">
                         <?= $this->Html->link(__('Add a QR Code'), [
