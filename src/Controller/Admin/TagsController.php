@@ -74,6 +74,30 @@ class TagsController extends AppController
     }
 
     /**
+     * Index method
+     *
+     * @param ?string $id QR Code id.
+     * @return ?\Cake\Http\Response Renders view
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function qrCode(?string $id = null): ?Response
+    {
+        $this->request->allowMethod(['get']);
+
+        // Policy is located at \App\Policy\QrCodePolicy::canQrCode();
+        $qrCode = $this->Tags->QrCodes->get((int)$id);
+        $this->Authorization->authorize($qrCode);
+
+        $query = $this->Tags->find('qrCode', QrCode: $qrCode);
+        $query = $this->Authorization->applyScope($query);
+        $tags = $this->paginate($query);
+
+        $this->set(compact('qrCode', 'tags'));
+
+        return null;
+    }
+
+    /**
      * View method
      *
      * @param ?string $id Tag id.
