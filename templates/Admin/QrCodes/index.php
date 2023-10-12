@@ -13,14 +13,6 @@ if (!$this->getRequest()->is('ajax')) {
         <div class="row g-3 g-md-5 align-items-end mb-5">
             <div class="col-md-6">
                 <h1><?= __('QR Codes') ?></h1>
-                <!--
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">Shop</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">QR Codes</li>
-                    </ol>
-                </nav>
-                -->
             </div>
 
             <div class="col-md-6 text-md-end">
@@ -40,31 +32,37 @@ if (!$this->getRequest()->is('ajax')) {
             <div class="col">
                 <div class="card bg-opaque-white">
                     <div class="card-body bg-white">
+                        <!-- saerch form -->
                         <div class="row g-3 g-md-5 align-items-end mb-5">
                             <div class="col-md-6">
                             </div>
                             <div class="col-md-6 text-md-end">
-                                <div class="input-group mb-3">
-                                    <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
-                                    <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
+                                <?= $this->Form->create(null, [
+                                    'valueSources' => 'query',
+                                ]); ?>
+                                <div class="grouped-inputs p-1 border">
+                                    <div class="row g-0">
+                                        <div class="col">
+                                            <?= $this->Form->input('q', [
+                                                'type' => 'text',
+                                                'class' => 'form-control form-control-xs text-primary',
+                                                'placeholder' => __('Search'),
+                                                'aria-label' => __('Search'),
+                                                'aria-describedby' => 'buttonSearch',
+                                            ]) ?>
+                                        </div>
+                                        <div class="col-auto d-grid">
+                                            <a
+                                                href=""
+                                                class="btn btn-primary btn-xs btn-icon rounded-circle"
+                                            ><i class="bi bi-search"></i></a>
+                                        </div>
+                                    </div>
                                 </div>
+                                <?= $this->Form->end(); ?>
                             </div>
                         </div>
-                        <form>
 
-                            <div class="grouped-inputs p-1 border">
-                                <div class="row g-0">
-                                    <div class="col">
-                                        <input type="text" class="form-control form-control-xs text-primary"
-                                            aria-label="Text input with dropdown button" placeholder="What are you looking for ?">
-                                    </div>
-                                    <div class="col-auto d-grid">
-                                        <a href="" class="btn btn-primary btn-xs btn-icon rounded-circle"><i
-                                            class="bi bi-search"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
                         <div class="table-responsive">
                             <table class="table">
                                 <thead>
