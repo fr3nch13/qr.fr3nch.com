@@ -9,7 +9,88 @@ if (!$this->getRequest()->is('ajax')) {
 }
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
-    <h1><?= __('QR Codes') ?></h1>
+
+
+    <div class="col-md-6">
+                    <h1><?= __('QR Codes') ?></h1>
+                    <!--
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Shop</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">QR Codes</li>
+                        </ol>
+                    </nav>
+                    -->
+                </div>
+
+                <div class="col-md-6 text-md-end">
+                    <ul class="list-inline">
+                        <?php if ($this->ActiveUser->isLoggedIn()) : ?>
+                        <li class="list-inline-item ms-2">
+                            <?= $this->Html->link(__('Add a QR Code'), [
+                                'controller' => 'QrCodes',
+                                'action' => 'add',
+                            ], [
+                                'class' => 'underline text-black',
+                            ]); ?>
+                        </li>
+                        <?php endif; ?>
+                        <li class="list-inline-item">
+                            <div class="dropdown">
+                                <a
+                                    class="underline text-black"
+                                    href="#" role="button"
+                                    id="indexPageOptions"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    Sort <i class="bi bi-chevron-down"></i>
+                                </a>
+
+                                <ul class="dropdown-menu" aria-labelledby="indexPageOptions">
+                                    <li><?= $this->Html->fixPaginatorSort($this->Paginator->sort(
+                                        'QrCodes.name',
+                                        [
+                                            'asc' => '<i class="bi bi-chevron-down"></i> ' . __('Name'),
+                                            'desc' => '<i class="bi bi-chevron-up"></i> ' . __('Name'),
+                                        ],
+                                        ['escape' => false]
+                                    )); ?></li>
+                                    <li><?= $this->Html->fixPaginatorSort($this->Paginator->sort(
+                                        'QrCodes.created',
+                                        [
+                                            'asc' => '<i class="bi bi-chevron-down"></i> ' . __('Created'),
+                                            'desc' => '<i class="bi bi-chevron-up"></i> ' . __('Created'),
+                                        ],
+                                        ['escape' => false]
+                                    )); ?></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="list-inline-item ms-2">
+                            <a
+                                class=" underline text-black position-relative"
+                                data-bs-toggle="offcanvas"
+                                href="#offcanvasFilter"
+                                role="button"
+                                aria-controls="offcanvasFilter"><?= __('Filters') ?>
+                                <?php if ($this->Search->isSearch()) : ?>
+                                <span
+                                    class="
+                                        position-absolute
+                                        top-0
+                                        start-100
+                                        translate-middle
+                                        rounded-pill
+                                        text-red
+                                        p-1">
+                                    <i class="bi bi-check filtering-applied"></i>
+                                    <span class="visually-hidden"><?= __('Filters are applied') ?></span>
+                                </span>
+                                <?php endif; ?>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
 
     <section>
         <div class="row">
@@ -20,8 +101,8 @@ if (!$this->getRequest()->is('ajax')) {
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th scope="col"><?= __('Key') ?></th>
                                         <th scope="col"><?= __('Name') ?></th>
+                                        <th scope="col"><?= __('Key') ?></th>
                                         <th scope="col"><?= __('Active') ?></th>
                                         <th scope="col"><?= __('Hits') ?></th>
                                         <th scope="col" class="actions"><?= __('Actions') ?></th>
@@ -31,10 +112,10 @@ if (!$this->getRequest()->is('ajax')) {
                                 <?php foreach ($qrCodes as $qrCode) : ?>
                                     <tr  class="<?= $qrCode->is_active ? '' : 'text-muted' ?>">
                                         <td>
-                                            <?= $qrCode->qrkey ?>
+                                            <?= $qrCode->name ?>
                                         </td>
                                         <td>
-                                            <?= $qrCode->name ?>
+                                            <?= $qrCode->qrkey ?>
                                         </td>
                                         <td>
                                             <?php
