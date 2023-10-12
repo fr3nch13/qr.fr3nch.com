@@ -17,11 +17,11 @@ $tabs = [
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <div class="container mt-5">
     <div class="row align-items-end mb-2">
-        <div class="col-lg-6 mb-sm-2 mb-lg-0">
+        <div class="col-md-6 mb-sm-4  mb-lg-0">
             <h2><?= $qrCode->name ?></h2>
         </div>
 
-        <div class="col-lg-6 text-md-end">
+        <div class="col-md-6 text-md-end">
             <ul class="list-inline">
             <?php foreach ($tabs as $k => $tab) :
                 $options = [
