@@ -20,23 +20,21 @@ $this->assign('page_title', __('Add a QR Code'));
         <div class="row">
             <div class="col">
                 <?= $this->Form->create($qrCode) ?>
-                <fieldset>
-                    <legend><?= __('Add QR Code') ?></legend>
 
-                    <?= $this->Form->control('qrkey'); ?>
+                <?= $this->Form->control('qrkey'); ?>
 
-                    <?= $this->Form->control('name'); ?>
+                <?= $this->Form->control('name'); ?>
 
-                    <?= $this->Form->control('description'); ?>
+                <?= $this->Form->control('description'); ?>
 
-                    <?= $this->Form->control('url', ['type' => 'text']); ?>
+                <?= $this->Form->control('url', ['type' => 'text']); ?>
 
-                    <?= $this->Form->control('source_id', ['options' => $sources]); ?>
+                <?= $this->Form->control('source_id', ['options' => $sources]); ?>
 
-                    <?= $this->Form->control('tags._ids', ['options' => $tags]); ?>
+                <?= $this->Form->control('tags._ids', ['options' => $tags]); ?>
 
-                </fieldset>
                 <?= $this->Form->button(__('Submit')) ?>
+
                 <?= $this->Form->end() ?>
             </div>
         </div>
