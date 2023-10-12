@@ -21,6 +21,7 @@ if (!$this->getRequest()->is('ajax')) {
                                 <thead>
                                     <tr>
                                         <th scope="col"><?= __('Key') ?></th>
+                                        <th scope="col"><?= __('Name') ?></th>
                                         <th scope="col"><?= __('Active') ?></th>
                                         <th scope="col"><?= __('Hits') ?></th>
                                         <th scope="col" class="actions"><?= __('Actions') ?></th>
@@ -31,6 +32,9 @@ if (!$this->getRequest()->is('ajax')) {
                                     <tr  class="<?= $qrCode->is_active ? '' : 'text-muted' ?>">
                                         <td>
                                             <?= $qrCode->qrkey ?>
+                                        </td>
+                                        <td>
+                                            <?= $qrCode->name ?>
                                         </td>
                                         <td>
                                             <?php
