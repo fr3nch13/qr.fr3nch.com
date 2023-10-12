@@ -8,7 +8,7 @@ if (!$this->getRequest()->is('ajax')) {
     $this->setLayout('dashboard/index');
 }
 
-$this->set('page_title', __('QR Codes'));
+$this->assign('page_title', __('QR Codes'));
 
 $this->start('page_options');
 ?>
