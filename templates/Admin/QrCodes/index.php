@@ -40,7 +40,10 @@ if (!$this->getRequest()->is('ajax')) {
                                                 'asc' => __('Name') . ' <i class="bi bi-chevron-down"></i>',
                                                 'desc' => __('Name') . ' <i class="bi bi-chevron-up"></i>',
                                             ],
-                                            ['escape' => false]
+                                            [
+                                                'escape' => false,
+                                                'class' => 'underline text-black',
+                                            ]
                                         ) ?></th>
                                         <th scope="col"><?= $this->Paginator->sort(
                                             'QrCodes.qrkey',
@@ -48,7 +51,10 @@ if (!$this->getRequest()->is('ajax')) {
                                                 'asc' => __('Key') . ' <i class="bi bi-chevron-down"></i>',
                                                 'desc' => __('Key') . ' <i class="bi bi-chevron-up"></i>',
                                             ],
-                                            ['escape' => false]
+                                            [
+                                                'escape' => false,
+                                                'class' => 'underline text-black',
+                                            ]
                                         ) ?></th>
                                         <th scope="col"><?= $this->Paginator->sort(
                                             'QrCodes.is_active',
@@ -56,7 +62,10 @@ if (!$this->getRequest()->is('ajax')) {
                                                 'asc' => __('Active') . ' <i class="bi bi-chevron-down"></i>',
                                                 'desc' => __('Active') . ' <i class="bi bi-chevron-up"></i>',
                                             ],
-                                            ['escape' => false]
+                                            [
+                                                'escape' => false,
+                                                'class' => 'underline text-black',
+                                            ]
                                         ) ?></th>
                                         <th scope="col"><?= $this->Paginator->sort(
                                             'QrCodes.hits',
@@ -64,7 +73,10 @@ if (!$this->getRequest()->is('ajax')) {
                                                 'asc' => __('Hits') . ' <i class="bi bi-chevron-down"></i>',
                                                 'desc' => __('Hits') . ' <i class="bi bi-chevron-up"></i>',
                                             ],
-                                            ['escape' => false]
+                                            [
+                                                'escape' => false,
+                                                'class' => 'underline text-black',
+                                            ]
                                         ) ?></th>
                                         <th scope="col" class="actions"><?= __('Actions') ?></th>
                                     </tr>
