@@ -7,29 +7,30 @@ if (!$this->getRequest()->is('ajax')) {
     $this->setLayout('dashboard/view');
 }
 $action = $this->getRequest()->getParam('action');
+
+$tabs = [
+    'view' => [__('Details'), ['controler' => 'QrCodes', 'action' => 'view', $qrCode->id]],
+    'edit' => [__('Edit'), ['controler' => 'QrCodes', 'action' => 'edit', $qrCode->id]],
+    'qrCode' => [__('Images'), ['controler' => 'QrImages', 'action' => 'qrCode', $qrCode->id]],
+];
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <h2><?= $qrCode->name ?></h2>
 <h3><?= $action ?></h3>
 <ul class="nav nav-tabs">
-  <li class="nav-item">
-    <?= $this->Html->link(__('Details'), [
-        'controler' => 'QrCodes',
-        'action' => 'view',
-        $qrCode->id,
-    ], [
+<?php foreach ($tabs as $k => $tab) :
+    $options = [
         'class' => 'nav-link',
-    ]) ?>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="#">Link</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="#">Link</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link disabled">Disabled</a>
-  </li>
+    ];
+    if ($k === $action) {
+        $options['class'] .= ' active';
+        $options['aria-current'] = 'page';
+    }
+    ?>
+    <li class="nav-item">
+        <?= $this->Html->link($tab[0], $tab[1], $options) ?>
+    </li>
+<?php endforeach; ?>
 </ul>
 
 <?= $this->fetch('content'); ?>
