@@ -136,14 +136,14 @@ if (!$this->getRequest()->is('ajax')) {
                                         <td class="text-center">
                                             <div class="dropdown">
                                                 <a
-                                                    class="nav-icon"
+                                                    class="btn btn-sm btn-white btn-icon rounded-circle"
                                                     href="#"
                                                     role="button"
                                                     id="actions<?= $qrCode->id ?>"
                                                     data-bs-toggle="dropdown"
                                                     aria-haspopup="true"
                                                     aria-expanded="false">
-                                                    <i class="bi bi-gear"></i>
+                                                    <i class="bi bi-three-dots-vertical"></i></i>
                                                 </a>
                                                 <ul class="dropdown-menu" aria-labelledby="actions<?= $qrCode->id ?>">
                                                     <li><a class="dropdown-item" href="#">Details</a></li>
