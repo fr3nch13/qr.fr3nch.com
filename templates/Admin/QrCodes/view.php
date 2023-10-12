@@ -45,6 +45,9 @@ if (!$this->getRequest()->is('ajax')) {
             <dt class="col-sm-3"><?= __('URL') ?></dt>
             <dd class="col-sm-9"><?= $qrCode->url ?> </dd>
         </dl>
+        <div class="row">
+            <p class="text-secondary mb-3"><?= $this->Text->autoParagraph(h($qrCode->description)) ?></p>
+        </div>
     </div>
     <div class="col-lg-4">
         <img
@@ -52,11 +55,6 @@ if (!$this->getRequest()->is('ajax')) {
             src="<?= $this->Url->build(['action' => 'show', $qrCode->id]) ?>"
             alt="<?= __('The QR Code'); ?>">
     </div>
-</div>
-
-
-<div class="product-view">
-sdfasdfasdf
 </div>
 
 <?= $this->Template->templateComment(false, __FILE__); ?>

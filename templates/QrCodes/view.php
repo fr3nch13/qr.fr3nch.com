@@ -59,7 +59,7 @@ if (!$this->getRequest()->is('ajax')) {
         <?php if (!$qrCode->is_active) : ?>
         <div class="ribbon red"><span><?= __('Inactive') ?></span></div>
         <?php endif; ?>
-        
+
         <!-- The QR Code's images -->
         <div class="col-lg-6 position-relative">
             <div class="row g-1">
@@ -142,7 +142,7 @@ if (!$this->getRequest()->is('ajax')) {
         <div class="col-lg-6 col-xl-6">
             <h1 class="mb-1 <?= ($qrCode->is_active ? 'active' : 'inactive')?>"><?= h($qrCode->name) ?></h1>
 
-            <p class="text-secondary mb-3"><?= $this->Text->autoParagraph(h($qrCode->description)); ?></p>
+            <p class="text-secondary mb-3"><?= $this->Text->autoParagraph(h($qrCode->description)) ?></p>
 
             <div class="accordion mb-3" id="accordion-1">
 
