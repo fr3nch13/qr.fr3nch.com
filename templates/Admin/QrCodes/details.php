@@ -22,17 +22,17 @@ $tabs = [
         </div>
 
         <div class="col-md-6 text-md-en">
-            <ul class="nav nav-tabs">
+            <ul class="list-inline">
             <?php foreach ($tabs as $k => $tab) :
                 $options = [
-                    'class' => 'nav-link',
+                    'class' => 'underline text-black',
                 ];
                 if ($k === $action) {
                     $options['class'] .= ' active';
                     $options['aria-current'] = 'page';
                 }
                 ?>
-                <li class="nav-item">
+                <li class="list-inline-item ms-2">
                     <?= $this->Html->link($tab[0], $tab[1], $options) ?>
                 </li>
             <?php endforeach; ?>
