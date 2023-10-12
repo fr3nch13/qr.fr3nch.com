@@ -6,7 +6,7 @@
  */
 
 if (!$this->getRequest()->is('ajax')) {
-    $this->setLayout('pages/index');
+    $this->setLayout('dashboard/index');
 }
 // TODO: build out this page.
 // This will be the page where you can manage the images related to a QR Code.

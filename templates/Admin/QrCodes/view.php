@@ -4,7 +4,7 @@
  * @var \App\Model\Entity\QrCode $qrCode
  */
 if (!$this->getRequest()->is('ajax')) {
-    $this->setLayout('pages/dashboard');
+    $this->setLayout('dashboard/view');
 }
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>

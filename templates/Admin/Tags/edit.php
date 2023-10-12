@@ -5,7 +5,7 @@
  * @var \Cake\Collection\CollectionInterface|array<string> $qrCodes
  */
 if (!$this->getRequest()->is('ajax')) {
-    $this->setLayout('pages/form');
+    $this->setLayout('dashboard/form');
 }
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>

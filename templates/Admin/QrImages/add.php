@@ -4,7 +4,7 @@
  * @var \App\Model\Entity\QrImage $qrImage
  */
 if (!$this->getRequest()->is('ajax')) {
-    $this->setLayout('pages/form');
+    $this->setLayout('dashboard/form');
 }
 // TODO: make the add form for images
 // labels: images, templates

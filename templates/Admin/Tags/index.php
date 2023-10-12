@@ -4,7 +4,7 @@
  * @var iterable<\App\Model\Entity\Tag> $tags
  */
 if (!$this->getRequest()->is('ajax')) {
-    $this->setLayout('pages/dashboard');
+    $this->setLayout('dashboard/index');
 }
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
