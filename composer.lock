@@ -1199,10 +1199,10 @@
         },
         {
             "name": "npm-asset/bootstrap5-tags",
-            "version": "1.5.8",
+            "version": "1.6.11",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/bootstrap5-tags/-/bootstrap5-tags-1.5.8.tgz"
+                "url": "https://registry.npmjs.org/bootstrap5-tags/-/bootstrap5-tags-1.6.11.tgz"
             },
             "type": "npm-asset",
             "license": [
