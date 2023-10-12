@@ -51,7 +51,7 @@ if (!$this->getRequest()->is('ajax')) {
                                                     href="#"
                                                     role="button"
                                                     id="actions<?= $qrCode->id ?>"
-                                                    data-toggle="dropdown"
+                                                    data-bs-toggle="dropdown"
                                                     aria-haspopup="true"
                                                     aria-expanded="false">
                                                     Actions
