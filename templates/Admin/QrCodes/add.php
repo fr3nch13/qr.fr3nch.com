@@ -24,7 +24,7 @@ $this->assign('page_title', __('Add a QR Code'));
                     'required' => true,
                     'spacing' => 'mb-2',
                     'label' => __('Unique Key'),
-                    'help' => __('The help message')
+                    'help' => __('Can not be edited later.')
                 ]); ?>
             </div>
             <div class="col-8">
@@ -46,10 +46,19 @@ $this->assign('page_title', __('Add a QR Code'));
                 ]); ?>
             </div>
         </div>
+        <div class="row">
+            <div class="col">
+                <?= $this->Form->control('source_id', [
+                    'required' => true,
+                    'spacing' => 'mb-2',
+                    'empty' => __('Select a Source'),
+                    'options' => $sources,
+                    'label' => __('Source'),
+                ]); ?>
+            </div>
+        </div>
 
                 <?= $this->Form->control('description'); ?>
-
-                <?= $this->Form->control('source_id', ['options' => $sources]); ?>
 
                 <?= $this->Form->control('tags._ids', ['options' => $tags]); ?>
 
