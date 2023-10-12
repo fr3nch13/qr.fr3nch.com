@@ -34,7 +34,14 @@ if (!$this->getRequest()->is('ajax')) {
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th scope="col"><?= $this->Paginator->sort('QrCodes.name', __('Name')) ?></th>
+                                        <th scope="col"><?= $this->Paginator->sort(
+                                            'QrCodes.name',
+                                            [
+                                                'asc' => __('Name') . ' <i class="bi bi-chevron-down"></i>',
+                                                'desc' => __('Name') . ' <i class="bi bi-chevron-up"></i>',
+                                            ],
+                                            ['escape' => false]
+                                        ) ?></th>
                                         <th scope="col"><?= $this->Paginator->sort('QrCodes.qrkey', __('Key')) ?></th>
                                         <th scope="col"><?= $this->Paginator->sort('QrCodes.is_active', __('Active')) ?></th>
                                         <th scope="col"><?= $this->Paginator->sort('QrCodes.hits', __('Hits')) ?></th>
