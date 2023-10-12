@@ -47,7 +47,7 @@ if ($qrCode->id) {
             'class' => 'underline text-black',
         ];
         if ($k === $controller . '.' . $action) {
-            $options['class'] .= ' active';
+            $options['class'] .= ' text-decoration-underline active';
             $options['aria-current'] = 'page';
         }
         ?>
