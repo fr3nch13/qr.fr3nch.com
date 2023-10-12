@@ -8,11 +8,15 @@ if (!$this->getRequest()->is('ajax')) {
 }
 $action = $this->getRequest()->getParam('action');
 
-$tabs = [
-    'view' => [__('Details'), ['controller' => 'QrCodes', 'action' => 'view', $qrCode->id]],
-    'edit' => [__('Edit'), ['controller' => 'QrCodes', 'action' => 'edit', $qrCode->id]],
-    'qrCode' => [__('Images'), ['controller' => 'QrImages', 'action' => 'qrCode', $qrCode->id]],
-];
+$tabs = [];
+
+if ($qrCode->id) {
+    $tabs = [
+        'view' => [__('Details'), ['controller' => 'QrCodes', 'action' => 'view', $qrCode->id]],
+        'edit' => [__('Edit'), ['controller' => 'QrCodes', 'action' => 'edit', $qrCode->id]],
+        'qrCode' => [__('Images'), ['controller' => 'QrImages', 'action' => 'qrCode', $qrCode->id]],
+    ];
+}
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <div class="container mt-md-5 px-0 px-md-3">
