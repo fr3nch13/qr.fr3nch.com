@@ -42,7 +42,7 @@ if (!$this->getRequest()->is('ajax')) {
                                             ?>
                                         </td>
                                         <td>
-                                            <?= $qrCode->hits ?>
+                                            <span class="badge bg-primary rounded-pill"><?= $qrCode->hits ?></span>
                                         </td>
                                         <td class="text-center">
                                             <div class="dropdown">
