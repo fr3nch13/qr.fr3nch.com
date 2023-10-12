@@ -23,7 +23,8 @@ $this->assign('page_title', __('Add a QR Code'));
                 <?= $this->Form->control('qrkey', [
                     'required' => true,
                     'spacing' => 'mb-2',
-                    'label' => __('Key'),
+                    'label' => __('Unique Key'),
+                    'help' => __('The help message')
                 ]); ?>
             </div>
             <div class="col-8">
