@@ -15,7 +15,6 @@ $tabs = [
 ];
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
-
 <div class="container mt-5">
     <div class="row g-3 g-md-5 mb-5">
         <div class="col">
