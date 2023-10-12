@@ -13,25 +13,24 @@ if ($qrCode->id) {
     $this->start('page_options');
 
     $controller = $this->getRequest()->getParam('controller');
-    debug($controller);
     $action = $this->getRequest()->getParam('action');
     $tabs = [
-        'view' => [__('Details'), [
+        'QrCodes.view' => [__('Details'), [
             'controller' => 'QrCodes',
             'action' => 'view',
             $qrCode->id,
         ]],
-        'edit' => [__('Edit'), [
+        'QrCodes.edit' => [__('Edit'), [
             'controller' => 'QrCodes',
             'action' => 'edit',
             $qrCode->id,
         ]],
-        'qrCode' => [__('Images'), [
+        'QrImages.qrCode' => [__('Images'), [
             'controller' => 'QrImages',
             'action' => 'qrCode',
             $qrCode->id,
         ]],
-        'download' => [__('Download QR'), [
+        'QrCodes.download' => [__('Download QR'), [
             'plugin' => false,
             'prefix' => false,
             'controller' => 'QrCodes',
@@ -47,7 +46,7 @@ if ($qrCode->id) {
         $options = [
             'class' => 'underline text-black',
         ];
-        if ($k === $action) {
+        if ($k === $controller . '.' . $action) {
             $options['class'] .= ' active';
             $options['aria-current'] = 'page';
         }
