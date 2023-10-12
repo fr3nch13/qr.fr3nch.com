@@ -9,8 +9,8 @@ if (!$this->getRequest()->is('ajax')) {
 }
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
-    <section>
-        <div class="row g-3 g-md-5 mb-5">
+    <div class="container mt-5">
+        <div class="row g-3 g-md-5 align-items-end mb-5">
             <div class="col-md-6">
                 <h1><?= __('QR Codes') ?></h1>
             </div>
@@ -183,7 +183,7 @@ if (!$this->getRequest()->is('ajax')) {
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
     <?php $this->start('offcanvas') ?>
     <?= $this->Template->objectComment('OffCanvas/filters') ?>
