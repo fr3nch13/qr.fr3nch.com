@@ -17,47 +17,6 @@ if (!$this->getRequest()->is('ajax')) {
 
             <div class="col-md-6 text-md-end">
                 <ul class="list-inline">
-                    <?php if ($this->ActiveUser->isLoggedIn()) : ?>
-                    <li class="list-inline-item ms-2">
-                        <?= $this->Html->link(__('Add a QR Code'), [
-                            'controller' => 'QrCodes',
-                            'action' => 'add',
-                        ], [
-                            'class' => 'underline text-black',
-                        ]); ?>
-                    </li>
-                    <?php endif; ?>
-                    <li class="list-inline-item">
-                        <div class="dropdown">
-                            <a
-                                class="underline text-black"
-                                href="#" role="button"
-                                id="indexPageOptions"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                Sort <i class="bi bi-chevron-down"></i>
-                            </a>
-
-                            <ul class="dropdown-menu" aria-labelledby="indexPageOptions">
-                                <li><?= $this->Html->fixPaginatorSort($this->Paginator->sort(
-                                    'QrCodes.name',
-                                    [
-                                        'asc' => '<i class="bi bi-chevron-down"></i> ' . __('Name'),
-                                        'desc' => '<i class="bi bi-chevron-up"></i> ' . __('Name'),
-                                    ],
-                                    ['escape' => false]
-                                )); ?></li>
-                                <li><?= $this->Html->fixPaginatorSort($this->Paginator->sort(
-                                    'QrCodes.created',
-                                    [
-                                        'asc' => '<i class="bi bi-chevron-down"></i> ' . __('Created'),
-                                        'desc' => '<i class="bi bi-chevron-up"></i> ' . __('Created'),
-                                    ],
-                                    ['escape' => false]
-                                )); ?></li>
-                            </ul>
-                        </div>
-                    </li>
                     <li class="list-inline-item ms-2">
                         <a
                             class=" underline text-black position-relative"
@@ -65,7 +24,7 @@ if (!$this->getRequest()->is('ajax')) {
                             href="#offcanvasFilter"
                             role="button"
                             aria-controls="offcanvasFilter"><?= __('Filters') ?>
-                            <?php if ($this->Search->isSearch()) : ?>
+                            <?php if ($this->Search->isSearch() || $this->Paginator->param('sort')) : ?>
                             <span
                                 class="
                                     position-absolute
@@ -203,7 +162,7 @@ if (!$this->getRequest()->is('ajax')) {
                 ]); ?>
             </div>
             </div>
-            <div class="widget text-end">
+            <div class="widget mb-2 text-end">
                 <div class="btn-group" role="group" aria-label="Filter Options">
                     <?php if ($this->Search->isSearch()) : ?>
                         <?= $this->Search->resetLink(__('Clear'), [
@@ -218,10 +177,23 @@ if (!$this->getRequest()->is('ajax')) {
                 </div>
             </div>
             <?= $this->Form->end(); ?>
-            <!-- Tags
-            <div class="widget">
-                <span class="d-flex eyebrow text-muted mb-2">Tags</span>
-            </div> -->
+            <div class="widget pb-2 mb-2 border-bottom">
+                <h5 class="offcanvas-title"><?= __('Sort') ?></h5>
+            </div>
+
+            <div class="widget mb-2">
+            <?php
+                $sorts = [
+                    'QrCodes.name' => __('Name'),
+                    'QrCodes.qrkey' => __('Key'),
+                    'QrCodes.hits' => __('Hits'),
+                    'QrCodes.is_active' => __('Active'),
+                ];
+                echo $this->element('filter/sort_links', [
+                    'sorts' => $sorts,
+                ]);
+            ?>
+            </div>
 
         </div>
     </div>
