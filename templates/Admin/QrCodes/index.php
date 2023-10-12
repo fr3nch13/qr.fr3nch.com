@@ -41,7 +41,7 @@ if (!$this->getRequest()->is('ajax')) {
                 <div class="card bg-opaque-white">
                     <div class="card-body bg-white">
                         <form>
-                            <div class="grouped-inputs p-1 rounded-pill border">
+                            <div class="grouped-inputs p-1 border">
                                 <div class="row g-0">
                                     <div class="col">
                                     <input type="text" class="form-control form-control-sm text-primary"
