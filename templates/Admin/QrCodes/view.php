@@ -10,13 +10,13 @@ if (!$this->getRequest()->is('ajax')) {
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <div class="row">
-    <div class="col-lg-4 order-2 order-md-1">
+    <div class="col-lg-4 order-2 order-lg-1">
         <img
             class="img-fluid"
             src="<?= $this->Url->build(['action' => 'show', $qrCode->id]) ?>"
             alt="<?= __('The QR Code'); ?>">
     </div>
-    <div class="col-lg-8 order-1 order-md-2">
+    <div class="col-lg-8 order-1 order-lg-2">
         <dl class="row">
             <dt class="col-sm-3"><?= __('Key') ?></dt>
             <dd class="col-sm-9"><?= h($qrCode->qrkey) ?> </dd>
