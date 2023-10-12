@@ -54,7 +54,7 @@ $this->end(); // page_options
     <?php foreach ($qrCodes as $qrCode) : ?>
             <a
             class="row border-bottom py-1 <?= $qrCode->is_active ? 'text-dark' : 'text-muted' ?>"
-            class="col-12 <?= $qrCode->is_active ? '' : 'text-muted' ?>" href="<?= $this->Url->build([
+            href="<?= $this->Url->build([
                 'controller' => 'QrCodes',
                 'action' => 'view',
                 $qrCode->id,
