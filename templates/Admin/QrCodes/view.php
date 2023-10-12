@@ -11,7 +11,8 @@ $this->assign('page_title', $qrCode->name);
 $this->assign('tabs', [
     'view' => [
         __('Details'),
-        ['controler' => 'QrCodes', 'action' => 'view', $qrCode->id]
+        ['controler' => 'QrCodes', 'action' => 'view', $qrCode->id],
+        ['class' => 'active'],
     ],
     'edit' => [
         __('Edit'),
