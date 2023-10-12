@@ -53,7 +53,7 @@ $this->end(); // page_options
 <div class="container bg-white">
     <?php foreach ($qrCodes as $qrCode) : ?>
     <div class="row border-bottom py-1">
-        <div class="col-1 qr-actions">
+        <div class="col-1 ps-0 qr-actions">
             <div class="dropdown">
                 <a
                     class="btn btn-sm btn-white btn-icon rounded-circle"
