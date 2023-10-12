@@ -142,10 +142,26 @@ if (!$this->getRequest()->is('ajax')) {
                                                     <i class="bi bi-three-dots-vertical"></i></i>
                                                 </a>
                                                 <ul class="dropdown-menu" aria-labelledby="actions<?= $qrCode->id ?>">
-                                                    <li><a class="dropdown-item" href="#">Details</a></li>
-                                                    <li><a class="dropdown-item" href="#">Edit</a></li>
-                                                    <li><a class="dropdown-item" href="#">Images</a></li>
-                                                    <li><a class="dropdown-item" href="#">Toggle Active</a></li>
+                                                    <li><?= $this->Html->link(__('Details'), [
+                                                        'controller' => 'QrCodes',
+                                                        'action' => 'view',
+                                                        $qrCode->id,
+                                                    ], ['class' => 'dropdown-item']) ?></li>
+                                                    <li><?= $this->Html->link(__('Edit'), [
+                                                        'controller' => 'QrCodes',
+                                                        'action' => 'edit',
+                                                        $qrCode->id,
+                                                    ], ['class' => 'dropdown-item']) ?></li>
+                                                    <li><?= $this->Html->link(__('Images'), [
+                                                        'controller' => 'QrImages',
+                                                        'action' => 'qrCode',
+                                                        $qrCode->id,
+                                                    ], ['class' => 'dropdown-item']) ?></li>
+                                                    <li><?= $this->Html->link(__('Toggle Active'), [
+                                                        'controller' => 'QrCodes',
+                                                        'action' => 'toggleActive',
+                                                        $qrCode->id,
+                                                    ], ['class' => 'dropdown-item']) ?></li>
                                                 </ul>
                                             </div>
                                         </td>
