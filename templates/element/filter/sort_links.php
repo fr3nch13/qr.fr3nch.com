@@ -5,7 +5,7 @@
  */
 
 if (!isset($class)) {
-    $class = 'btn btn-light rounded-pill mx-1 my-1';
+    $class = 'btn btn-sm btn-light rounded-pill mx-1 my-1';
 }
 $sort = $this->Paginator->param('sort');
 ?>
