@@ -221,7 +221,7 @@ $this->end(); // page_options
             ]); ?>
         </div>
         </div>
-        <div class="widget text-end">
+        <div class="widget mb-2 text-end">
             <div class="btn-group" role="group" aria-label="Filter Options">
                 <?php if ($this->Search->isSearch()) : ?>
                     <?= $this->Search->resetLink(__('Clear'), [
@@ -236,12 +236,11 @@ $this->end(); // page_options
             </div>
         </div>
         <?= $this->Form->end(); ?>
+        <div class="widget pb-2 mb-2 border-bottom">
+            <h5 class="offcanvas-title"><?= __('Sort') ?></h5>
+        </div>
 
-    </div>
-    <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasFilterLabel"><?= __('Sort') ?></h5>
-    </div>
-    <div class="offcanvas-body">
+        <div class="widget mb-2">
         <?php
             $sorts = [
                 'QrCodes.name' => __('Name'),
@@ -253,6 +252,9 @@ $this->end(); // page_options
                 'sorts' => $sorts,
             ]);
         ?>
+        </div>
+
+
     </div>
 </div>
 <?php $this->end(); // offcanvas ?>
