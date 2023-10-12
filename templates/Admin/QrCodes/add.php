@@ -17,17 +17,23 @@ $this->assign('page_title', __('Add a QR Code'));
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <div class="card bg-opaque-white">
     <div class="card-body bg-white p-2 p-lg-5">
+        <?= $this->Form->create($qrCode) ?>
         <div class="row">
-            <div class="col">
-                <?= $this->Form->create($qrCode) ?>
-
+            <div class="col-3">
                 <?= $this->Form->control('qrkey', [
                     'required' => true,
                     'spacing' => 'mb-2',
                     'label' => ['floating' => true, 'text' => __('Key')],
                 ]); ?>
-
-                <?= $this->Form->control('name'); ?>
+            </div>
+            <div class="col-9">
+                <?= $this->Form->control('name', [
+                    'required' => true,
+                    'spacing' => 'mb-2',
+                    'label' => ['floating' => true, 'text' => __('Name')],
+                ]); ?>
+            </div>
+        </div>
 
                 <?= $this->Form->control('description'); ?>
 
@@ -38,10 +44,9 @@ $this->assign('page_title', __('Add a QR Code'));
                 <?= $this->Form->control('tags._ids', ['options' => $tags]); ?>
 
                 <?= $this->Form->button(__('Submit')) ?>
-
-                <?= $this->Form->end() ?>
             </div>
         </div>
+        <?= $this->Form->end() ?>
     </div>
 </div>
 <?= $this->Template->templateComment(false, __FILE__); ?>
