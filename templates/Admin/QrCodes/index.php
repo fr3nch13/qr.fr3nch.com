@@ -55,7 +55,6 @@ $this->end(); // page_options
     <div class="row border-bottom py-1">
         <div class="col-10 qr-details <?= $qrCode->is_active ? '' : 'text-muted' ?>"">
             <h5><?= $qrCode->name ?></h5>
-            <small class="h6 text-muted"><?= $qrCode->qrkey ?></small>
             <?php
             if ($qrCode->is_active) {
                 echo '<span class="badge bg-primary rounded-pill"><i class="bi bi-check2 fs-8"></i></span>';
