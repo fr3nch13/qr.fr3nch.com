@@ -12,6 +12,8 @@ $this->assign('page_title', $qrCode->name);
 if ($qrCode->id) {
     $this->start('page_options');
 
+    $controller = $this->getRequest()->getParam('controller');
+    debug($controller);
     $action = $this->getRequest()->getParam('action');
     $tabs = [
         'view' => [__('Details'), [
