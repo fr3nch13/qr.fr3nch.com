@@ -21,7 +21,7 @@ $tabs = [
             <h2><?= $qrCode->name ?></h2>
         </div>
 
-        <div class="col-md-6 text-md-en">
+        <div class="col-md-6 text-md-end">
             <ul class="list-inline">
             <?php foreach ($tabs as $k => $tab) :
                 $options = [
