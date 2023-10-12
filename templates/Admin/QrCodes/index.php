@@ -12,7 +12,7 @@ if (!$this->getRequest()->is('ajax')) {
     <h1><?= __('QR Codes') ?></h1>
 
     <section>
-        <div class="row">
+        <div class="row align-items-end">
             <div class="col text-right">
                 <ul class="list-inline">
                     <li class="list-inline-item ms-2">
@@ -22,60 +22,6 @@ if (!$this->getRequest()->is('ajax')) {
                         ], [
                             'class' => 'underline text-black',
                         ]); ?>
-                    </li>
-                    <li class="list-inline-item">
-                        <div class="dropdown">
-                            <a
-                                class="underline text-black"
-                                href="#" role="button"
-                                id="indexPageOptions"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                Sort <i class="bi bi-chevron-down"></i>
-                            </a>
-
-                            <ul class="dropdown-menu" aria-labelledby="indexPageOptions">
-                                <li><?= $this->Html->fixPaginatorSort($this->Paginator->sort(
-                                    'QrCodes.name',
-                                    [
-                                        'asc' => '<i class="bi bi-chevron-down"></i> ' . __('Name'),
-                                        'desc' => '<i class="bi bi-chevron-up"></i> ' . __('Name'),
-                                    ],
-                                    ['escape' => false]
-                                )); ?></li>
-                                <li><?= $this->Html->fixPaginatorSort($this->Paginator->sort(
-                                    'QrCodes.created',
-                                    [
-                                        'asc' => '<i class="bi bi-chevron-down"></i> ' . __('Created'),
-                                        'desc' => '<i class="bi bi-chevron-up"></i> ' . __('Created'),
-                                    ],
-                                    ['escape' => false]
-                                )); ?></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="list-inline-item ms-2">
-                        <a
-                            class=" underline text-black position-relative"
-                            data-bs-toggle="offcanvas"
-                            href="#offcanvasFilter"
-                            role="button"
-                            aria-controls="offcanvasFilter"><?= __('Filters') ?>
-                            <?php if ($this->Search->isSearch()) : ?>
-                            <span
-                                class="
-                                    position-absolute
-                                    top-0
-                                    start-100
-                                    translate-middle
-                                    rounded-pill
-                                    text-red
-                                    p-1">
-                                <i class="bi bi-check filtering-applied"></i>
-                                <span class="visually-hidden"><?= __('Filters are applied') ?></span>
-                            </span>
-                            <?php endif; ?>
-                        </a>
                     </li>
                 </ul>
             </div>
@@ -88,10 +34,10 @@ if (!$this->getRequest()->is('ajax')) {
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th scope="col"><?= __('Name') ?></th>
-                                        <th scope="col"><?= __('Key') ?></th>
-                                        <th scope="col"><?= __('Active') ?></th>
-                                        <th scope="col"><?= __('Hits') ?></th>
+                                        <th scope="col"><?= $this->Paginator->sort('QrCodes.name', __('Name')) ?></th>
+                                        <th scope="col"><?= $this->Paginator->sort('QrCodes.qrkey', __('Key')) ?></th>
+                                        <th scope="col"><?= $this->Paginator->sort('QrCodes.is_active', __('Active')) ?></th>
+                                        <th scope="col"><?= $this->Paginator->sort('QrCodes.hits', __('Hits')) ?></th>
                                         <th scope="col" class="actions"><?= __('Actions') ?></th>
                                     </tr>
                                 </thead>
