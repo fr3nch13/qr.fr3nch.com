@@ -25,7 +25,7 @@ if ($qrCode->id) {
             <h2><?= $qrCode->name ?></h2>
         </div>
     </div>
-    <div class="row">
+    <div class="row mb-2">
         <div class="col text-end">
             <ul class="list-inline">
             <?php foreach ($tabs as $k => $tab) :
