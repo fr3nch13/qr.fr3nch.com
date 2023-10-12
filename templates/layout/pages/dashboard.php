@@ -43,6 +43,12 @@ $this->start('layout');
                                     'controller' => 'Tags',
                                     'action' => 'index',
                                 ], ['class' => 'nav-link fs-lg']) ?></li>
+                                <li class="nav-item"><?= $this->Html->link('Sources', [
+                                    'plugin' => false,
+                                    'prefix' => 'Admin',
+                                    'controller' => 'Sources',
+                                    'action' => 'index',
+                                ], ['class' => 'nav-link fs-lg']) ?></li>
                                 <li class="nav-item">
                                     <div class="dropdown-divider"></div>
                                 </li>
