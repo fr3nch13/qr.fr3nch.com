@@ -68,7 +68,7 @@ if (!$this->getRequest()->is('ajax')) {
                                 <?php endforeach; ?>
                                 </tbody>
                             </table>
-                            <nav aria-label="Pagination">
+                            <nav aria-label="Pagination" class="text-center">
                                 <ul class="pagination">
                                     <?= $this->Paginator->first('&laquo;', ['label' => 'First']) ?>
                                     <?= $this->Paginator->prev('<', ['label' => 'Previous']) ?>
