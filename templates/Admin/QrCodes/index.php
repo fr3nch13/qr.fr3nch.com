@@ -53,8 +53,6 @@ $this->end(); // page_options
 <div class="card bg-opaque-white">
     <div class="card-body bg-white">
 
-        <div class="
-
         <div class="table-responsive">
             <table class="table">
                 <thead>
