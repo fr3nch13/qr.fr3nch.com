@@ -52,7 +52,7 @@ $this->end(); // page_options
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <div class="container bg-white">
     <?php foreach ($qrCodes as $qrCode) : ?>
-    <div class="row border-bottom py-1">
+    <div class="row border-bottom py-2">
             <a
                 class="col-12 <?= $qrCode->is_active ? 'text-dark' : 'text-muted' ?>" href="<?= $this->Url->build([
                     'controller' => 'QrCodes',
