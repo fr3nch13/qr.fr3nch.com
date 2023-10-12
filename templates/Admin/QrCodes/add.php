@@ -19,14 +19,14 @@ $this->assign('page_title', __('Add a QR Code'));
     <div class="card-body bg-white p-2 p-lg-5">
         <?= $this->Form->create($qrCode) ?>
         <div class="row">
-            <div class="col-3">
+            <div class="col-4">
                 <?= $this->Form->control('qrkey', [
                     'required' => true,
                     'spacing' => 'mb-2',
                     'label' => ['floating' => true, 'text' => __('Key')],
                 ]); ?>
             </div>
-            <div class="col-9">
+            <div class="col-8">
                 <?= $this->Form->control('name', [
                     'required' => true,
                     'spacing' => 'mb-2',
@@ -34,10 +34,19 @@ $this->assign('page_title', __('Add a QR Code'));
                 ]); ?>
             </div>
         </div>
+        <div class="row">
+            <div class="col">
+                <?= $this->Form->control('url', [
+                    'type' => 'text',
+                    'required' => true,
+                    'spacing' => 'mb-2',
+                    'placeholder' => 'https://',
+                    'label' => ['floating' => true, 'text' => __('URL')],
+                ]); ?>
+            </div>
+        </div>
 
                 <?= $this->Form->control('description'); ?>
-
-                <?= $this->Form->control('url', ['type' => 'text']); ?>
 
                 <?= $this->Form->control('source_id', ['options' => $sources]); ?>
 
