@@ -9,5 +9,6 @@ $this->extend('dashboard/base');
 
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
+<h1><?= $this->get('page_title') ?></h1>
 <?= $this->fetch('content') ?>
 <?= $this->Template->templateComment(false, __FILE__); ?>
