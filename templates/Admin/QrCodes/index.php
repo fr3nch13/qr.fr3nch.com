@@ -50,7 +50,7 @@ $this->start('page_options');
 $this->end(); // page_options
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
-<div class="container">
+<div class="container bg-white">
     <?php foreach ($qrCodes as $qrCode) : ?>
     <div class="row border-bottom">
         <div class="col-2 qr-actions">
