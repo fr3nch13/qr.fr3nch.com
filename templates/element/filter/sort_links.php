@@ -9,16 +9,24 @@ if (!isset($class)) {
 }
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
-<?php foreach ($sorts as $key => $name) : ?>
-    <?= $this->Paginator->sort($key,
-        [
-            'asc' => $name . ' <i class="bi bi-chevron-down"></i>',
-            'desc' => $name . ' <i class="bi bi-chevron-up"></i>',
-        ],
-        [
-            'escape' => false,
+<?php foreach ($sorts as $key => $name) {
+    $nameAsc = $name . ' <i class="bi bi-chevron-down"></i>';
+    $nameDesc = $name . ' <i class="bi bi-chevron-up"></i>';
+
+    if (str_contains($class, 'btn')) {
+        $nameAsc = $this->Html->tag('span', $nameAsc, [
             'class' => $class,
-        ]
-    ) ?>
-<?php endforeach; ?>
+            'role' => 'button',
+        ]);
+
+        $nameDesc = $this->Html->tag('span', $nameDesc, [
+            'class' => $class,
+            'role' => 'button',
+        ]);
+    }
+
+
+    echo $this->Paginator->sort($key, ['asc' => $nameAsc, 'desc' => $nameDesc], ['escape' => false]);
+}
+?>
 <?= $this->Template->templateComment(false, __FILE__); ?>
