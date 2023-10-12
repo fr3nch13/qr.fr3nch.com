@@ -4,7 +4,9 @@
  * @var array<string, string> $sorts The list of sort links to create.
  */
 
-$class ?: 'btn btn-light';
+if (!isset($class)) {
+    $class = 'btn btn-light';
+}
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <?php foreach ($sorts as $key => $name) : ?>
