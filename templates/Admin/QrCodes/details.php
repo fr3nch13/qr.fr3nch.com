@@ -16,7 +16,6 @@ $tabs = [
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <h2><?= $qrCode->name ?></h2>
-<h3><?= $action ?></h3>
 <ul class="nav nav-tabs">
 <?php foreach ($tabs as $k => $tab) :
     $options = [
