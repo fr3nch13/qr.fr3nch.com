@@ -9,22 +9,12 @@ if (!$this->getRequest()->is('ajax')) {
 }
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
+    <h1><?= __('QR Codes') ?></h1>
 
-
-    <div class="col-md-6">
-                    <h1><?= __('QR Codes') ?></h1>
-                    <!--
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Shop</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">QR Codes</li>
-                        </ol>
-                    </nav>
-                    -->
-                </div>
-
-                <div class="col-md-6 text-md-end">
-                    <ul class="list-inline">
+    <section>
+        <div class="row">
+            <div class="col">
+            <ul class="list-inline">
                         <?php if ($this->ActiveUser->isLoggedIn()) : ?>
                         <li class="list-inline-item ms-2">
                             <?= $this->Html->link(__('Add a QR Code'), [
@@ -90,11 +80,6 @@ if (!$this->getRequest()->is('ajax')) {
                             </a>
                         </li>
                     </ul>
-                </div>
-
-    <section>
-        <div class="row">
-            <div class="col">
                 <div class="card bg-opaque-white">
                     <div class="card-body bg-white">
                         <div class="table-responsive">
