@@ -10,7 +10,7 @@ if (!$this->getRequest()->is('ajax')) {
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
     <section>
-        <div class="row g-3 g-md-5 align-items-end mb-5">
+        <div class="row g-3 g-md-5 mb-5">
             <div class="col-md-6">
                 <h1><?= __('QR Codes') ?></h1>
             </div>
@@ -105,7 +105,7 @@ if (!$this->getRequest()->is('ajax')) {
                                                 'class' => 'underline text-black',
                                             ]
                                         ) ?></th>
-                                        <th scope="col" class="actions"><?= __('Actions') ?></th>
+                                        <th scope="col" class="actions"><i class="bi bi-three-dots-vertical"></i></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -139,7 +139,7 @@ if (!$this->getRequest()->is('ajax')) {
                                                     data-bs-toggle="dropdown"
                                                     aria-haspopup="true"
                                                     aria-expanded="false">
-                                                    <i class="bi bi-three-dots-vertical"></i></i>
+                                                    <i class="bi bi-three-dots-vertical"></i>
                                                 </a>
                                                 <ul class="dropdown-menu" aria-labelledby="actions<?= $qrCode->id ?>">
                                                     <li><?= $this->Html->link(__('Details'), [
