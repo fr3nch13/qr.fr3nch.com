@@ -15,7 +15,14 @@ if (!$this->getRequest()->is('ajax')) {
             <div class="col-lg-4 order-2 order-lg-1">
                 <img
                     class="img-fluid"
-                    src="<?= $this->Url->build(['action' => 'show', $qrCode->id]) ?>"
+                    src="<?= $this->Url->build([
+                        'plugin' => false,
+                        'prefix' => false,
+                        'controller' => 'QrCodes',
+                        'action' => 'show',
+                        $qrCode->id,
+                        '?' => ['bypass' => true]
+                    ]) ?>"
                     alt="<?= __('The QR Code'); ?>">
             </div>
             <div class="col-lg-8 order-1 order-lg-2">
