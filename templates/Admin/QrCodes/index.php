@@ -12,8 +12,20 @@ if (!$this->getRequest()->is('ajax')) {
     <h1><?= __('QR Codes') ?></h1>
 
     <section>
-        <div class="row align-items-end">
-            <div class="col text-md-end py-1">
+        <div class="row g-3 g-md-5 align-items-end mb-5">
+            <div class="col-md-6">
+                <h1><?= __('QR Codes') ?></h1>
+                <!--
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Shop</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">QR Codes</li>
+                    </ol>
+                </nav>
+                -->
+            </div>
+
+            <div class="col-md-6 text-md-end py-1">
                 <ul class="list-inline">
                     <li class="list-inline-item ms-2">
                         <?= $this->Html->link(__('Add a QR Code'), [
