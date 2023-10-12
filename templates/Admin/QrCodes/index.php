@@ -52,13 +52,13 @@ $this->end(); // page_options
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <div class="container bg-white">
     <?php foreach ($qrCodes as $qrCode) : ?>
+    <div class="row border-bottom py-1">
             <a
-            class="row border-bottom py-1 <?= $qrCode->is_active ? 'text-dark' : 'text-muted' ?>"
-            href="<?= $this->Url->build([
-                'controller' => 'QrCodes',
-                'action' => 'view',
-                $qrCode->id,
-            ]) ?>">
+                class="col-12 <?= $qrCode->is_active ? '' : 'text-muted' ?>" href="<?= $this->Url->build([
+                    'controller' => 'QrCodes',
+                    'action' => 'view',
+                    $qrCode->id,
+                ]) ?>">
                 <h5><?= $qrCode->name ?></h5>
                 <?php
                 if ($qrCode->is_active) {
@@ -70,6 +70,7 @@ $this->end(); // page_options
                 <span class="badge bg-light text-dark rounded-pill"><?= $qrCode->hits ?></span>
                 <span class="text-muted"><?= $qrCode->qrkey ?></spam>
             </a>
+    </div>
     <?php endforeach; ?>
     <nav aria-label="Pagination" class="text-center">
         <ul class="pagination">
