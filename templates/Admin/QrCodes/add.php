@@ -69,7 +69,10 @@ $this->assign('page_title', __('Add a QR Code'));
         </div>
         <div class="row">
             <div class="col">
-                <?= $this->Form->control('tags._ids', ['options' => $tags]); ?>
+                <?= $this->Form->control('tags._ids', [
+                    'options' => $tags,
+                    'class' => 'form-select tags-input'
+                ]); ?>
             </div>
         </div>
         <div class="row">
