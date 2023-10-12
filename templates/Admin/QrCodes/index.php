@@ -13,7 +13,7 @@ if (!$this->getRequest()->is('ajax')) {
 
     <section>
         <div class="row align-items-end">
-            <div class="col text-right">
+            <div class="col text-md-end py-1">
                 <ul class="list-inline">
                     <li class="list-inline-item ms-2">
                         <?= $this->Html->link(__('Add a QR Code'), [
