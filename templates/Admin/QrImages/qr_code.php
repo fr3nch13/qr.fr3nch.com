@@ -6,11 +6,8 @@
  */
 
 if (!$this->getRequest()->is('ajax')) {
-    $this->setLayout('dashboard/index');
+    $this->extend('/Admin/QrCodes/details');
 }
-// TODO: build out this page.
-// This will be the page where you can manage the images related to a QR Code.
-// labels: images, templates
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <div class="qrImages index content">

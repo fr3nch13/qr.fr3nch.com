@@ -4,7 +4,9 @@
  * @var \App\Model\Entity\QrCode $qrCode
  */
 
-$this->extend('details');
+if (!$this->getRequest()->is('ajax')) {
+    $this->extend('/Admin/QrCodes/details');
+}
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 

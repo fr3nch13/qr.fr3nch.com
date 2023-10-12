@@ -6,8 +6,9 @@
  * @var \Cake\Collection\CollectionInterface|array<string> $users
  * @var \Cake\Collection\CollectionInterface|array<string> $tags
  */
+
 if (!$this->getRequest()->is('ajax')) {
-    $this->setLayout('dashboard/form');
+    $this->extend('/Admin/QrCodes/details');
 }
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
