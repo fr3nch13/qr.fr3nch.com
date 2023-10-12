@@ -10,7 +10,13 @@ if (!$this->getRequest()->is('ajax')) {
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <div class="row">
-    <div class="col-lg-8 order-1 order-sm-2">
+    <div class="col-lg-4">
+        <img
+            class="img-fluid"
+            src="<?= $this->Url->build(['action' => 'show', $qrCode->id]) ?>"
+            alt="<?= __('The QR Code'); ?>">
+    </div>
+    <div class="col-lg-8">
         <dl class="row">
             <dt class="col-sm-3"><?= __('Key') ?></dt>
             <dd class="col-sm-9"><?= h($qrCode->qrkey) ?> </dd>
@@ -51,12 +57,6 @@ if (!$this->getRequest()->is('ajax')) {
         <div class="row">
             <p class="text-secondary mb-3"><?= $this->Text->autoParagraph(h($qrCode->description)) ?></p>
         </div>
-    </div>
-    <div class="col-lg-4 order-2 order-sm-1">
-        <img
-            class="img-fluid"
-            src="<?= $this->Url->build(['action' => 'show', $qrCode->id]) ?>"
-            alt="<?= __('The QR Code'); ?>">
     </div>
 </div>
 
