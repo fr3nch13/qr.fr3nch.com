@@ -22,7 +22,7 @@ $this->start('layout');
             <div class="container">
                 <div class="row justify-content-between">
 
-                    <aside class="col-lg-3 split-sidebar">
+                    <aside class="col-lg-3 split-sidebar pt-3">
                         <nav class="sticky-top d-none d-lg-block">
                             <?php
                             // make sure this matches the user dropdown in element/nav/top
@@ -78,7 +78,7 @@ $this->start('layout');
                         </nav>
                     </aside>
 
-                    <div class="col-lg-9 split-content">
+                    <div class="col-lg-9 split-content pt-3">
                         <?= $this->Flash->render() ?>
                         <?= $this->fetch('content') ?>
                     </div>
