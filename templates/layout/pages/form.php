@@ -5,24 +5,9 @@
  * @var \App\View\AppView $this
  */
 
-$this->extend('base');
+$this->extend('pages/dashboard');
 
-$this->start('layout');
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
-<?= $this->element('nav/top'); ?>
-
-    <?= $this->Template->objectComment('OffCanvas/wrap') ?>
-    <div class="offcanvas-wrap">
-        <section class="py-20 pages-view">
-            <div class="container mt-5">
-                <?= $this->Flash->render() ?>
-            </div>
-            <div class="container mt-10">
-                <?= $this->fetch('content') ?>
-            </div>
-        </section>
-    </div>
-<?= $this->element('nav/footer'); ?>
+<?= $this->fetch('content') ?>
 <?= $this->Template->templateComment(false, __FILE__); ?>
-<?php $this->end() // layout ?>
