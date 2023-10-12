@@ -42,9 +42,30 @@ if (!$this->getRequest()->is('ajax')) {
                                             ],
                                             ['escape' => false]
                                         ) ?></th>
-                                        <th scope="col"><?= $this->Paginator->sort('QrCodes.qrkey', __('Key')) ?></th>
-                                        <th scope="col"><?= $this->Paginator->sort('QrCodes.is_active', __('Active')) ?></th>
-                                        <th scope="col"><?= $this->Paginator->sort('QrCodes.hits', __('Hits')) ?></th>
+                                        <th scope="col"><?= $this->Paginator->sort(
+                                            'QrCodes.qrkey',
+                                            [
+                                                'asc' => __('Key') . ' <i class="bi bi-chevron-down"></i>',
+                                                'desc' => __('Key') . ' <i class="bi bi-chevron-up"></i>',
+                                            ],
+                                            ['escape' => false]
+                                        ) ?></th>
+                                        <th scope="col"><?= $this->Paginator->sort(
+                                            'QrCodes.is_active',
+                                            [
+                                                'asc' => __('Active') . ' <i class="bi bi-chevron-down"></i>',
+                                                'desc' => __('Active') . ' <i class="bi bi-chevron-up"></i>',
+                                            ],
+                                            ['escape' => false]
+                                        ) ?></th>
+                                        <th scope="col"><?= $this->Paginator->sort(
+                                            'QrCodes.hits',
+                                            [
+                                                'asc' => __('Hits') . ' <i class="bi bi-chevron-down"></i>',
+                                                'desc' => __('Hits') . ' <i class="bi bi-chevron-up"></i>',
+                                            ],
+                                            ['escape' => false]
+                                        ) ?></th>
                                         <th scope="col" class="actions"><?= __('Actions') ?></th>
                                     </tr>
                                 </thead>
