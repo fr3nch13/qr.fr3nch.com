@@ -85,10 +85,10 @@ if (!$this->getRequest()->is('ajax')) {
                                             ]
                                         ) ?></th>
                                         <th scope="col"><?= $this->Paginator->sort(
-                                            'QrCodes.is_active',
+                                            'QrCodes.hits',
                                             [
-                                                'asc' => __('Active') . ' <i class="bi bi-chevron-down"></i>',
-                                                'desc' => __('Active') . ' <i class="bi bi-chevron-up"></i>',
+                                                'asc' => __('Hits') . ' <i class="bi bi-chevron-down"></i>',
+                                                'desc' => __('Hits') . ' <i class="bi bi-chevron-up"></i>',
                                             ],
                                             [
                                                 'escape' => false,
@@ -96,10 +96,10 @@ if (!$this->getRequest()->is('ajax')) {
                                             ]
                                         ) ?></th>
                                         <th scope="col"><?= $this->Paginator->sort(
-                                            'QrCodes.hits',
+                                            'QrCodes.is_active',
                                             [
-                                                'asc' => __('Hits') . ' <i class="bi bi-chevron-down"></i>',
-                                                'desc' => __('Hits') . ' <i class="bi bi-chevron-up"></i>',
+                                                'asc' => __('Active') . ' <i class="bi bi-chevron-down"></i>',
+                                                'desc' => __('Active') . ' <i class="bi bi-chevron-up"></i>',
                                             ],
                                             [
                                                 'escape' => false,
@@ -154,6 +154,9 @@ if (!$this->getRequest()->is('ajax')) {
                                             <?= $qrCode->qrkey ?>
                                         </td>
                                         <td>
+                                            <span class="badge bg-light text-dark rounded-pill"><?= $qrCode->hits ?></span>
+                                        </td>
+                                        <td>
                                             <?php
                                             if ($qrCode->is_active) {
                                                 echo '<i class="bi bi-check2 text-success fs-6"></i>';
@@ -161,9 +164,6 @@ if (!$this->getRequest()->is('ajax')) {
                                                 echo '<i class="bi bi-x fs-6"></i>';
                                             }
                                             ?>
-                                        </td>
-                                        <td>
-                                            <span class="badge bg-light text-dark rounded-pill"><?= $qrCode->hits ?></span>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
