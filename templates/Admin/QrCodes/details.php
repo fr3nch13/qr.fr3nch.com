@@ -17,7 +17,7 @@ $tabs = [
 <?= $this->Template->templateComment(true, __FILE__); ?>
 
 <section>
-    <div class="row">
+    <div class="row g-3 g-md-5 mb-5">
         <div class="col">
             <h2><?= $qrCode->name ?></h2>
         </div>
