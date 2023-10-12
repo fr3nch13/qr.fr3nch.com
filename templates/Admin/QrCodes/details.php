@@ -16,22 +16,30 @@ $tabs = [
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <h2><?= $qrCode->name ?></h2>
-<ul class="nav nav-tabs">
-<?php foreach ($tabs as $k => $tab) :
-    $options = [
-        'class' => 'nav-link',
-    ];
-    if ($k === $action) {
-        $options['class'] .= ' active';
-        $options['aria-current'] = 'page';
-    }
-    ?>
-    <li class="nav-item">
-        <?= $this->Html->link($tab[0], $tab[1], $options) ?>
-    </li>
-<?php endforeach; ?>
-</ul>
 
-<?= $this->fetch('content'); ?>
+<section>
+    <ul class="nav nav-tabs">
+    <?php foreach ($tabs as $k => $tab) :
+        $options = [
+            'class' => 'nav-link',
+        ];
+        if ($k === $action) {
+            $options['class'] .= ' active';
+            $options['aria-current'] = 'page';
+        }
+        ?>
+        <li class="nav-item">
+            <?= $this->Html->link($tab[0], $tab[1], $options) ?>
+        </li>
+    <?php endforeach; ?>
+    </ul>
+
+    <div class="card bg-opaque-white">
+        <div class="card-body bg-white">
+            <?= $this->fetch('content'); ?>
+        </div>
+    </div>
+
+</section>
 
 <?= $this->Template->templateComment(false, __FILE__); ?>
