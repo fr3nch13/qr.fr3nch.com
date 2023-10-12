@@ -9,9 +9,9 @@ if (!$this->getRequest()->is('ajax')) {
 $action = $this->getRequest()->getParam('action');
 
 $tabs = [
-    'view' => [__('Details'), ['controler' => 'QrCodes', 'action' => 'view', $qrCode->id]],
-    'edit' => [__('Edit'), ['controler' => 'QrCodes', 'action' => 'edit', $qrCode->id]],
-    'qrCode' => [__('Images'), ['controler' => 'QrImages', 'action' => 'qrCode', $qrCode->id]],
+    'view' => [__('Details'), ['controller' => 'QrCodes', 'action' => 'view', $qrCode->id]],
+    'edit' => [__('Edit'), ['controller' => 'QrCodes', 'action' => 'edit', $qrCode->id]],
+    'qrCode' => [__('Images'), ['controller' => 'QrImages', 'action' => 'qrCode', $qrCode->id]],
 ];
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
