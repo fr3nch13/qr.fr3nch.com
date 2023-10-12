@@ -16,7 +16,7 @@ $tabs = [
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <div class="container mt-5">
-    <div class="row g-3 g-md-5 mb-5">
+    <div class="row mb-2">
         <div class="col">
             <h2><?= $qrCode->name ?></h2>
         </div>
