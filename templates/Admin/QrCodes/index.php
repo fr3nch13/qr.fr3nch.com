@@ -13,73 +13,75 @@ if (!$this->getRequest()->is('ajax')) {
 
     <section>
         <div class="row">
-            <div class="col">
-            <ul class="list-inline">
-                        <?php if ($this->ActiveUser->isLoggedIn()) : ?>
-                        <li class="list-inline-item ms-2">
-                            <?= $this->Html->link(__('Add a QR Code'), [
-                                'controller' => 'QrCodes',
-                                'action' => 'add',
-                            ], [
-                                'class' => 'underline text-black',
-                            ]); ?>
-                        </li>
-                        <?php endif; ?>
-                        <li class="list-inline-item">
-                            <div class="dropdown">
-                                <a
-                                    class="underline text-black"
-                                    href="#" role="button"
-                                    id="indexPageOptions"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false">
-                                    Sort <i class="bi bi-chevron-down"></i>
-                                </a>
-
-                                <ul class="dropdown-menu" aria-labelledby="indexPageOptions">
-                                    <li><?= $this->Html->fixPaginatorSort($this->Paginator->sort(
-                                        'QrCodes.name',
-                                        [
-                                            'asc' => '<i class="bi bi-chevron-down"></i> ' . __('Name'),
-                                            'desc' => '<i class="bi bi-chevron-up"></i> ' . __('Name'),
-                                        ],
-                                        ['escape' => false]
-                                    )); ?></li>
-                                    <li><?= $this->Html->fixPaginatorSort($this->Paginator->sort(
-                                        'QrCodes.created',
-                                        [
-                                            'asc' => '<i class="bi bi-chevron-down"></i> ' . __('Created'),
-                                            'desc' => '<i class="bi bi-chevron-up"></i> ' . __('Created'),
-                                        ],
-                                        ['escape' => false]
-                                    )); ?></li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li class="list-inline-item ms-2">
+            <div class="col text-right">
+                <ul class="list-inline">
+                    <li class="list-inline-item ms-2">
+                        <?= $this->Html->link(__('Add a QR Code'), [
+                            'controller' => 'QrCodes',
+                            'action' => 'add',
+                        ], [
+                            'class' => 'underline text-black',
+                        ]); ?>
+                    </li>
+                    <li class="list-inline-item">
+                        <div class="dropdown">
                             <a
-                                class=" underline text-black position-relative"
-                                data-bs-toggle="offcanvas"
-                                href="#offcanvasFilter"
-                                role="button"
-                                aria-controls="offcanvasFilter"><?= __('Filters') ?>
-                                <?php if ($this->Search->isSearch()) : ?>
-                                <span
-                                    class="
-                                        position-absolute
-                                        top-0
-                                        start-100
-                                        translate-middle
-                                        rounded-pill
-                                        text-red
-                                        p-1">
-                                    <i class="bi bi-check filtering-applied"></i>
-                                    <span class="visually-hidden"><?= __('Filters are applied') ?></span>
-                                </span>
-                                <?php endif; ?>
+                                class="underline text-black"
+                                href="#" role="button"
+                                id="indexPageOptions"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                Sort <i class="bi bi-chevron-down"></i>
                             </a>
-                        </li>
-                    </ul>
+
+                            <ul class="dropdown-menu" aria-labelledby="indexPageOptions">
+                                <li><?= $this->Html->fixPaginatorSort($this->Paginator->sort(
+                                    'QrCodes.name',
+                                    [
+                                        'asc' => '<i class="bi bi-chevron-down"></i> ' . __('Name'),
+                                        'desc' => '<i class="bi bi-chevron-up"></i> ' . __('Name'),
+                                    ],
+                                    ['escape' => false]
+                                )); ?></li>
+                                <li><?= $this->Html->fixPaginatorSort($this->Paginator->sort(
+                                    'QrCodes.created',
+                                    [
+                                        'asc' => '<i class="bi bi-chevron-down"></i> ' . __('Created'),
+                                        'desc' => '<i class="bi bi-chevron-up"></i> ' . __('Created'),
+                                    ],
+                                    ['escape' => false]
+                                )); ?></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="list-inline-item ms-2">
+                        <a
+                            class=" underline text-black position-relative"
+                            data-bs-toggle="offcanvas"
+                            href="#offcanvasFilter"
+                            role="button"
+                            aria-controls="offcanvasFilter"><?= __('Filters') ?>
+                            <?php if ($this->Search->isSearch()) : ?>
+                            <span
+                                class="
+                                    position-absolute
+                                    top-0
+                                    start-100
+                                    translate-middle
+                                    rounded-pill
+                                    text-red
+                                    p-1">
+                                <i class="bi bi-check filtering-applied"></i>
+                                <span class="visually-hidden"><?= __('Filters are applied') ?></span>
+                            </span>
+                            <?php endif; ?>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
                 <div class="card bg-opaque-white">
                     <div class="card-body bg-white">
                         <div class="table-responsive">
