@@ -16,7 +16,7 @@ if (!$this->getRequest()->is('ajax')) {
             <dd class="col-sm-9"><?= h($qrCode->qrkey) ?> </dd>
 
             <dt class="col-sm-3"><?= __('Hits') ?></dt>
-            <dd class="col-sm-9"><?= h($qrCode->last_hit) ?> </dd>
+            <dd class="col-sm-9"><span class="badge bg-light text-dark rounded-pill"><?= $qrCode->hits ?></span> </dd>
 
             <dt class="col-sm-3"><?= __('Last Hit') ?></dt>
             <dd class="col-sm-9"><?= h($qrCode->last_hit) ?> </dd>
