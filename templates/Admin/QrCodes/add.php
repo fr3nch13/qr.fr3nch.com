@@ -8,41 +8,36 @@
  */
 
 if (!$this->getRequest()->is('ajax')) {
-    $this->extend('/Admin/QrCodes/details');
+    $this->setLayout('dashboard/view');
 }
+
+$this->assign('page_title', __('Add a QR Code'));
+
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <div class="card bg-opaque-white">
     <div class="card-body bg-white p-2 p-lg-5">
         <div class="row">
-            <aside class="column">
-                <div class="side-nav">
-                    <h4 class="heading"><?= __('Actions') ?></h4>
-                    <?= $this->Html->link(__('List QR Codes'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-                </div>
-            </aside>
-            <div class="column column-80">
-                <div class="qrCodes form content">
-                    <?= $this->Form->create($qrCode) ?>
-                    <fieldset>
-                        <legend><?= __('Add QR Code') ?></legend>
+            <div class="col">
+                <?= $this->Form->create($qrCode) ?>
+                <fieldset>
+                    <legend><?= __('Add QR Code') ?></legend>
 
-                        <?= $this->Form->control('qrkey'); ?>
+                    <?= $this->Form->control('qrkey'); ?>
 
-                        <?= $this->Form->control('name'); ?>
+                    <?= $this->Form->control('name'); ?>
 
-                        <?= $this->Form->control('description'); ?>
+                    <?= $this->Form->control('description'); ?>
 
-                        <?= $this->Form->control('url'); ?>
+                    <?= $this->Form->control('url', ['type' => 'text']); ?>
 
-                        <?= $this->Form->control('source_id', ['options' => $sources]); ?>
+                    <?= $this->Form->control('source_id', ['options' => $sources]); ?>
 
-                        <?= $this->Form->control('tags._ids', ['options' => $tags]); ?>
+                    <?= $this->Form->control('tags._ids', ['options' => $tags]); ?>
 
-                    </fieldset>
-                    <?= $this->Form->button(__('Submit')) ?>
-                    <?= $this->Form->end() ?>
-                </div>
+                </fieldset>
+                <?= $this->Form->button(__('Submit')) ?>
+                <?= $this->Form->end() ?>
             </div>
         </div>
     </div>
