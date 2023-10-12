@@ -27,20 +27,20 @@ if (!$this->getRequest()->is('ajax')) {
             </div>
             <div class="col-lg-8 order-1 order-lg-2">
                 <dl class="row">
-                    <dt class="col-3"><?= __('Key') ?></dt>
-                    <dd class="col-9"><?= h($qrCode->qrkey) ?> </dd>
+                    <dt class="col-4 col-md-3"><?= __('Key') ?></dt>
+                    <dd class="col-8 col-md-9"><?= h($qrCode->qrkey) ?> </dd>
 
-                    <dt class="col-3"><?= __('Hits') ?></dt>
-                    <dd class="col-9"><span class="badge bg-light text-dark rounded-pill"><?= $qrCode->hits ?></span> </dd>
+                    <dt class="col-4 col-md-3"><?= __('Hits') ?></dt>
+                    <dd class="col-8 col-md-9"><span class="badge bg-light text-dark rounded-pill"><?= $qrCode->hits ?></span> </dd>
 
-                    <dt class="col-3"><?= __('Last Hit') ?></dt>
-                    <dd class="col-9"><?= h($qrCode->last_hit) ?> </dd>
+                    <dt class="col-4 col-md-3"><?= __('Last Hit') ?></dt>
+                    <dd class="col-8 col-md-9"><?= h($qrCode->last_hit) ?> </dd>
 
                     <dt class="col-4 col-md-3"><?= __('Created') ?></dt>
                     <dd class="col-8 col-md-9"><?= h($qrCode->created) ?> </dd>
 
-                    <dt class="col-3"><?= __('Source') ?></dt>
-                    <dd class="col-9"><?= $qrCode->hasValue('source') ? $this->Html->link(
+                    <dt class="col-4 col-md-3"><?= __('Source') ?></dt>
+                    <dd class="col-8 col-md-9"><?= $qrCode->hasValue('source') ? $this->Html->link(
                         $qrCode->source->name,
                         [
                             'controller' => 'Sources',
@@ -48,8 +48,8 @@ if (!$this->getRequest()->is('ajax')) {
                             $qrCode->source->id
                         ]) : '' ?> </dd>
 
-                    <dt class="col-3"><?= __('Owner') ?></dt>
-                    <dd class="col-9"><?= $qrCode->hasValue('user') ? $this->Html->link(
+                    <dt class="col-4 col-md-3"><?= __('Owner') ?></dt>
+                    <dd class="col-8 col-md-9"><?= $qrCode->hasValue('user') ? $this->Html->link(
                         $qrCode->user->name,
                         [
                             'controller' => 'Users',
@@ -57,8 +57,8 @@ if (!$this->getRequest()->is('ajax')) {
                             $qrCode->user->id
                         ]) : '' ?> </dd>
 
-                    <dt class="col-3"><?= __('URL') ?></dt>
-                    <dd class="col-9"><a
+                    <dt class="col-4 col-md-3"><?= __('URL') ?></dt>
+                    <dd class="col-8 col-md-9"><a
                         href="<?= $qrCode->url ?>"
                         target="tab-<?=$qrCode->id?>"
                         ><?= $qrCode->url ?></a> </dd>
