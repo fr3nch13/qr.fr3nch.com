@@ -53,53 +53,23 @@ $this->end(); // page_options
 <div class="container bg-white">
     <?php foreach ($qrCodes as $qrCode) : ?>
     <div class="row border-bottom py-1">
-        <div class="col-1 px-0 qr-actions">
-            <div class="dropdown">
-                <a
-                    class="btn btn-sm btn-white btn-icon rounded-circle"
-                    href="#"
-                    role="button"
-                    id="actions<?= $qrCode->id ?>"
-                    data-bs-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false">
-                    <i class="bi bi-three-dots-vertical"></i>
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="actions<?= $qrCode->id ?>">
-                    <li><?= $this->Html->link(__('Details'), [
-                        'controller' => 'QrCodes',
-                        'action' => 'view',
-                        $qrCode->id,
-                    ], ['class' => 'dropdown-item']) ?></li>
-                    <li><?= $this->Html->link(__('Edit'), [
-                        'controller' => 'QrCodes',
-                        'action' => 'edit',
-                        $qrCode->id,
-                    ], ['class' => 'dropdown-item']) ?></li>
-                    <li><?= $this->Html->link(__('Images'), [
-                        'controller' => 'QrImages',
-                        'action' => 'qrCode',
-                        $qrCode->id,
-                    ], ['class' => 'dropdown-item']) ?></li>
-                    <li><?= $this->Html->link(__('Toggle Active'), [
-                        'controller' => 'QrCodes',
-                        'action' => 'toggleActive',
-                        $qrCode->id,
-                    ], ['class' => 'dropdown-item']) ?></li>
-                </ul>
-            </div>
-        </div>
-        <div class="col-11 qr-details <?= $qrCode->is_active ? '' : 'text-muted' ?>"">
-            <h5><?= $qrCode->name ?></h5>
-            <?php
-            if ($qrCode->is_active) {
-                echo '<span class="badge bg-primary rounded-pill"><i class="bi bi-check2 fs-8"></i></span>';
-            } else {
-                echo '<span class="badge bg-light text-dark rounded-pill"><i class="bi bi-x fs-8"></i></span>';
-            }
-            ?>
-            <span class="badge bg-light text-dark rounded-pill"><?= $qrCode->hits ?></span>
-            <span class="text-muted"><?= $qrCode->qrkey ?></spam>
+        <div class="col-12 <?= $qrCode->is_active ? '' : 'text-muted' ?>"">
+            <a href="<?= $this->Url->build([
+                'controller' => 'QrCodes',
+                'action' => 'view',
+                $qrCode->id,
+            ]) ?>">
+                <h5><?= $qrCode->name ?></h5>
+                <?php
+                if ($qrCode->is_active) {
+                    echo '<span class="badge bg-primary rounded-pill"><i class="bi bi-check2 fs-8"></i></span>';
+                } else {
+                    echo '<span class="badge bg-light text-dark rounded-pill"><i class="bi bi-x fs-8"></i></span>';
+                }
+                ?>
+                <span class="badge bg-light text-dark rounded-pill"><?= $qrCode->hits ?></span>
+                <span class="text-muted"><?= $qrCode->qrkey ?></spam>
+            </a>
         </div>
     </div>
     <?php endforeach; ?>
