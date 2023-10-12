@@ -57,12 +57,33 @@ $this->assign('page_title', __('Add a QR Code'));
                 ]); ?>
             </div>
         </div>
-
-                <?= $this->Form->control('description'); ?>
-
+        <div class="row">
+            <div class="col">
+                <?= $this->Form->control('description', [
+                    'required' => true,
+                    'spacing' => 'mb-2',
+                    'placeholder' => __('Describe the QR Code'),
+                    'label' => __('Description'),
+                ]); ?>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
                 <?= $this->Form->control('tags._ids', ['options' => $tags]); ?>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <?= $this->Form->button(__('Submit'), [
+                    'type' => 'submit',
+                    'class' => 'btn btn-lg btn-primary btn-block',
+                ]); ?>
+            </div>
+        </div>
 
-                <?= $this->Form->button(__('Submit')) ?>
+
+
+
             </div>
         </div>
         <?= $this->Form->end() ?>

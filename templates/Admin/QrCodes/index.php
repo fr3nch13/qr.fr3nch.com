@@ -133,7 +133,7 @@ $this->end(); // page_options
                     'class' => 'btn btn-sm btn-light',
                 ]); ?>
                 <?php endif; ?>
-                <?= $this->Form->button('Filter', [
+                <?= $this->Form->button(__('Filter'), [
                     'type' => 'submit',
                     'class' => 'btn btn-sm btn-primary',
                     'escapeTitle' => false,

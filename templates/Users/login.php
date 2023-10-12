@@ -33,7 +33,7 @@ $this->start('card_body');
 
         </fieldset>
         <div class="d-grid mb-2">
-            <?= $this->Form->button('Sign In', [
+            <?= $this->Form->button(__('Sign In'), [
                 'type' => 'submit',
                 'class' => 'btn btn-lg btn-primary btn-block',
             ]); ?>
@@ -45,12 +45,12 @@ $this->start('card_body');
                     'label' => __('Remember Me?'),
                 ]); ?>
             </div>
-            <!--s
+            <!--
             <div class="col text-end">
                 <?php
                 // TODO: Add logic for forgetting passwords.
                 ?>
-                <?= $this->Html->link('Forgot Password?', [
+                <?= $this->Html->link(__('Forgot Password?'), [
                     'controller' => 'Users',
                     'action' => 'forgot_password',
                 ]); ?>

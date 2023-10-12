@@ -11,7 +11,7 @@
             <div class="row align-items-center g-1 g-lg-6 text-muted">
                 <div class="col-md-6 col-lg-5 order-lg-2 text-center text-md-start">
                     <ul class="list-inline small">
-                        <li class="list-inline-item mb-1"><?= $this->Html->link('About', [
+                        <li class="list-inline-item mb-1"><?= $this->Html->link(__('About'), [
                             'plugin' => false,
                             'prefix' => false,
                             'controller' => 'Pages',
