@@ -4,10 +4,10 @@
  * @var array<string, string> $sorts The list of sort links to create.
  */
 
-$class = $this->get('class', 'btn btn-light');
+$class ?: 'btn btn-light';
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
-<?php foreach ($this->get('sorts', []) as $key => $name) : ?>
+<?php foreach ($sorts as $key => $name) : ?>
     <?= $this->Paginator->sort($key,
         [
             'asc' => $name . ' <i class="bi bi-chevron-down"></i>',
