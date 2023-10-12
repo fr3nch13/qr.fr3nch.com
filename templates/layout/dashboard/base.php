@@ -24,6 +24,9 @@ $this->start('layout');
 
                     <aside class="col-lg-3 split-sidebar">
                         <nav class="sticky-top d-none d-lg-block">
+                            <?php
+                            // make sure this matches the user dropdown in element/nav/top
+                            ?>
                             <ul class="nav nav-minimal flex-column" id="dashboard-nav">
                                 <li class="nav-item"><?= $this->Html->link('Dashboard', [
                                     'plugin' => false,
