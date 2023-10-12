@@ -186,8 +186,7 @@ if (!$this->getRequest()->is('ajax')) {
                 $sorts = [
                     'QrCodes.name' => __('Name'),
                     'QrCodes.qrkey' => __('Key'),
-                    'QrCodes.hits' => __('Hits'),
-                    'QrCodes.is_active' => __('Active'),
+                    'QrCodes.created' => __('Created'),
                 ];
                 echo $this->element('filter/sort_links', [
                     'sorts' => $sorts,
