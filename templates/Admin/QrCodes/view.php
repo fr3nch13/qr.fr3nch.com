@@ -52,7 +52,7 @@ if (!$this->getRequest()->is('ajax')) {
             <p class="text-secondary mb-3"><?= $this->Text->autoParagraph(h($qrCode->description)) ?></p>
         </div>
     </div>
-    <div class="col-lg-4">
+    <div class="col-lg-4 order-sm-1">
         <img
             class="img-fluid"
             src="<?= $this->Url->build(['action' => 'show', $qrCode->id]) ?>"
