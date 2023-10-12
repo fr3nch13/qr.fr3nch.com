@@ -36,8 +36,8 @@ if (!$this->getRequest()->is('ajax')) {
                     <dt class="col-3"><?= __('Last Hit') ?></dt>
                     <dd class="col-9"><?= h($qrCode->last_hit) ?> </dd>
 
-                    <dt class="col-sm-3 col-sx-6"><?= __('Created') ?></dt>
-                    <dd class="col-sm-9 col-sx-6"><?= h($qrCode->created) ?> </dd>
+                    <dt class="col-6 col-md-3"><?= __('Created') ?></dt>
+                    <dd class="col-6 col-md-9"><?= h($qrCode->created) ?> </dd>
 
                     <dt class="col-3"><?= __('Source') ?></dt>
                     <dd class="col-9"><?= $qrCode->hasValue('source') ? $this->Html->link(
