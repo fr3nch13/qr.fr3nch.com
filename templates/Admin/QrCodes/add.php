@@ -23,14 +23,14 @@ $this->assign('page_title', __('Add a QR Code'));
                 <?= $this->Form->control('qrkey', [
                     'required' => true,
                     'spacing' => 'mb-2',
-                    'label' => ['floating' => true, 'text' => __('Key')],
+                    'label' => __('Key'),
                 ]); ?>
             </div>
             <div class="col-8">
                 <?= $this->Form->control('name', [
                     'required' => true,
                     'spacing' => 'mb-2',
-                    'label' => ['floating' => true, 'text' => __('Name')],
+                    'label' => __('Name'),
                 ]); ?>
             </div>
         </div>
@@ -41,7 +41,7 @@ $this->assign('page_title', __('Add a QR Code'));
                     'required' => true,
                     'spacing' => 'mb-2',
                     'placeholder' => 'https://',
-                    'label' => ['floating' => true, 'text' => __('URL')],
+                    'label' => __('URL'),
                 ]); ?>
             </div>
         </div>
