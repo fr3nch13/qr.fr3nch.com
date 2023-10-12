@@ -10,7 +10,7 @@ if (!$this->getRequest()->is('ajax')) {
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <div class="row">
-    <div class="col-lg-6">
+    <div class="col-lg-7">
         <dl class="row">
             <dt class="col-sm-3"><?= __('Key') ?></dt>
             <dd class="col-sm-9"><?= h($qrCode->qrkey) ?> </dd>
@@ -40,7 +40,7 @@ if (!$this->getRequest()->is('ajax')) {
             <dd class="col-sm-9"><?= $qrCode->hasValue('user') ? $qrCode->user->name : '' ?> </dd>
         </dl>
     </div>
-    <div class="col-lg-6">
+    <div class="col-lg-4">
         <img
             class="img-fluid"
             src="<?= $this->Url->build(['action' => 'show', $qrCode->id]) ?>"
