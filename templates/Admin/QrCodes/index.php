@@ -251,7 +251,7 @@ $this->end(); // page_options
                 'QrCodes.hits' => __('Hits'),
                 'QrCodes.is_active' => __('Active'),
             ];
-            echo $this->element('filter/sorts_links', [
+            echo $this->element('filter/sort_links', [
                 'sorts' => $sorts,
             ]);
         ?>
