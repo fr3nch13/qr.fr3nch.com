@@ -28,7 +28,13 @@ if (!$this->getRequest()->is('ajax')) {
             <dd class="col-sm-9"><?= h($qrCode->created) ?> </dd>
 
             <dt class="col-sm-3"><?= __('Source') ?></dt>
-            <dd class="col-sm-9"><?= $qrCode->hasValue('source') ? $qrCode->source->name : '' ?> </dd>
+            <dd class="col-sm-9"><?= $qrCode->hasValue('source') ? $this->Html->link(
+                $qrCode->source->name,
+                [
+                    'controller' => 'Sources',
+                    'action' => 'view',
+                    $qrCode->source->id
+                ]) : '' ?> </dd>
 
             <dt class="col-sm-3"><?= __('Owner') ?></dt>
             <dd class="col-sm-9"><?= $qrCode->hasValue('user') ? $qrCode->user->name : '' ?> </dd>
