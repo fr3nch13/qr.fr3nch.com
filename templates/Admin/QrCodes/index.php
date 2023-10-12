@@ -25,6 +25,30 @@ if (!$this->getRequest()->is('ajax')) {
                             'class' => 'underline text-black',
                         ]); ?>
                     </li>
+
+                    <li class="list-inline-item ms-2">
+                            <a
+                                class=" underline text-black position-relative"
+                                data-bs-toggle="offcanvas"
+                                href="#offcanvasFilter"
+                                role="button"
+                                aria-controls="offcanvasFilter"><?= __('Filters') ?>
+                                <?php if ($this->Search->isSearch()) : ?>
+                                <span
+                                    class="
+                                        position-absolute
+                                        top-0
+                                        start-100
+                                        translate-middle
+                                        rounded-pill
+                                        text-red
+                                        p-1">
+                                    <i class="bi bi-check filtering-applied"></i>
+                                    <span class="visually-hidden"><?= __('Filters are applied') ?></span>
+                                </span>
+                                <?php endif; ?>
+                            </a>
+                        </li>
                 </ul>
             </div>
         </div>
@@ -32,36 +56,6 @@ if (!$this->getRequest()->is('ajax')) {
             <div class="col">
                 <div class="card bg-opaque-white">
                     <div class="card-body bg-white">
-                        <!-- saerch form -->
-                        <div class="row g-3 g-md-5 align-items-end mb-5">
-                            <div class="col-md-6">
-                            </div>
-                            <div class="col-md-6 text-md-end">
-                                <?= $this->Form->create(null, [
-                                    'valueSources' => 'query',
-                                ]); ?>
-                                <div class="grouped-inputs p-1 border">
-                                    <div class="row g-0">
-                                        <div class="col">
-                                            <?= $this->Form->input('q', [
-                                                'type' => 'text',
-                                                'class' => 'form-control form-control-xs text-primary',
-                                                'placeholder' => __('Search'),
-                                                'aria-label' => __('Search'),
-                                                'aria-describedby' => 'buttonSearch',
-                                            ]) ?>
-                                        </div>
-                                        <div class="col-auto d-grid">
-                                            <button
-                                                type="submit"
-                                                class="btn btn-primary btn-xs btn-icon rounded-circle"
-                                            ><i class="bi bi-search"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <?= $this->Form->end(); ?>
-                            </div>
-                        </div>
 
                         <div class="table-responsive">
                             <table class="table">
@@ -174,4 +168,71 @@ if (!$this->getRequest()->is('ajax')) {
             </div>
         </div>
     </section>
+
+    <?php $this->start('offcanvas') ?>
+    <?= $this->Template->objectComment('OffCanvas/filters') ?>
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasFilter" aria-labelledby="offcanvasFilterLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasFilterLabel"><?= __('Filters') ?></h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <?= $this->Form->create(null, [
+                'valueSources' => 'query',
+            ]); ?>
+            <!-- Search Form -->
+            <div class="widget mb-2">
+                <?= $this->Form->control('q', [
+                    'spacing' => 'mb-2',
+                    'label' => [
+                        'floating' => true,
+                        'text' => __('What are you looking for ?'),
+                    ],
+                ]) ?>
+            </div>
+            <!-- Tags -->
+            <div class="widget mb-2">
+                <?= $this->Form->control('t', [
+                    'options' => $tags,
+                    'empty' => '[select]',
+                    'label' => [
+                        'floating' => true,
+                        'text' => __('Tags'),
+                    ],
+                ]); ?>
+            <!-- Sources -->
+            <div class="widget mb-2">
+                <?= $this->Form->control('s', [
+                    'options' => $sources,
+                    'empty' => '[select]',
+                    'label' => [
+                        'floating' => true,
+                        'text' => __('Sources'),
+                    ],
+                ]); ?>
+            </div>
+            </div>
+            <div class="widget text-end">
+                <div class="btn-group" role="group" aria-label="Filter Options">
+                    <?php if ($this->Search->isSearch()) : ?>
+                        <?= $this->Search->resetLink(__('Clear'), [
+                        'class' => 'btn btn-sm btn-light',
+                    ]); ?>
+                    <?php endif; ?>
+                    <?= $this->Form->button('Filter', [
+                        'type' => 'submit',
+                        'class' => 'btn btn-sm btn-primary',
+                        'escapeTitle' => false,
+                    ]); ?>
+                </div>
+            </div>
+            <?= $this->Form->end(); ?>
+            <!-- Tags
+            <div class="widget">
+                <span class="d-flex eyebrow text-muted mb-2">Tags</span>
+            </div> -->
+
+        </div>
+    </div>
+    <?php $this->end(); // offcanvas ?>
 <?= $this->Template->templateComment(false, __FILE__); ?>
