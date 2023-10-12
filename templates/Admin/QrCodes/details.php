@@ -21,11 +21,11 @@ if ($qrCode->id) {
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <div class="container mt-md-5 px-0 px-md-3">
     <div class="row align-items-end mb-2">
-        <div class="col-lg-6 mb-4 mb-lg-0">
+        <div class="col-lg-7 mb-4 mb-lg-0">
             <h2><?= $qrCode->name ?></h2>
         </div>
 
-        <div class="col-lg-6 text-end">
+        <div class="col-lg-5 text-end">
             <ul class="list-inline">
             <?php foreach ($tabs as $k => $tab) :
                 $options = [
