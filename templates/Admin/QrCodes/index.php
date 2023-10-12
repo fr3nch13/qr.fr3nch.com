@@ -53,6 +53,8 @@ $this->end(); // page_options
 <div class="card bg-opaque-white">
     <div class="card-body bg-white">
 
+        <div class="
+
         <div class="table-responsive">
             <table class="table">
                 <thead>
@@ -66,7 +68,7 @@ $this->end(); // page_options
                             ],
                             [
                                 'escape' => false,
-                                'class' => 'underline text-black',
+                                'class' => 'btn btn-light',
                             ]
                         ) ?></th>
                         <th scope="col"><?= $this->Paginator->sort(
@@ -236,11 +238,23 @@ $this->end(); // page_options
             </div>
         </div>
         <?= $this->Form->end(); ?>
-        <!-- Tags
-        <div class="widget">
-            <span class="d-flex eyebrow text-muted mb-2">Tags</span>
-        </div> -->
 
+    </div>
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasFilterLabel"><?= __('Sort') ?></h5>
+    </div>
+    <div class="offcanvas-body">
+        <?php
+            $sorts = [
+                'QrCodes.name' => __('Name'),
+                'QrCodes.qrkey' => __('Key'),
+                'QrCodes.hits' => __('Hits'),
+                'QrCodes.is_active' => __('Active'),
+            ];
+            echo $this->element('filter/sorts_links', [
+                'sorts' => $sorts,
+            ]);
+        ?>
     </div>
 </div>
 <?php $this->end(); // offcanvas ?>
