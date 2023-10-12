@@ -43,7 +43,7 @@ if (!$this->getRequest()->is('ajax')) {
                 ]) : '' ?> </dd>
 
             <dt class="col-sm-3"><?= __('URL') ?></dt>
-            <dd class="col-sm-9"><?= $qrCode->url ?> </dd>
+            <dd class="col-sm-9"><a href="<?= $qrCode->url ?>"><?= $qrCode->url ?></a> </dd>
         </dl>
         <div class="row">
             <p class="text-secondary mb-3"><?= $this->Text->autoParagraph(h($qrCode->description)) ?></p>
