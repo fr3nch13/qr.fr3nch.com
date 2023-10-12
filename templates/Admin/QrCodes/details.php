@@ -10,6 +10,6 @@ if (!$this->getRequest()->is('ajax')) {
 tabs go here.
 <?= $this->Template->templateComment(true, __FILE__); ?>
 
-<?= $this->fetch('content');
+<?= $this->fetch('content'); ?>
 
 <?= $this->Template->templateComment(false, __FILE__); ?>
