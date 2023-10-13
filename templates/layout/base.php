@@ -41,9 +41,6 @@
     'index.bundle',
     '/assets/npm-asset/jquery/dist/jquery.min.js',
     ]) ?>
-<?= $this->Html->script('/assets/npm-asset/bootstrap5-tags/tags.js', [
-    'type' => 'module',
-]) ?>
 <?= $this->Html->script('qr', [
     'type' => 'module',
 ]) ?>
