@@ -83,7 +83,7 @@ if (!$this->getRequest()->is('ajax')) {
                                     'controller' => 'QrImages',
                                     'action' => 'show',
                                     $qrImage->id,
-                                    '?' => ['thumb' => 'md'],
+                                    '?' => ['thumb' => 'lg'],
                                     ]) ?>"
                                 alt="<?= $qrImage->name ?>">
                         </div>
@@ -95,7 +95,7 @@ if (!$this->getRequest()->is('ajax')) {
                                 src="<?= $this->Url->build([
                                     'action' => 'show',
                                     $qrCode->id,
-                                    '?' => ['thumb' => 'md'],
+                                    '?' => ['thumb' => 'lg'],
                                     ]) ?>"
                                 alt="<?= __('The QR Code'); ?>">
                         </div>
