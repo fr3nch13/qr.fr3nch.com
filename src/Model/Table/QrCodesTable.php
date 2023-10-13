@@ -212,13 +212,11 @@ class QrCodesTable extends Table
             foreach ($data['tags']['_ids'] as $pos => $value) {
                 // check if a tag exists.
                 $tag = $this->Tags->find()->where([
-                    'id' => $value,
-                ])->first();
-                if (!$tag) {
-                    $tag = $this->Tags->find()->where([
+                    'OR' => [
+                        'id' => $value,
                         'name' => $value,
-                    ])->first();
-                }
+                    ]
+                ])->first();
                 debug($tag);
             }
 
