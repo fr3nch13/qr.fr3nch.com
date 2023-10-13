@@ -84,12 +84,6 @@ $this->assign('page_title', __('Add a QR Code'));
                 ]); ?>
             </div>
         </div>
-
-
-
-
-            </div>
-        </div>
         <?= $this->Form->end() ?>
     </div>
 </div>
