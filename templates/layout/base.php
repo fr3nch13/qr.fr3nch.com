@@ -38,8 +38,9 @@
     'vendor.bundle',
     'index.bundle',
     '/assets/npm-asset/jquery/dist/jquery.min.js',
-    '/assets/npm-asset/bootstrap5-tags/tags.js',
     'qr',
-    ]) ?></body>
+    ]) ?>
+<?= $this->Html->script('/assets/npm-asset/bootstrap5-tags/tags.js', ['type' => 'module']) ?>
+</body>
 <?= $this->Template->templateComment(false, __FILE__); ?>
 </html>
