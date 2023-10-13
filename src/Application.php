@@ -144,13 +144,13 @@ class Application extends BaseApplication implements
             // @link https://book.cakephp.org/5/en/security/content-security-policy.html#content-security-policy-middleware
             ->add(new CspMiddleware([
                 'script-src' => [
+                    'self' => true,
+                    'unsafe-inline' => true,
+                    'unsafe-eval' => false,
                     'allow' => [
                         // external domains that can load/run javascript.
                         'https://www.google-analytics.com',
                     ],
-                    'self' => true,
-                    'unsafe-inline' => true,
-                    'unsafe-eval' => false,
                 ],
             ], [
                 'scriptNonce' => true,
