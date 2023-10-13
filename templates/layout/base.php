@@ -43,8 +43,8 @@
 <?= $this->Html->script('/assets/npm-asset/bootstrap5-tags/tags.js', [
     'type' => 'module',
 ]) ?>
-<script>
-import Tags;
+<script type="module">
+import Tags from '/assets/npm-asset/bootstrap5-tags/tags.js';
 </stript>
 </body>
 <?= $this->Template->templateComment(false, __FILE__); ?>
