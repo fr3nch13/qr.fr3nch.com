@@ -34,15 +34,16 @@
 
 <?= $this->fetch('layout'); ?>
 <?= $this->fetch('offcanvas') ?>
+
+<?= $this->Html->script('/assets/npm-asset/bootstrap5-tags/tags.js', [
+    'type' => 'module',
+]) ?>
 <?= $this->Html->script([
     'vendor.bundle',
     'index.bundle',
     '/assets/npm-asset/jquery/dist/jquery.min.js',
     'qr',
     ]) ?>
-<?= $this->Html->script('/assets/npm-asset/bootstrap5-tags/tags.js', [
-    'type' => 'module',
-]) ?>
 <script type="module">
 import Tags from '/assets/npm-asset/bootstrap5-tags/tags.js';
 </stript>
