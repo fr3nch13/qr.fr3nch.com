@@ -65,9 +65,9 @@ if (!$this->getRequest()->is('ajax')) {
                 </dl>
             </div>
             <div class="col-lg-12 order-2 order-lg-3 my-2">
-                    <p><?= __('Description:') ?></p>
-                    <p class="text-secondary mb-3"><?= $this->Text->autoParagraph(h($qrCode->description)) ?></p>
-                </div>
+                <h5><?= __('Description') ?></h5>
+                <p class="text-secondary mb-3"><?= $this->Text->autoParagraph(h($qrCode->description)) ?></p>
+            </div>
             <div class="col-lg-12 order-3 order-lg-4 my-2">
                 <h5><?= __('Tags') ?></h5>
                 <?php foreach ($qrCode->tags as $tag) : ?>
