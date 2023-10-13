@@ -40,7 +40,12 @@
     '/assets/npm-asset/jquery/dist/jquery.min.js',
     'qr',
     ]) ?>
-<?= $this->Html->script('/assets/npm-asset/bootstrap5-tags/tags.js', ['type' => 'module']) ?>
+<?= $this->Html->script('/assets/npm-asset/bootstrap5-tags/tags.js', [
+    'type' => 'module',
+]) ?>
+<script>
+import Tags;
+</stript>
 </body>
 <?= $this->Template->templateComment(false, __FILE__); ?>
 </html>
