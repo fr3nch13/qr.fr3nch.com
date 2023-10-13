@@ -60,6 +60,7 @@ trait ThumbTrait
         );
 
         $thumbPath = $this->getThumbPath('sm');
+        debug($thumbPath);
         if (!$thumbPath) {
             return null;
         }
