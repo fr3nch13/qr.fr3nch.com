@@ -224,6 +224,7 @@ class QrCodesTable extends Table
                             'name' => $value,
                         ]);
                         debug($tag);
+                        debug($event);
                     }
                 }
             }
