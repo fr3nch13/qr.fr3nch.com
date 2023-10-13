@@ -140,7 +140,7 @@ trait ThumbTrait
      * Generates the thumbnail image.
      *
      * @param string $size, can be one of sm, md, lg
-     * @return string The path to the generated thumbnail.
+     * @return bool If the thumb was generated
      * @throws \App\Exception\ThumbException When size unknown, or not used in an entity.
      */
     protected function generateThumb(string $size = 'sm'): bool
@@ -168,6 +168,11 @@ trait ThumbTrait
         $thumbPath = $this->getThumbPath($size);
 
         $imageDetails = getimagesize($originalPath);
+        // may not be an image?
+        if (!$imageDetails) {
+            return false;
+        }
+
         $width = $imageDetails[0];
         $height = $imageDetails[1];
 
@@ -191,25 +196,33 @@ trait ThumbTrait
         if ($imageDetails[2] == 1) {
             $originalImage = imagecreatefromgif($originalPath);
             $thumbImage = imagecreatetruecolor($newWidth, $newHeight);
-            imagecopyresampled($thumbImage, $originalImage, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+            if ($originalImage && $thumbImage) {
+                imagecopyresampled($thumbImage, $originalImage, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 
-            return imagegif($thumbImage, $thumbPath);
+                return imagegif($thumbImage, $thumbPath);
+            }
         }
 
         if ($imageDetails[2] == 2) {
             $originalImage = imagecreatefromjpeg($originalPath);
             $thumbImage = imagecreatetruecolor($newWidth, $newHeight);
-            imagecopyresampled($thumbImage, $originalImage, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 
-            return imagejpeg($thumbImage, $thumbPath);
+            if ($originalImage && $thumbImage) {
+                imagecopyresampled($thumbImage, $originalImage, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+
+                return imagejpeg($thumbImage, $thumbPath);
+            }
         }
 
         if ($imageDetails[2] == 3) {
             $originalImage = imagecreatefrompng($originalPath);
             $thumbImage = imagecreatetruecolor($newWidth, $newHeight);
-            imagecopyresampled($thumbImage, $originalImage, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 
-            return imagepng($thumbImage, $thumbPath);
+            if ($originalImage && $thumbImage) {
+                imagecopyresampled($thumbImage, $originalImage, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+
+                return imagepng($thumbImage, $thumbPath);
+            }
         }
 
         return false;

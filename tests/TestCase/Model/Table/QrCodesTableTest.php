@@ -402,6 +402,58 @@ class QrCodesTableTest extends TestCase
     }
 
     /**
+     * Test the image's file
+     *
+     * @return void
+     */
+    public function testEntityImageThumb(): void
+    {
+        Configure::write('debug', true);
+        $this->loadRoutes();
+
+        $tmpdir = Configure::read('App.paths.qr_codes');
+        // make sure this setting exists.
+        $this->assertNotNull($tmpdir);
+
+        // a successful test, code exists.
+        $entity = $this->QrCodes->get(1);
+        $entityPath = $tmpdir . DS . $entity->id . '.png';
+        $this->assertTrue(is_file($entityPath));
+        $this->assertSame($entityPath, $entity->path);
+
+
+        // test the 3 different thumbnail sizes.
+        $thumbPathSm = $tmpdir . DS . '1-thumb-sm.png';
+        // make sure it doesn't exist
+        if (is_file($thumbPathSm)) {
+            unlink($thumbPathSm);
+        }
+        $this->assertFalse(is_file($thumbPathSm));
+        $this->assertSame($thumbPathSm, $entity->path_sm);
+        $this->assertTrue(is_file($thumbPathSm));
+
+        // test the 3 different thumbnail sizes.
+        $thumbPathMd = $tmpdir . DS . '1-thumb-md.png';
+        // make sure it doesn't exist
+        if (is_file($thumbPathMd)) {
+            unlink($thumbPathMd);
+        }
+        $this->assertFalse(is_file($thumbPathMd));
+        $this->assertSame($thumbPathMd, $entity->path_md);
+        $this->assertTrue(is_file($thumbPathMd));
+
+        // test the 3 different thumbnail sizes.
+        $thumbPathLg = $tmpdir . DS . '1-thumb-lg.png';
+        // make sure it doesn't exist
+        if (is_file($thumbPathLg)) {
+            unlink($thumbPathLg);
+        }
+        $this->assertFalse(is_file($thumbPathLg));
+        $this->assertSame($thumbPathLg, $entity->path_lg);
+        $this->assertTrue(is_file($thumbPathLg));
+    }
+
+    /**
      * Test Implemented Generator
      *
      * @return void
