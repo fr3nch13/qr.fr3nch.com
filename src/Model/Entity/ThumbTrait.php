@@ -180,11 +180,11 @@ trait ThumbTrait
         }
 
         if($width > $height) {
-            $newWidth = $sizes['x'];
-            $newHeight = round(($height*$percent)/100);
+            $newWidth = (int)$sizes['x'];
+            $newHeight = (int)round(($height*$percent)/100);
         }else{
-            $newWidth=round(($width*$percent)/100);
-            $newHeight=$sizes['y'];
+            $newWidth = (int)round(($width*$percent)/100);
+            $newHeight = (int)$sizes['y'];
         }
 
         if ($imageDetails[2] == 1) {
