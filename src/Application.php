@@ -149,7 +149,7 @@ class Application extends BaseApplication implements
                         'https://www.google-analytics.com',
                     ],
                     'self' => true,
-                    'unsafe-inline' => false,
+                    'unsafe-inline' => true,
                     'unsafe-eval' => false,
                     'script-src' => [],
                     'style-src' => [],
