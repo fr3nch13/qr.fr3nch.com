@@ -128,6 +128,64 @@ trait ThumbTrait
             new ThumbException(__('Unknown size option.'))
         );
 
+        // path to the original image.
+        $originalPath = $this->path;
+        if (!$originalPath) {
+            return false;
+        }
+
+        $size = Configure::read('QrCodes.thumbs.' . $size, null);
+        if (!$size) {
+            return false;
+        }
+
+        $thumbPath = $this->getThumbPath($size);
+
+        $imageDetails = getimagesize($originalPath);
+        $width = $imageDetails[0];
+        $height = $imageDetails[1];
+
+        $percent = 100;
+        if($width > $size['x']) {
+            $percent = floor(($size['x'] * 100) / $width);
+        }
+
+        if(floor(($height * $percent)/100)>$size['y']) {
+            $percent = (($size['y'] * 100) / $height);
+        }
+
+        if($width > $height) {
+            $newWidth = $size['x'];
+            $newHeight = round(($height*$percent)/100);
+        }else{
+            $newWidth=round(($width*$percent)/100);
+            $newHeight=$size['y'];
+        }
+
+        if ($imageDetails[2] == 1) {
+            $originalImage = imagecreatefromgif($originalPath);
+            $thumbImage = imagecreatetruecolor($newWidth, $newHeight);
+            imagecopyresampled($thumbImage, $originalImage, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+
+            return imagegif($thumbImage, $thumbPath);
+        }
+
+        if ($imageDetails[2] == 2) {
+            $originalImage = imagecreatefromjpeg($originalPath);
+            $thumbImage = imagecreatetruecolor($newWidth, $newHeight);
+            imagecopyresampled($thumbImage, $originalImage, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+
+            return imagejpeg($thumbImage, $thumbPath);
+        }
+
+        if ($imageDetails[2] == 3) {
+            $originalImage = imagecreatefrompng($originalPath);
+            $thumbImage = imagecreatetruecolor($newWidth, $newHeight);
+            imagecopyresampled($thumbImage, $originalImage, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+
+            return imagepng($thumbImage, $thumbPath);
+        }
+
         return false;
     }
 
