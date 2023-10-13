@@ -208,7 +208,14 @@ class QrCodesTable extends Table
     {
         // see of there are new tags to add.
         if (isset($data['tags']['_ids'])) {
-            debug($data['tags']['_ids']);
+            $user_id = 0;
+            // make the user of the QrCode the user of the new tags.
+            if (isset($data['qrkey'])) {
+                $qrCode = $this->find('key', key: $data['qrkey'])->first();
+                if ($qrCode) {
+                    $user_id = $qrCode->user_id;
+                }
+            }
             foreach ($data['tags']['_ids'] as $pos => $value) {
                 // maybe have a new one, at least it was typed.
                 if (!is_numeric($value)) {
@@ -219,12 +226,11 @@ class QrCodesTable extends Table
                         // fix the ArrayObject
                         $data['tags']['_ids'][$pos] = $tag->id;
                     } else {
-                        // it's a new tag, so add it
                         $tag = $this->Tags->newEntity([
                             'name' => $value,
+                            'user_id' => $user_id,
                         ]);
                         debug($tag);
-                        debug($event);
                     }
                 }
             }
