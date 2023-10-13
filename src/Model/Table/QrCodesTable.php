@@ -220,7 +220,7 @@ class QrCodesTable extends Table
                 ])->first();
                 debug($tag);
             }
-
+            exit;
         }
         debug($options);
     }
