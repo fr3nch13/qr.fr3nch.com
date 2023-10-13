@@ -63,7 +63,7 @@ if (!$this->getRequest()->is('ajax')) {
                         target="tab-<?=$qrCode->id?>"
                         ><?= $qrCode->url ?></a> </dd>
                 </dl>
-                <div class="row">
+                <div class="row border-bottom">
                     <p class="text-secondary mb-3"><?= $this->Text->autoParagraph(h($qrCode->description)) ?></p>
                 </div>
             </div>
