@@ -161,6 +161,7 @@ trait ThumbTrait
         debug($originalPath);
 
         $size = Configure::read('QrCodes.thumbs.' . $size, null);
+        debug($size);
         if (!$size) {
             return false;
         }
