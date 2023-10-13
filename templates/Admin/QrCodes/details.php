@@ -20,11 +20,6 @@ if ($qrCode->id) {
             'action' => 'view',
             $qrCode->id,
         ]],
-        'QrCodes.edit' => [__('Edit'), [
-            'controller' => 'QrCodes',
-            'action' => 'edit',
-            $qrCode->id,
-        ]],
         'QrImages.qrCode' => [__('Images'), [
             'controller' => 'QrImages',
             'action' => 'qrCode',
@@ -38,20 +33,25 @@ if ($qrCode->id) {
             $qrCode->id,
             '?' => ['download' => true],
         ]],
+        'QrCodes.edit' => [__('Edit'), [
+            'controller' => 'QrCodes',
+            'action' => 'edit',
+            $qrCode->id,
+        ]],
     ];
 
     ?>
-    <ul class="list-inline">
+    <ul class="nav justify-content-end">
     <?php foreach ($tabs as $k => $tab) :
         $options = [
-            'class' => 'underline text-black',
+            'class' => 'nav-link underline text-black',
         ];
         if ($k === $controller . '.' . $action) {
-            $options['class'] .= ' text-decoration-underline active';
+            $options['class'] .= ' active';
             $options['aria-current'] = 'page';
         }
         ?>
-        <li class="list-inline-item ms-2">
+        <li class="nav-item">
             <?= $this->Html->link($tab[0], $tab[1], $options) ?>
         </li>
     <?php endforeach; ?>
