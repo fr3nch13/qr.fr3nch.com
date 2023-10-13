@@ -59,7 +59,7 @@ if ($qrCode->id) {
 
         if ($tab[1]['action'] === 'delete') {
             $options['class'] .= ' text-red';
-            $options['confirm'] = __('Are you sure you want to delete # {0}?', $qrCode->qrkey);
+            $options['confirm'] = __('Are you sure you want to delete: {0}?', $qrCode->qrkey);
             $link = $this->Form->postLink($tab[0], $tab[1], $options);
         } else {
             $options['class'] .= ' text-black';
