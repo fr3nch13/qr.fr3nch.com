@@ -159,8 +159,8 @@ trait ThumbTrait
             return false;
         }
 
-        $size = Configure::read('QrCode.thumbs.' . $size, null);
-        if (!$size) {
+        $sizes = Configure::read('QrCode.thumbs.' . $size, null);
+        if (!$sizes) {
             return false;
         }
 
@@ -171,20 +171,20 @@ trait ThumbTrait
         $height = $imageDetails[1];
 
         $percent = 100;
-        if($width > $size['x']) {
-            $percent = floor(($size['x'] * 100) / $width);
+        if($width > $sizes['x']) {
+            $percent = floor(($sizes['x'] * 100) / $width);
         }
 
-        if(floor(($height * $percent)/100)>$size['y']) {
-            $percent = (($size['y'] * 100) / $height);
+        if(floor(($height * $percent)/100)>$sizes['y']) {
+            $percent = (($sizes['y'] * 100) / $height);
         }
 
         if($width > $height) {
-            $newWidth = $size['x'];
+            $newWidth = $sizes['x'];
             $newHeight = round(($height*$percent)/100);
         }else{
             $newWidth=round(($width*$percent)/100);
-            $newHeight=$size['y'];
+            $newHeight=$sizes['y'];
         }
 
         if ($imageDetails[2] == 1) {
