@@ -22,7 +22,7 @@
     <?= $this->Html->css([
         'libs.bundle',
         'index.bundle',
-        '/assets/npm-asset/pootstrap5-tags/tags-pure.css',
+        '/assets/npm-asset/bootstrap5-tags/tags-pure.css',
         'qr.css',
         ]) ?>
 
@@ -38,7 +38,7 @@
     'vendor.bundle',
     'index.bundle',
     '/assets/npm-asset/jquery/dist/jquery.min.js',
-    '/assets/npm-asset/pootstrap5-tags/tags.js',
+    '/assets/npm-asset/bootstrap5-tags/tags.js',
     'qr',
     ]) ?></body>
 <?= $this->Template->templateComment(false, __FILE__); ?>
