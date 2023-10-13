@@ -69,6 +69,7 @@ if (!$this->getRequest()->is('ajax')) {
                     'options' => $tags,
                     'class' => 'form-select tags-input',
                     'data-allow-new' => 'true',
+                    'data-separator' => ' |,| ',
                 ]); ?>
             </div>
         </div>
