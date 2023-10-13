@@ -202,6 +202,15 @@ class QrCodesTable extends Table
     }
 
     /**
+     * Before marshal which runs before patching an entity.
+     */
+    public function beforeMarshal(Event $event, ArrayObject $data, ArrayObject $options): void
+    {
+        debug($data);
+        debug($options);
+    }
+
+    /**
      * AfterSave callback
      *
      * @return void
