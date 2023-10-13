@@ -60,6 +60,9 @@ class TemplateTest extends BaseControllerTest
         $this->assertRedirectEquals('https://localhost/admin');
         $this->assertFlashMessage('Welcome back Admin', 'flash');
         $this->assertFlashElement('flash/success');
+
+        // validate the html
+        $this->helperValidateHTML();
     }
 
     /**
@@ -121,6 +124,9 @@ class TemplateTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestLayoutPagesView();
         $this->helperTestTemplate('Users/profile');
+
+        // validate the html
+        $this->helperValidateHTML();
     }
 
     /**

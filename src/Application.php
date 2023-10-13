@@ -102,7 +102,7 @@ class Application extends BaseApplication implements
          * Debug Kit should not be installed on a production system
          */
         if (Configure::read('debug')) {
-            $this->addPlugin('DebugKit');
+            //$this->addPlugin('DebugKit');
         }
 
         // Load more plugins here
@@ -211,6 +211,7 @@ class Application extends BaseApplication implements
         $https = new HttpsEnforcerMiddleware([
             'redirect' => true,
             'statusCode' => 302,
+            'disableOnDebug' => true,
             'hsts' => [
                 // How long the header value should be cached for.
                 'maxAge' => 60 * 60 * 24 * 365,

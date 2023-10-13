@@ -54,6 +54,9 @@ class TemplateTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestLayoutPagesDashboard();
         $this->helperTestTemplate('Admin/Tags/index');
+
+        // validate the html
+        $this->helperValidateHTML();
     }
 
     /**
@@ -102,6 +105,9 @@ class TemplateTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestLayoutPagesView();
         $this->helperTestTemplate('Admin/Tags/view');
+
+        // validate the html
+        $this->helperValidateHTML();
     }
 
     /**
@@ -150,6 +156,9 @@ class TemplateTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestLayoutPagesForm();
         $this->helperTestTemplate('Admin/Tags/add');
+
+        // validate the html
+        $this->helperValidateHTML();
     }
 
     /**
@@ -198,6 +207,9 @@ class TemplateTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestLayoutPagesForm();
         $this->helperTestTemplate('Admin/Tags/edit');
+
+        // validate the html
+        $this->helperValidateHTML();
     }
 
     /**

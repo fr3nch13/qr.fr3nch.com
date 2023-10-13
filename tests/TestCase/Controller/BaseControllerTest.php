@@ -127,6 +127,18 @@ class BaseControllerTest extends TestCase
     }
 
     /**
+     * Used to spit out the body of a response.
+     * Shorthand, so I don't have to keep remembering
+     * and/or typing this.
+     *
+     * @return void
+     */
+    public function debugBody(): void
+    {
+        debug((string)$this->_response->getBody());
+    }
+
+    /**
      * Uses an HTML validator to validate the compiled html.
      *
      * @return void
@@ -136,6 +148,11 @@ class BaseControllerTest extends TestCase
         $content = (string)$this->_response->getBody();
 
         try {
+            // TODO: add more html validation, but do it locally.
+            // Maybe with github actions?
+            // @link https://github.com/marketplace/actions/html5-validator
+            // labels: testing, frontend, validation
+
             $validator = new HtmlValidator();
             $result = $validator->validateDocument($content);
             $this->assertFalse($result->hasErrors(), (string)$result);
@@ -296,14 +313,17 @@ class BaseControllerTest extends TestCase
         $this->assertSame(1, substr_count($content, '<link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">'));
         $this->assertSame(1, substr_count($content, '<link rel="manifest" href="/img/site.webmanifest">'));
         // css
-        $this->assertSame(1, substr_count($content, '<link rel="stylesheet" href="/css/libs.bundle.css" '));
-        $this->assertSame(1, substr_count($content, '<link rel="stylesheet" href="/css/index.bundle.css" '));
-        $this->assertSame(1, substr_count($content, '<link rel="stylesheet" href="/css/qr.css" '));
+        $this->assertSame(1, substr_count($content, '<link rel="stylesheet" href="/css/libs.bundle.css"'));
+        $this->assertSame(1, substr_count($content, '<link rel="stylesheet" href="/css/index.bundle.css"'));
+        $this->assertSame(1, substr_count($content, '<link rel="stylesheet" href="/css/qr.css"'));
         // js
-        $this->assertSame(1, substr_count($content, '<script src="/js/vendor.bundle.js" '));
-        $this->assertSame(1, substr_count($content, '<script src="/js/index.bundle.js" '));
-        $this->assertSame(1, substr_count($content, '<script src="/assets/npm-asset/jquery/dist/jquery.min.js" '));
-        $this->assertSame(1, substr_count($content, '<script src="/js/qr.js" '));
+        $this->assertSame(1, substr_count($content, '<script src="/js/vendor.bundle.js"'));
+        $this->assertSame(1, substr_count($content, '<script src="/js/index.bundle.js"'));
+        $this->assertSame(1, substr_count($content, '<script src="/assets/npm-asset/jquery/dist/jquery.min.js"'));
+        // make sure it's imported as a module for the bootstrap5-tags npm asset.
+        // also here to check if the CspMiddleware is active or not.
+        // in this case it's not as it isn't working correctly in safari even though `'unsafe-inline' => true,`
+        $this->assertSame(1, substr_count($content, '<script src="/js/qr.js" type="module"></script>'));
         // end
         $this->assertSame(1, substr_count($content, '</body>'));
         $this->assertSame(1, substr_count($content, '</html>'));

@@ -48,7 +48,8 @@ class JsonTest extends BaseControllerTest
         $content = json_decode($content, true);
 
         $this->assertTrue(isset($content['qrCodes']));
-        $this->assertCount(5, $content['qrCodes']);
+        // only active codes
+        $this->assertCount(3, $content['qrCodes']);
 
         $first = reset($content['qrCodes']);
         $this->assertSame(1, $first['id']);

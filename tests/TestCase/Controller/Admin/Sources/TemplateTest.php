@@ -58,6 +58,9 @@ class TemplateTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestLayoutPagesIndex();
         $this->helperTestTemplate('Admin/Sources/index');
+
+        // validate the html
+        $this->helperValidateHTML();
     }
 
     /**
@@ -115,6 +118,9 @@ class TemplateTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestLayoutPagesView();
         $this->helperTestTemplate('Admin/Sources/view');
+
+        // validate the html
+        $this->helperValidateHTML();
     }
 
     /**
@@ -166,6 +172,9 @@ class TemplateTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestLayoutPagesForm();
         $this->helperTestTemplate('Admin/Sources/add');
+
+        // validate the html
+        $this->helperValidateHTML();
     }
 
     /**
@@ -210,6 +219,9 @@ class TemplateTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestLayoutPagesForm();
         $this->helperTestTemplate('Admin/Sources/edit');
+
+        // validate the html
+        $this->helperValidateHTML();
     }
 
     /**

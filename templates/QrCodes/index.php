@@ -51,6 +51,7 @@ if (!$this->getRequest()->is('ajax')) {
         <?php foreach ($qrCodes as $qrCode) : ?>
             <div class="col-md-6 col-lg-4">
                 <div class="product">
+                <?= $this->Template->objectComment('QrCodes/' . ($qrCode->is_active ? 'active' : 'inactive')) ?>
 
                     <div class="product-title"><?= $this->Html->link($qrCode->name, [
                         'action' => 'view',

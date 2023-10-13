@@ -21,16 +21,14 @@ $sort = $this->Paginator->param('sort');
         }
         $nameAsc = $this->Html->tag('span', $nameAsc, [
             'class' => $class . $classActive,
-            'role' => 'button',
         ]);
 
         $nameDesc = $this->Html->tag('span', $nameDesc, [
             'class' => $class . $classActive,
-            'role' => 'button',
         ]);
     }
 
     echo $this->Paginator->sort($key, ['asc' => $nameAsc, 'desc' => $nameDesc], ['escape' => false]);
 }
 ?>
-<?= $this->Template->templateComment(false, __FILE__)
+<?= $this->Template->templateComment(false, __FILE__);

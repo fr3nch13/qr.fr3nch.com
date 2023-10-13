@@ -185,8 +185,13 @@ class QrImagesTableTest extends TestCase
     {
         Configure::write('debug', true);
 
+        $tmpdir = Configure::read('App.paths.qr_images');
+        // make sure this setting exists.
+        $this->assertNotNull($tmpdir);
+
         // for tests, we use this dir so we don't mess with the actual dir
         // we also copy over the assets in QrImagesFixture::insert()
+
         $tmpdir = TMP . 'qr_images_test';
         // test the paths here.
         // this one has an image file.
@@ -200,6 +205,63 @@ class QrImagesTableTest extends TestCase
         $entityPath = $tmpdir . DS . $entity->qr_code_id . DS . $entity->id . '.' . $entity->ext;
         $this->assertFalse(is_file($entityPath));
         $this->assertNull($entity->path);
+    }
+
+    /**
+     * Test the image's file
+     *
+     * @return void
+     */
+    public function testEntityImageThumb(): void
+    {
+        Configure::write('debug', true);
+        $this->loadRoutes();
+
+        $tmpdir = Configure::read('App.paths.qr_images');
+        // make sure this setting exists.
+        $this->assertNotNull($tmpdir);
+
+        // for tests, we use this dir so we don't mess with the actual dir
+        // we also copy over the assets in QrImagesFixture::insert()
+
+        $tmpdir = TMP . 'qr_images_test';
+
+        // make sure the image actually exists.
+        $entity = $this->QrImages->get(1);
+        $entityPath = $tmpdir . DS . $entity->qr_code_id . DS . $entity->id . '.' . $entity->ext;
+        $this->assertTrue(is_file($entityPath));
+        $this->assertSame($entityPath, $entity->path);
+
+        // test the 3 different thumbnail sizes.
+        // the small thumbnail
+        $thumbPathSm = $tmpdir . DS . $entity->qr_code_id . DS . $entity->id . '-thumb-sm.' . $entity->ext;
+        // make sure it doesn't exist
+        if (is_file($thumbPathSm)) {
+            unlink($thumbPathSm);
+        }
+        $this->assertFalse(is_file($thumbPathSm));
+        $this->assertSame($thumbPathSm, $entity->path_sm);
+        $this->assertTrue(is_file($thumbPathSm));
+
+        // the medium thumbnail
+        $thumbPathMd = $tmpdir . DS . $entity->qr_code_id . DS . $entity->id . '-thumb-md.' . $entity->ext;
+        // make sure it doesn't exist
+        if (is_file($thumbPathMd)) {
+            unlink($thumbPathMd);
+        }
+        $this->assertFalse(is_file($thumbPathMd));
+        $this->assertSame($thumbPathMd, $entity->path_md);
+        $this->assertTrue(is_file($thumbPathMd));
+
+        // the large thumbnail
+        $thumbPathLg = $tmpdir . DS . $entity->qr_code_id . DS . $entity->id . '-thumb-lg.' . $entity->ext;
+        // make sure it doesn't exist
+        if (is_file($thumbPathLg)) {
+            unlink($thumbPathLg);
+        }
+        $this->assertFalse(is_file($thumbPathLg));
+        $this->assertSame($thumbPathLg, $entity->path_lg);
+        $this->assertTrue(is_file($thumbPathLg));
     }
 
     /**

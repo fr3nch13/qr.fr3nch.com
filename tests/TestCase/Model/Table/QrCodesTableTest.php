@@ -421,8 +421,8 @@ class QrCodesTableTest extends TestCase
         $this->assertTrue(is_file($entityPath));
         $this->assertSame($entityPath, $entity->path);
 
-
         // test the 3 different thumbnail sizes.
+        // the small thumbnail
         $thumbPathSm = $tmpdir . DS . '1-thumb-sm.png';
         // make sure it doesn't exist
         if (is_file($thumbPathSm)) {
@@ -432,7 +432,7 @@ class QrCodesTableTest extends TestCase
         $this->assertSame($thumbPathSm, $entity->path_sm);
         $this->assertTrue(is_file($thumbPathSm));
 
-        // test the 3 different thumbnail sizes.
+        // the medium thumbnail
         $thumbPathMd = $tmpdir . DS . '1-thumb-md.png';
         // make sure it doesn't exist
         if (is_file($thumbPathMd)) {
@@ -442,7 +442,7 @@ class QrCodesTableTest extends TestCase
         $this->assertSame($thumbPathMd, $entity->path_md);
         $this->assertTrue(is_file($thumbPathMd));
 
-        // test the 3 different thumbnail sizes.
+        // the large thumbnail
         $thumbPathLg = $tmpdir . DS . '1-thumb-lg.png';
         // make sure it doesn't exist
         if (is_file($thumbPathLg)) {

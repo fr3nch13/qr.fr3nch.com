@@ -46,11 +46,6 @@ class TemplateTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestLayoutPagesIndex();
         $this->helperTestTemplate('QrCodes/index');
-        // TODO: add more html validation, but do it locally.
-        // Maybe with github actions?
-        // @link https://github.com/marketplace/actions/html5-validator
-        // labels: testing, frontend, validation
-        $this->helperValidateHTML();
 
         // test with reqular
         $this->loginUserRegular();
@@ -67,17 +62,19 @@ class TemplateTest extends BaseControllerTest
         $this->helperTestLayoutPagesIndex();
         $this->helperTestTemplate('QrCodes/index');
 
-        // make sure the products are listed.
-        // make sure all are listed.
-        // this may change to include all active, and inactive, scoped to the user.
+        // make sure the codes are listed.
+        // make sure only active codes are listed.
         $this->helperTestObjectComment(3, 'QrCodes/active');
-        $this->helperTestObjectComment(2, 'QrCodes/inactive');
+        $this->helperTestObjectComment(0, 'QrCodes/inactive');
         // make sure the qcode is listed for each one.
-        $this->helperTestObjectComment(5, 'QrCode/show');
-        $this->helperTestObjectComment(5, 'QrCode/forward');
-        $this->helperTestObjectComment(5, 'QrCode/view');
+        $this->helperTestObjectComment(3, 'QrCode/show');
+        $this->helperTestObjectComment(3, 'QrCode/forward');
+        $this->helperTestObjectComment(3, 'QrCode/view');
         // make sure only active primary images are listed.
         $this->helperTestObjectComment(3, 'QrImages/active/first');
+
+        // validate the html
+        $this->helperValidateHTML();
     }
 
     /**
@@ -112,13 +109,12 @@ class TemplateTest extends BaseControllerTest
         $this->helperTestTemplate('QrCodes/index');
 
         // make sure the products are listed.
-        // make sure all are listed.
-        // this may change to include all active, and inactive, scoped to the user.
+        // make sure only active
         $this->helperTestObjectComment(3, 'QrCodes/active');
-        $this->helperTestObjectComment(2, 'QrCodes/inactive');
+        $this->helperTestObjectComment(0, 'QrCodes/inactive');
         // make sure the qcode is listed for each one.
-        $this->helperTestObjectComment(5, 'QrCode/show');
-        $this->helperTestObjectComment(5, 'QrCode/forward');
+        $this->helperTestObjectComment(3, 'QrCode/show');
+        $this->helperTestObjectComment(3, 'QrCode/forward');
         // make sure only active primary images are listed.
         $this->helperTestObjectComment(3, 'QrImages/active/first');
     }
@@ -152,6 +148,9 @@ class TemplateTest extends BaseControllerTest
         $this->helperTestTemplate('QrCodes/view');
         $this->helperTestObjectComment(2, 'QrCode/show');
         $this->helperTestObjectComment(1, 'QrCode/forward');
+
+        // validate the html
+        $this->helperValidateHTML();
     }
 
     /**

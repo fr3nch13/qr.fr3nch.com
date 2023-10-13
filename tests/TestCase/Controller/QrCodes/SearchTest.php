@@ -113,11 +113,11 @@ class SearchTest extends BaseControllerTest
 
         // test to see if filtering is actually applied.
         $this->helperTestObjectComment(1, 'QrCodes/active');
-        $this->helperTestObjectComment(1, 'QrCodes/inactive');
+        $this->helperTestObjectComment(0, 'QrCodes/inactive');
         // make sure the qcode is listed for each one.
-        $this->helperTestObjectComment(2, 'QrCode/show');
-        $this->helperTestObjectComment(2, 'QrCode/forward');
-        $this->helperTestObjectComment(2, 'QrCode/view');
+        $this->helperTestObjectComment(1, 'QrCode/show');
+        $this->helperTestObjectComment(1, 'QrCode/forward');
+        $this->helperTestObjectComment(1, 'QrCode/view');
         // make sure only active primary images are listed.
         $this->helperTestObjectComment(1, 'QrImages/active/first');
 
@@ -126,10 +126,6 @@ class SearchTest extends BaseControllerTest
         // Should return American Flag Charm (active)
         $this->assertSame(1, substr_count($content, '<div class="product-title">' .
             '<a href="/qr-codes/view/3" class="product-title">American Flag Charm</a></div>'));
-
-        // Should return Inactive Code (inactive)
-        $this->assertSame(1, substr_count($content, '<div class="product-title">' .
-            '<a href="/qr-codes/view/4" class="product-title">Inactive Code</a></div>'));
 
         // finally look for the input in the offcanvas that has the filter set.
         $this->assertSame(1, substr_count($content, '<select name="s" id="s" class="form-select">'));

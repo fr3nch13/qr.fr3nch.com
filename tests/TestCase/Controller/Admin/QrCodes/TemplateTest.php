@@ -57,6 +57,9 @@ class TemplateTest extends BaseControllerTest
         $this->helperTestLayoutPagesDashboard();
         // TODO: Also look for sub-layout page.
         $this->helperTestTemplate('Admin/QrCodes/index');
+
+        // validate the html
+        $this->helperValidateHTML();
     }
 
     /**
@@ -106,6 +109,9 @@ class TemplateTest extends BaseControllerTest
         $this->helperTestLayoutPagesDashboard();
         // TODO: Also look for sub-layout page.
         $this->helperTestTemplate('Admin/QrCodes/view');
+
+        // validate the html
+        $this->helperValidateHTML();
     }
 
     /**
@@ -154,6 +160,9 @@ class TemplateTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestLayoutPagesForm();
         $this->helperTestTemplate('Admin/QrCodes/add');
+
+        // validate the html
+        $this->helperValidateHTML();
     }
 
     /**
@@ -202,6 +211,9 @@ class TemplateTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestLayoutPagesForm();
         $this->helperTestTemplate('Admin/QrCodes/edit');
+
+        // validate the html
+        $this->helperValidateHTML();
     }
 
     /**
