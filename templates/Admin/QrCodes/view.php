@@ -63,11 +63,11 @@ if (!$this->getRequest()->is('ajax')) {
                         target="tab-<?=$qrCode->id?>"
                         ><?= $qrCode->url ?></a> </dd>
                 </dl>
-                <div class="row border-bottom">
+                <div class="row">
                     <p class="text-secondary mb-3"><?= $this->Text->autoParagraph(h($qrCode->description)) ?></p>
                 </div>
             </div>
-            <div class="col order-2 order-lg-3 mb-2">
+            <div class="col order-2 order-lg-3 mb-2 border-top">
                 <h5><?= __('Tags') ?></h5>
                 <?php foreach ($qrCode->tags as $tag) : ?>
                     <span class="my-1 my-md-2 mx-1 mx-md-2 btn btn-sm btn-light btn-outline-secondary rounded-pill" role="button"><?= $tag->name ?></span>
