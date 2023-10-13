@@ -206,7 +206,11 @@ class QrCodesTable extends Table
      */
     public function beforeMarshal(Event $event, ArrayObject $data, ArrayObject $options): void
     {
-        debug($data);
+        // see of there are new tags to add.
+        if (isset($data['tags']['_ids'])) {
+            debug($data['tags']['_ids']);
+
+        }
         debug($options);
     }
 
