@@ -230,6 +230,7 @@ class QrCodesTable extends Table
             }
         }
         debug($data);
+        debug($event->getSubject());
     }
 
     /**
