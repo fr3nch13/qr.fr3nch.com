@@ -214,6 +214,11 @@ class QrCodesTable extends Table
                 $tag = $this->Tags->find()->where([
                     'id' => $value,
                 ])->first();
+                if (!$tag) {
+                    $tag = $this->Tags->find()->where([
+                        'name' => $value,
+                    ])->first();
+                }
                 debug($tag);
             }
 
