@@ -158,16 +158,13 @@ trait ThumbTrait
         if (!$originalPath) {
             return false;
         }
-        debug($originalPath);
 
-        $size = Configure::read('QrCodes.thumbs.' . $size, null);
-        debug($size);
+        $size = Configure::read('QrCode.thumbs.' . $size, null);
         if (!$size) {
             return false;
         }
 
         $thumbPath = $this->getThumbPath($size);
-        debug($thumbPath);
 
         $imageDetails = getimagesize($originalPath);
         $width = $imageDetails[0];
