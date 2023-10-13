@@ -30,7 +30,7 @@ trait ThumbTrait
     protected function _getPathSm(): ?string
     {
         assert(
-            self::class instanceof \Cake\ORM\Entity,
+            $this::class instanceof \Cake\ORM\Entity,
             new ThumbException(__('Must be an instance of `\Cake\ORM\Entity`.'))
         );
 
@@ -60,7 +60,7 @@ trait ThumbTrait
     protected function _getPathMd(): ?string
     {
         assert(
-            self::class instanceof \Cake\ORM\Entity,
+            $this::class instanceof \Cake\ORM\Entity,
             new ThumbException(__('Must be an instance of `\Cake\ORM\Entity`.'))
         );
 
@@ -90,7 +90,7 @@ trait ThumbTrait
     protected function _getPathLg(): ?string
     {
         assert(
-            self::class instanceof \Cake\ORM\Entity,
+            $this::class instanceof \Cake\ORM\Entity,
             new ThumbException(__('Must be an instance of `\Cake\ORM\Entity`.'))
         );
 
@@ -120,7 +120,7 @@ trait ThumbTrait
     protected function generateThumb(string $size= 'sm'): bool
     {
         assert(
-            self::class instanceof \Cake\ORM\Entity,
+            $this::class instanceof \Cake\ORM\Entity,
             new ThumbException(__('Must be an instance of `\Cake\ORM\Entity`.'))
         );
         assert(
@@ -141,7 +141,7 @@ trait ThumbTrait
     protected function deleteThumbs(bool $includeOriginal = false): void
     {
         assert(
-            self::class instanceof \Cake\ORM\Entity,
+            $this::class instanceof \Cake\ORM\Entity,
             new ThumbException(__('Must be an instance of `\Cake\ORM\Entity`.'))
         );
 
@@ -172,7 +172,7 @@ trait ThumbTrait
     protected function getThumbPath(string $size= 'sm'): ?string
     {
         assert(
-            self::class instanceof \Cake\ORM\Entity,
+            $this::class instanceof \Cake\ORM\Entity,
             new ThumbException(__('Must be an instance of `\Cake\ORM\Entity`.'))
         );
         assert(
