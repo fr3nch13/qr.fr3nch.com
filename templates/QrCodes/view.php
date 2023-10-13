@@ -9,44 +9,6 @@ if (!$this->getRequest()->is('ajax')) {
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 
-
-
-    <?php if (
-        $this->ActiveUser->isLoggedIn() &&
-        (
-            $this->ActiveUser->getUser('id') === $qrCode->user_id ||
-            $this->ActiveUser->getUser('is_admin') == true
-        )
-) : ?>
-<div class="product-view">
-    <!-- Page Actions -->
-    <div class="row g-5 mb-4 justify-content-center justify-content-lg-between">
-        <div class="col-md-12 text-md-end">
-            <ul class="list-inline">
-                <li class="list-inline-item ms-2">
-                    <?= $this->Html->link(__('Edit'), [
-                        'controller' => 'QrCodes',
-                        'action' => 'edit',
-                        $qrCode->id,
-                    ], [
-                        'class' => 'underline text-black',
-                    ]); ?>
-                </li>
-                <li class="list-inline-item ms-2">
-                    <?= $this->Form->postLink(__('Delete'), [
-                        'controller' => 'QrCodes',
-                        'action' => 'delete',
-                        $qrCode->id,
-                    ], [
-                        'confirm' => __('Are you sure you want to delete # {0}?', $qrCode->id),
-                        'class' => 'underline text-red',
-                    ]); ?>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <?php endif; // Page Actions ?>
-
     <!-- The QR Code Details -->
     <div class="
         row
