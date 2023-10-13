@@ -67,13 +67,18 @@ if (!$this->getRequest()->is('ajax')) {
                                         'controller' => 'QrImages',
                                         'action' => 'show',
                                         $qrCode->qr_images[0]->id,
+                                        '?' => ['thumb' => 'sm'],
                                     ]) ?>"
                                     alt="<?= h($qrCode->qr_images[0]->name) ?>">
                             <?php endif; ?>
                             <?= $this->Template->objectComment('QrCode/show') ?>
                             <img
                                 class="product-qrcode"
-                                src="<?= $this->Url->build(['action' => 'show', $qrCode->id]) ?>"
+                                src="<?= $this->Url->build([
+                                    'action' => 'show',
+                                    $qrCode->id,
+                                    '?' => ['thumb' => 'sm'],
+                                    ]) ?>"
                                 alt="<?= __('The QR Code') ?>">
                         </a>
                     </figure>
