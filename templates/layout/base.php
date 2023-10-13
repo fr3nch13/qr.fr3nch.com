@@ -25,9 +25,6 @@
         '/assets/npm-asset/bootstrap5-tags/tags-pure.css',
         'qr.css',
         ]) ?>
-    <script type="module" nonce="">
-        import Tags from "<?= $this->Url->build('/assets/npm-asset/bootstrap5-tags/tags.js') ?>";
-    </script>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
@@ -41,6 +38,7 @@
     'vendor.bundle',
     'index.bundle',
     '/assets/npm-asset/jquery/dist/jquery.min.js',
+    '/assets/npm-asset/bootstrap5-tags/tags.js',
     'qr',
     ]) ?></body>
 <?= $this->Template->templateComment(false, __FILE__); ?>
