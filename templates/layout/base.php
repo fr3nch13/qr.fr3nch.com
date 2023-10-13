@@ -25,7 +25,7 @@
         '/assets/npm-asset/bootstrap5-tags/tags-pure.css',
         'qr.css',
         ]) ?>
-    <script type="module">
+    <script type="module" nonce="">
         import Tags from "<?= $this->Url->build('/assets/npm-asset/bootstrap5-tags/tags.js') ?>";
     </script>
 
