@@ -49,9 +49,8 @@ if (!$this->getRequest()->is('ajax')) {
         <div class="row g-3 g-lg-5 justify-content-between products">
 
         <?php foreach ($qrCodes as $qrCode) : ?>
-            <?= $this->Template->objectComment('QrCodes/' . ($qrCode->is_active ? 'active' : 'inactive')) ?>
             <div class="col-md-6 col-lg-4">
-                <div class="product<?= $qrCode->is_active ? ' active' : ' inactive' ?>">
+                <div class="product">
 
                     <div class="product-title"><?= $this->Html->link($qrCode->name, [
                         'action' => 'view',
@@ -59,9 +58,6 @@ if (!$this->getRequest()->is('ajax')) {
                     ], ['class' => 'product-title']) ?></div>
 
                     <figure class="product-image">
-                        <?php if (!$qrCode->is_active) : ?>
-                        <div class="ribbon red"><span><?= __('Inactive') ?></span></div>
-                        <?php endif; ?>
                         <a href="<?= $this->Url->build(['action' => 'view', $qrCode->id]) ?>">
                             <?php if (!empty($qrCode->qr_images)) : ?>
                                 <?= $this->Template->objectComment('QrImages/active/first') ?>

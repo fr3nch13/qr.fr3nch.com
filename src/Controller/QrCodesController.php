@@ -166,7 +166,7 @@ class QrCodesController extends AppController
             ]);
         }
 
-        $query = $this->QrCodes->find('all')
+        $query = $this->QrCodes->find('active')
             ->find('search', search: $this->request->getQueryParams())
             ->contain([
                 'Sources',
