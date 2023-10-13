@@ -49,7 +49,7 @@ if ($qrCode->id) {
     <ul class="nav justify-content-end">
     <?php foreach ($tabs as $k => $tab) :
         $options = [
-            'class' => 'nav-link underline pe-0',
+            'class' => 'nav-link pe-0',
         ];
 
         if ($k === $controller . '.' . $action) {
