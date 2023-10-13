@@ -10,6 +10,7 @@
 if (!$this->getRequest()->is('ajax')) {
     $this->extend('/Admin/QrCodes/details');
 }
+debug($qrCode);
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <div class="card bg-opaque-white">
