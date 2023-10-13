@@ -62,7 +62,7 @@ class QrImagesController extends AppController
 
         $params = $this->request->getQueryParams();
         if ($params['thumb'] && in_array($params['thumb'], ['sm', 'md', 'lg'])) {
-            $path = $qrImage->{'path_' . $params['thumb']};
+            $path = $qrImage->getPathThumb($params['thumb']);
             if (!$path) {
                 throw new NotFoundException('Unable to find the thumbnail file.');
             }

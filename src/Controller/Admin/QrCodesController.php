@@ -115,7 +115,7 @@ class QrCodesController extends AppController
 
         $params = $this->request->getQueryParams();
         if ($params['thumb'] && in_array($params['thumb'], ['sm', 'md', 'lg'])) {
-            $path = $qrCode->{'path_' . $params['thumb']};
+            $path = $qrCode->getPathThumb($params['thumb']);
             if (!$path) {
                 throw new NotFoundException('Unable to find the thumbnail file.');
             }

@@ -21,6 +21,31 @@ trait ThumbTrait
     protected $regenerateThumb = false;
 
     /**
+     * Here to make the controllers a little more DRY.
+     */
+    public function getPathThumb(string $size = 'md'): ?string
+    {
+        assert(
+            in_array($size, ['sm', 'md', 'lg']),
+            new ThumbException(__('Unknown size option.'))
+        );
+
+        if ($size === 'sm') {
+            return $this->path_sm;
+        }
+
+        if ($size === 'md') {
+            return $this->path_md;
+        }
+
+        if ($size === 'lg') {
+            return $this->path_lg;
+        }
+
+        return null;
+    }
+
+    /**
      * Gets the path to the Small Thumbnail.
      * If it doesn't exist, create it.
      *
@@ -117,7 +142,7 @@ trait ThumbTrait
      * @return string The path to the generated thumbnail.
      * @throws \App\Exception\ThumbException When size unknown, or not used in an entity.
      */
-    protected function generateThumb(string $size= 'sm'): bool
+    protected function generateThumb(string $size = 'sm'): bool
     {
         assert(
             $this instanceof \Cake\ORM\Entity,
