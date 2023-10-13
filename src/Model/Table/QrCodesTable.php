@@ -229,7 +229,7 @@ class QrCodesTable extends Table
                 }
             }
         }
-        debug($options);
+        debug($data);
     }
 
     /**
