@@ -38,21 +38,36 @@ if ($qrCode->id) {
             'action' => 'edit',
             $qrCode->id,
         ]],
+        'QrCodes.delete' => [__('Delete'), [
+            'controller' => 'QrCodes',
+            'action' => 'delete',
+            $qrCode->id,
+        ]],
     ];
 
     ?>
     <ul class="nav justify-content-end">
     <?php foreach ($tabs as $k => $tab) :
         $options = [
-            'class' => 'nav-link underline text-black pe-0',
+            'class' => 'nav-link underline pe-0',
         ];
+
         if ($k === $controller . '.' . $action) {
             $options['class'] .= ' active';
             $options['aria-current'] = 'page';
         }
+
+        if ($action == 'delete') {
+            $options['class'] .= ' text-red';
+            $options['confirm'] = __('Are you sure you want to delete # {0}?', $qrCode->qrkey);
+            $link = $this->Form->postLink($tab[0], $tab[1], $options);
+        } else {
+            $options['class'] .= ' text-black';
+            $link = $this->Html->link($tab[0], $tab[1], $options);
+        }
         ?>
         <li class="nav-item">
-            <?= $this->Html->link($tab[0], $tab[1], $options) ?>
+            <?= $link ?>
         </li>
     <?php endforeach; ?>
     </ul>
