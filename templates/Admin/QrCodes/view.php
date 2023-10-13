@@ -21,7 +21,7 @@ if (!$this->getRequest()->is('ajax')) {
                         'controller' => 'QrCodes',
                         'action' => 'show',
                         $qrCode->id,
-                        '?' => ['bypass' => true]
+                        '?' => ['bypass' => true],
                     ]) ?>"
                     alt="<?= __('The QR Code'); ?>">
             </div>
@@ -31,7 +31,8 @@ if (!$this->getRequest()->is('ajax')) {
                     <dd class="col-8 col-md-9"><?= h($qrCode->qrkey) ?> </dd>
 
                     <dt class="col-4 col-md-3"><?= __('Hits') ?></dt>
-                    <dd class="col-8 col-md-9"><span class="badge bg-light text-dark rounded-pill"><?= $qrCode->hits ?></span> </dd>
+                    <dd class="col-8 col-md-9"><span
+                        class="badge bg-light text-dark rounded-pill"><?= $qrCode->hits ?></span> </dd>
 
                     <dt class="col-4 col-md-3"><?= __('Last Hit') ?></dt>
                     <dd class="col-8 col-md-9"><?= h($qrCode->last_hit) ?> </dd>
@@ -45,8 +46,9 @@ if (!$this->getRequest()->is('ajax')) {
                         [
                             'controller' => 'Sources',
                             'action' => 'view',
-                            $qrCode->source->id
-                        ]) : '' ?> </dd>
+                            $qrCode->source->id,
+                        ]
+                    ) : '' ?> </dd>
 
                     <dt class="col-4 col-md-3"><?= __('Owner') ?></dt>
                     <dd class="col-8 col-md-9"><?= $qrCode->hasValue('user') ? $this->Html->link(
@@ -54,8 +56,9 @@ if (!$this->getRequest()->is('ajax')) {
                         [
                             'controller' => 'Users',
                             'action' => 'view',
-                            $qrCode->user->id
-                        ]) : '' ?> </dd>
+                            $qrCode->user->id,
+                        ]
+                    ) : '' ?> </dd>
 
                     <dt class="col-4 col-md-3"><?= __('URL') ?></dt>
                     <dd class="col-8 col-md-9"><a
@@ -71,7 +74,11 @@ if (!$this->getRequest()->is('ajax')) {
             <div class="col-lg-12 order-3 order-lg-4 my-2">
                 <h5><?= __('Tags') ?></h5>
                 <?php foreach ($qrCode->tags as $tag) : ?>
-                    <span class="my-1 my-md-2 mx-1 mx-md-2 btn btn-sm btn-light btn-outline-secondary rounded-pill" role="button"><?= $tag->name ?></span>
+                    <span
+                        class="
+                        my-1 my-md-2 mx-1 mx-md-2
+                        btn btn-sm btn-light btn-outline-secondary
+                        rounded-pill" role="button"><?= $tag->name ?></span>
                 <?php endforeach; ?>
             </div>
         </div>

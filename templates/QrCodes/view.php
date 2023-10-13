@@ -78,7 +78,6 @@ if (!$this->getRequest()->is('ajax')) {
                             <?= $this->Template->objectComment('QrImage/show/thumb') ?>
                         <div>
                             <img
-                                class="img-fluid"
                                 src="<?= $this->Url->build([
                                     'controller' => 'QrImages',
                                     'action' => 'show',
@@ -91,7 +90,6 @@ if (!$this->getRequest()->is('ajax')) {
                         <div>
                             <?= $this->Template->objectComment('QrCode/show') ?>
                             <img
-                                class="img-fluid"
                                 src="<?= $this->Url->build([
                                     'action' => 'show',
                                     $qrCode->id,

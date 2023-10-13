@@ -5,6 +5,7 @@ namespace App\Model\Entity;
 
 use App\Exception\ThumbException;
 use Cake\Core\Configure;
+use Cake\ORM\Entity;
 
 /**
  * Managed the thumbnail files
@@ -18,7 +19,7 @@ trait ThumbTrait
     /**
      * @var bool If we should regenerate the thumbnail file.
      */
-    protected $regenerateThumb = false;
+    protected bool $regenerateThumb = false;
 
     /**
      * Here to make the controllers a little more DRY.
@@ -55,7 +56,7 @@ trait ThumbTrait
     protected function _getPathSm(): ?string
     {
         assert(
-            $this instanceof \Cake\ORM\Entity,
+            $this instanceof Entity,
             new ThumbException(__('Must be an instance of `\Cake\ORM\Entity`.'))
         );
 
@@ -85,7 +86,7 @@ trait ThumbTrait
     protected function _getPathMd(): ?string
     {
         assert(
-            $this instanceof \Cake\ORM\Entity,
+            $this instanceof Entity,
             new ThumbException(__('Must be an instance of `\Cake\ORM\Entity`.'))
         );
 
@@ -115,7 +116,7 @@ trait ThumbTrait
     protected function _getPathLg(): ?string
     {
         assert(
-            $this instanceof \Cake\ORM\Entity,
+            $this instanceof Entity,
             new ThumbException(__('Must be an instance of `\Cake\ORM\Entity`.'))
         );
 
@@ -145,7 +146,7 @@ trait ThumbTrait
     protected function generateThumb(string $size = 'sm'): bool
     {
         assert(
-            $this instanceof \Cake\ORM\Entity,
+            $this instanceof Entity,
             new ThumbException(__('Must be an instance of `\Cake\ORM\Entity`.'))
         );
         assert(
@@ -171,19 +172,19 @@ trait ThumbTrait
         $height = $imageDetails[1];
 
         $percent = 100;
-        if($width > $sizes['x']) {
-            $percent = floor(($sizes['x'] * 100) / $width);
+        if ($width > $sizes['x']) {
+            $percent = floor($sizes['x'] * 100 / $width);
         }
 
-        if(floor(($height * $percent)/100)>$sizes['y']) {
-            $percent = (($sizes['y'] * 100) / $height);
+        if (floor($height * $percent / 100) > $sizes['y']) {
+            $percent = $sizes['y'] * 100 / $height;
         }
 
-        if($width > $height) {
+        if ($width > $height) {
             $newWidth = (int)$sizes['x'];
-            $newHeight = (int)round(($height*$percent)/100);
-        }else{
-            $newWidth = (int)round(($width*$percent)/100);
+            $newHeight = (int)round($height * $percent / 100);
+        } else {
+            $newWidth = (int)round($width * $percent / 100);
             $newHeight = (int)$sizes['y'];
         }
 
@@ -224,7 +225,7 @@ trait ThumbTrait
     protected function deleteThumbs(bool $includeOriginal = false): void
     {
         assert(
-            $this instanceof \Cake\ORM\Entity,
+            $this instanceof Entity,
             new ThumbException(__('Must be an instance of `\Cake\ORM\Entity`.'))
         );
 
@@ -252,10 +253,10 @@ trait ThumbTrait
      * @return string|null The path to the thumb file.
      * @throws \App\Exception\ThumbException When size unknown, or not used in an entity.
      */
-    protected function getThumbPath(string $size= 'sm'): ?string
+    protected function getThumbPath(string $size = 'sm'): ?string
     {
         assert(
-            $this instanceof \Cake\ORM\Entity,
+            $this instanceof Entity,
             new ThumbException(__('Must be an instance of `\Cake\ORM\Entity`.'))
         );
         assert(
@@ -271,9 +272,8 @@ trait ThumbTrait
 
         $dir = dirname($path);
         $filename = basename($path);
-        list($name, $ext) = explode('.', $filename);
+        [$name, $ext] = explode('.', $filename);
 
         return $dir . DS . $name . '-thumb-' . $size . '.' . $ext;
     }
-
 }

@@ -192,7 +192,7 @@ if (!$this->getRequest()->is('ajax')) {
                 echo $this->element('filter/sort_links', [
                     'sorts' => $sorts,
                 ]);
-            ?>
+                ?>
             </div>
 
         </div>

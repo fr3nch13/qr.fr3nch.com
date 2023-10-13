@@ -156,7 +156,7 @@ $this->end(); // page_options
             echo $this->element('filter/sort_links', [
                 'sorts' => $sorts,
             ]);
-        ?>
+            ?>
         </div>
 
 

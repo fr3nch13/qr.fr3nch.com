@@ -30,8 +30,7 @@ $sort = $this->Paginator->param('sort');
         ]);
     }
 
-
     echo $this->Paginator->sort($key, ['asc' => $nameAsc, 'desc' => $nameDesc], ['escape' => false]);
 }
 ?>
-<?= $this->Template->templateComment(false, __FILE__); ?>
+<?= $this->Template->templateComment(false, __FILE__)

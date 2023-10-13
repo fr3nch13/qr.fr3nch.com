@@ -10,4 +10,4 @@ $this->extend('dashboard/base');
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <?= $this->fetch('content') ?>
-<?= $this->Template->templateComment(false, __FILE__); ?>
+<?= $this->Template->templateComment(false, __FILE__);
