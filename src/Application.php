@@ -151,8 +151,6 @@ class Application extends BaseApplication implements
                     'self' => true,
                     'unsafe-inline' => true,
                     'unsafe-eval' => false,
-                    'script-src' => [],
-                    'style-src' => [],
                 ],
             ], [
                 'scriptNonce' => true,
