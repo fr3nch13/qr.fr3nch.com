@@ -230,7 +230,10 @@ class QrCodesTable extends Table
                             'name' => $value,
                             'user_id' => $user_id,
                         ]);
-                        debug($tag);
+                        if (!$tag->hasErrors()) {
+                            $tag = $this->Tags->saveOrFail($tag);
+                            $data['tags']['_ids'][$pos] = $tag->id;
+                        }
                     }
                 }
             }
