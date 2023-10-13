@@ -43,7 +43,14 @@ if (!$this->getRequest()->is('ajax')) {
             </div>
         </div>
         <div class="row">
-            <div class="col">
+            <div class="col-4">
+                <?= $this->Form->control('is_active', [
+                    'required' => true,
+                    'spacing' => 'mb-2',
+                    'label' => __('Active?'),
+                ]); ?>
+            </div>
+            <div class="col-8">
                 <?= $this->Form->control('source_id', [
                     'required' => true,
                     'spacing' => 'mb-2',
