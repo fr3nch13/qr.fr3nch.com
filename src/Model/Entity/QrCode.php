@@ -34,6 +34,8 @@ use chillerlan\QRCode\Output\QRCodeOutputException;
  */
 class QrCode extends Entity
 {
+    use ThumbTrait;
+
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -55,6 +57,7 @@ class QrCode extends Entity
         'source_id' => true,
         'user_id' => true,
         'last_hit' => true,
+        'path' => true,
         'source' => true,
         'user' => true,
         'qr_images' => true,

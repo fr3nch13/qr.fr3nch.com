@@ -19,12 +19,17 @@ use Cake\ORM\Entity;
  * @property int $qr_code_id
  *
  * Virtual field
- * @property string|null $path Path to the uploaded image.
+ * @property string|null $path (Virtual field) Path to the uploaded image.
+ * @property string|null $path_sm (Virtual field) Path to the Image Small Thumbnail.
+ * @property string|null $path_md (Virtual field) Path to the Image Medium Thumbnail.
+ * @property string|null $path_lg (Virtual field) Path to the Image Large Thumbnail.
  *
  * @property \App\Model\Entity\QrCode $qr_code
  */
 class QrImage extends Entity
 {
+    use ThumbTrait;
+
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *

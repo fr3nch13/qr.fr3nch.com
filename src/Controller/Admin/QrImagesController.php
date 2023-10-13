@@ -52,12 +52,32 @@ class QrImagesController extends AppController
         $qrImage = $this->QrImages->get((int)$id, contain: ['QrCodes']);
         $this->Authorization->authorize($qrImage);
 
-        if (!$qrImage->path) {
+        $path = $qrImage->path;
+        if (!$path) {
             throw new NotFoundException('Unable to find the image file.');
         }
 
-        $response = $this->response->withFile($qrImage->path);
-        $modified = date('Y-m-d H:i:s.', filemtime($qrImage->path) ?: null);
+        $params = $this->request->getQueryParams();
+        if ($params['thumb'] && in_array($params['thumb'], ['sm', 'md', 'lg'])) {
+            $path = $qrImage->{'path_' . $params['thumb']};
+            if (!$path) {
+                throw new NotFoundException('Unable to find the thumbnail file.');
+            }
+        }
+
+        $fileOptions = [];
+
+        // look for a download request.
+        // anything truthy
+        if ($this->request->getQuery('download') && $this->request->getQuery('download')) {
+            $fileOptions = [
+                'download' => true,
+                'name' => $qrImage->name . '.' . $qrImage->ext,
+            ];
+        }
+
+        $response = $this->response->withFile($path, $fileOptions);
+        $modified = date('Y-m-d H:i:s.', filemtime($path) ?: null);
         $response = $response->withModified($modified);
 
         // allow browser and proxy caching when debug is off
