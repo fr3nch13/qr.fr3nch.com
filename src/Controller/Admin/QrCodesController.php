@@ -125,7 +125,7 @@ class QrCodesController extends AppController
 
         // look for a download request.
         // anything truthy
-        if ($this->request->getQuery('download') && $this->request->getQuery('download')) {
+        if ($this->request->getQuery('download')) {
             $fileOptions = [
                 'download' => true,
                 'name' => 'QR-' . $qrCode->qrkey . '.png',
