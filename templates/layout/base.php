@@ -25,6 +25,9 @@
         '/assets/npm-asset/bootstrap5-tags/tags-pure.css',
         'qr.css',
         ]) ?>
+    <script type="module">
+        import Tags from "<?= $this->Url->build('/assets/npm-asset/bootstrap5-tags/tags.js') ?>";
+    </script>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
