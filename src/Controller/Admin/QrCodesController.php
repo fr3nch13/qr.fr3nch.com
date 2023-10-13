@@ -244,8 +244,6 @@ class QrCodesController extends AppController
 
         if ($this->request->is('put')) {
             $qrCode = $this->QrCodes->patchEntity($qrCode, $this->request->getData());
-            debug($qrCode);
-            return null;
             if ($this->QrCodes->save($qrCode)) {
                 $this->Flash->success(__('The qr code has been saved.'));
 
