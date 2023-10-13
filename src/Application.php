@@ -146,7 +146,7 @@ class Application extends BaseApplication implements
                 'script-src' => [
                     'self' => true,
                     'unsafe-inline' => true,
-                    'unsafe-eval' => false,
+                    'unsafe-eval' => true,
                     'allow' => [
                         // external domains that can load/run javascript.
                         //'https://www.google-analytics.com',
