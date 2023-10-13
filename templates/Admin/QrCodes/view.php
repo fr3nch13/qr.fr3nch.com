@@ -72,7 +72,7 @@ if (!$this->getRequest()->is('ajax')) {
             <div class="col">
                 <h5><?= __('Tags') ?></h5>
                 <?php foreach ($qrCode->tags as $tag) : ?>
-                    <span class="my-2 mx-2 btn btn-light btn-outline-secondary rounded-pill" role="button"><?= $tag->name ?></span>
+                    <span class="my-2 mx-2 btn btn-sm btn-light btn-outline-secondary rounded-pill" role="button"><?= $tag->name ?></span>
                 <?php endforeach; ?>
             </div>
         </div>
