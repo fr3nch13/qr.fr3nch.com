@@ -44,9 +44,6 @@
     '/assets/npm-asset/jquery/dist/jquery.min.js',
     'qr',
     ]) ?>
-<script type="module">
-import Tags from '/assets/npm-asset/bootstrap5-tags/tags.js';
-</stript>
 </body>
 <?= $this->Template->templateComment(false, __FILE__); ?>
 </html>
