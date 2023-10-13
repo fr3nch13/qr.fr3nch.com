@@ -12,7 +12,7 @@ if (!$this->getRequest()->is('ajax')) {
 <div class="card bg-opaque-white">
     <div class="card-body bg-white p-2 p-lg-5">
         <div class="row">
-            <div class="col-lg-4 order-3 order-lg-1">
+            <div class="col-lg-4 order-4 order-lg-1">
                 <img
                     class="img-fluid"
                     src="<?= $this->Url->build([
@@ -63,12 +63,12 @@ if (!$this->getRequest()->is('ajax')) {
                         target="tab-<?=$qrCode->id?>"
                         ><?= $qrCode->url ?></a> </dd>
                 </dl>
-                <div class="row">
+            </div>
+            <div class="col order-2 order-lg-3 my-2">
                     <p><?= __('Description:') ?></p>
                     <p class="text-secondary mb-3"><?= $this->Text->autoParagraph(h($qrCode->description)) ?></p>
                 </div>
-            </div>
-            <div class="col order-2 order-lg-3 my-2">
+            <div class="col order-3 order-lg-4 my-2">
                 <h5><?= __('Tags') ?></h5>
                 <?php foreach ($qrCode->tags as $tag) : ?>
                     <span class="my-1 my-md-2 mx-1 mx-md-2 btn btn-sm btn-light btn-outline-secondary rounded-pill" role="button"><?= $tag->name ?></span>
