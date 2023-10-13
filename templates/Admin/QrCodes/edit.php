@@ -67,7 +67,7 @@ if (!$this->getRequest()->is('ajax')) {
             <div class="col">
                 <?= $this->Form->control('tags._ids', [
                     'options' => $tags,
-                    'class' => 'form-select tags-input',
+                    'class' => 'form-select tags-notinput',
                     'data-allow-new' => 'true',
                 ]); ?>
             </div>
