@@ -68,7 +68,7 @@ if (!$this->getRequest()->is('ajax')) {
                 <?= $this->Form->control('tags._ids', [
                     'options' => $tags,
                     'class' => 'form-select tags-input',
-                    'data-allow-new' => 'true',
+                    'data-allow-new' => true,
                 ]); ?>
             </div>
         </div>
