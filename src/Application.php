@@ -149,7 +149,7 @@ class Application extends BaseApplication implements
                     'unsafe-eval' => false,
                     'allow' => [
                         // external domains that can load/run javascript.
-                        'https://www.google-analytics.com',
+                        //'https://www.google-analytics.com',
                     ],
                 ],
             ], [
