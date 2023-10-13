@@ -57,7 +57,7 @@ if ($qrCode->id) {
             $options['aria-current'] = 'page';
         }
 
-        if ($action == 'delete') {
+        if ($tab[1]['action'] === 'delete') {
             $options['class'] .= ' text-red';
             $options['confirm'] = __('Are you sure you want to delete # {0}?', $qrCode->qrkey);
             $link = $this->Form->postLink($tab[0], $tab[1], $options);
