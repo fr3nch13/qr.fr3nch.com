@@ -210,11 +210,21 @@ class QrCodesTable extends Table
         if (isset($data['tags']['_ids'])) {
             debug($data['tags']['_ids']);
             foreach ($data['tags']['_ids'] as $pos => $value) {
+                // maybe have a new one, at least it was typed.
                 if (!is_numeric($value)) {
                     $tag = $this->Tags->find()->where([
                         'Tags.name' => $value,
                     ])->first();
-                    debug($tag);
+                    if ($tag) {
+                        // fix the ArrayObject
+                        $data['tags']['_ids'][$pos] = $tag->id;
+                    } else {
+                        // it's a new tag, so add it
+                        $tag = $this->Tags->newEntity([
+                            'name' => $value,
+                        ]);
+                        debug($tag);
+                    }
                 }
             }
         }
