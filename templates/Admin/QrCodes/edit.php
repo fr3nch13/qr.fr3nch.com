@@ -43,14 +43,14 @@ if (!$this->getRequest()->is('ajax')) {
             </div>
         </div>
         <div class="row">
-            <div class="col-4 form-switch mt-3">
+            <div class="col-3 form-switch mt-3">
                 <?= $this->Form->control('is_active', [
                     'required' => true,
                     'spacing' => 'mb-2',
                     'label' => __('Active?'),
                 ]); ?>
             </div>
-            <div class="col-8">
+            <div class="col-9">
                 <?= $this->Form->control('source_id', [
                     'required' => true,
                     'spacing' => 'mb-2',
