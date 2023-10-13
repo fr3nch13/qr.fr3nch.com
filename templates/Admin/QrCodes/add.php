@@ -73,6 +73,7 @@ $this->assign('page_title', __('Add a QR Code'));
                     'options' => $tags,
                     'class' => 'form-select tags-input',
                     'data-allow-new' => 'true',
+                    'data-separator' => ' |,| ',
                 ]); ?>
             </div>
         </div>
