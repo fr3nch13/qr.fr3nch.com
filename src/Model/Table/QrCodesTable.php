@@ -209,6 +209,13 @@ class QrCodesTable extends Table
         // see of there are new tags to add.
         if (isset($data['tags']['_ids'])) {
             debug($data['tags']['_ids']);
+            foreach ($data['tags']['_ids'] as $pos => $value) {
+                // check if a tag exists.
+                $tag = $this->Tags->find()->where([
+                    'id' => $value,
+                ])->first();
+                debug($tag);
+            }
 
         }
         debug($options);
