@@ -14,7 +14,7 @@ class QrValidator extends Validator
      * @param array<string, mixed> $context The context to test the value within.
      * @return string|bool
      */
-    public static function key(string $value, array $context = []): string|bool
+    public static function qrKey(string $value, array $context = []): string|bool
     {
         if (str_contains($value, ' ')) {
             return __('Value cannot have a space in it.');
@@ -32,7 +32,7 @@ class QrValidator extends Validator
      * @param array<string, mixed> $context The context to test the value within.
      * @return string|bool
      */
-    public static function url(string $value, array $context = []): string|bool
+    public static function qrUrl(string $value, array $context = []): string|bool
     {
         if (!preg_match('%^(?:(?:\w+)://)' .
                 '(?:\S+(?::\S*)?@|' .
