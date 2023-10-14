@@ -232,4 +232,4 @@ ServerRequest::addDetector('tablet', function ($request) {
 //\Cake\I18n\DateTime::setToStringFormat('dd.MM.yyyy HH:mm');
 
 // Used by the Tables to validate the key fields.
-Validator::addDefaultProvider('key', 'App\Model\Validation\KeyValidator');
+Validator::addDefaultProvider('qr', 'App\Model\Validation\QrValidator');
