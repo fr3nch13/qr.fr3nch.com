@@ -151,12 +151,15 @@ class BaseControllerTest extends TestCase
             // TODO: add more html validation, but do it locally.
             // Maybe with github actions?
             // @link https://github.com/marketplace/actions/html5-validator
-            // labels: testing, frontend, validation
+            // labels: testing, frontend, html validation
 
             $validator = new HtmlValidator();
             $result = $validator->validateDocument($content);
             $this->assertFalse($result->hasErrors(), (string)$result);
             $this->assertFalse($result->hasWarnings(), (string)$result);
+
+            // TODO: enable below once the PR I submitted to friendsofcake/bootstrap-ui is approved
+            // labels: testing, frontend, html validation, bootstrap-ui
             $this->assertFalse($result->hasMessages(), (string)$result);
             // Incase validator.nu throws an error.
         } catch (ValidatorServerException $e) {

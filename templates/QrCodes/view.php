@@ -22,7 +22,7 @@ if (!$this->getRequest()->is('ajax')) {
     <!-- The QR Code's images -->
     <div class="col-lg-6 position-relative">
         <div class="row g-1">
-            <! latger images -->
+            <!-- larger images -->
             <div class="col-md-10 order-md-2">
                 <div class="carousel">
                 <div
@@ -36,16 +36,15 @@ if (!$this->getRequest()->is('ajax')) {
                     <?php foreach ($qrCode->qr_images as $qrImage) : ?>
                         <?php
                         // make sure the image active, and exists
-                        if (!$qrImage->is_active || !$qrImage->path_lg) {
+                        if (!$qrImage->is_active || !$qrImage->path_sm || !$qrImage->path_lg) {
                             continue;
                         }
                         ?>
 
-                        <?= $this->Template->objectComment('QrImage/show/large/lg') ?>
+                    <?= $this->Template->objectComment('QrImage/show/thumb/lg') ?>
                     <div class="item text-center">
                         <img
-                            <?php // use `img-thumbnail`, not `img-fluid` as it's redundant. ?>
-                            class="img-thumbnail"
+                            class="img-thumbnail<?php // use `img-thumbnail`, not `img-fluid` as it's redundant. ?>"
                             src="<?= $this->Url->build([
                                 'controller' => 'QrImages',
                                 'action' => 'show',
@@ -56,11 +55,10 @@ if (!$this->getRequest()->is('ajax')) {
                     </div>
                     <?php endforeach; ?>
 
+                    <?= $this->Template->objectComment('QrCode/show/thumb/lg') ?>
                     <div class="item text-center">
-                        <?= $this->Template->objectComment('QrCode/show/thumb/lg') ?>
                         <img
-                            <?php // use `img-thumbnail`, not `img-fluid` as it's redundant. ?>
-                            class="img-thumbnail"
+                            class="img-thumbnail<?php // use `img-thumbnail`, not `img-fluid` as it's redundant. ?>"
                             src="<?= $this->Url->build([
                                 'action' => 'show',
                                 $qrCode->id,
@@ -72,6 +70,7 @@ if (!$this->getRequest()->is('ajax')) {
                 </div>
                 </div>
             </div>
+
             <!-- smaller images -->
             <div class="col-md-2 order-md-1">
                 <div
@@ -80,15 +79,15 @@ if (!$this->getRequest()->is('ajax')) {
                     <?php foreach ($qrCode->qr_images as $qrImage) : ?>
                         <?php
                         // make sure it's active, and exists
-                        if (!$qrImage->is_active || !$qrImage->path_md) {
+                        if (!$qrImage->is_active || !$qrImage->path_sm || !$qrImage->path_lg) {
                             continue;
                         }
                         ?>
-                        <?= $this->Template->objectComment('QrImage/show/thumb/sm') ?>
+
+                    <?= $this->Template->objectComment('QrImage/show/thumb/sm') ?>
                     <div>
                         <img
-                            <?php // use `img-thumbnail`, not `img-fluid` as it's redundant. ?>
-                            class="img-thumbnail"
+                            class="img-thumbnail<?php // use `img-thumbnail`, not `img-fluid` as it's redundant. ?>"
                             src="<?= $this->Url->build([
                                 'controller' => 'QrImages',
                                 'action' => 'show',
@@ -98,11 +97,11 @@ if (!$this->getRequest()->is('ajax')) {
                             alt="<?= $qrImage->name ?>">
                     </div>
                     <?php endforeach; ?>
+
+                    <?= $this->Template->objectComment('QrCode/show/thumb/sm') ?>
                     <div>
-                        <?= $this->Template->objectComment('QrCode/show/thumb/sm') ?>
                         <img
-                            <?php // use `img-thumbnail`, not `img-fluid` as it's redundant. ?>
-                            class="img-thumbnail"
+                            class="img-thumbnail<?php // use `img-thumbnail`, not `img-fluid` as it's redundant. ?>"
                             src="<?= $this->Url->build([
                                 'action' => 'show',
                                 $qrCode->id,
@@ -134,9 +133,7 @@ if (!$this->getRequest()->is('ajax')) {
                         data-bs-toggle="collapse"
                         data-bs-target="#collapse-1-2"
                         aria-expanded="false"
-                        aria-controls="collapse-1-2">
-                        <?= __('Additional Information') ?>
-                    </button>
+                        aria-controls="collapse-1-2"><?= __('Additional Information') ?></button>
                 </h2>
                 <div
                     id="collapse-1-2"
@@ -177,9 +174,7 @@ if (!$this->getRequest()->is('ajax')) {
                         data-bs-toggle="collapse"
                         data-bs-target="#collapse-1-1"
                         aria-expanded="false"
-                        aria-controls="collapse-1-1">
-                        <?= __('Tags') ?>
-                    </button>
+                        aria-controls="collapse-1-1"><?= __('Tags') ?></button>
                 </h2>
                 <div
                     id="collapse-1-1"
@@ -201,7 +196,8 @@ if (!$this->getRequest()->is('ajax')) {
                                                 'btn btn-sm btn-light btn-outline-secondary',
                                             'role' => 'button',
                                         ]
-                                    ); ?>
+                                    ) ?>
+
                                 <?php endforeach; ?>
                                 </div>
                         </div>
@@ -223,7 +219,8 @@ if (!$this->getRequest()->is('ajax')) {
                             'class' => 'btn btn-primary btn-block rounded-pill',
                             'role' => 'button',
                         ]
-                    ); ?>
+                    ) ?>
+
                 </div>
             </div>
         </div>
