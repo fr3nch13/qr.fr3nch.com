@@ -130,9 +130,9 @@ class QrCodesTable extends Table
                 'provider' => 'table',
                 'message' => __('This Key already exists.'),
             ])
-            ->add('qrkey', 'characters', [
-                'rule' => 'characters',
-                'provider' => 'key',
+            ->add('qrkey', 'key', [
+                'rule' => 'key',
+                'provider' => 'qr',
             ]);
 
         $validator
@@ -152,6 +152,7 @@ class QrCodesTable extends Table
             ->requirePresence('url', Validator::WHEN_CREATE)
             ->add('url', 'url', [
                 'rule' => 'url',
+                'provider' => 'qr',
                 'message' => __('The URL is invalid.'),
             ]);
 
