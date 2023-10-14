@@ -10,20 +10,30 @@ if (!$this->getRequest()->is('ajax')) {
 }
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
-<div class="qrImages index content">
-    <h2>List of images for <?= $qrCode->name; ?></h2>
-    <div class="qr_images">
-        <?php foreach ($qrImages as $qrImage) : ?>
-        <div class="qr_image">
-            <?= $this->Template->objectComment('QrImages/entity') ?>
-            <?= $this->Template->objectComment('QrImages/entity/' . ($qrImage->is_active ? 'active' : 'inactive')) ?>
-            <img class="<?= ($qrImage->is_active ? 'active' : 'inactive') ?>" src="<?= $this->Url->build([
-                'controller' => 'QrImages',
-                'action' => 'show',
-                $qrImage->id,
-                ]) ?>" alt="<?= $qrImage->name ?>">
+<div class="card bg-opaque-white">
+    <div class="card-body bg-white p-2 p-lg-5">
+        <div class="row">
+            <?php foreach ($qrImages as $qrImage) : ?>
+                <div class="col">
+                    <div class="card text-center border">
+                        <div class="card-body">
+                            <div class="card-title"><?= $qrImage->name ?></div>
+                            <img
+                                class="img-fluid"
+                                src="<?= $this->Url->build([
+                                    'action' => 'show',
+                                    $qrImage->id,
+                                    '?' => ['thumb' => 'sm'],
+                                    ]) ?>"
+                                alt="<?= $qrImage->name ?>">
+                            <div class="card-text text-muted">
+                                Options
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
         </div>
-        <?php endforeach; ?>
     </div>
 </div>
 <?= $this->Template->templateComment(false, __FILE__); ?>
