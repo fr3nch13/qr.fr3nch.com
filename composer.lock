@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3822ce7b48ef2f36c0e74a733067906f",
+    "content-hash": "c6056396a7076655cb900400af25521d",
     "packages": [
         {
             "name": "cakephp/authentication",
@@ -1198,6 +1198,35 @@
             "time": "2023-10-06T18:25:20+00:00"
         },
         {
+            "name": "npm-asset/bootstrap",
+            "version": "5.3.2",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/bootstrap/-/bootstrap-5.3.2.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/bootstrap-fileinput",
+            "version": "5.5.2",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/bootstrap-fileinput/-/bootstrap-fileinput-5.5.2.tgz"
+            },
+            "require": {
+                "npm-asset/bootstrap": ">=3.4.1",
+                "npm-asset/jquery": ">=1.9.0",
+                "npm-asset/opencollective-postinstall": ">=2.0.2,<3.0.0"
+            },
+            "type": "npm-asset",
+            "license": [
+                "BSD-3-Clause"
+            ]
+        },
+        {
             "name": "npm-asset/bootstrap-icons",
             "version": "1.11.1",
             "dist": {
@@ -1227,6 +1256,42 @@
             "dist": {
                 "type": "tar",
                 "url": "https://registry.npmjs.org/jquery/-/jquery-3.7.1.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/opencollective-postinstall",
+            "version": "2.0.3",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/opencollective-postinstall/-/opencollective-postinstall-2.0.3.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/piexifjs",
+            "version": "1.0.6",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/piexifjs/-/piexifjs-1.0.6.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/sortablejs",
+            "version": "1.15.0",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/sortablejs/-/sortablejs-1.15.0.tgz"
             },
             "type": "npm-asset",
             "license": [

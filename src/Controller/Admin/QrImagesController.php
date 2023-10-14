@@ -135,6 +135,8 @@ class QrImagesController extends AppController
         $this->Authorization->authorize($qrImage);
 
         if ($this->request->is('post')) {
+            debug($this->request->getData());
+            exit;
             $qrImage = $this->QrImages->patchEntity($qrImage, $this->request->getData());
             $qrImage->qr_code_id = $qrCode->id;
             $qrImage->qr_code = $qrCode;
@@ -203,7 +205,7 @@ class QrImagesController extends AppController
      */
     public function delete(?string $id = null): ?Response
     {
-        $this->request->allowMethod(['delete']);
+        $this->request->allowMethod(['delete', 'post']);
 
         $qrImage = $this->QrImages->get((int)$id, contain: ['QrCodes']);
         $this->Authorization->authorize($qrImage);

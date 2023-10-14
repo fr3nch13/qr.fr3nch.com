@@ -154,7 +154,7 @@ class SourcesController extends AppController
      */
     public function delete(?string $id = null): ?Response
     {
-        $this->request->allowMethod(['delete']);
+        $this->request->allowMethod(['delete', 'post']);
 
         $source = $this->Sources->get((int)$id);
         $this->Authorization->authorize($source);

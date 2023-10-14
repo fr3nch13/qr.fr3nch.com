@@ -77,6 +77,13 @@ if ($qrCode->id) {
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 
-<?= $this->fetch('content'); ?>
+<div class="card bg-opaque-white">
+    <?php if (!$qrCode->is_active) : ?>
+    <div class="ribbon red"><span><?= __('Inactive') ?></span></div>
+    <?php endif; ?>
+    <div class="card-body bg-white p-2 p-lg-5">
+        <?= $this->fetch('content'); ?>
+    </div>
+</div>
 
 <?= $this->Template->templateComment(false, __FILE__); ?>

@@ -21,9 +21,12 @@
         "friendsofcake/bootstrap-ui": "^5.0",
         "friendsofcake/search": "^7.0",
         "mobiledetect/mobiledetectlib": "~4.8",
+        "npm-asset/bootstrap-fileinput": "^5.5",
         "npm-asset/bootstrap-icons": "^1.11",
         "npm-asset/bootstrap5-tags": "^1.5",
         "npm-asset/jquery": "^3.7",
+        "npm-asset/piexifjs": "^1.0",
+        "npm-asset/sortablejs": "^1.15",
         "oomphinc/composer-installers-extender": "^2.0",
         "paragonie/csp-builder": "~2.9"
     },

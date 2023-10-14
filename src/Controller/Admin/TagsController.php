@@ -175,7 +175,7 @@ class TagsController extends AppController
      */
     public function delete(?string $id = null): ?Response
     {
-        $this->request->allowMethod(['delete']);
+        $this->request->allowMethod(['delete', 'post']);
 
         $tag = $this->Tags->get((int)$id);
         $this->Authorization->authorize($tag);

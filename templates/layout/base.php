@@ -24,6 +24,7 @@
         'index.bundle',
         '/assets/npm-asset/bootstrap-icons/font/bootstrap-icons.css',
         '/assets/npm-asset/bootstrap5-tags/tags-pure.css',
+        '/assets/npm-asset/bootstrap-fileinput/css/fileinput.css',
         'qr.css',
         ]) ?>
 
@@ -34,6 +35,7 @@
 <body>
 
 <?= $this->fetch('layout'); ?>
+<?= $this->fetch('modal') ?>
 <?= $this->fetch('offcanvas') ?>
 
 
@@ -41,6 +43,12 @@
     'vendor.bundle',
     'index.bundle',
     '/assets/npm-asset/jquery/dist/jquery.min.js',
+    //'/assets/npm-asset/piexifjs/piexif.js',
+    '/assets/npm-asset/sortablejs/Sortable.js',
+    '/assets/npm-asset/bootstrap-fileinput/js/plugins/buffer.js',
+    '/assets/npm-asset/bootstrap-fileinput/js/plugins/filetype.js',
+    //'/assets/npm-asset/bootstrap-fileinput/js/plugins/sortable.js',
+    '/assets/npm-asset/bootstrap-fileinput/js/fileinput.js',
     ]) ?>
 <?= $this->Html->script('qr', [
     'type' => 'module',

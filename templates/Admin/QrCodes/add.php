@@ -85,8 +85,8 @@ $this->assign('page_title', __('Add a QR Code'));
             </div>
         </div>
         <div class="row">
-            <div class="col">
-                <?= $this->Form->button(__('Submit'), [
+            <div class="col text-end">
+                <?= $this->Form->button(__('Save'), [
                     'type' => 'submit',
                     'class' => 'btn btn-lg btn-primary btn-block',
                 ]); ?>
