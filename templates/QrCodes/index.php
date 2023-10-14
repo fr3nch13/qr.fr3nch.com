@@ -101,7 +101,6 @@ if (!$this->getRequest()->is('ajax')) {
             </div>
         <?php endforeach; ?>
 
-
         </div>
         <div class="row mt-6">
             <div class="col text-center">
@@ -179,6 +178,8 @@ if (!$this->getRequest()->is('ajax')) {
                 </div>
             </div>
             <?= $this->Form->end(); ?>
+
+            <!-- Sort -->
             <div class="widget pb-2 mb-2 border-bottom">
                 <h5 class="offcanvas-title"><?= __('Sort') ?></h5>
             </div>
@@ -195,7 +196,6 @@ if (!$this->getRequest()->is('ajax')) {
                 ]);
                 ?>
             </div>
-
         </div>
     </div>
     <?php $this->end(); // offcanvas ?>
