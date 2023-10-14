@@ -35,15 +35,17 @@ $this->assign('page_title', __('QR Codes'));
     <?php endforeach; ?>
 </div>
 
-<nav aria-label="Pagination" class="text-center">
-    <ul class="pagination">
-        <?= $this->Paginator->first('&laquo;', ['label' => 'First']) ?>
-        <?= $this->Paginator->prev('<', ['label' => 'Previous']) ?>
-        <?= $this->Paginator->numbers() ?>
-        <?= $this->Paginator->next('>', ['label' => 'Next']) ?>
-        <?= $this->Paginator->last('&laquo;', ['label' => 'Last']) ?>
-    </ul>
-</nav>
+<div class="container py-2">
+    <nav aria-label="Pagination" class="text-center">
+        <ul class="pagination">
+            <?= $this->Paginator->first('&laquo;', ['label' => 'First']) ?>
+            <?= $this->Paginator->prev('<', ['label' => 'Previous']) ?>
+            <?= $this->Paginator->numbers() ?>
+            <?= $this->Paginator->next('>', ['label' => 'Next']) ?>
+            <?= $this->Paginator->last('&laquo;', ['label' => 'Last']) ?>
+        </ul>
+    </nav>
+</div>
 
 <?php $this->start('page_options'); ?>
 <ul class="list-inline">
