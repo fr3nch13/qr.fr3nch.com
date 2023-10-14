@@ -395,22 +395,6 @@ class BaseControllerTest extends TestCase
     }
 
     /**
-     * Tests that we're using the pages/dashboard layout
-     *
-     * @return void
-     */
-    public function helperTestLayoutPagesDashboard(): void
-    {
-        $this->helperTestLayoutBase();
-        $content = (string)$this->_response->getBody();
-
-        $this->assertSame(1, substr_count($content, '<!-- START: App.layout/pages/dashboard -->'));
-        $this->assertSame(1, substr_count($content, '<!-- END: App.layout/pages/dashboard -->'));
-
-        // test other specific to this layout.
-    }
-
-    /**
      * Tests that we're using the pages/form layout
      *
      * @return void
@@ -438,6 +422,38 @@ class BaseControllerTest extends TestCase
 
         $this->assertSame(1, substr_count($content, '<!-- START: App.layout/login -->'));
         $this->assertSame(1, substr_count($content, '<!-- END: App.layout/login -->'));
+
+        // test other specific to this layout.
+    }
+
+    /**
+     * Tests that we're using the dashboard/index layout
+     *
+     * @return void
+     */
+    public function helperTestLayoutDashboardIndex(): void
+    {
+        $this->helperTestLayoutBase();
+        $content = (string)$this->_response->getBody();
+
+        $this->assertSame(1, substr_count($content, '<!-- START: App.layout/dashboard/index -->'));
+        $this->assertSame(1, substr_count($content, '<!-- END: App.layout/dashboard/index -->'));
+
+        // test other specific to this layout.
+    }
+
+    /**
+     * Tests that we're using the dashboard/view layout
+     *
+     * @return void
+     */
+    public function helperTestLayoutDashboardView(): void
+    {
+        $this->helperTestLayoutBase();
+        $content = (string)$this->_response->getBody();
+
+        $this->assertSame(1, substr_count($content, '<!-- START: App.layout/dashboard/view -->'));
+        $this->assertSame(1, substr_count($content, '<!-- END: App.layout/dashboard/view -->'));
 
         // test other specific to this layout.
     }

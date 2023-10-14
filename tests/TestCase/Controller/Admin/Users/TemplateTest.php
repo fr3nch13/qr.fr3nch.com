@@ -52,28 +52,28 @@ class TemplateTest extends BaseControllerTest
         $this->loginUserRegular();
         $this->get('https://localhost/admin');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesDashboard();
+        $this->helperTestLayoutDashboardIndex();
         $this->helperTestTemplate('Admin/Users/dashboard');
 
         // test with admin
         $this->loginUserAdmin();
         $this->get('https://localhost/admin');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesDashboard();
+        $this->helperTestLayoutDashboardIndex();
         $this->helperTestTemplate('Admin/Users/dashboard');
 
         // test with admin
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/dashboard');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesDashboard();
+        $this->helperTestLayoutDashboardIndex();
         $this->helperTestTemplate('Admin/Users/dashboard');
 
         // test with admin
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/users/dashboard');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesDashboard();
+        $this->helperTestLayoutDashboardIndex();
         $this->helperTestTemplate('Admin/Users/dashboard');
 
         // validate the html
@@ -156,7 +156,7 @@ class TemplateTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/users');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesDashboard();
+        $this->helperTestLayoutDashboardIndex();
         $this->helperTestTemplate('Admin/Users/index');
 
         // validate the html
@@ -224,33 +224,33 @@ class TemplateTest extends BaseControllerTest
         $this->loginUserRegular();
         $this->get('https://localhost/admin/users/view/2');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesDashboard();
+        $this->helperTestLayoutDashboardView();
         $this->helperTestTemplate('Admin/Users/view');
 
         $this->loginUserRegular();
         $this->get('https://localhost/admin/users/view');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesDashboard();
+        $this->helperTestLayoutDashboardView();
         $this->helperTestTemplate('Admin/Users/view');
 
         // test with admin, other user
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/users/view/2');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesDashboard();
+        $this->helperTestLayoutDashboardView();
         $this->helperTestTemplate('Admin/Users/view');
 
         // test with admin, self
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/users/view/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesDashboard();
+        $this->helperTestLayoutDashboardView();
         $this->helperTestTemplate('Admin/Users/view');
 
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/users/view');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesDashboard();
+        $this->helperTestLayoutDashboardView();
         $this->helperTestTemplate('Admin/Users/view');
 
         // validate the html
@@ -341,7 +341,7 @@ class TemplateTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/users/add');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesForm();
+        $this->helperTestLayoutDashboardView();
         $this->helperTestTemplate('Admin/Users/add');
 
         // validate the html
@@ -394,7 +394,7 @@ class TemplateTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/users/edit/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesForm();
+        $this->helperTestLayoutDashboardView();
         $this->helperTestTemplate('Admin/Users/edit');
 
         // validate the html

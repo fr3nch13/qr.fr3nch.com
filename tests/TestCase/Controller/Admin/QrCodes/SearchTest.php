@@ -40,7 +40,7 @@ class SearchTest extends BaseControllerTest
     {
         $this->get('https://localhost/admin/qr-codes?q=witch');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesDashboard();
+        $this->helperTestLayoutDashboardIndex();
         $this->helperTestTemplate('Admin/QrCodes/index');
 
         /*
@@ -78,7 +78,7 @@ class SearchTest extends BaseControllerTest
     {
         $this->get('https://localhost/admin/qr-codes?t=Pig');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesDashboard();
+        $this->helperTestLayoutDashboardIndex();
         $this->helperTestTemplate('Admin/QrCodes/index');
 
         /*
@@ -117,7 +117,7 @@ class SearchTest extends BaseControllerTest
     {
         $this->get('https://localhost/admin/qr-codes?s=Etsy');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesDashboard();
+        $this->helperTestLayoutDashboardIndex();
         $this->helperTestTemplate('Admin/QrCodes/index');
 
         /*

@@ -8,9 +8,6 @@
 
 $this->extend('base');
 
-// TODO: base this page on https://cube.webuildthemes.com/account.html
-// labels: frontend, templates
-
 $this->start('layout');
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>

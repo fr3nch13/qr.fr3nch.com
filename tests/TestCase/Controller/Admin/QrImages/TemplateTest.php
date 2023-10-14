@@ -86,14 +86,14 @@ class TemplateTest extends BaseControllerTest
         $this->loginUserRegular();
         $this->get('https://localhost/admin/qr-images/add/3');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesForm();
+        $this->helperTestLayoutDashboardView();
         $this->helperTestTemplate('Admin/QrImages/add');
 
         // test with admin, get, can edit any.
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/qr-images/add/3');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesForm();
+        $this->helperTestLayoutDashboardView();
         $this->helperTestTemplate('Admin/QrImages/add');
 
         // validate the html
@@ -137,14 +137,14 @@ class TemplateTest extends BaseControllerTest
         $this->loginUserRegular();
         $this->get('https://localhost/admin/qr-images/edit/5');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesForm();
+        $this->helperTestLayoutDashboardView();
         $this->helperTestTemplate('Admin/QrImages/edit');
 
         // test with admin, get, can edit any.
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/qr-images/edit/5');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesForm();
+        $this->helperTestLayoutDashboardView();
         $this->helperTestTemplate('Admin/QrImages/edit');
 
         // validate the html

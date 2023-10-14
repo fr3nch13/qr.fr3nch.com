@@ -45,14 +45,14 @@ class TemplateTest extends BaseControllerTest
         $this->loginUserRegular();
         $this->get('https://localhost/admin/tags');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesDashboard();
+        $this->helperTestLayoutDashboardIndex();
         $this->helperTestTemplate('Admin/Tags/index');
 
         // test with admin
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/tags');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesDashboard();
+        $this->helperTestLayoutDashboardIndex();
         $this->helperTestTemplate('Admin/Tags/index');
 
         // validate the html
@@ -96,14 +96,14 @@ class TemplateTest extends BaseControllerTest
         $this->loginUserRegular();
         $this->get('https://localhost/admin/tags/view/4');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesView();
+        $this->helperTestLayoutDashboardView();
         $this->helperTestTemplate('Admin/Tags/view');
 
         // test with admin
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/tags/view/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesView();
+        $this->helperTestLayoutDashboardView();
         $this->helperTestTemplate('Admin/Tags/view');
 
         // validate the html
@@ -147,14 +147,14 @@ class TemplateTest extends BaseControllerTest
         $this->loginUserRegular();
         $this->get('https://localhost/admin/tags/add');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesForm();
+        $this->helperTestLayoutDashboardView();
         $this->helperTestTemplate('Admin/Tags/add');
 
         // test with admin, get
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/tags/add');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesForm();
+        $this->helperTestLayoutDashboardView();
         $this->helperTestTemplate('Admin/Tags/add');
 
         // validate the html
@@ -198,14 +198,14 @@ class TemplateTest extends BaseControllerTest
         $this->loginUserRegular();
         $this->get('https://localhost/admin/tags/edit/4');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesForm();
+        $this->helperTestLayoutDashboardView();
         $this->helperTestTemplate('Admin/Tags/edit');
 
         // test with admin, get
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/tags/edit/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesForm();
+        $this->helperTestLayoutDashboardView();
         $this->helperTestTemplate('Admin/Tags/edit');
 
         // validate the html
