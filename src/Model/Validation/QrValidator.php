@@ -34,13 +34,10 @@ class QrValidator extends Validator
      */
     public static function qrUrl(string $value, array $context = []): string|bool
     {
-        if (!preg_match('%^(?:(?:\w+)://)' .
-                '(?:\S+(?::\S*)?@|' .
-                '\d{1,3}(?:\.\d{1,3}){3}|' .
-                '(?:(?:[a-z\d\x{00a1}-\x{ffff}]+-?)*[a-z\d\x{00a1}-\x{ffff}]+)' .
-                '(?:\.(?:[a-z\d\x{00a1}-\x{ffff}]+-?)*[a-z\d\x{00a1}-\x{ffff}]+)*' .
-                '(?:\.[a-z\x{00a1}-\x{ffff}]{2,6}))(?::\d+)?(?:[^\s]*)?$%iu', $value)) {
-            return __('Value cannot have a space in it.');
+        // Pretty lenient to allow app links
+        // protocol://[string of non-space chars]
+        if (!preg_match('%^[a-f0-9]\://[^\s]+$%iu', $value)) {
+            return __('The URL is invalid.');
         }
 
         return true;
