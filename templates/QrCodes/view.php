@@ -22,6 +22,7 @@ if (!$this->getRequest()->is('ajax')) {
     <!-- The QR Code's images -->
     <div class="col-lg-6 position-relative">
         <div class="row g-1">
+            <! latger images -->
             <div class="col-md-10 order-md-2">
                 <div class="carousel">
                 <div
@@ -40,7 +41,7 @@ if (!$this->getRequest()->is('ajax')) {
                         }
                         ?>
 
-                        <?= $this->Template->objectComment('QrImage/show/large') ?>
+                        <?= $this->Template->objectComment('QrImage/show/large/lg') ?>
                     <div class="item text-center">
                         <img
                             class="img-fluid img-thumbnail"
@@ -55,12 +56,13 @@ if (!$this->getRequest()->is('ajax')) {
                     <?php endforeach; ?>
 
                     <div class="item text-center">
-                        <?= $this->Template->objectComment('QrCode/show') ?>
+                        <?= $this->Template->objectComment('QrCode/show/thumb/lg') ?>
                         <img
-                            class="img-fluid"
+                            class="img-fluid img-thumbnail"
                             src="<?= $this->Url->build([
                                 'action' => 'show',
                                 $qrCode->id,
+                                '?' => ['thumb' => 'lg'],
                             ]) ?>"
                             alt="<?= __('The QR Code'); ?>">
                     </div>
@@ -68,6 +70,7 @@ if (!$this->getRequest()->is('ajax')) {
                 </div>
                 </div>
             </div>
+            <!-- smaller images -->
             <div class="col-md-2 order-md-1">
                 <div
                     id="nav-images"
@@ -82,6 +85,7 @@ if (!$this->getRequest()->is('ajax')) {
                         <?= $this->Template->objectComment('QrImage/show/thumb/md') ?>
                     <div>
                         <img
+                            class="img-fluid img-thumbnail"
                             src="<?= $this->Url->build([
                                 'controller' => 'QrImages',
                                 'action' => 'show',
@@ -94,6 +98,7 @@ if (!$this->getRequest()->is('ajax')) {
                     <div>
                         <?= $this->Template->objectComment('QrCode/show/thumb/md') ?>
                         <img
+                            class="img-fluid img-thumbnail"
                             src="<?= $this->Url->build([
                                 'action' => 'show',
                                 $qrCode->id,
