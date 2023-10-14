@@ -82,7 +82,7 @@ if (!$this->getRequest()->is('ajax')) {
                             continue;
                         }
                         ?>
-                        <?= $this->Template->objectComment('QrImage/show/thumb/md') ?>
+                        <?= $this->Template->objectComment('QrImage/show/thumb/sm') ?>
                     <div>
                         <img
                             class="img-fluid img-thumbnail"
@@ -90,19 +90,19 @@ if (!$this->getRequest()->is('ajax')) {
                                 'controller' => 'QrImages',
                                 'action' => 'show',
                                 $qrImage->id,
-                                '?' => ['thumb' => 'md'],
+                                '?' => ['thumb' => 'sm'],
                                 ]) ?>"
                             alt="<?= $qrImage->name ?>">
                     </div>
                     <?php endforeach; ?>
                     <div>
-                        <?= $this->Template->objectComment('QrCode/show/thumb/md') ?>
+                        <?= $this->Template->objectComment('QrCode/show/thumb/sm') ?>
                         <img
                             class="img-fluid img-thumbnail"
                             src="<?= $this->Url->build([
                                 'action' => 'show',
                                 $qrCode->id,
-                                '?' => ['thumb' => 'md'],
+                                '?' => ['thumb' => 'sm'],
                                 ]) ?>"
                             alt="<?= __('The QR Code'); ?>">
                     </div>
