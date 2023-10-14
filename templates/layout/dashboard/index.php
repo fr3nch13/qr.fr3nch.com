@@ -15,14 +15,12 @@ $this->extend('dashboard/base');
         <div class="col">
             <h1><?= $this->fetch('page_title') ?></h1>
         </div>
-    </div>
-    <?php if ($this->fetch('page_options')) : ?>
-    <div class="row mb-2">
+        <?php if ($this->fetch('page_options')) : ?>
         <div class="col text-end">
             <?= $this->fetch('page_options') ?>
         </div>
+        <?php endif; ?>
     </div>
-    <?php endif; ?>
 
     <div class="row">
         <div class="col">
