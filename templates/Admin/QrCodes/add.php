@@ -49,7 +49,6 @@ $this->assign('page_title', __('Add a QR Code'));
         <div class="row">
             <div class="col-4 form-switch mt-4">
                 <?= $this->Form->control('is_active', [
-                    'required' => true,
                     'spacing' => 'mb-2',
                     'label' => __('Active?'),
                 ]); ?>

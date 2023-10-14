@@ -45,7 +45,6 @@ if (!$this->getRequest()->is('ajax')) {
         <div class="row">
             <div class="col-4 form-switch mt-4">
                 <?= $this->Form->control('is_active', [
-                    'required' => true,
                     'spacing' => 'mb-2',
                     'label' => __('Active?'),
                 ]); ?>

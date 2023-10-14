@@ -10,6 +10,9 @@ if (!$this->getRequest()->is('ajax')) {
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <div class="card bg-opaque-white">
+    <?php if (!$qrCode->is_active) : ?>
+    <div class="ribbon red"><span><?= __('Inactive') ?></span></div>
+    <?php endif; ?>
     <div class="card-body bg-white p-2 p-lg-5">
         <div class="row">
             <div class="col-lg-4 order-4 order-lg-1">
