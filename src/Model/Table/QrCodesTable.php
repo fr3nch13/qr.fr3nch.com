@@ -207,7 +207,7 @@ class QrCodesTable extends Table
     public function beforeMarshal(Event $event, ArrayObject $data, ArrayObject $options): void
     {
         // see of there are new tags to add.
-        if (isset($data['tags']['_ids'])) {
+        if (isset($data['tags']['_ids']) && is_array($data['tags']['_ids'])) {
             $user_id = 0;
             // make the user of the QrCode the user of the new tags.
             if (isset($data['qrkey'])) {
@@ -216,7 +216,7 @@ class QrCodesTable extends Table
                     $user_id = $qrCode->user_id;
                 }
             }
-            debug($data['tags']['_ids']);
+
             foreach ($data['tags']['_ids'] as $pos => $value) {
                 // maybe have a new one, at least it was typed.
                 if (!is_numeric($value)) {
