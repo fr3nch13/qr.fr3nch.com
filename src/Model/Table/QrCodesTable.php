@@ -216,6 +216,7 @@ class QrCodesTable extends Table
                     $user_id = $qrCode->user_id;
                 }
             }
+            debug($data['tags']['_ids']);
             foreach ($data['tags']['_ids'] as $pos => $value) {
                 // maybe have a new one, at least it was typed.
                 if (!is_numeric($value)) {
