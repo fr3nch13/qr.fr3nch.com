@@ -147,14 +147,14 @@ class TemplateTest extends BaseControllerTest
         $this->loginUserRegular();
         $this->get('https://localhost/admin/tags/add');
         $this->assertResponseOk();
-        $this->helperTestLayoutDashboardView();
+        $this->helperTestLayoutDashboardForm();
         $this->helperTestTemplate('Admin/Tags/add');
 
         // test with admin, get
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/tags/add');
         $this->assertResponseOk();
-        $this->helperTestLayoutDashboardView();
+        $this->helperTestLayoutDashboardForm();
         $this->helperTestTemplate('Admin/Tags/add');
 
         // validate the html
@@ -198,14 +198,14 @@ class TemplateTest extends BaseControllerTest
         $this->loginUserRegular();
         $this->get('https://localhost/admin/tags/edit/4');
         $this->assertResponseOk();
-        $this->helperTestLayoutDashboardView();
+        $this->helperTestLayoutDashboardForm();
         $this->helperTestTemplate('Admin/Tags/edit');
 
         // test with admin, get
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/tags/edit/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutDashboardView();
+        $this->helperTestLayoutDashboardForm();
         $this->helperTestTemplate('Admin/Tags/edit');
 
         // validate the html

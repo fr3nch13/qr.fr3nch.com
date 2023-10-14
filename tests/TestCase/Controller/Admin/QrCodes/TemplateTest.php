@@ -151,14 +151,14 @@ class TemplateTest extends BaseControllerTest
         $this->loginUserRegular();
         $this->get('https://localhost/admin/qr-codes/add');
         $this->assertResponseOk();
-        $this->helperTestLayoutDashboardView();
+        $this->helperTestLayoutDashboardForm();
         $this->helperTestTemplate('Admin/QrCodes/add');
 
         // test with admin, get
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/qr-codes/add');
         $this->assertResponseOk();
-        $this->helperTestLayoutDashboardView();
+        $this->helperTestLayoutDashboardForm();
         $this->helperTestTemplate('Admin/QrCodes/add');
 
         // validate the html

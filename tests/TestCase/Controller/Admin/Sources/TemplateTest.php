@@ -170,7 +170,7 @@ class TemplateTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/sources/add');
         $this->assertResponseOk();
-        $this->helperTestLayoutDashboardView();
+        $this->helperTestLayoutDashboardForm();
         $this->helperTestTemplate('Admin/Sources/add');
 
         // validate the html
@@ -217,7 +217,7 @@ class TemplateTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/sources/edit/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutDashboardView();
+        $this->helperTestLayoutDashboardForm();
         $this->helperTestTemplate('Admin/Sources/edit');
 
         // validate the html

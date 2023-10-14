@@ -8,7 +8,7 @@
  */
 
 if (!$this->getRequest()->is('ajax')) {
-    $this->setLayout('dashboard/view');
+    $this->setLayout('dashboard/form');
 }
 
 $this->assign('page_title', __('Add a QR Code'));

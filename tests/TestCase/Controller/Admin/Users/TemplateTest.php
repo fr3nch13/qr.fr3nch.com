@@ -341,7 +341,7 @@ class TemplateTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/users/add');
         $this->assertResponseOk();
-        $this->helperTestLayoutDashboardView();
+        $this->helperTestLayoutDashboardForm();
         $this->helperTestTemplate('Admin/Users/add');
 
         // validate the html
@@ -394,7 +394,7 @@ class TemplateTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/users/edit/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutDashboardView();
+        $this->helperTestLayoutDashboardForm();
         $this->helperTestTemplate('Admin/Users/edit');
 
         // validate the html

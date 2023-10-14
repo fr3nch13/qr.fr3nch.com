@@ -157,6 +157,7 @@ class BaseControllerTest extends TestCase
             $result = $validator->validateDocument($content);
             $this->assertFalse($result->hasErrors(), (string)$result);
             $this->assertFalse($result->hasWarnings(), (string)$result);
+            $this->assertFalse($result->hasMessages(), (string)$result);
             // Incase validator.nu throws an error.
         } catch (ValidatorServerException $e) {
             $this->assertTrue(true);
@@ -454,6 +455,22 @@ class BaseControllerTest extends TestCase
 
         $this->assertSame(1, substr_count($content, '<!-- START: App.layout/dashboard/view -->'));
         $this->assertSame(1, substr_count($content, '<!-- END: App.layout/dashboard/view -->'));
+
+        // test other specific to this layout.
+    }
+
+    /**
+     * Tests that we're using the dashboard/form layout
+     *
+     * @return void
+     */
+    public function helperTestLayoutDashboardForm(): void
+    {
+        $this->helperTestLayoutBase();
+        $content = (string)$this->_response->getBody();
+
+        $this->assertSame(1, substr_count($content, '<!-- START: App.layout/dashboard/form -->'));
+        $this->assertSame(1, substr_count($content, '<!-- END: App.layout/dashboard/form -->'));
 
         // test other specific to this layout.
     }
