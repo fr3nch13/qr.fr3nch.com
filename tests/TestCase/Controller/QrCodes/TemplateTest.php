@@ -130,21 +130,21 @@ class TemplateTest extends BaseControllerTest
         // not logged in
         $this->get('https://localhost/qr-codes/view/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutDashboardView();
+        $this->helperTestLayoutPagesView();
         $this->helperTestTemplate('QrCodes/view');
 
         // test with reqular
         $this->loginUserRegular();
         $this->get('https://localhost/qr-codes/view/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutDashboardView();
+        $this->helperTestLayoutPagesView();
         $this->helperTestTemplate('QrCodes/view');
 
         // test with admin
         $this->loginUserAdmin();
         $this->get('https://localhost/qr-codes/view/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutDashboardView();
+        $this->helperTestLayoutPagesView();
         $this->helperTestTemplate('QrCodes/view');
         $this->helperTestObjectComment(2, 'QrCode/show');
         $this->helperTestObjectComment(1, 'QrCode/forward');
