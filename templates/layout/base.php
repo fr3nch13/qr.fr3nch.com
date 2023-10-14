@@ -22,6 +22,7 @@
     <?= $this->Html->css([
         'libs.bundle',
         'index.bundle',
+        '/assets/npm-asset/bootstrap-icons/font/bootstrap-icons.css',
         '/assets/npm-asset/bootstrap5-tags/tags-pure.css',
         'qr.css',
         ]) ?>
