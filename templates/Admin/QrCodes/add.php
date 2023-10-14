@@ -25,6 +25,7 @@ $this->assign('page_title', __('Add a QR Code'));
                     'spacing' => 'mb-2',
                     'label' => __('Unique Key'),
                     'help' => __('Can not be edited later.'),
+                    'class' => 'lowercase',
                 ]); ?>
             </div>
             <div class="col-8">

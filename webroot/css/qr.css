@@ -116,3 +116,7 @@ footer img.logo-bottom {
     border-top-color: #74991e;
 }
 
+/** Lowercase inputs **/
+form input[type="text"].lowercase {
+    text-transform: lowercase;
+}

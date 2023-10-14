@@ -25,7 +25,7 @@ if ($qrCode->id) {
             'action' => 'qrCode',
             $qrCode->id,
         ]],
-        'QrCodes.download' => [__('Download QR'), [
+        'QrCodes.download' => [__('Download'), [
             'plugin' => false,
             'prefix' => false,
             'controller' => 'QrCodes',
