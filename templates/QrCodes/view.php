@@ -18,9 +18,6 @@ if (!$this->getRequest()->is('ajax')) {
     product
     product-<?= ($qrCode->is_active ? 'active' : 'inactive')?>
     ">
-    <?php if (!$qrCode->is_active) : ?>
-    <div class="ribbon red"><span><?= __('Inactive') ?></span></div>
-    <?php endif; ?>
 
     <!-- The QR Code's images -->
     <div class="col-lg-6 position-relative">
@@ -38,7 +35,7 @@ if (!$this->getRequest()->is('ajax')) {
                     <?php foreach ($qrCode->qr_images as $qrImage) : ?>
                         <?php
                         // make sure the image active, and exists
-                        if (!$qrImage->is_active || !$qrImage->path) {
+                        if (!$qrImage->is_active || !$qrImage->path_lg) {
                             continue;
                         }
                         ?>
@@ -49,7 +46,9 @@ if (!$this->getRequest()->is('ajax')) {
                             class="img-fluid img-thumbnail"
                             src="<?= $this->Url->build([
                                 'controller' => 'QrImages',
-                                'action' => 'show', $qrImage->id,
+                                'action' => 'show',
+                                $qrImage->id,
+                                '?' => ['thumb' => 'lg'],
                                 ]) ?>"
                             alt="<?= $qrImage->name ?>">
                     </div>
@@ -59,7 +58,10 @@ if (!$this->getRequest()->is('ajax')) {
                         <?= $this->Template->objectComment('QrCode/show') ?>
                         <img
                             class="img-fluid"
-                            src="<?= $this->Url->build(['action' => 'show', $qrCode->id]) ?>"
+                            src="<?= $this->Url->build([
+                                'action' => 'show',
+                                $qrCode->id,
+                            ]) ?>"
                             alt="<?= __('The QR Code'); ?>">
                     </div>
 
@@ -73,29 +75,29 @@ if (!$this->getRequest()->is('ajax')) {
                     <?php foreach ($qrCode->qr_images as $qrImage) : ?>
                         <?php
                         // make sure it's active, and exists
-                        if (!$qrImage->is_active || !$qrImage->path) {
+                        if (!$qrImage->is_active || !$qrImage->path_md) {
                             continue;
                         }
                         ?>
-                        <?= $this->Template->objectComment('QrImage/show/thumb') ?>
+                        <?= $this->Template->objectComment('QrImage/show/thumb/md') ?>
                     <div>
                         <img
                             src="<?= $this->Url->build([
                                 'controller' => 'QrImages',
                                 'action' => 'show',
                                 $qrImage->id,
-                                '?' => ['thumb' => 'lg'],
+                                '?' => ['thumb' => 'md'],
                                 ]) ?>"
                             alt="<?= $qrImage->name ?>">
                     </div>
                     <?php endforeach; ?>
                     <div>
-                        <?= $this->Template->objectComment('QrCode/show') ?>
+                        <?= $this->Template->objectComment('QrCode/show/thumb/md') ?>
                         <img
                             src="<?= $this->Url->build([
                                 'action' => 'show',
                                 $qrCode->id,
-                                '?' => ['thumb' => 'lg'],
+                                '?' => ['thumb' => 'md'],
                                 ]) ?>"
                             alt="<?= __('The QR Code'); ?>">
                     </div>
