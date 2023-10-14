@@ -4,12 +4,13 @@
  * @var iterable<\App\Model\Entity\User> $users
  */
 if (!$this->getRequest()->is('ajax')) {
-    $this->setLayout('dashboard/base');
+    $this->setLayout('dashboard/index');
 }
+
+$this->assign('page_title', __('Dashboard'));
+
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
-
-<h1><?= __('Dashboard') ?></h1>
 
 <p>Stats go here.</p>
 
