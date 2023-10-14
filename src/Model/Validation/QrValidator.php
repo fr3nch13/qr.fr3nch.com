@@ -36,7 +36,7 @@ class QrValidator extends Validator
     {
         // Pretty lenient to allow app links
         // protocol://[string of non-space chars]
-        if (!preg_match('%^[a-f0-9]\://[^\s]+$%iu', $value)) {
+        if (!preg_match('%^[a-z0-9\-\.]+\:(//|root=)[^\s]+$%iu', $value)) {
             return __('The URL is invalid.');
         }
 
