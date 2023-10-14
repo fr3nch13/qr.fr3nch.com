@@ -15,7 +15,7 @@ if (!$this->getRequest()->is('ajax')) {
         <div class="row">
             <?php foreach ($qrImages as $qrImage) : ?>
                 <div class="col">
-                    <div class="card text-center border">
+                    <div class="card text-center border mb-2">
                         <div class="card-body">
                             <div class="card-title"><?= $qrImage->name ?></div>
                             <img
