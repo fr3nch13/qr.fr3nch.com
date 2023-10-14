@@ -44,7 +44,8 @@ if (!$this->getRequest()->is('ajax')) {
                         <?= $this->Template->objectComment('QrImage/show/large/lg') ?>
                     <div class="item text-center">
                         <img
-                            class="img-fluid img-thumbnail"
+                            <?php // use `img-thumbnail`, not `img-fluid` as it's redundant. ?>
+                            class="img-thumbnail"
                             src="<?= $this->Url->build([
                                 'controller' => 'QrImages',
                                 'action' => 'show',
@@ -58,7 +59,8 @@ if (!$this->getRequest()->is('ajax')) {
                     <div class="item text-center">
                         <?= $this->Template->objectComment('QrCode/show/thumb/lg') ?>
                         <img
-                            class="img-fluid img-thumbnail"
+                            <?php // use `img-thumbnail`, not `img-fluid` as it's redundant. ?>
+                            class="img-thumbnail"
                             src="<?= $this->Url->build([
                                 'action' => 'show',
                                 $qrCode->id,
@@ -85,7 +87,8 @@ if (!$this->getRequest()->is('ajax')) {
                         <?= $this->Template->objectComment('QrImage/show/thumb/sm') ?>
                     <div>
                         <img
-                            class="img-fluid img-thumbnail"
+                            <?php // use `img-thumbnail`, not `img-fluid` as it's redundant. ?>
+                            class="img-thumbnail"
                             src="<?= $this->Url->build([
                                 'controller' => 'QrImages',
                                 'action' => 'show',
@@ -98,7 +101,8 @@ if (!$this->getRequest()->is('ajax')) {
                     <div>
                         <?= $this->Template->objectComment('QrCode/show/thumb/sm') ?>
                         <img
-                            class="img-fluid img-thumbnail"
+                            <?php // use `img-thumbnail`, not `img-fluid` as it's redundant. ?>
+                            class="img-thumbnail"
                             src="<?= $this->Url->build([
                                 'action' => 'show',
                                 $qrCode->id,
