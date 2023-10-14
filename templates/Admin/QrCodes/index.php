@@ -28,7 +28,7 @@ $this->assign('page_title', __('QR Codes'));
                     echo '<span class="badge bg-light text-dark rounded-pill"><i class="bi bi-x fs-8"></i></span>';
                 }
                 ?>
-                <span class="badge bg-light text-dark rounded-pill"><i class="bi bi-qr-code-scan text-dark"></i> <?= $qrCode->hits ?></span>
+                <span class="badge bg-light text-dark rounded-pill"><<i class="bi bi-qr-code"></i> <?= $qrCode->hits ?></span>
                 <span class="text-muted"><?= $qrCode->qrkey ?></spam>
             </a>
     </div>
