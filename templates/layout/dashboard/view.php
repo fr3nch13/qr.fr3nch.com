@@ -12,11 +12,11 @@ $this->extend('dashboard/base');
 
 <div class="container mt-md-5 px-0 px-md-3">
     <div class="row align-items-end mb-2">
-        <div class="col">
+        <div class="col-12 col-lg-6">
             <h2><?= $this->fetch('page_title') ?></h2>
         </div>
         <?php if ($this->fetch('page_options')) : ?>
-        <div class="col text-end">
+        <div class="col-12 col-lg-6 text-end">
             <?= $this->fetch('page_options') ?>
         </div>
         <?php endif; ?>
