@@ -46,6 +46,8 @@ class TemplateTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestLayoutLogin();
         $this->helperTestTemplate('Users/login');
+        // validate the html
+        $this->helperValidateHTML();
 
         // test with reqular
         $this->loginUserRegular();
@@ -60,9 +62,6 @@ class TemplateTest extends BaseControllerTest
         $this->assertRedirectEquals('https://localhost/admin');
         $this->assertFlashMessage('Welcome back Admin', 'flash');
         $this->assertFlashElement('flash/success');
-
-        // validate the html
-        $this->helperValidateHTML();
     }
 
     /**
