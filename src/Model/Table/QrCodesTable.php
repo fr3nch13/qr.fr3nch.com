@@ -204,6 +204,8 @@ class QrCodesTable extends Table
 
     /**
      * Before marshal which runs before patching an entity.
+     *
+     * @return void
      */
     public function beforeMarshal(Event $event, ArrayObject $data, ArrayObject $options): void
     {
@@ -255,6 +257,30 @@ class QrCodesTable extends Table
         // TODO: Test this to make sure we output the exception properly.
         if (!$entity->path) {
             throw new InternalErrorException('Unable to create QR Code.');
+        }
+    }
+
+    /**
+     * Make sure it's image and thumbnails are deleted.
+     *
+     * @param \Cake\Event\Event $event
+     * @param \App\Model\Entity\QrCode $qrCode
+     * @param \ArrayObject $options
+     * @return void
+     */
+    public function afterDelete(Event $event, QrCode $qrCode, ArrayObject $options): void
+    {
+        // thumbnails
+        // use getThumbPath so we don't generate the thumbs.
+        foreach(['lg', 'md', 'sm'] as $size) {
+            if ($qrCode->getThumbPath('lg') && is_file($qrCode->getThumbPath('lg'))) {
+                unlink($qrCode->getThumbPath('lg'));
+            }
+        }
+
+        // then the original
+        if ($qrCode->getImagePath() && is_file($qrCode->getImagePath())) {
+            unlink($qrCode->getImagePath());
         }
     }
 

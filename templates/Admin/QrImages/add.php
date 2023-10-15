@@ -11,11 +11,26 @@ if (!$this->getRequest()->is('ajax')) {
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <?= $this->Form->create($qrImage, ['type' => 'file']) ?>
+<?php if ($qrImage->hasErrors()) : ?>
+<div class="row my-2">
+    <div class="col">
+        <?php foreach($qrImage->getErrors() as $field => $error) : ?>
+            <?php foreach($error as $msg) : ?>
+                <p class="text-danger"><?= $msg ?></p>
+            <?php endforeach; ?>
+        <?php endforeach; ?>
+    </div>
+</div>
+<?php endif; ?>
 <div class="row">
     <div class="col">
         <div class="verify-sub-box">
                 <div class="file-loading">
-                    <input id="multiplefileupload" class="fileinput" type="file" accept=".jpg,.gif,.png" multiple>
+                    <?= $this->Form->file('newimages[]', [
+                        'class' => 'fileinput',
+                        'accept' => '.jpg,.gif,.png',
+                        'multiple' => true,
+                    ]) ?>
                 </div>
         </div>
     </div>

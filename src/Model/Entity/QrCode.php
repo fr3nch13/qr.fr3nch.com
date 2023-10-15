@@ -92,7 +92,8 @@ class QrCode extends Entity
     protected function _getPath(): ?string
     {
         // set in config/app.php or config/app_local.php
-        $path = Configure::read('App.paths.qr_codes', TMP . 'qr_codes') . DS . $this->id . '.png';
+        $path = $this->getImagePath();
+
         if (!file_exists($path) || $this->regenerate) {
             try {
                 $QR = new PhpQrGenerator($this);
@@ -112,5 +113,16 @@ class QrCode extends Entity
         }
 
         return null;
+    }
+
+    /**
+     * Return where the path to the image should be.
+     * No checking here
+     *
+     * @return string The path.
+     */
+    public function getImagePath(): ?string
+    {
+        return Configure::read('App.paths.qr_codes', TMP . 'qr_codes') . DS . $this->id . '.png';
     }
 }

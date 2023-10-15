@@ -135,13 +135,11 @@ class QrImagesController extends AppController
         $this->Authorization->authorize($qrImage);
 
         if ($this->request->is('post')) {
-            debug($this->request->getData());
-            exit;
-            $qrImage = $this->QrImages->patchEntity($qrImage, $this->request->getData());
             $qrImage->qr_code_id = $qrCode->id;
             $qrImage->qr_code = $qrCode;
-            if ($this->QrImages->save($qrImage)) {
-                $this->Flash->success(__('The image has been saved.'));
+            $qrImage = $this->QrImages->handleNewImages($qrImage, $this->request);
+            if (!$qrImage->hasErrors()) {
+                $this->Flash->success(__('The images have been saved.'));
 
                 return $this->redirect([
                     'action' => 'qrCode',
@@ -149,7 +147,7 @@ class QrImagesController extends AppController
                     '_ext' => $this->getRequest()->getParam('_ext'),
                 ]);
             }
-            $this->Flash->error(__('The image could not be saved. Please, try again.'));
+            $this->Flash->error(__('The images could not be saved. Please, try again.'));
         }
 
         $errors = $qrImage->getErrors();

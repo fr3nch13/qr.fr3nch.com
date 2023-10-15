@@ -196,6 +196,7 @@ trait ThumbTrait
         if ($imageDetails[2] == 1) {
             $originalImage = imagecreatefromgif($originalPath);
             $thumbImage = imagecreatetruecolor($newWidth, $newHeight);
+
             if ($originalImage && $thumbImage) {
                 imagecopyresampled($thumbImage, $originalImage, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 
@@ -217,6 +218,9 @@ trait ThumbTrait
         if ($imageDetails[2] == 3) {
             $originalImage = imagecreatefrompng($originalPath);
             $thumbImage = imagecreatetruecolor($newWidth, $newHeight);
+            imagesavealpha($thumbImage, true);
+            $color = imagecolorallocatealpha($thumbImage, 0, 0, 0, 127);
+            imagefill($thumbImage, 0, 0, $color);
 
             if ($originalImage && $thumbImage) {
                 imagecopyresampled($thumbImage, $originalImage, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
