@@ -11,71 +11,47 @@ if (!$this->getRequest()->is('ajax')) {
 $this->assign('page_title', __('Tags'));
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
+<div class="container bg-white">
+    <div class="row py-2">
+        <div class="col text-center">
 
-<div class="container mt-5">
-            <div class="row g-3 g-md-5 align-items-end mb-5">
-                <div class="col-md-6">
-                    <h1><?= __('Tags') ?></h1>
-                </div>
+        <?php foreach ($tags as $tag) : ?>
 
-                <?php
-                // TODO: Create a page options element to generate page options.
-                ?>
-                <div class="col-md-6 text-md-end">
-                    <ul class="list-inline">
-                        <?php if ($this->ActiveUser->isLoggedIn()) : ?>
-                        <li class="list-inline-item ms-2">
-                            <?= $this->Html->link(__('Add a Tag'), [
-                                'controller' => 'Tags',
-                                'action' => 'add',
-                            ], [
-                                'class' => 'underline text-black',
-                            ]); ?>
-                        </li>
-                        <?php endif; ?>
-                    </ul>
-                </div>
-            </div>
+            <?= $this->Html->link(
+                $tag->name . '<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                ' . count($tag->qr_codes) . '
+                <span class="visually-hidden">unread messages</span>
+              </span>',
+                [
+                    'action' => 'edit',
+                    $tag->id,
+                ],
+                [
+                    'class' => 'my-2 mx-2 btn btn-light btn-outline-secondary position-relative ajax-modal',
+                    'role' => 'button',
+                    'data-bs-toggle' => 'modal',
+                    'data-bs-target' => '#edit-modal',
+                    'data-ajax-target' => '#editModalBody',
+                    'escape' => false,
+                ]
+            ); ?>
+        <?php endforeach; ?>
         </div>
+    </div>
+</div>
 
-        <div class="container">
-            <div class="row g-3 g-lg-5 tags">
-                <div class="col text-center">
-                <?php foreach ($tags as $tag) : ?>
-                    <?= $this->Html->link(
-                        $tag->name,
-                        [
-                            'controller' => 'QrCodes',
-                            'action' => 'index',
-                            '?' => ['t' => $tag->name],
-                        ],
-                        [
-                            'class' => 'my-2 mx-2 btn btn-light btn-outline-secondary rounded-pill',
-                            'role' => 'button',
-                        ]
-                    ); ?>
-                <?php endforeach; ?>
-                </div>
-            </div>
 
-            <div class="row mt-6">
-                <div class="col text-center">
-                    <nav aria-label="Pagination">
-                        <ul class="pagination">
-                            <?= $this->Paginator->first('&laquo;', ['label' => 'First']) ?>
-                            <?= $this->Paginator->prev('<', ['label' => 'Previous']) ?>
-                            <?= $this->Paginator->numbers() ?>
-                            <?= $this->Paginator->next('>', ['label' => 'Next']) ?>
-                            <?= $this->Paginator->last('&laquo;', ['label' => 'Last']) ?>
-                        </ul>
-                        <!--
-                            <p><?= $this->Paginator->counter(__('{{page}}/{{pages}}, {{current}} of {{count}}')) ?></p>
-                        -->
-                    </nav>
-                </div>
-            </div>
-        </div>
-
+<div class="container py-2">
+    <nav aria-label="Pagination" class="text-center">
+        <ul class="pagination">
+            <?= $this->Paginator->first('&laquo;', ['label' => 'First']) ?>
+            <?= $this->Paginator->prev('<', ['label' => 'Previous']) ?>
+            <?= $this->Paginator->numbers() ?>
+            <?= $this->Paginator->next('>', ['label' => 'Next']) ?>
+            <?= $this->Paginator->last('&laquo;', ['label' => 'Last']) ?>
+        </ul>
+    </nav>
+</div>
 
 <?php $this->start('page_options'); ?>
 <ul class="list-inline">
@@ -84,7 +60,11 @@ $this->assign('page_title', __('Tags'));
             'controller' => 'Tags',
             'action' => 'add',
         ], [
-            'class' => 'underline text-black',
+            'class' => 'underline text-black ajax-modal',
+            'role' => 'button',
+            'data-bs-toggle' => 'modal',
+            'data-bs-target' => '#edit-modal',
+            'data-ajax-target' => '#editModalBody',
         ]); ?>
     </li>
 
@@ -113,6 +93,27 @@ $this->assign('page_title', __('Tags'));
     </li>
 </ul>
 <?php $this->end(); // page_options ?>
+
+<?php $this->start('modal') ?>
+<!-- Edit Modal -->
+
+<div class="modal fade" id="edit-modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <button
+                type="button"
+                class="bi bi-x modal-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"></button>
+            <div class="modal-body p-4">
+                <span id="editModalLabel" class="invisible"><?= __('Edit') ?></span>
+                <div id="editModalBody"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php $this->end(); // modal ?>
 
 <?php $this->start('offcanvas') ?>
 <?= $this->Template->objectComment('OffCanvas/filters') ?>

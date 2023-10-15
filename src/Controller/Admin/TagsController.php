@@ -42,7 +42,7 @@ class TagsController extends AppController
         // make sure we have an ID where needed.
         $action = $this->request->getParam('action');
         // admin actions
-        if (in_array($action, ['view', 'edit', 'delete'])) {
+        if (in_array($action, ['edit', 'delete'])) {
             $pass = $this->request->getParam('pass');
             if (empty($pass) || !isset($pass['0'])) {
                 $event->stopPropagation();
@@ -63,32 +63,13 @@ class TagsController extends AppController
         $this->request->allowMethod(['get']);
 
         $query = $this->Tags->find('all')
+            ->contain(['QrCodes'])
             ->find('search', search: $this->request->getQueryParams());
         $query = $this->Authorization->applyScope($query);
         $tags = $this->paginate($query);
 
         $this->set(compact('tags'));
         $this->viewBuilder()->setOption('serialize', ['tags']);
-
-        return null;
-    }
-
-    /**
-     * View method
-     *
-     * @param ?string $id Tag id.
-     * @return ?\Cake\Http\Response Renders view
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function view(?string $id = null): ?Response
-    {
-        $this->request->allowMethod(['get']);
-
-        $tag = $this->Tags->get((int)$id, contain: ['QrCodes']);
-        $this->Authorization->authorize($tag);
-
-        $this->set(compact('tag'));
-        $this->viewBuilder()->setOption('serialize', ['tag']);
 
         return null;
     }
@@ -112,8 +93,7 @@ class TagsController extends AppController
                 $this->Flash->success(__('The tag has been saved.'));
 
                 return $this->redirect([
-                    'action' => 'view',
-                    $tag->id,
+                    'action' => 'index',
                     '_ext' => $this->getRequest()->getParam('_ext'),
                 ]);
             }
@@ -149,8 +129,7 @@ class TagsController extends AppController
                 $this->Flash->success(__('The tag has been saved.'));
 
                 return $this->redirect([
-                    'action' => 'view',
-                    $tag->id,
+                    'action' => 'index',
                     '_ext' => $this->getRequest()->getParam('_ext'),
                 ]);
             }
@@ -175,7 +154,7 @@ class TagsController extends AppController
      */
     public function delete(?string $id = null): ?Response
     {
-        $this->request->allowMethod(['delete', 'post']);
+        $this->request->allowMethod(['delete', 'post', 'get']);
 
         $tag = $this->Tags->get((int)$id);
         $this->Authorization->authorize($tag);

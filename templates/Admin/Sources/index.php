@@ -11,53 +11,46 @@ if (!$this->getRequest()->is('ajax')) {
 $this->assign('page_title', __('Sources'));
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
-<div class="sources index content">
-    <?= $this->Html->link(__('New Source'), ['action' => 'add'], ['class' => 'button float-right']) ?>
-    <h3><?= __('Sources') ?></h3>
-    <div class="table-responsive">
-        <table>
-            <thead>
-                <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
-                    <th><?= $this->Paginator->sort('name') ?></th>
-                    <th><?= $this->Paginator->sort('created') ?></th>
-                    <th><?= $this->Paginator->sort('modified') ?></th>
-                    <th class="actions"><?= __('Actions') ?></th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($sources as $source) : ?>
-                <tr>
-                    <td><?= $this->Number->format($source->id) ?></td>
-                    <td><?= h($source->name) ?></td>
-                    <td><?= h($source->created) ?></td>
-                    <td><?= h($source->modified) ?></td>
-                    <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $source->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $source->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), [
-                            'action' => 'delete',
-                            $source->id,
-                        ], [
-                            'confirm' => __('Are you sure you want to delete # {0}?', $source->id),
-                        ]) ?>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+<div class="container bg-white">
+    <div class="row py-2">
+        <div class="col text-center">
+
+        <?php foreach ($sources as $source) : ?>
+
+            <?= $this->Html->link(
+                $source->name . '<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                ' . count($source->qr_codes) . '
+                <span class="visually-hidden">unread messages</span>
+              </span>',
+                [
+                    'action' => 'edit',
+                    $source->id,
+                ],
+                [
+                    'class' => 'my-2 mx-2 btn btn-light btn-outline-secondary position-relative ajax-modal',
+                    'role' => 'button',
+                    'data-bs-toggle' => 'modal',
+                    'data-bs-target' => '#edit-modal',
+                    'data-ajax-target' => '#editModalBody',
+                    'escape' => false,
+                ]
+            ); ?>
+        <?php endforeach; ?>
+        </div>
     </div>
-    <div class="paginator">
+</div>
+
+
+<div class="container py-2">
+    <nav aria-label="Pagination" class="text-center">
         <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
+            <?= $this->Paginator->first('&laquo;', ['label' => 'First']) ?>
+            <?= $this->Paginator->prev('<', ['label' => 'Previous']) ?>
             <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
+            <?= $this->Paginator->next('>', ['label' => 'Next']) ?>
+            <?= $this->Paginator->last('&laquo;', ['label' => 'Last']) ?>
         </ul>
-        <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, ' .
-            'showing {{current}} record(s) out of {{count}} total')) ?></p>
-    </div>
+    </nav>
 </div>
 
 <?php $this->start('page_options'); ?>
@@ -67,7 +60,11 @@ $this->assign('page_title', __('Sources'));
             'controller' => 'Sources',
             'action' => 'add',
         ], [
-            'class' => 'underline text-black',
+            'class' => 'underline text-black ajax-modal',
+            'role' => 'button',
+            'data-bs-toggle' => 'modal',
+            'data-bs-target' => '#edit-modal',
+            'data-ajax-target' => '#editModalBody',
         ]); ?>
     </li>
 
@@ -96,6 +93,27 @@ $this->assign('page_title', __('Sources'));
     </li>
 </ul>
 <?php $this->end(); // page_options ?>
+
+<?php $this->start('modal') ?>
+<!-- Edit Modal -->
+
+<div class="modal fade" id="edit-modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <button
+                type="button"
+                class="bi bi-x modal-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"></button>
+            <div class="modal-body p-4">
+                <span id="editModalLabel" class="invisible"><?= __('Edit') ?></span>
+                <div id="editModalBody"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php $this->end(); // modal ?>
 
 <?php $this->start('offcanvas') ?>
 <?= $this->Template->objectComment('OffCanvas/filters') ?>

@@ -11,6 +11,15 @@ if (!$this->getRequest()->is('ajax')) {
 $this->assign('page_title', __('Users'));
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
+
+<div class="container bg-white">
+    <div class="row py-2">
+        <div class="col text-center">
+            Coming Soon
+        </div>
+    </div>
+</div>
+<!--
 <div class="users index content">
     <?= $this->Html->link(__('New User'), ['action' => 'add'], ['class' => 'button float-right']) ?>
     <h3><?= __('Users') ?></h3>
@@ -61,6 +70,7 @@ $this->assign('page_title', __('Users'));
             'showing {{current}} record(s) out of {{count}} total')) ?></p>
     </div>
 </div>
+-->
 
 
 <?php $this->start('page_options'); ?>

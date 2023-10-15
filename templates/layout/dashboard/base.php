@@ -50,8 +50,14 @@ $this->start('layout');
                                     'controller' => 'Sources',
                                     'action' => 'index',
                                 ], ['class' => 'nav-link fs-lg']) ?></li>
+                                <li class="nav-item"><?= $this->Html->link(__('Users'), [
+                                    'plugin' => false,
+                                    'prefix' => 'Admin',
+                                    'controller' => 'Users',
+                                    'action' => 'index',
+                                ], ['class' => 'nav-link fs-lg']) ?></li>
                                 <li class="nav-item">
-                                    <div class="dropdown-divider"></div>
+                                    <div class="border-bottom"></div>
                                 </li>
                                 <li class="nav-item"><?= $this->Html->link(__('Profile'), [
                                     'plugin' => false,
