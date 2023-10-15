@@ -92,11 +92,10 @@ if (!$this->getRequest()->is('ajax')) {
     aria-labelledby="modalLabel-<?= $qrImage->id ?>"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
+        <div class="modal-content" data-bs-dismiss="modal">
             <button
                 type="button"
                 class="bi bi-x modal-close text-white"
-                data-bs-dismiss="modal"
                 aria-label="Close"></button>
             <div class="modal-body m-0 p-0">
                 <div class="row m-0 p-0">
