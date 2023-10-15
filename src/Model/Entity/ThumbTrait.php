@@ -270,7 +270,7 @@ trait ThumbTrait
      * @return string|null The path to the thumb file.
      * @throws \App\Exception\ThumbException When size unknown, or not used in an entity.
      */
-    protected function getThumbPath(string $size = 'sm'): ?string
+    public function getThumbPath(string $size = 'sm'): ?string
     {
         assert(
             $this instanceof Entity,
