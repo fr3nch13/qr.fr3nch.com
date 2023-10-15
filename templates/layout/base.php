@@ -49,8 +49,9 @@
     '/assets/npm-asset/bootstrap-fileinput/js/plugins/filetype.js',
     //'/assets/npm-asset/bootstrap-fileinput/js/plugins/sortable.js',
     '/assets/npm-asset/bootstrap-fileinput/js/fileinput.js',
+    'qr'
     ]) ?>
-<?= $this->Html->script('qr', [
+<?= $this->Html->script('qr_module', [
     'type' => 'module',
 ]) ?>
 </body>
