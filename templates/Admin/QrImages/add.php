@@ -28,7 +28,7 @@ if (!$this->getRequest()->is('ajax')) {
                 <div class="file-loading">
                     <?= $this->Form->file('newimages[]', [
                         'class' => 'fileinput',
-                        'accept' => '.jpg,.gif,.png',
+                        'accept' => '.jpg,.jpeg,.svg,.gif,.png',
                         'multiple' => true,
                     ]) ?>
                 </div>

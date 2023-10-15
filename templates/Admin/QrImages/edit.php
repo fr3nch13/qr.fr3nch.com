@@ -12,13 +12,13 @@ if (!$this->getRequest()->is('ajax')) {
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <?= $this->Form->create($qrImage) ?>
 <div class="row">
-    <div class="col-4 form-switch mt-4">
+    <div class="col-12 col-md-4 order-2 order-md-1 form-switch mt-4">
         <?= $this->Form->control('is_active', [
             'spacing' => 'mb-2',
             'label' => __('Active?'),
         ]); ?>
     </div>
-    <div class="col-8">
+    <div class="col-12 col-md-8 order-1 order-md-2">
         <?= $this->Form->control('name', [
             'required' => true,
             'spacing' => 'mb-2',

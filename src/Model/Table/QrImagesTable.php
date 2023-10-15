@@ -185,9 +185,18 @@ class QrImagesTable extends Table
             $error = $image->getError();
 
             if ($error) {
-                $qrImage->setError('newimages', __('There was an issue with the file: {0}', [
-                    $image->getClientFilename(),
-                ]));
+                if ($error === 1 || $error === 2){
+                    $qrImage->setError('newimages', __('The file `{0}` is too big.', [
+                        $image->getClientFilename(),
+                        $error,
+                    ]));
+
+                } else {
+                    $qrImage->setError('newimages', __('There was an issue with the file: {0} - {1}', [
+                        $image->getClientFilename(),
+                        $error,
+                    ]));
+                }
 
                 continue;
             }
@@ -265,7 +274,6 @@ class QrImagesTable extends Table
 
                 }
             }
-
         }
 
         return $qrImage;
