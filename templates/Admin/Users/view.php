@@ -6,6 +6,8 @@
 if (!$this->getRequest()->is('ajax')) {
     $this->setLayout('dashboard/view');
 }
+
+$this->assign('page_title', __('Profile'));
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 
