@@ -244,6 +244,11 @@ class QrImagesTable extends Table
             $newImage = $this->saveOrFail($newImage);
             if ($newImage) {
                 $home = $newImage->getImagePath();
+                $dir = dirname($home);
+                if (!is_dir($dir)) {
+                    mkdir($dir);
+                }
+
                 try {
                     $image->moveTo($home);
                 } catch (\Laminas\Diactoros\Exception\ExceptionInterface $exception) {
