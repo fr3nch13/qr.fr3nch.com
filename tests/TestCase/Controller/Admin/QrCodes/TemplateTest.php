@@ -100,6 +100,7 @@ class TemplateTest extends BaseControllerTest
         $this->get('https://localhost/admin/qr-codes/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutDashboardView();
+        $this->helperTestTemplate('Admin/QrCodes/details');
         $this->helperTestTemplate('Admin/QrCodes/view');
 
         // test with admin
@@ -107,7 +108,7 @@ class TemplateTest extends BaseControllerTest
         $this->get('https://localhost/admin/qr-codes/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutDashboardView();
-        // TODO: Also look for sub-layout page.
+        $this->helperTestTemplate('Admin/QrCodes/details');
         $this->helperTestTemplate('Admin/QrCodes/view');
 
         // validate the html

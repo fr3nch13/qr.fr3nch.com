@@ -26,7 +26,7 @@ $this->assign('page_title', __('QR Codes'));
                 </div>
                 <div class="row">
                     <div class="col">
-                        <span class="text-muted"><?= $qrCode->qrkey ?></spam>
+                        <span class="text-muted"><?= $qrCode->qrkey ?></span>
                     </div>
                     <div class="col">
                         <span class="badge bg-light text-dark rounded-pill"><i class="bi bi-qr-code-scan"></i> <?= $qrCode->hits ?> -  <?= $qrCode->last_hit ?></span>

@@ -16,6 +16,7 @@ $this->start('layout');
     <?= $this->Template->objectComment('OffCanvas/wrap') ?>
     <div class="offcanvas-wrap">
         <section class="split">
+            <h3 class="d-none"><?= __('Nav on left, content on right.') ?></h3>
             <div class="container">
                 <div class="row justify-content-between">
 

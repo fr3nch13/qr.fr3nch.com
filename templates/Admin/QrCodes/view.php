@@ -68,7 +68,7 @@ if (!$this->getRequest()->is('ajax')) {
     </div>
     <div class="col-lg-12 order-2 order-lg-3 my-2">
         <h5><?= __('Description') ?></h5>
-        <p class="text-secondary mb-3"><?= $this->Text->autoParagraph(h($qrCode->description)) ?></p>
+        <div class="text-secondary mb-3"><?= $this->Text->autoParagraph(h($qrCode->description)) ?></div>
     </div>
     <div class="col-lg-12 order-3 order-lg-4 my-2">
         <h5><?= __('Tags') ?></h5>
