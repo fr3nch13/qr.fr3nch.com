@@ -54,6 +54,7 @@ class TagsController extends AppController
         $this->request->allowMethod(['get']);
 
         $query = $this->Tags->find('all')
+            ->matching('QrCodes')
             ->find('search', search: $this->request->getQueryParams());
         $query = $this->Authorization->applyScope($query);
         $tags = $this->paginate($query);
