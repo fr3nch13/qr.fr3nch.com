@@ -154,7 +154,11 @@ class QrImagesTable extends Table
         $images = $serverRequest->getUploadedFiles();
 
         // none were sent.
-        if (!count($images['newimages'])) {
+        if (
+            !isset($images['newimages']) ||
+            !is_array($images['newimages']) ||
+            !count($images['newimages'])
+        ) {
             $qrImage->setError('newimages', __('No images were uploaded'));
 
             return $qrImage;
