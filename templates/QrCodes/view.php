@@ -142,11 +142,11 @@ if (!$this->getRequest()->is('ajax')) {
                     data-bs-parent="#accordion-1">
                     <div class="accordion-body">
                         <dl class="row">
-                            <dt class="col-sm-3"><?= __('Key') ?></dt>
-                            <dd class="col-sm-9"><?= h($qrCode->qrkey) ?> </dd>
+                            <dt class="col-4 col-md-3"><?= __('Key') ?></dt>
+                            <dd class="col-8 col-md-9"><?= h($qrCode->qrkey) ?> </dd>
 
-                            <dt class="col-sm-3"><?= __('Source') ?></dt>
-                            <dd class="col-sm-9"><?= $qrCode->hasValue('source') ? $this->Html->link(
+                            <dt class="col-4 col-md-3"><?= __('Source') ?></dt>
+                            <dd class="col-8 col-md-9"><?= $qrCode->hasValue('source') ? $this->Html->link(
                                 $qrCode->source->name,
                                 [
                                         'action' => 'index',
@@ -154,11 +154,11 @@ if (!$this->getRequest()->is('ajax')) {
                                     ]
                             ) : '' ?> </dd>
 
-                            <dt class="col-sm-3"><?= __('Last Hit') ?></dt>
-                            <dd class="col-sm-9"><?= h($qrCode->last_hit) ?> </dd>
+                            <dt class="col-4 col-md-3"><?= __('Last Hit') ?></dt>
+                            <dd class="col-8 col-md-9"><?= h($qrCode->last_hit) ?> </dd>
 
-                            <dt class="col-sm-3"><?= __('Created') ?></dt>
-                            <dd class="col-sm-9"><?= h($qrCode->created) ?> </dd>
+                            <dt class="col-4 col-md-3"><?= __('Created') ?></dt>
+                            <dd class="col-8 col-md-9"><?= h($qrCode->created) ?> </dd>
                         </dl>
                     </div>
                 </div>

@@ -147,12 +147,6 @@ $logoImage = $this->Html->image($logoImage, [
                                     'controller' => 'Sources',
                                     'action' => 'index',
                                 ], ['class' => 'nav-link fs-lg']) ?></li>
-                                <li class="nav-item"><?= $this->Html->link(__('Sources'), [
-                                    'plugin' => false,
-                                    'prefix' => 'Admin',
-                                    'controller' => 'Sources',
-                                    'action' => 'index',
-                                ], ['class' => 'nav-link fs-lg']) ?></li>
                                 <li class="nav-item"><?= $this->Html->link(__('Users'), [
                                     'plugin' => false,
                                     'prefix' => 'Admin',

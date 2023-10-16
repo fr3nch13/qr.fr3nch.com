@@ -328,7 +328,8 @@ class BaseControllerTest extends TestCase
         // make sure it's imported as a module for the bootstrap5-tags npm asset.
         // also here to check if the CspMiddleware is active or not.
         // in this case it's not as it isn't working correctly in safari even though `'unsafe-inline' => true,`
-        $this->assertSame(1, substr_count($content, '<script src="/js/qr.js" type="module"></script>'));
+        $this->assertSame(1, substr_count($content, '<script src="/js/qr.js"></script>'));
+        $this->assertSame(1, substr_count($content, '<script src="/js/qr_module.js" type="module"></script>'));
         // end
         $this->assertSame(1, substr_count($content, '</body>'));
         $this->assertSame(1, substr_count($content, '</html>'));
