@@ -1135,16 +1135,16 @@
         },
         {
             "name": "mobiledetect/mobiledetectlib",
-            "version": "4.8.02",
+            "version": "4.8.03",
             "source": {
                 "type": "git",
                 "url": "https://github.com/serbanghita/Mobile-Detect.git",
-                "reference": "6a5384dbc89b6596659b9a46b8885cd6452ef2a0"
+                "reference": "253bedd7db166ec248f157aced344d3584fcb0d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/serbanghita/Mobile-Detect/zipball/6a5384dbc89b6596659b9a46b8885cd6452ef2a0",
-                "reference": "6a5384dbc89b6596659b9a46b8885cd6452ef2a0",
+                "url": "https://api.github.com/repos/serbanghita/Mobile-Detect/zipball/253bedd7db166ec248f157aced344d3584fcb0d9",
+                "reference": "253bedd7db166ec248f157aced344d3584fcb0d9",
                 "shasum": ""
             },
             "require": {
@@ -1187,7 +1187,7 @@
             ],
             "support": {
                 "issues": "https://github.com/serbanghita/Mobile-Detect/issues",
-                "source": "https://github.com/serbanghita/Mobile-Detect/tree/4.8.02"
+                "source": "https://github.com/serbanghita/Mobile-Detect/tree/4.8.03"
             },
             "funding": [
                 {
@@ -1195,7 +1195,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-10-06T18:25:20+00:00"
+            "time": "2023-10-15T18:37:41+00:00"
         },
         {
             "name": "npm-asset/jquery",
@@ -6950,5 +6950,5 @@
         "php": ">=8.1"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
