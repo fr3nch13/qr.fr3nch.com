@@ -272,7 +272,7 @@ class QrCodesTable extends Table
     {
         // thumbnails
         // use getThumbPath so we don't generate the thumbs.
-        foreach(['lg', 'md', 'sm'] as $size) {
+        foreach (['lg', 'md', 'sm'] as $size) {
             if ($qrCode->getThumbPath('lg') && is_file($qrCode->getThumbPath('lg'))) {
                 unlink($qrCode->getThumbPath('lg'));
             }

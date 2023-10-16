@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Exception\ImageException;
 use App\Model\Entity\QrCode;
 use App\Model\Entity\QrImage;
 use ArrayObject;
@@ -14,6 +15,8 @@ use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Utility\Inflector;
 use Cake\Validation\Validator;
+use Laminas\Diactoros\Exception\ExceptionInterface;
+use Laminas\Diactoros\UploadedFile;
 
 /**
  * QrImages Model
@@ -114,7 +117,7 @@ class QrImagesTable extends Table
     {
         // thumbnails
         // use getThumbPath so we don't generate the thumbs.
-        foreach(['lg', 'md', 'sm'] as $size) {
+        foreach (['lg', 'md', 'sm'] as $size) {
             if ($qrImage->getThumbPath('lg') && is_file($qrImage->getThumbPath('lg'))) {
                 unlink($qrImage->getThumbPath('lg'));
             }
@@ -161,8 +164,8 @@ class QrImagesTable extends Table
         if (count($images['newimages']) === 1) {
             $image = reset($images['newimages']);
             assert(
-                $image instanceof \Laminas\Diactoros\UploadedFile,
-                new \App\Exception\ImageException(__('Something fishy is going on.', 500))
+                $image instanceof UploadedFile,
+                new ImageException(__('Something fishy is going on.', 500))
             );
 
             if ($image->getError() === 4) {
@@ -178,19 +181,18 @@ class QrImagesTable extends Table
         // now process each of the images before saving them.
         foreach ($images['newimages'] as $image) {
             assert(
-                $image instanceof \Laminas\Diactoros\UploadedFile,
-                new \App\Exception\ImageException(__('Something fishy is going on.', 500))
+                $image instanceof UploadedFile,
+                new ImageException(__('Something fishy is going on.', 500))
             );
 
             $error = $image->getError();
 
             if ($error) {
-                if ($error === 1 || $error === 2){
+                if ($error === 1 || $error === 2) {
                     $qrImage->setError('newimages', __('The file `{0}` is too big.', [
                         $image->getClientFilename(),
                         $error,
                     ]));
-
                 } else {
                     $qrImage->setError('newimages', __('There was an issue with the file: {0} - {1}', [
                         $image->getClientFilename(),
@@ -202,7 +204,8 @@ class QrImagesTable extends Table
             }
 
             // make sure it's an image.
-            if (!in_array($image->getClientMediaType(), [
+            if (
+                !in_array($image->getClientMediaType(), [
                 'image/png',
                 'image/jpg',
                 'image/jpeg',
@@ -210,7 +213,8 @@ class QrImagesTable extends Table
                 'image/svg+xml',
                 'image/heic', // used by apple
                 'image/heif',
-            ])) {
+                ])
+            ) {
                 $qrImage->setError('newimages', __('The file type is invalid: {0}', [
                     $image->getClientFilename(),
                 ]));
@@ -238,8 +242,8 @@ class QrImagesTable extends Table
             $newImage->imorder = $imgCount;
 
             if ($newImage->hasErrors()) {
-                foreach($newImage->getErrors() as $field => $error) {
-                    foreach($error as $msg) {
+                foreach ($newImage->getErrors() as $field => $error) {
+                    foreach ($error as $msg) {
                         $qrImage->setError('newimages', __('Error: {0} - {1}', [
                             $file_name,
                             $msg,
@@ -260,7 +264,7 @@ class QrImagesTable extends Table
 
                 try {
                     $image->moveTo($home);
-                } catch (\Laminas\Diactoros\Exception\ExceptionInterface $exception) {
+                } catch (ExceptionInterface $exception) {
                     // delete the image from the database.
                     $this->delete($newImage);
 
@@ -271,14 +275,12 @@ class QrImagesTable extends Table
                     ]));
 
                     continue;
-
                 }
             }
         }
 
         return $qrImage;
     }
-
 
     /**
      * Custom finders

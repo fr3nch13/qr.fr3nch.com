@@ -41,7 +41,7 @@ if (!$this->getRequest()->is('ajax')) {
                         }
                         ?>
 
-                    <?= $this->Template->objectComment('QrImage/show/thumb/lg') ?>
+                        <?= $this->Template->objectComment('QrImage/show/thumb/lg') ?>
                     <div class="item text-center">
                         <img
                             class="img-thumbnail<?php // use `img-thumbnail`, not `img-fluid` as it's redundant. ?>"
@@ -84,7 +84,7 @@ if (!$this->getRequest()->is('ajax')) {
                         }
                         ?>
 
-                    <?= $this->Template->objectComment('QrImage/show/thumb/sm') ?>
+                        <?= $this->Template->objectComment('QrImage/show/thumb/sm') ?>
                     <div>
                         <img
                             class="img-thumbnail<?php // use `img-thumbnail`, not `img-fluid` as it's redundant. ?>"

@@ -51,16 +51,16 @@ if (!$this->getRequest()->is('ajax')) {
                     <?= $this->Html->link(__('Edit'), [
                         'action' => 'edit',
                         $qrImage->id,
-                    ], [
-                        'class' => 'btn btn-sm btn-light ajax-modal',
-                        'data-bs-toggle' => 'modal',
-                        'data-bs-target' => '#edit-modal',
-                        'data-ajax-target' => '#editModalBody',
+                                ], [
+                                'class' => 'btn btn-sm btn-light ajax-modal',
+                                'data-bs-toggle' => 'modal',
+                                'data-bs-target' => '#edit-modal',
+                                'data-ajax-target' => '#editModalBody',
                     ]) ?>
                     <?= $this->Html->link(__('Download'), [
                         'action' => 'show',
                         $qrImage->id,
-                        '?' => ['download' => true]
+                        '?' => ['download' => true],
                     ], [
                         'class' => 'btn btn-sm btn-light',
                     ]) ?>

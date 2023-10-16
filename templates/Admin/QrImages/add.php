@@ -14,8 +14,8 @@ if (!$this->getRequest()->is('ajax')) {
 <?php if ($qrImage->hasErrors()) : ?>
 <div class="row my-2">
     <div class="col">
-        <?php foreach($qrImage->getErrors() as $field => $error) : ?>
-            <?php foreach($error as $msg) : ?>
+        <?php foreach ($qrImage->getErrors() as $field => $error) : ?>
+            <?php foreach ($error as $msg) : ?>
                 <p class="text-danger"><?= $msg ?></p>
             <?php endforeach; ?>
         <?php endforeach; ?>
