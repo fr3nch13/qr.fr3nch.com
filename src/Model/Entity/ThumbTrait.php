@@ -6,6 +6,7 @@ namespace App\Model\Entity;
 use App\Exception\ThumbException;
 use Cake\Core\Configure;
 use Cake\ORM\Entity;
+use GdImage;
 
 /**
  * Managed the thumbnail files
@@ -223,8 +224,8 @@ trait ThumbTrait
             $thumbImage = imagecreatetruecolor($newWidth, $newHeight);
 
             if (
-                $originalImage instanceof \GdImage &&
-                $thumbImage instanceof \GdImage
+                $originalImage instanceof GdImage &&
+                $thumbImage instanceof GdImage
             ) {
                 imagesavealpha($thumbImage, true);
                 /** @var int $color The color ints below are hard-coded so how would this return a false? */
