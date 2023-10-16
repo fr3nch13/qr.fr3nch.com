@@ -122,7 +122,7 @@ if (!$this->getRequest()->is('ajax')) {
     <div class="col-lg-6">
         <h1 class="d-none d-lg-block mb-0 mb-lg-1 <?= ($qrCode->is_active ? 'active' : 'inactive')?>"><?= h($qrCode->name) ?></h1>
 
-        <span class="text-secondary mb-3"><?= $this->Text->autoParagraph(h($qrCode->description)) ?></span>
+        <div class="text-secondary mb-3"><?= $this->Text->autoParagraph(h($qrCode->description)) ?></div>
 
         <div class="accordion mb-3" id="accordion-1">
 
