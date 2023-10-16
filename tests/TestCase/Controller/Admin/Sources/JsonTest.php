@@ -57,26 +57,6 @@ class JsonTest extends BaseControllerTest
     }
 
     /**
-     * Test view method
-     *
-     * @return void
-     * @uses \App\Controller\Admin\SourcesController::view()
-     */
-    public function testView(): void
-    {
-        $this->get('https://localhost/admin/sources/view/2.json');
-        $this->assertResponseOk();
-
-        $content = (string)$this->_response->getBody();
-        $content = json_decode($content, true);
-
-        $this->assertTrue(isset($content['source']));
-        $this->assertSame(2, $content['source']['id']);
-        $this->assertFalse(isset($content['source']['user_id']));
-        $this->assertFalse(isset($content['source']['user']));
-    }
-
-    /**
      * Test add method
      *
      * @return void
@@ -124,7 +104,7 @@ class JsonTest extends BaseControllerTest
             'name' => 'New JSON source',
             'description' => 'Description of the Source',
         ]);
-        $this->assertRedirectEquals('https://localhost/admin/sources/view/4.json');
+        $this->assertRedirectEquals('https://localhost/admin/sources.json');
         $this->assertFlashMessage('The source has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -155,7 +135,7 @@ class JsonTest extends BaseControllerTest
             'name' => 'New JSON source',
             'description' => 'Description of the source',
         ]);
-        $this->assertRedirectEquals('https://localhost/admin/sources/view/1.json');
+        $this->assertRedirectEquals('https://localhost/admin/sources.json');
         $this->assertFlashMessage('The source has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }

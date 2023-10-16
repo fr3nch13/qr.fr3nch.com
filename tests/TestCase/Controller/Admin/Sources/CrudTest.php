@@ -65,40 +65,6 @@ class CrudTest extends BaseControllerTest
     }
 
     /**
-     * Test view method
-     *
-     * @return void
-     * @uses \App\Controller\Admin\SourcesController::view()
-     */
-    public function testView(): void
-    {
-        // test get
-        $this->get('https://localhost/admin/sources/view/1');
-        $this->assertResponseOk();
-        $this->helperTestTemplate('Admin/Sources/view');
-
-        // post
-        $this->post('https://localhost/admin/sources/view/1');
-        $this->assertResponseCode(405);
-        $this->assertResponseContains('Method Not Allowed');
-
-        // patch
-        $this->patch('https://localhost/admin/sources/view/1');
-        $this->assertResponseCode(405);
-        $this->assertResponseContains('Method Not Allowed');
-
-        // put
-        $this->put('https://localhost/admin/sources/view/1');
-        $this->assertResponseCode(405);
-        $this->assertResponseContains('Method Not Allowed');
-
-        // delete
-        $this->delete('https://localhost/admin/sources/view/1');
-        $this->assertResponseCode(405);
-        $this->assertResponseContains('Method Not Allowed');
-    }
-
-    /**
      * Test add method
      *
      * @return void
@@ -116,7 +82,7 @@ class CrudTest extends BaseControllerTest
             'name' => 'new name',
             'description' => 'description',
         ]);
-        $this->assertRedirectEquals('https://localhost/admin/sources/view/4');
+        $this->assertRedirectEquals('https://localhost/admin/sources');
         $this->assertFlashMessage('The source has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
@@ -178,7 +144,7 @@ class CrudTest extends BaseControllerTest
             'name' => 'New Source',
             'description' => 'The Description',
         ]);
-        $this->assertRedirectEquals('https://localhost/admin/sources/view/3');
+        $this->assertRedirectEquals('https://localhost/admin/sources');
         $this->assertFlashMessage('The source has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
@@ -198,13 +164,17 @@ class CrudTest extends BaseControllerTest
     {
         // test get
         $this->get('https://localhost/admin/sources/delete/1');
-        $this->assertResponseCode(405);
-        $this->assertResponseContains('Method Not Allowed');
+        // allow get, as the delete button is loaded via ajax into a modal.
+        $this->assertFlashMessage('The source `Amazon` has been deleted.', 'flash');
+        $this->assertFlashElement('flash/success');
+        $this->assertRedirectEquals('https://localhost/admin/sources');
 
         // post
-        $this->post('https://localhost/admin/sources/delete/1');
-        $this->assertResponseCode(405);
-        $this->assertResponseContains('Method Not Allowed');
+        $this->post('https://localhost/admin/sources/delete/2');
+        // allow get, as the delete button is loaded via ajax into a modal.
+        $this->assertFlashMessage('The source `Etsy` has been deleted.', 'flash');
+        $this->assertFlashElement('flash/success');
+        $this->assertRedirectEquals('https://localhost/admin/sources');
 
         // patch
         $this->patch('https://localhost/admin/sources/delete/1');
@@ -217,9 +187,9 @@ class CrudTest extends BaseControllerTest
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('https://localhost/admin/sources/delete/1');
+        $this->delete('https://localhost/admin/sources/delete/3');
         $this->assertRedirectEquals('https://localhost/admin/sources');
-        $this->assertFlashMessage('The source `Amazon` has been deleted.', 'flash');
+        $this->assertFlashMessage('The source `Delete Me` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
     }
 }

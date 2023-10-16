@@ -159,7 +159,7 @@ class CrudTest extends BaseControllerTest
     {
         // test get
         $this->get('https://localhost/admin/tags/delete/1');
-        // only one to all a get, as the delete button is loaded via ajax into a modal.
+        // allow get, as the delete button is loaded via ajax into a modal.
         $this->assertFlashMessage('The tag `Notebook` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
         $this->assertRedirectEquals('https://localhost/admin/tags');

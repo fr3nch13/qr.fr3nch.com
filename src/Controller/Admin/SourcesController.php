@@ -73,8 +73,7 @@ class SourcesController extends AppController
                 $this->Flash->success(__('The source has been saved.'));
 
                 return $this->redirect([
-                    'action' => 'view',
-                    $source->id,
+                    'action' => 'index',
                     '_ext' => $this->getRequest()->getParam('_ext'),
                 ]);
             }
@@ -109,8 +108,7 @@ class SourcesController extends AppController
                 $this->Flash->success(__('The source has been saved.'));
 
                 return $this->redirect([
-                    'action' => 'view',
-                    $source->id,
+                    'action' => 'index',
                     '_ext' => $this->getRequest()->getParam('_ext'),
                 ]);
             }
