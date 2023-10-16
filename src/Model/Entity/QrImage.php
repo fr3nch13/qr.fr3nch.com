@@ -73,7 +73,7 @@ class QrImage extends Entity
      *
      * @return string The path.
      */
-    public function getImagePath(): ?string
+    public function getImagePath(): string
     {
         return Configure::read('App.paths.qr_images', TMP . 'qr_images') .
             DS .

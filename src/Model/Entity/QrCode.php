@@ -93,6 +93,9 @@ class QrCode extends Entity
     {
         // set in config/app.php or config/app_local.php
         $path = $this->getImagePath();
+        if (!$path) {
+            return null;
+        }
 
         if (!file_exists($path) || $this->regenerate) {
             try {

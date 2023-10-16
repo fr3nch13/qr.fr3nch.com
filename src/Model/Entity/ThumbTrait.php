@@ -166,6 +166,9 @@ trait ThumbTrait
         }
 
         $thumbPath = $this->getThumbPath($size);
+        if (!$thumbPath) {
+            return false;
+        }
 
         $imageDetails = getimagesize($originalPath);
         // may not be an image?
@@ -218,11 +221,15 @@ trait ThumbTrait
         if ($imageDetails[2] == 3) {
             $originalImage = imagecreatefrompng($originalPath);
             $thumbImage = imagecreatetruecolor($newWidth, $newHeight);
-            imagesavealpha($thumbImage, true);
-            $color = imagecolorallocatealpha($thumbImage, 0, 0, 0, 127);
-            imagefill($thumbImage, 0, 0, $color);
 
-            if ($originalImage && $thumbImage) {
+            if (
+                $originalImage instanceof \GdImage &&
+                $thumbImage instanceof \GdImage
+            ) {
+                imagesavealpha($thumbImage, true);
+                /** @var int $color The color ints below are hard-coded so how would this return a false? */
+                $color = imagecolorallocatealpha($thumbImage, 0, 0, 0, 127);
+                imagefill($thumbImage, 0, 0, $color);
                 imagecopyresampled($thumbImage, $originalImage, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 
                 return imagepng($thumbImage, $thumbPath);

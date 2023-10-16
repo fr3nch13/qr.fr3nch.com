@@ -227,6 +227,9 @@ class QrImagesTable extends Table
 
             // file info
             $file_name = $image->getClientFilename();
+            if (!$file_name) {
+                continue;
+            }
             $filename = pathinfo($file_name, PATHINFO_FILENAME);
             $ext = pathinfo($file_name, PATHINFO_EXTENSION);
 
