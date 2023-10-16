@@ -46,7 +46,9 @@ class TemplateTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/qr-images/qr-code/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesIndex();
+        // must be view as it extends /admin/QrCodes/details
+        $this->helperTestLayoutDashboardView();
+        $this->helperTestTemplate('Admin/QrCodes/details');
         $this->helperTestTemplate('Admin/QrImages/qr_code');
         $this->helperTestObjectComment(2, 'QrImages/entity');
         $this->helperTestObjectComment(2, 'QrImages/entity/active');
@@ -88,8 +90,8 @@ class TemplateTest extends BaseControllerTest
         $this->assertResponseOk();
         // must be view as it extends /admin/QrCodes/details
         $this->helperTestLayoutDashboardView();
-        $this->helperTestTemplate('Admin/QrImages/add');
         $this->helperTestTemplate('Admin/QrCodes/details');
+        $this->helperTestTemplate('Admin/QrImages/add');
 
         // test with admin, get, can edit any.
         $this->loginUserAdmin();
@@ -97,8 +99,8 @@ class TemplateTest extends BaseControllerTest
         $this->assertResponseOk();
         // must be view as it extends /admin/QrCodes/details
         $this->helperTestLayoutDashboardView();
-        $this->helperTestTemplate('Admin/QrImages/add');
         $this->helperTestTemplate('Admin/QrCodes/details');
+        $this->helperTestTemplate('Admin/QrImages/add');
 
         // validate the html
         $this->helperValidateHTML();
@@ -142,18 +144,16 @@ class TemplateTest extends BaseControllerTest
         $this->get('https://localhost/admin/qr-images/edit/5');
         $this->assertResponseOk();
         // must be view as it extends /admin/QrCodes/details
-        $this->helperTestLayoutDashboardView();
+        $this->helperTestLayoutDashboardForm();
         $this->helperTestTemplate('Admin/QrImages/edit');
-        $this->helperTestTemplate('Admin/QrCodes/details');
 
         // test with admin, get, can edit any.
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/qr-images/edit/5');
         $this->assertResponseOk();
         // must be view as it extends /admin/QrCodes/details
-        $this->helperTestLayoutDashboardView();
+        $this->helperTestLayoutDashboardForm();
         $this->helperTestTemplate('Admin/QrImages/edit');
-        $this->helperTestTemplate('Admin/QrCodes/details');
 
         // validate the html
         $this->helperValidateHTML();

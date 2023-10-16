@@ -28,10 +28,15 @@ if (!$this->getRequest()->is('ajax')) {
     <?php foreach ($qrImages as $qrImage) : ?>
         <div class="col">
             <div class="card text-center border mb-2">
+                <?= $this->Template->objectComment('QrImages/entity'); ?>
                 <?php if (!$qrImage->is_active) : ?>
                 <div class="ribbon red"><span><?= __('Inactive') ?></span></div>
+                <?= $this->Template->objectComment('QrImages/entity/inactive'); ?>
+                <?php else: ?>
+                <?= $this->Template->objectComment('QrImages/entity/active'); ?>
                 <?php endif; ?>
                 <div class="card-body p-3">
+
                     <div class="card-title"><?= $qrImage->name ?></div>
                     <a
                         href="#"
@@ -89,10 +94,11 @@ if (!$this->getRequest()->is('ajax')) {
     class="modal fade"
     id="modal-<?= $qrImage->id ?>"
     tabindex="-1"
-    aria-labelledby="modalLabel-<?= $qrImage->id ?>"
+    aria-labelledby="modalLabel-<?= $qrImage->id ?>-Label"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content" data-bs-dismiss="modal">
+            <span id="modalLabel-<?= $qrImage->id ?>-Label" class="d-none"><?= $qrImage->name ?></span>
             <button
                 type="button"
                 class="bi bi-x modal-close text-white"
