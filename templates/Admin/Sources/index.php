@@ -96,7 +96,7 @@ $this->assign('page_title', __('Sources'));
 <?php $this->start('modal') ?>
 <!-- Edit Modal -->
 
-<div class="modal fade" id="edit-modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+<div class="modal fade" id="edit-modal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <button
