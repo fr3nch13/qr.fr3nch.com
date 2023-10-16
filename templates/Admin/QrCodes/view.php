@@ -11,6 +11,7 @@ if (!$this->getRequest()->is('ajax')) {
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <div class="row">
     <div class="col-lg-4 order-4 order-lg-1">
+        <h5 class="d-block d-lg-none"><?= __('Code') ?></h5>
         <img
             class="img-fluid"
             src="<?= $this->Url->build([

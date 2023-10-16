@@ -58,6 +58,9 @@ class QrCode extends Entity
         'user_id' => true,
         'last_hit' => true,
         'path' => true,
+        'path_sm' => true,
+        'path_md' => true,
+        'path_lg' => true,
         'source' => true,
         'user' => true,
         'qr_images' => true,
@@ -98,6 +101,7 @@ class QrCode extends Entity
         }
 
         if (!file_exists($path) || $this->regenerate) {
+            $this->regenerateThumb = true;
             try {
                 $QR = new PhpQrGenerator($this);
                 $QR->generate();

@@ -21,9 +21,53 @@ if (!$this->getRequest()->is('ajax')) {
 
     <!-- The QR Code's images -->
     <div class="col-lg-6 position-relative">
-        <div class="row g-1">
+        <h1 class="d-block d-lg-none mb-1 <?= ($qrCode->is_active ? 'active' : 'inactive')?>"><?= h($qrCode->name) ?></h1>
+        <div class="row">
+
+            <!-- smaller images -->
+            <div class="col-md-2">
+                <div
+                    id="nav-images"
+                    class="carousel-thumbs d-flex flex-row flex-md-column">
+                    <?php foreach ($qrCode->qr_images as $qrImage) : ?>
+                        <?php
+                        // make sure it's active, and exists
+                        if (!$qrImage->is_active || !$qrImage->path_sm || !$qrImage->path_lg) {
+                            continue;
+                        }
+                        ?>
+
+                        <?= $this->Template->objectComment('QrImage/show/thumb/sm') ?>
+                    <div>
+                        <img
+                            class="img-thumbnail<?php // use `img-thumbnail`, not `img-fluid` as it's redundant. ?>"
+                            src="<?= $this->Url->build([
+                                'controller' => 'QrImages',
+                                'action' => 'show',
+                                $qrImage->id,
+                                '?' => ['thumb' => 'sm'],
+                                ]) ?>"
+                            alt="<?= $qrImage->name ?>">
+                    </div>
+                    <?php endforeach; ?>
+
+                    <?= $this->Template->objectComment('QrCode/show/thumb/sm') ?>
+                    <div>
+                        <img
+                            class="img-thumbnail<?php // use `img-thumbnail`, not `img-fluid` as it's redundant. ?>"
+                            src="<?= $this->Url->build([
+                                'action' => 'show',
+                                $qrCode->id,
+                                '?' => ['thumb' => 'sm'],
+                                ]) ?>"
+                            alt="<?= __('The QR Code'); ?>">
+                    </div>
+
+                </div>
+            </div>
+
             <!-- larger images -->
-            <div class="col-md-10 order-md-2">
+            <div class="col-md-10">
                 <div class="carousel">
                 <div
                     data-carousel='{
@@ -70,57 +114,15 @@ if (!$this->getRequest()->is('ajax')) {
                 </div>
                 </div>
             </div>
-
-            <!-- smaller images -->
-            <div class="col-md-2 order-md-1">
-                <div
-                    id="nav-images"
-                    class="carousel-thumbs d-flex flex-row flex-md-column">
-                    <?php foreach ($qrCode->qr_images as $qrImage) : ?>
-                        <?php
-                        // make sure it's active, and exists
-                        if (!$qrImage->is_active || !$qrImage->path_sm || !$qrImage->path_lg) {
-                            continue;
-                        }
-                        ?>
-
-                        <?= $this->Template->objectComment('QrImage/show/thumb/sm') ?>
-                    <div>
-                        <img
-                            class="img-thumbnail<?php // use `img-thumbnail`, not `img-fluid` as it's redundant. ?>"
-                            src="<?= $this->Url->build([
-                                'controller' => 'QrImages',
-                                'action' => 'show',
-                                $qrImage->id,
-                                '?' => ['thumb' => 'sm'],
-                                ]) ?>"
-                            alt="<?= $qrImage->name ?>">
-                    </div>
-                    <?php endforeach; ?>
-
-                    <?= $this->Template->objectComment('QrCode/show/thumb/sm') ?>
-                    <div>
-                        <img
-                            class="img-thumbnail<?php // use `img-thumbnail`, not `img-fluid` as it's redundant. ?>"
-                            src="<?= $this->Url->build([
-                                'action' => 'show',
-                                $qrCode->id,
-                                '?' => ['thumb' => 'sm'],
-                                ]) ?>"
-                            alt="<?= __('The QR Code'); ?>">
-                    </div>
-
-                </div>
-            </div>
         </div>
     </div>
 
     <!-- QR Code details -->
 
-    <div class="col-lg-6 col-xl-6">
-        <h1 class="mb-1 <?= ($qrCode->is_active ? 'active' : 'inactive')?>"><?= h($qrCode->name) ?></h1>
+    <div class="col-lg-6">
+        <h1 class="d-none d-lg-block mb-0 mb-lg-1 <?= ($qrCode->is_active ? 'active' : 'inactive')?>"><?= h($qrCode->name) ?></h1>
 
-        <div class="text-secondary mb-3"><?= $this->Text->autoParagraph(h($qrCode->description)) ?></div>
+        <span class="text-secondary mb-3"><?= $this->Text->autoParagraph(h($qrCode->description)) ?></span>
 
         <div class="accordion mb-3" id="accordion-1">
 
