@@ -21,6 +21,11 @@ if (!$this->getRequest()->is('ajax')) {
             <div class="row g-3 g-lg-5 tags">
                 <div class="col text-center">
                 <?php foreach ($tags as $tag) : ?>
+                    <?php
+                    if (!$tag->hasValue('qr_codes')) {
+                        continue;
+                    }
+                    ?>
                     <?= $this->Html->link(
                         $tag->name,
                         [
