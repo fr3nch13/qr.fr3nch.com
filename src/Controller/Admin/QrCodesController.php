@@ -108,14 +108,27 @@ class QrCodesController extends AppController
         $qrCode = $this->QrCodes->get((int)$id);
         $this->Authorization->authorize($qrCode);
 
+        // truthy
+        if ($this->request->getQuery('regen')) {
+            $qrCode->regenerate = true;
+        }
+
         $path = $qrCode->path;
         if (!$path) {
             throw new NotFoundException('Unable to find the image file.');
         }
 
-        $params = $this->request->getQueryParams();
-        if (isset($params['thumb']) && in_array($params['thumb'], ['sm', 'md', 'lg'])) {
-            $path = $qrCode->getPathThumb($params['thumb']);
+        if ($this->request->getQuery('regen')) {
+            $this->redirect($this->referer([
+                'action' => 'view',
+                $qrCode->id,
+            ]));
+        }
+
+        $thumb = $this->request->getQuery('thumb');
+
+        if ($thumb && in_array($thumb, ['sm', 'md', 'lg'])) {
+            $path = $qrCode->getPathThumb($thumb);
             if (!$path) {
                 throw new NotFoundException('Unable to find the thumbnail file.');
             }

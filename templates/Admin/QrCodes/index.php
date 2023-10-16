@@ -14,23 +14,37 @@ $this->assign('page_title', __('QR Codes'));
 <div class="container bg-white">
     <?php foreach ($qrCodes as $qrCode) : ?>
     <div class="row border-bottom py-2">
-            <a
-                class="col-12 <?= $qrCode->is_active ? 'text-dark' : 'text-muted' ?>" href="<?= $this->Url->build([
-                    'controller' => 'QrCodes',
-                    'action' => 'view',
-                    $qrCode->id,
-                ]) ?>">
-                <h5><?= $qrCode->name ?></h5>
-                <?php
-                if ($qrCode->is_active) {
-                    echo '<span class="badge bg-primary rounded-pill"><i class="bi bi-check2 fs-8"></i></span>';
-                } else {
-                    echo '<span class="badge bg-light text-dark rounded-pill"><i class="bi bi-x fs-8"></i></span>';
-                }
-                ?>
-                <span class="badge bg-light text-dark rounded-pill"><i class="bi bi-qr-code-scan"></i> <?= $qrCode->hits ?></span>
-                <span class="text-muted"><?= $qrCode->qrkey ?></spam>
-            </a>
+        <a
+            class="col-12 <?= $qrCode->is_active ? 'text-dark' : 'text-muted' ?>" href="<?= $this->Url->build([
+                'controller' => 'QrCodes',
+                'action' => 'view',
+                $qrCode->id,
+            ]) ?>">
+            <div class="col">
+                <div class="row">
+                    <h5><?= $qrCode->name ?></h5>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <span class="text-muted"><?= $qrCode->qrkey ?></spam>
+                    </div>
+                    <div class="col">
+                        <span class="badge bg-light text-dark rounded-pill"><i class="bi bi-qr-code-scan"></i> <?= $qrCode->hits ?> -  <?= $qrCode->last_hit ?></span>
+                    </div>
+                    <div class="col">
+                        <?php
+                        if ($qrCode->is_active) {
+                            echo '<span class="badge bg-primary rounded-pill"><i class="bi bi-check2 fs-8"></i></span>';
+                        } else {
+                            echo '<span class="badge bg-light text-dark rounded-pill"><i class="bi bi-x fs-8"></i></span>';
+                        }
+                        ?>
+                    </div>
+                </div>
+
+
+            </div>
+        </a>
     </div>
     <?php endforeach; ?>
 </div>

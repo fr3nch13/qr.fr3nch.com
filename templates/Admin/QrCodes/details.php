@@ -33,6 +33,12 @@ if ($qrCode->id) {
             $qrCode->id,
             '?' => ['download' => true],
         ]],
+        'QrCodes.regen' => [__('Regen'), [
+            'controller' => 'QrCodes',
+            'action' => 'show',
+            $qrCode->id,
+            '?' => ['regen' => true],
+        ]],
         'QrCodes.edit' => [__('Edit'), [
             'controller' => 'QrCodes',
             'action' => 'edit',
