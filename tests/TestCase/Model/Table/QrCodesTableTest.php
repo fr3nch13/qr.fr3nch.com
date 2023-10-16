@@ -242,7 +242,7 @@ class QrCodesTableTest extends TestCase
 
         $this->assertSame($expected, $entity->getErrors());
 
-        // test space in key
+        // test space in key and bad URL
         $entity = $this->QrCodes->newEntity([
             'qrkey' => 'sow n scribe',
             'name' => 'Sow & Scribe',
@@ -254,7 +254,7 @@ class QrCodesTableTest extends TestCase
 
         $expected = [
             'qrkey' => [
-                'characters' => 'Value cannot have a space in it.',
+                'qrkey' => 'Value cannot have a space in it.',
             ],
         ];
 
@@ -272,7 +272,7 @@ class QrCodesTableTest extends TestCase
 
         $expected = [
             'url' => [
-                'url' => 'The URL is invalid.',
+                'qrurl' => 'The URL is invalid.',
             ],
         ];
 
@@ -284,6 +284,20 @@ class QrCodesTableTest extends TestCase
             'name' => 'new name',
             'description' => 'description',
             'url' => 'https://www.amazon.com/path/to/product',
+            'source_id' => 1, // int instead of a string, like above.
+            'user_id' => 1, // int instead of a string, like above.
+        ]);
+
+        $expected = [];
+
+        $this->assertSame($expected, $entity->getErrors());
+
+        // test valid entity
+        $entity = $this->QrCodes->newEntity([
+            'qrkey' => 'newsource',
+            'name' => 'new name',
+            'description' => 'description',
+            'url' => 'tel://17025551212',
             'source_id' => 1, // int instead of a string, like above.
             'user_id' => 1, // int instead of a string, like above.
         ]);

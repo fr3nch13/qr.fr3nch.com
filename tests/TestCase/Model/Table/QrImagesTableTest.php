@@ -117,9 +117,6 @@ class QrImagesTableTest extends TestCase
         // test no set fields
         $entity = $this->QrImages->newEntity([]);
         $expected = [
-            'name' => [
-                '_required' => 'This field is required',
-            ],
             'qr_code_id' => [
                 '_required' => 'This field is required',
             ],
@@ -175,6 +172,10 @@ class QrImagesTableTest extends TestCase
         $expected = [];
         $this->assertSame($expected, $entity->getErrors());
     }
+
+    /**
+     * TODO: Test uploading of images
+     */
 
     /**
      * Test the image's file
