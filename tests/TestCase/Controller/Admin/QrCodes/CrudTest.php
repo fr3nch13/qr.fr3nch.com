@@ -217,8 +217,9 @@ class CrudTest extends BaseControllerTest
 
         // post
         $this->post('https://localhost/admin/qr-codes/delete/1');
-        $this->assertResponseCode(405);
-        $this->assertResponseContains('Method Not Allowed');
+        $this->assertRedirectEquals('https://localhost/admin/qr-codes');
+        $this->assertFlashMessage('The qr code `Sow & Scribe` has been deleted.', 'flash');
+        $this->assertFlashElement('flash/success');
 
         // patch
         $this->patch('https://localhost/admin/qr-codes/delete/1');
@@ -231,9 +232,9 @@ class CrudTest extends BaseControllerTest
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('https://localhost/admin/qr-codes/delete/1');
+        $this->delete('https://localhost/admin/qr-codes/delete/2');
         $this->assertRedirectEquals('https://localhost/admin/qr-codes');
-        $this->assertFlashMessage('The qr code `Sow & Scribe` has been deleted.', 'flash');
+        $this->assertFlashMessage('The qr code `The Witching Hour` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
     }
 }

@@ -160,15 +160,15 @@ class CrudTest extends BaseControllerTest
         // test get
         $this->get('https://localhost/admin/tags/delete/1');
         // allow get, as the delete button is loaded via ajax into a modal.
+        $this->assertRedirectEquals('https://localhost/admin/tags');
         $this->assertFlashMessage('The tag `Notebook` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
-        $this->assertRedirectEquals('https://localhost/admin/tags');
 
         // post
         $this->post('https://localhost/admin/tags/delete/2');
+        $this->assertRedirectEquals('https://localhost/admin/tags');
         $this->assertFlashMessage('The tag `Journal` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
-        $this->assertRedirectEquals('https://localhost/admin/tags');
 
         // patch
         $this->patch('https://localhost/admin/tags/delete/1');
@@ -182,8 +182,8 @@ class CrudTest extends BaseControllerTest
 
         // delete
         $this->delete('https://localhost/admin/tags/delete/3');
+        $this->assertRedirectEquals('https://localhost/admin/tags');
         $this->assertFlashMessage('The tag `Delete Me` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
-        $this->assertRedirectEquals('https://localhost/admin/tags');
     }
 }

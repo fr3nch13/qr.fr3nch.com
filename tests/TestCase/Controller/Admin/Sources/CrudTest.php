@@ -165,16 +165,16 @@ class CrudTest extends BaseControllerTest
         // test get
         $this->get('https://localhost/admin/sources/delete/1');
         // allow get, as the delete button is loaded via ajax into a modal.
+        $this->assertRedirectEquals('https://localhost/admin/sources');
         $this->assertFlashMessage('The source `Amazon` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
-        $this->assertRedirectEquals('https://localhost/admin/sources');
 
         // post
         $this->post('https://localhost/admin/sources/delete/2');
         // allow get, as the delete button is loaded via ajax into a modal.
+        $this->assertRedirectEquals('https://localhost/admin/sources');
         $this->assertFlashMessage('The source `Etsy` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
-        $this->assertRedirectEquals('https://localhost/admin/sources');
 
         // patch
         $this->patch('https://localhost/admin/sources/delete/1');

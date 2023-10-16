@@ -256,9 +256,9 @@ class CrudTest extends BaseControllerTest
 
         // post
         $this->post('https://localhost/admin/users/delete/3');
+        $this->assertRedirectEquals('https://localhost/admin/users');
         $this->assertFlashMessage('The user `Delete Me` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
-        $this->assertRedirectEquals('https://localhost/admin/users');
 
         // patch
         $this->patch('https://localhost/admin/users/delete/3');
@@ -272,8 +272,8 @@ class CrudTest extends BaseControllerTest
 
         // delete
         $this->delete('https://localhost/admin/users/delete/2');
+        $this->assertRedirectEquals('https://localhost/admin/users');
         $this->assertFlashMessage('The user `Regular` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
-        $this->assertRedirectEquals('https://localhost/admin/users');
     }
 }
