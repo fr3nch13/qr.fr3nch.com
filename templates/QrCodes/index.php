@@ -11,11 +11,11 @@ if (!$this->getRequest()->is('ajax')) {
 <?= $this->Template->templateComment(true, __FILE__); ?>
     <div class="container mt-5">
         <div class="row g-3 g-md-5 align-items-end mb-5">
-            <div class="col-md-6">
+            <div class="col-12 col-md-6">
                 <h1><?= __('QR Codes') ?></h1>
             </div>
 
-            <div class="col-md-6 text-md-end">
+            <div class="col-12 col-md-6 text-end">
                 <ul class="list-inline">
                     <li class="list-inline-item ms-2">
                         <a
@@ -46,44 +46,37 @@ if (!$this->getRequest()->is('ajax')) {
     </div>
 
     <div class="container">
-        <div class="row g-3 g-lg-5 justify-content-between products">
+        <div class="row g-3 g-lg-5 justify-content-between">
 
         <?php foreach ($qrCodes as $qrCode) : ?>
             <div class="col-md-6 col-lg-4">
-                <div class="product">
-                <?= $this->Template->objectComment('QrCodes/' . ($qrCode->is_active ? 'active' : 'inactive')) ?>
+                <div class="card mb-2 border shadow-sm">
 
-                    <div class="product-title"><?= $this->Html->link($qrCode->name, [
-                        'action' => 'view',
+                    <?php
+                    $bgUrl = $this->Url->build([
+                        'action' => 'show',
                         $qrCode->id,
-                    ], ['class' => 'product-title']) ?></div>
+                        '?' => ['thumb' => 'md'],
+                    ]);
+                    if (!empty($qrCode->qr_images))
+                    {
+                        $bgUrl = $this->Url->build([
+                            'controller' => 'QrImages',
+                            'action' => 'show',
+                            $qrCode->qr_images[0]->id,
+                            '?' => ['thumb' => 'md'],
+                        ]);
+                    }
+                    ?>
+                    <figure class="background background-overlay" style="background-image: url('<?= $bgUrl ?>')"></figure>
 
-                    <figure class="product-image">
-                        <a href="<?= $this->Url->build(['action' => 'view', $qrCode->id]) ?>">
-                            <?php if (!empty($qrCode->qr_images)) : ?>
-                                <?= $this->Template->objectComment('QrImages/active/first') ?>
-                                <img
-                                    class="product-qrimage"
-                                    src="<?= $this->Url->build([
-                                        'controller' => 'QrImages',
-                                        'action' => 'show',
-                                        $qrCode->qr_images[0]->id,
-                                        '?' => ['thumb' => 'md'],
-                                    ]) ?>"
-                                    alt="<?= h($qrCode->qr_images[0]->name) ?>">
-                            <?php endif; ?>
-                            <?= $this->Template->objectComment('QrCode/show') ?>
-                            <img
-                                class="product-qrcode"
-                                src="<?= $this->Url->build([
-                                    'action' => 'show',
-                                    $qrCode->id,
-                                    '?' => ['thumb' => 'md'],
-                                    ]) ?>"
-                                alt="<?= __('The QR Code') ?>">
-                        </a>
-                    </figure>
-                    <div class="btn-group btn-block product-options" role="group" aria-label="Product Options">
+                    <div class="card-title text-center text-white pt-5"><?= $qrCode->name ?></div>
+
+                    <div class="card-body text-white d-block level-2 py-5 py-md-10">
+
+                    </div>
+
+                    <div class="card-footer text-muted p-0 btn-group">
                         <?= $this->Template->objectComment('QrCode/forward') ?>
                         <?= $this->Html->link(
                             __('Follow Code'),
@@ -122,7 +115,7 @@ if (!$this->getRequest()->is('ajax')) {
 
     <?php $this->start('offcanvas') ?>
     <?= $this->Template->objectComment('OffCanvas/filters') ?>
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasFilter" aria-labelledby="offcanvasFilterLabel">
+    <div class="offcanvas offcanvas-end p-3" tabindex="-1" id="offcanvasFilter" aria-labelledby="offcanvasFilterLabel">
         <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="offcanvasFilterLabel"><?= __('Filters') ?></h5>
             <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>

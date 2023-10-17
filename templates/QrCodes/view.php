@@ -157,19 +157,17 @@ if (!$this->getRequest()->is('ajax')) {
                             <dd class="col-8 col-md-9"><?= h($qrCode->qrkey) ?> </dd>
 
                             <dt class="col-4 col-md-3"><?= __('Source') ?></dt>
-                            <dd class="col-8 col-md-9"><?= $qrCode->hasValue('source') ? $this->Html->link(
+                            <dd class="col-8 col-md-9"><?= $qrCode->hasValue('source') ?
+                            $this->Html->link(
                                 $qrCode->source->name,
-                                [
-                                        'action' => 'index',
-                                        '?' => ['s' => $qrCode->source->name],
-                                    ]
-                            ) : '' ?> </dd>
+                                ['action' => 'index', '?' => ['s' => $qrCode->source->name]]) :
+                            '' ?> </dd>
 
                             <dt class="col-4 col-md-3"><?= __('Last Hit') ?></dt>
-                            <dd class="col-8 col-md-9"><?= h($qrCode->last_hit) ?> </dd>
+                            <dd class="col-8 col-md-9"><?= h($qrCode->last_hit->format('M d, Y')) ?> </dd>
 
                             <dt class="col-4 col-md-3"><?= __('Created') ?></dt>
-                            <dd class="col-8 col-md-9"><?= h($qrCode->created) ?> </dd>
+                            <dd class="col-8 col-md-9"><?= h($qrCode->created->format('M d, Y')) ?> </dd>
                         </dl>
                     </div>
                 </div>

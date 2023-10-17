@@ -123,7 +123,7 @@ $this->assign('page_title', __('Tags'));
 
 <?php $this->start('offcanvas') ?>
 <?= $this->Template->objectComment('OffCanvas/filters') ?>
-<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasFilter" aria-labelledby="offcanvasFilterLabel">
+<div class="offcanvas offcanvas-end p-3" tabindex="-1" id="offcanvasFilter" aria-labelledby="offcanvasFilterLabel">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasFilterLabel"><?= __('Filters') ?></h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>

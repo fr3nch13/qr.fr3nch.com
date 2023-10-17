@@ -10,16 +10,28 @@ if (!$this->getRequest()->is('ajax')) {
 $this->assign('page_title', $user->name);
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
-
-
 <div class="card bg-opaque-white">
     <div class="card-body p-2 p-lg-5">
         <div class="row">
-            <div class="col-lg-4">
-                <?= $this->Html->avatar('lg') ?>
+            <div class="col-md-4">
+                <div class="d-flex justify-content-center  position-relative">
+                    <?= $this->Html->avatar('lg') ?>
+
+                <div class="
+                    position-absolute
+                    top-80
+                    start-80
+                    translate-middle
+                    pt-5
+                    ps-0
+                    ps-md-5
+                    ">
+                    <i class="bi bi-camera"></i>
+                </div>
+                </div>
             </div>
-            <div class="col-lg-8">
-                <dl class="row">
+            <div class="col-md-8">
+                <dl class="row pt-4">
                     <dt class="col-4 col-md-3"><?= __('Name') ?></dt>
                     <dd class="col-8 col-md-9"><?= h($user->name) ?> </dd>
 
@@ -32,8 +44,8 @@ $this->assign('page_title', $user->name);
             </div>
         </div>
         <div class="row pt-2">
-            <div class="col-lg-12">
-                <h5><?= __('Codes') ?></h5>
+            <div class="col-md-12">
+                <h5 class="border-bottom pb-2"><?= __('QR Codes') ?></h5>
                 <?php foreach ($user->qr_codes as $qrCode) : ?>
                     <a
                         href="<?= $this->Url->build([
