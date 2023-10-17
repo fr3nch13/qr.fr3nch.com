@@ -26,7 +26,7 @@ class ActiveUserHelper extends Helper
      * Gets the User element from the response/view
      *
      * @param ?string $key Key of something you want to get from the user
-     * @return mixed
+     * @return \App\Model\Entity\User|mixed Either the User, or the value of the key for the user.
      */
     public function getUser(?string $key = null): mixed
     {

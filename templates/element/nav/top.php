@@ -31,23 +31,23 @@ $logoImage = $this->Html->image($logoImage, [
             <!-- Controls the Mobile Nav below -->
             <li class="nav-item d-lg-none">
                 <a
-                    class="nav-link nav-icon"
+                    class="nav-link"
                     href=""
                     role="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#userNav"
-                    aria-expanded="false"><i class="bi bi-person"></i>
+                    aria-expanded="false"><?= $this->Html->avatar('sm') ?></i>
                 </a>
             </li>
             <?php if ($this->ActiveUser->isLoggedIn()) : ?>
             <!-- The user icon and dropdown for user-specific pages -->
             <li class="nav-item dropdown dropdown-hover d-none d-lg-block">
                 <a
-                    class="nav-link nav-icon"
+                    class="nav-link"
                     role="button"
                     id="dropdownMenuButton1"
                     data-bs-toggle="dropdown"
-                    aria-expanded="false"><i class="bi bi-person"></i>
+                    aria-expanded="false"><?= $this->Html->avatar('sm') ?></i>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                     <li class="mb-1"><?= __('Hello {0}', [

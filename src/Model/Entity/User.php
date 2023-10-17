@@ -8,6 +8,7 @@ use Authentication\PasswordHasher\DefaultPasswordHasher;
 use Authorization\AuthorizationServiceInterface;
 use Authorization\IdentityInterface as AuthorizationIdentity;
 use Authorization\Policy\ResultInterface;
+use Cake\Core\Configure;
 use Cake\ORM\Entity;
 
 /**
@@ -22,10 +23,14 @@ use Cake\ORM\Entity;
  * @property bool $is_admin
  * @property bool $is_active
  *
+ * @property string|null $path (Virtual field) Path to the generated QR Code file.
+ *
  * @property \Authorization\AuthorizationServiceInterface $authorization
  */
 class User extends Entity implements AuthorizationIdentity, AuthenticationIdentity
 {
+    use ThumbTrait;
+
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -68,6 +73,33 @@ class User extends Entity implements AuthorizationIdentity, AuthenticationIdenti
         // if this Entity is being created directly, it should throw a runtime error
         // when the password is anything but a sting.
         return (new DefaultPasswordHasher())->hash($password);
+    }
+
+    /**
+     * Gets the path to the QR Image's file.
+     *
+     * @return string|null The path to the file.
+     */
+    protected function _getPath(): ?string
+    {
+        $path = $this->getImagePath();
+
+        if (file_exists($path) && is_readable($path)) {
+            return $path;
+        }
+
+        return null;
+    }
+
+    /**
+     * Return where the path to the image should be.
+     * No checking here
+     *
+     * @return string The path.
+     */
+    public function getImagePath(): ?string
+    {
+        return Configure::read('App.paths.users', TMP . 'users') . DS . $this->id . '.jpg';
     }
 
     /**
