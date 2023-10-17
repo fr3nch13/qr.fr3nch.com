@@ -11,9 +11,6 @@ use Cake\Core\Configure;
  *
  * Tests that the proper http method is being used.
  *
- * TODO: Add test for show and forward.
- * labels: tests, crud
- *
  * @uses \App\Controller\Admin\QrCodesController
  */
 class CrudTest extends BaseControllerTest

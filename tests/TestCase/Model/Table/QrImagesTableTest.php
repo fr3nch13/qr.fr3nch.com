@@ -175,10 +175,6 @@ class QrImagesTableTest extends TestCase
     }
 
     /**
-     * TODO: Test uploading of images
-     */
-
-    /**
      * Test the image's file
      *
      * @return void

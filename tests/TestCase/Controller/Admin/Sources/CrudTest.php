@@ -111,8 +111,6 @@ class CrudTest extends BaseControllerTest
     /**
      * Test edit method
      *
-     * TODO: TESt with #3, and check that the user_id was reset.
-     *
      * @return void
      * @uses \App\Controller\Admin\SourcesController::edit()
      */

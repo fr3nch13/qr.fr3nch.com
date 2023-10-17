@@ -88,7 +88,6 @@ class QrCode extends Entity
 
     /**
      * Gets the path to the generated QR Code
-     * TODO: Add test for null return.
      *
      * @return string|null The path to the generated QR Code.
      */
