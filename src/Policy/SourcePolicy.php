@@ -12,18 +12,6 @@ use App\Model\Entity\User;
 class SourcePolicy
 {
     /**
-     * All Users can view Source
-     *
-     * @param \App\Model\Entity\User $user The identity object.
-     * @param \App\Model\Entity\Source $Source
-     * @return bool
-     */
-    public function canView(User $user, Source $Source): bool
-    {
-        return true;
-    }
-
-    /**
      * Only Admins can add Source
      *
      * @param \App\Model\Entity\User $user The identity object.

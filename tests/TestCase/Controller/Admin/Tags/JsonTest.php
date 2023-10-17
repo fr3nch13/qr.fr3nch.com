@@ -57,27 +57,6 @@ class JsonTest extends BaseControllerTest
     }
 
     /**
-     * Test view method
-     *
-     * @return void
-     * @uses \App\Controller\Admin\TagsController::view()
-     */
-    public function testView(): void
-    {
-        $this->get('https://localhost/admin/tags/view/2.json');
-        $this->assertResponseOk();
-
-        $content = (string)$this->_response->getBody();
-        $content = json_decode($content, true);
-
-        $this->assertTrue(isset($content['tag']));
-        $this->assertSame(2, $content['tag']['id']);
-        $this->assertTrue(isset($content['tag']['qr_codes']));
-        $this->assertFalse(isset($content['tag']['user_id']));
-        $this->assertFalse(isset($content['tag']['user']));
-    }
-
-    /**
      * Test add method
      *
      * @return void
@@ -121,7 +100,7 @@ class JsonTest extends BaseControllerTest
         $this->post('https://localhost/admin/tags/add.json', [
             'name' => 'New JSON Tag',
         ]);
-        $this->assertRedirectEquals('https://localhost/admin/tags/view/6.json');
+        $this->assertRedirectEquals('https://localhost/admin/tags.json');
         $this->assertFlashMessage('The tag has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -152,7 +131,7 @@ class JsonTest extends BaseControllerTest
             'name' => 'New JSON Tag',
             'description' => 'Description of the tag',
         ]);
-        $this->assertRedirectEquals('https://localhost/admin/tags/view/1.json');
+        $this->assertRedirectEquals('https://localhost/admin/tags.json');
         $this->assertFlashMessage('The tag has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }

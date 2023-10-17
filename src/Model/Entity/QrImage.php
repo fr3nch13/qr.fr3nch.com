@@ -19,12 +19,17 @@ use Cake\ORM\Entity;
  * @property int $qr_code_id
  *
  * Virtual field
- * @property string|null $path Path to the uploaded image.
+ * @property string|null $path (Virtual field) Path to the uploaded image.
+ * @property string|null $path_sm (Virtual field) Path to the Image Small Thumbnail.
+ * @property string|null $path_md (Virtual field) Path to the Image Medium Thumbnail.
+ * @property string|null $path_lg (Virtual field) Path to the Image Large Thumbnail.
  *
  * @property \App\Model\Entity\QrCode $qr_code
  */
 class QrImage extends Entity
 {
+    use ThumbTrait;
+
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -42,6 +47,9 @@ class QrImage extends Entity
         'is_active' => true,
         'imorder' => true,
         'path' => true,
+        'path_sm' => true,
+        'path_md' => true,
+        'path_lg' => true,
         'qr_code_id' => true,
         'qr_code' => true,
     ];
@@ -53,15 +61,26 @@ class QrImage extends Entity
      */
     protected function _getPath(): ?string
     {
-        $path = Configure::read('App.paths.qr_images', TMP . 'qr_images') .
-            DS .
-            $this->qr_code_id . DS .
-            $this->id . '.' . $this->ext;
+        $path = $this->getImagePath();
 
         if (file_exists($path) && is_readable($path)) {
             return $path;
         }
 
         return null;
+    }
+
+    /**
+     * Return where the path to the image should be.
+     * No checking here
+     *
+     * @return string The path.
+     */
+    public function getImagePath(): string
+    {
+        return Configure::read('App.paths.qr_images', TMP . 'qr_images') .
+            DS .
+            $this->qr_code_id . DS .
+            $this->id . '.' . $this->ext;
     }
 }

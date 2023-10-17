@@ -144,8 +144,8 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/admin/qr-images/qr-code/1');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/QrImages/qr_code');
-        $this->helperTestObjectComment(2, 'QrImages/entity');
-        $this->helperTestObjectComment(2, 'QrImages/entity/active');
+        $this->helperTestObjectComment(3, 'QrImages/entity');
+        $this->helperTestObjectComment(3, 'QrImages/entity/active');
         $this->helperTestObjectComment(0, 'QrImages/entity/inactive');
 
         // test with debug off
@@ -370,21 +370,21 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/admin/qr-images/edit/5');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/QrImages/edit');
-        $this->helperTestFormTag('/admin/qr-images/edit/5', 'put', true);
+        $this->helperTestFormTag('/admin/qr-images/edit/5', 'put');
 
         // test with admin, owner
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/qr-images/edit/1');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/QrImages/edit');
-        $this->helperTestFormTag('/admin/qr-images/edit/1', 'put', true);
+        $this->helperTestFormTag('/admin/qr-images/edit/1', 'put');
 
         // test with admin, not owner
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/qr-images/edit/5');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/QrImages/edit');
-        $this->helperTestFormTag('/admin/qr-images/edit/5', 'put', true);
+        $this->helperTestFormTag('/admin/qr-images/edit/5', 'put');
 
         /// Missing IDs
 

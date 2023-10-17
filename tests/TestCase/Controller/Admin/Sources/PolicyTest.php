@@ -100,63 +100,6 @@ class PolicyTest extends BaseControllerTest
     }
 
     /**
-     * Test view method
-     *
-     * @return void
-     * @uses \App\Controller\Admin\SourcesController::view()
-     */
-    public function testView(): void
-    {
-        // not logged in
-        $this->loginGuest();
-        $this->get('https://localhost/admin/sources/view/1');
-        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fadmin%2Fsources%2Fview%2F1');
-        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
-        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
-        $this->assertFlashElement('flash/error');
-
-        // test with reqular
-        $this->loginUserRegular();
-        $this->get('https://localhost/admin/sources/view/1');
-        $this->assertResponseOk();
-        $this->helperTestTemplate('Admin/Sources/view');
-
-        // test with admin
-        $this->loginUserAdmin();
-        $this->get('https://localhost/admin/sources/view/1');
-        $this->assertResponseOk();
-        $this->helperTestTemplate('Admin/Sources/view');
-
-        /// Missing IDs
-
-        // not logged in
-        $this->loginGuest();
-        $this->get('https://localhost/admin/sources/view');
-        $this->assertResponseCode(404);
-        $this->assertResponseContains('Unknown ID');
-
-        // test with reqular
-        $this->loginUserRegular();
-        $this->get('https://localhost/admin/sources/view');
-        $this->assertResponseCode(404);
-        $this->assertResponseContains('Unknown ID');
-
-        // test with admin
-        $this->loginUserAdmin();
-        $this->get('https://localhost/admin/sources/view');
-        $this->assertResponseCode(404);
-        $this->assertResponseContains('Unknown ID');
-
-        // debug off
-        Configure::write('debug', false);
-        $this->loginUserAdmin();
-        $this->get('https://localhost/admin/sources/view');
-        $this->assertResponseCode(404);
-        $this->assertResponseContains('Unknown ID');
-        Configure::write('debug', true);
-    }
-
-    /**
      * Test add method
      *
      * @return void

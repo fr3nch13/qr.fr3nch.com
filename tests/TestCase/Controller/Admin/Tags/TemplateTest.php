@@ -45,15 +45,18 @@ class TemplateTest extends BaseControllerTest
         $this->loginUserRegular();
         $this->get('https://localhost/admin/tags');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesDashboard();
+        $this->helperTestLayoutDashboardIndex();
         $this->helperTestTemplate('Admin/Tags/index');
 
         // test with admin
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/tags');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesDashboard();
+        $this->helperTestLayoutDashboardIndex();
         $this->helperTestTemplate('Admin/Tags/index');
+
+        // validate the html
+        $this->helperValidateHTML();
     }
 
     /**
@@ -79,77 +82,6 @@ class TemplateTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
         $this->helperTestTemplate('Admin/Tags/index');
-    }
-
-    /**
-     * Test view method
-     *
-     * @return void
-     * @uses \App\Controller\Admin\TagsController::view()
-     */
-    public function testViewNormal(): void
-    {
-        // test with reqular
-        $this->loginUserRegular();
-        $this->get('https://localhost/admin/tags/view/4');
-        $this->assertResponseOk();
-        $this->helperTestLayoutPagesView();
-        $this->helperTestTemplate('Admin/Tags/view');
-
-        // test with admin
-        $this->loginUserAdmin();
-        $this->get('https://localhost/admin/tags/view/1');
-        $this->assertResponseOk();
-        $this->helperTestLayoutPagesView();
-        $this->helperTestTemplate('Admin/Tags/view');
-    }
-
-    /**
-     * Test view method
-     *
-     * @return void
-     * @uses \App\Controller\Admin\TagsController::view()
-     */
-    public function testViewAjax(): void
-    {
-        // test with reqular
-        $this->requestAsAjax();
-        $this->loginUserRegular();
-        $this->get('https://localhost/admin/tags/view/4');
-        $this->assertResponseOk();
-        $this->helperTestLayoutAjax();
-        $this->helperTestTemplate('Admin/Tags/view');
-
-        // test with admin
-        $this->requestAsAjax();
-        $this->loginUserAdmin();
-        $this->get('https://localhost/admin/tags/view/1');
-        $this->assertResponseOk();
-        $this->helperTestLayoutAjax();
-        $this->helperTestTemplate('Admin/Tags/view');
-    }
-
-    /**
-     * Test add method
-     *
-     * @return void
-     * @uses \App\Controller\Admin\TagsController::add()
-     */
-    public function testAddNormal(): void
-    {
-        // test with reqular, get
-        $this->loginUserRegular();
-        $this->get('https://localhost/admin/tags/add');
-        $this->assertResponseOk();
-        $this->helperTestLayoutPagesForm();
-        $this->helperTestTemplate('Admin/Tags/add');
-
-        // test with admin, get
-        $this->loginUserAdmin();
-        $this->get('https://localhost/admin/tags/add');
-        $this->assertResponseOk();
-        $this->helperTestLayoutPagesForm();
-        $this->helperTestTemplate('Admin/Tags/add');
     }
 
     /**
@@ -189,15 +121,18 @@ class TemplateTest extends BaseControllerTest
         $this->loginUserRegular();
         $this->get('https://localhost/admin/tags/edit/4');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesForm();
+        $this->helperTestLayoutDashboardForm();
         $this->helperTestTemplate('Admin/Tags/edit');
 
         // test with admin, get
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/tags/edit/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesForm();
+        $this->helperTestLayoutDashboardForm();
         $this->helperTestTemplate('Admin/Tags/edit');
+
+        // validate the html
+        $this->helperValidateHTML();
     }
 
     /**

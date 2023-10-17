@@ -427,5 +427,12 @@ return [
         'use_border' => true,
         'border_width' => 5,
         'border_color' => '000000', // black
+        // thumbnail sizes
+        'thumbs' => [
+            // maximum sizes
+            'sm' => ['x' => 200, 'y' => 200],
+            'md' => ['x' => 400, 'y' => 400],
+            'lg' => ['x' => 800, 'y' => 800],
+        ]
     ],
 ];

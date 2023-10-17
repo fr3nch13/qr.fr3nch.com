@@ -8,6 +8,8 @@ use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use HtmlValidator\Exception\ServerException as ValidatorServerException;
 use HtmlValidator\Validator as HtmlValidator;
+use Laminas\Diactoros\UploadedFile;
+use const UPLOAD_ERR_OK;
 
 /**
  * Base Controller test for the other tests that use
@@ -127,6 +129,18 @@ class BaseControllerTest extends TestCase
     }
 
     /**
+     * Used to spit out the body of a response.
+     * Shorthand, so I don't have to keep remembering
+     * and/or typing this.
+     *
+     * @return void
+     */
+    public function debugBody(): void
+    {
+        debug((string)$this->_response->getBody());
+    }
+
+    /**
      * Uses an HTML validator to validate the compiled html.
      *
      * @return void
@@ -136,14 +150,92 @@ class BaseControllerTest extends TestCase
         $content = (string)$this->_response->getBody();
 
         try {
+            // TODO: add more html validation, but do it locally.
+            // Maybe with github actions?
+            // @link https://github.com/marketplace/actions/html5-validator
+            // labels: testing, frontend, html validation
+
             $validator = new HtmlValidator();
             $result = $validator->validateDocument($content);
             $this->assertFalse($result->hasErrors(), (string)$result);
             $this->assertFalse($result->hasWarnings(), (string)$result);
+
+            // TODO: enable below once the PR I submitted to friendsofcake/bootstrap-ui is approved
+            // labels: testing, frontend, html validation, bootstrap-ui
+            //$this->assertFalse($result->hasMessages(), (string)$result);
+
             // Incase validator.nu throws an error.
         } catch (ValidatorServerException $e) {
             $this->assertTrue(true);
         }
+    }
+
+    /**
+     * Sets up the file upload mocking
+     *
+     * @param array<string> $filePaths Files to use as uploaded files
+     * @param string $key The key in the request.
+     * @param int $errCode The error code to use for testing a bad file.
+     * @return array<\Laminas\Diactoros\UploadedFile> The prepared files.
+     */
+    public function helperTestUploads(array $filePaths, string $key, int $errCode = UPLOAD_ERR_OK): array
+    {
+        $tmpPaths = [];
+        foreach ($filePaths as $filePath) {
+            $tmpPath = TMP . str_replace('/', '_', trim(str_replace(ROOT, '', $filePath), '/'));
+            $tmpPaths[] = $tmpPath;
+            if (file_exists($filePath)) {
+                copy($filePath, $tmpPath);
+            }
+        }
+        $files = [];
+        foreach ($tmpPaths as $tmpPath) {
+            if (file_exists($filePath)) {
+                $files[] = new UploadedFile(
+                    // stream or path to file representing the temp file
+                    $tmpPath,
+                    // the filesize in bytes
+                    filesize($tmpPath) ?: null,
+                    // the upload/error status
+                    $errCode,
+                    // the filename as sent by the client
+                    basename($tmpPath),
+                    // the mimetype as sent by the client
+                    mime_content_type($tmpPath) ?: null
+                );
+            } else {
+                $files[] = new UploadedFile(
+                    // stream or path to file representing the temp file
+                    $tmpPath,
+                    // the filesize in bytes
+                    0,
+                    // the upload/error status
+                    $errCode,
+                    // the filename as sent by the client
+                    basename($tmpPath),
+                    // the mimetype as sent by the client
+                    ''
+                );
+            }
+        }
+        $this->configRequest([
+            'files' => [$key => $files],
+        ]);
+
+        return $files;
+    }
+
+    /**
+     * Looks for any generic sctring.
+     *
+     * @param $string The scring to look for.
+     * @return void
+     */
+    public function helperTestString(string $string): void
+    {
+        $content = (string)$this->_response->getBody();
+
+        $this->assertSame(1, substr_count($content, $string));
     }
 
     /**
@@ -296,14 +388,18 @@ class BaseControllerTest extends TestCase
         $this->assertSame(1, substr_count($content, '<link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">'));
         $this->assertSame(1, substr_count($content, '<link rel="manifest" href="/img/site.webmanifest">'));
         // css
-        $this->assertSame(1, substr_count($content, '<link rel="stylesheet" href="/css/libs.bundle.css" '));
-        $this->assertSame(1, substr_count($content, '<link rel="stylesheet" href="/css/index.bundle.css" '));
-        $this->assertSame(1, substr_count($content, '<link rel="stylesheet" href="/css/qr.css" '));
+        $this->assertSame(1, substr_count($content, '<link rel="stylesheet" href="/css/libs.bundle.css"'));
+        $this->assertSame(1, substr_count($content, '<link rel="stylesheet" href="/css/index.bundle.css"'));
+        $this->assertSame(1, substr_count($content, '<link rel="stylesheet" href="/css/qr.css"'));
         // js
-        $this->assertSame(1, substr_count($content, '<script src="/js/vendor.bundle.js" '));
-        $this->assertSame(1, substr_count($content, '<script src="/js/index.bundle.js" '));
-        $this->assertSame(1, substr_count($content, '<script src="/assets/npm-asset/jquery/dist/jquery.min.js" '));
-        $this->assertSame(1, substr_count($content, '<script src="/js/qr.js" '));
+        $this->assertSame(1, substr_count($content, '<script src="/js/vendor.bundle.js"'));
+        $this->assertSame(1, substr_count($content, '<script src="/js/index.bundle.js"'));
+        $this->assertSame(1, substr_count($content, '<script src="/assets/npm-asset/jquery/dist/jquery.min.js"'));
+        // make sure it's imported as a module for the bootstrap5-tags npm asset.
+        // also here to check if the CspMiddleware is active or not.
+        // in this case it's not as it isn't working correctly in safari even though `'unsafe-inline' => true,`
+        $this->assertSame(1, substr_count($content, '<script src="/js/qr.js"></script>'));
+        $this->assertSame(1, substr_count($content, '<script src="/js/qr_module.js" type="module"></script>'));
         // end
         $this->assertSame(1, substr_count($content, '</body>'));
         $this->assertSame(1, substr_count($content, '</html>'));
@@ -375,22 +471,6 @@ class BaseControllerTest extends TestCase
     }
 
     /**
-     * Tests that we're using the pages/dashboard layout
-     *
-     * @return void
-     */
-    public function helperTestLayoutPagesDashboard(): void
-    {
-        $this->helperTestLayoutBase();
-        $content = (string)$this->_response->getBody();
-
-        $this->assertSame(1, substr_count($content, '<!-- START: App.layout/pages/dashboard -->'));
-        $this->assertSame(1, substr_count($content, '<!-- END: App.layout/pages/dashboard -->'));
-
-        // test other specific to this layout.
-    }
-
-    /**
      * Tests that we're using the pages/form layout
      *
      * @return void
@@ -418,6 +498,54 @@ class BaseControllerTest extends TestCase
 
         $this->assertSame(1, substr_count($content, '<!-- START: App.layout/login -->'));
         $this->assertSame(1, substr_count($content, '<!-- END: App.layout/login -->'));
+
+        // test other specific to this layout.
+    }
+
+    /**
+     * Tests that we're using the dashboard/index layout
+     *
+     * @return void
+     */
+    public function helperTestLayoutDashboardIndex(): void
+    {
+        $this->helperTestLayoutBase();
+        $content = (string)$this->_response->getBody();
+
+        $this->assertSame(1, substr_count($content, '<!-- START: App.layout/dashboard/index -->'));
+        $this->assertSame(1, substr_count($content, '<!-- END: App.layout/dashboard/index -->'));
+
+        // test other specific to this layout.
+    }
+
+    /**
+     * Tests that we're using the dashboard/view layout
+     *
+     * @return void
+     */
+    public function helperTestLayoutDashboardView(): void
+    {
+        $this->helperTestLayoutBase();
+        $content = (string)$this->_response->getBody();
+
+        $this->assertSame(1, substr_count($content, '<!-- START: App.layout/dashboard/view -->'));
+        $this->assertSame(1, substr_count($content, '<!-- END: App.layout/dashboard/view -->'));
+
+        // test other specific to this layout.
+    }
+
+    /**
+     * Tests that we're using the dashboard/form layout
+     *
+     * @return void
+     */
+    public function helperTestLayoutDashboardForm(): void
+    {
+        $this->helperTestLayoutBase();
+        $content = (string)$this->_response->getBody();
+
+        $this->assertSame(1, substr_count($content, '<!-- START: App.layout/dashboard/form -->'));
+        $this->assertSame(1, substr_count($content, '<!-- END: App.layout/dashboard/form -->'));
 
         // test other specific to this layout.
     }

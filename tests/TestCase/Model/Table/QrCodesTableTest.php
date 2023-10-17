@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Model\Table;
 
+use App\Exception\ThumbException;
 use App\Lib\GoogleQrGenerator;
 use App\Lib\LogoOptions;
 use App\Lib\PhpQrGenerator;
@@ -242,7 +243,7 @@ class QrCodesTableTest extends TestCase
 
         $this->assertSame($expected, $entity->getErrors());
 
-        // test space in key
+        // test space in key and bad URL
         $entity = $this->QrCodes->newEntity([
             'qrkey' => 'sow n scribe',
             'name' => 'Sow & Scribe',
@@ -254,7 +255,7 @@ class QrCodesTableTest extends TestCase
 
         $expected = [
             'qrkey' => [
-                'characters' => 'Value cannot have a space in it.',
+                'qrkey' => 'Value cannot have a space in it.',
             ],
         ];
 
@@ -272,7 +273,7 @@ class QrCodesTableTest extends TestCase
 
         $expected = [
             'url' => [
-                'url' => 'The URL is invalid.',
+                'qrurl' => 'The URL is invalid.',
             ],
         ];
 
@@ -284,6 +285,20 @@ class QrCodesTableTest extends TestCase
             'name' => 'new name',
             'description' => 'description',
             'url' => 'https://www.amazon.com/path/to/product',
+            'source_id' => 1, // int instead of a string, like above.
+            'user_id' => 1, // int instead of a string, like above.
+        ]);
+
+        $expected = [];
+
+        $this->assertSame($expected, $entity->getErrors());
+
+        // test valid entity
+        $entity = $this->QrCodes->newEntity([
+            'qrkey' => 'newsource',
+            'name' => 'new name',
+            'description' => 'description',
+            'url' => 'tel://17025551212',
             'source_id' => 1, // int instead of a string, like above.
             'user_id' => 1, // int instead of a string, like above.
         ]);
@@ -399,6 +414,91 @@ class QrCodesTableTest extends TestCase
         Configure::write('App.paths.qr_codes', TMP . 'dontexist');
         $this->assertNull($entity->path);
         Configure::write('App.paths.qr_codes', $originalPath);
+    }
+
+    /**
+     * Test the image's file
+     *
+     * @return void
+     */
+    public function testEntityImageThumb(): void
+    {
+        Configure::write('debug', true);
+        $this->loadRoutes();
+
+        $tmpdir = Configure::read('App.paths.qr_codes');
+        // make sure this setting exists.
+        $this->assertNotNull($tmpdir);
+
+        // a successful test, code exists.
+        $entity = $this->QrCodes->get(1);
+        $entityPath = $tmpdir . DS . $entity->id . '.png';
+        $this->assertTrue(is_file($entityPath));
+        $this->assertSame($entityPath, $entity->path);
+
+        // test the 3 different thumbnail sizes.
+        // the small thumbnail
+        $thumbPathSm = $tmpdir . DS . '1-thumb-sm.png';
+        // make sure it doesn't exist
+        if (is_file($thumbPathSm)) {
+            unlink($thumbPathSm);
+        }
+        $this->assertFalse(is_file($thumbPathSm));
+        $this->assertSame($thumbPathSm, $entity->path_sm);
+        $this->assertTrue(is_file($thumbPathSm));
+
+        // the medium thumbnail
+        $thumbPathMd = $tmpdir . DS . '1-thumb-md.png';
+        // make sure it doesn't exist
+        if (is_file($thumbPathMd)) {
+            unlink($thumbPathMd);
+        }
+        $this->assertFalse(is_file($thumbPathMd));
+        $this->assertSame($thumbPathMd, $entity->path_md);
+        $this->assertTrue(is_file($thumbPathMd));
+
+        // the large thumbnail
+        $thumbPathLg = $tmpdir . DS . '1-thumb-lg.png';
+        // make sure it doesn't exist
+        if (is_file($thumbPathLg)) {
+            unlink($thumbPathLg);
+        }
+        $this->assertFalse(is_file($thumbPathLg));
+        $this->assertSame($thumbPathLg, $entity->path_lg);
+        $this->assertTrue(is_file($thumbPathLg));
+
+        $this->QrCodes->delete($entity);
+
+        $this->assertFalse(is_file($thumbPathSm));
+        $this->assertFalse(is_file($thumbPathMd));
+        $this->assertFalse(is_file($thumbPathLg));
+        $this->assertFalse(is_file($entityPath));
+    }
+
+    /**
+     * Test bad thumbnail size.
+     *
+     * @return void
+     * @uses \App\Model\Entity\User
+     */
+    public function testThumbBadSize(): void
+    {
+        Configure::write('debug', true);
+
+        $tmpdir = Configure::read('App.paths.qr_codes');
+        $this->assertNotNull($tmpdir);
+        $this->assertTrue(is_dir($tmpdir));
+
+        $entity = $this->QrCodes->get(1);
+        $entityPath = $tmpdir . DS . $entity->id . '.png';
+        $this->assertSame($entityPath, $entity->path);
+        $this->assertTrue(is_file($entityPath));
+
+        // the thumbnail bad size
+        $this->expectException(ThumbException::class);
+        $this->expectExceptionMessage('Unknown size option');
+        $result = $entity->getPathThumb('bad');
+        debug($result);
     }
 
     /**

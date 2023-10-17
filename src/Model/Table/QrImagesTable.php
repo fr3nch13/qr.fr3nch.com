@@ -3,11 +3,20 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
+use App\Exception\ImageException;
 use App\Model\Entity\QrCode;
+use App\Model\Entity\QrImage;
+use ArrayObject;
+use Cake\Core\Configure;
+use Cake\Event\Event;
+use Cake\Http\ServerRequest;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\Utility\Inflector;
 use Cake\Validation\Validator;
+use Laminas\Diactoros\Exception\ExceptionInterface;
+use Laminas\Diactoros\UploadedFile;
 
 /**
  * QrImages Model
@@ -62,8 +71,7 @@ class QrImagesTable extends Table
         $validator
             ->scalar('name')
             ->maxLength('name', 255)
-            ->notEmptyString('name')
-            ->requirePresence('name', Validator::WHEN_CREATE);
+            ->notEmptyString('name');
 
         $validator
             ->boolean('is_active');
@@ -95,6 +103,180 @@ class QrImagesTable extends Table
         ]);
 
         return $rules;
+    }
+
+    /**
+     * Make sure it's image and thumbnails are deleted.
+     *
+     * @param \Cake\Event\Event $event
+     * @param \App\Model\Entity\QrImage $qrImage
+     * @param \ArrayObject $options
+     * @return void
+     */
+    public function afterDelete(Event $event, QrImage $qrImage, ArrayObject $options): void
+    {
+        // delete the images.
+        $qrImage->deleteThumbs(true);
+    }
+
+    /**
+     * Handles the multiple files from the muliple file upload on the add form.
+     *
+     * @param \App\Model\Entity\QrImage $qrImage The new entity created in the controller action.
+     * @param \Cake\Http\ServerRequest $serverRequest The Submitted server request.
+     * @return \App\Model\Entity\QrImage If there were errors, the entity will be returned with them.
+     */
+    public function handleNewImages(QrImage $qrImage, ServerRequest $serverRequest): QrImage
+    {
+        $basePath = Configure::read('App.paths.qr_images');
+        if (!$basePath) {
+            $qrImage->setError('newimages', __('Unable to save the image, unknown path'));
+
+            return $qrImage;
+        }
+
+        if (!$qrImage->qr_code) {
+            $qrImage->setError('newimages', __('Unable to save the image, unknown code'));
+
+            return $qrImage;
+        }
+
+        $images = $serverRequest->getUploadedFiles();
+
+        // none were sent.
+        if (
+            !isset($images['newimages']) ||
+            !is_array($images['newimages']) ||
+            !count($images['newimages'])
+        ) {
+            $qrImage->setError('newimages', __('No images were uploaded'));
+
+            return $qrImage;
+        }
+
+        // the save button was hit, and the images interface loaded, but the user didn't upload an image.
+        if (count($images['newimages']) === 1) {
+            $image = reset($images['newimages']);
+            assert(
+                $image instanceof UploadedFile,
+                new ImageException(__('Something fishy is going on.', 500))
+            );
+
+            if ($image->getError() === 4) {
+                $qrImage->setError('newimages', __('No images were uploaded'));
+
+                return $qrImage;
+            }
+        }
+
+        // find out the image count so we can set them in order
+        $imgCount = $this->find('qrCode', QrCode: $qrImage->qr_code)->count();
+
+        // now process each of the images before saving them.
+        foreach ($images['newimages'] as $image) {
+            assert(
+                $image instanceof UploadedFile,
+                new ImageException(__('Something fishy is going on.', 500))
+            );
+
+            $error = $image->getError();
+
+            if ($error) {
+                if ($error === 1 || $error === 2) {
+                    $qrImage->setError('newimages', __('The file `{0}` is too big.', [
+                        $image->getClientFilename(),
+                        $error,
+                    ]));
+                } else {
+                    $qrImage->setError('newimages', __('There was an issue with the file: {0} - {1}', [
+                        $image->getClientFilename(),
+                        $error,
+                    ]));
+                }
+
+                continue;
+            }
+
+            // make sure it's an image.
+            if (
+                !in_array($image->getClientMediaType(), [
+                'image/png',
+                'image/jpg',
+                'image/jpeg',
+                'image/gif',
+                'image/svg+xml',
+                'image/heic', // used by apple
+                'image/heif',
+                ])
+            ) {
+                $qrImage->setError('newimages', __('The file type is invalid: {0}', [
+                    $image->getClientFilename(),
+                ]));
+
+                continue;
+            }
+
+            // Create the entity for this image.
+            $newImage = clone $qrImage;
+
+            // file info
+            $file_name = $image->getClientFilename();
+            if (!$file_name) {
+                continue;
+            }
+            $filename = pathinfo($file_name, PATHINFO_FILENAME);
+            $ext = pathinfo($file_name, PATHINFO_EXTENSION);
+
+            // nice file name
+            $newImage->name = Inflector::humanize($filename);
+            $newImage->ext = $ext;
+
+            // make it active.
+            $newImage->is_active = true;
+
+            // image order
+            $imgCount++;
+            $newImage->imorder = $imgCount;
+
+            if ($newImage->hasErrors()) {
+                foreach ($newImage->getErrors() as $error) {
+                    foreach ($error as $msg) {
+                        $qrImage->setError('newimages', __('Error: {0} - {1}', [
+                            $file_name,
+                            $msg,
+                        ]));
+
+                        continue;
+                    }
+                }
+            }
+
+            $newImage = $this->saveOrFail($newImage);
+            if ($newImage) {
+                $home = $newImage->getImagePath();
+                $dir = dirname($home);
+                if (!is_dir($dir)) {
+                    mkdir($dir);
+                }
+
+                try {
+                    $image->moveTo($home);
+                } catch (ExceptionInterface $exception) {
+                    // delete the image from the database.
+                    $this->delete($newImage);
+
+                    // report an error to the web.
+                    $qrImage->setError('newimages', __('Error: {0} - {1}', [
+                        $file_name,
+                        $exception->getMessage(),
+                    ]));
+
+                    continue;
+                }
+            }
+        }
+
+        return $qrImage;
     }
 
     /**

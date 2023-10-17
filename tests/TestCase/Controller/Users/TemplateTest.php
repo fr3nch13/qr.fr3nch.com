@@ -46,6 +46,8 @@ class TemplateTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestLayoutLogin();
         $this->helperTestTemplate('Users/login');
+        // validate the html
+        $this->helperValidateHTML();
 
         // test with reqular
         $this->loginUserRegular();
@@ -121,6 +123,9 @@ class TemplateTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestLayoutPagesView();
         $this->helperTestTemplate('Users/profile');
+
+        // validate the html
+        $this->helperValidateHTML();
     }
 
     /**

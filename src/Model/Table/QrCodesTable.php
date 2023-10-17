@@ -130,9 +130,9 @@ class QrCodesTable extends Table
                 'provider' => 'table',
                 'message' => __('This Key already exists.'),
             ])
-            ->add('qrkey', 'characters', [
-                'rule' => 'characters',
-                'provider' => 'key',
+            ->add('qrkey', 'qrkey', [
+                'rule' => 'qrKey',
+                'provider' => 'qr',
             ]);
 
         $validator
@@ -150,8 +150,9 @@ class QrCodesTable extends Table
             ->scalar('url')
             ->notEmptyString('url')
             ->requirePresence('url', Validator::WHEN_CREATE)
-            ->add('url', 'url', [
-                'rule' => 'url',
+            ->add('url', 'qrurl', [
+                'rule' => 'qrUrl',
+                'provider' => 'qr',
                 'message' => __('The URL is invalid.'),
             ]);
 
@@ -202,6 +203,48 @@ class QrCodesTable extends Table
     }
 
     /**
+     * Before marshal which runs before patching an entity.
+     *
+     * @return void
+     */
+    public function beforeMarshal(Event $event, ArrayObject $data, ArrayObject $options): void
+    {
+        // see of there are new tags to add.
+        if (isset($data['tags']['_ids']) && is_array($data['tags']['_ids'])) {
+            $user_id = 0;
+            // make the user of the QrCode the user of the new tags.
+            if (isset($data['qrkey'])) {
+                $qrCode = $this->find('key', key: $data['qrkey'])->first();
+                if ($qrCode) {
+                    $user_id = $qrCode->user_id;
+                }
+            }
+
+            foreach ($data['tags']['_ids'] as $pos => $value) {
+                // maybe have a new one, at least it was typed.
+                if (!is_numeric($value)) {
+                    $tag = $this->Tags->find()->where([
+                        'Tags.name' => $value,
+                    ])->first();
+                    if ($tag) {
+                        // fix the ArrayObject
+                        $data['tags']['_ids'][$pos] = $tag->id;
+                    } else {
+                        $tag = $this->Tags->newEntity([
+                            'name' => $value,
+                            'user_id' => $user_id,
+                        ]);
+                        if (!$tag->hasErrors()) {
+                            $tag = $this->Tags->saveOrFail($tag);
+                            $data['tags']['_ids'][$pos] = $tag->id;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
      * AfterSave callback
      *
      * @return void
@@ -215,6 +258,20 @@ class QrCodesTable extends Table
         if (!$entity->path) {
             throw new InternalErrorException('Unable to create QR Code.');
         }
+    }
+
+    /**
+     * Make sure it's image and thumbnails are deleted.
+     *
+     * @param \Cake\Event\Event $event
+     * @param \App\Model\Entity\QrCode $qrCode
+     * @param \ArrayObject $options
+     * @return void
+     */
+    public function afterDelete(Event $event, QrCode $qrCode, ArrayObject $options): void
+    {
+        // delete the images.
+        $qrCode->deleteThumbs(true);
     }
 
     /**

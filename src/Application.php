@@ -57,7 +57,6 @@ use Cake\Datasource\FactoryLocator;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\BaseApplication;
 use Cake\Http\Middleware\BodyParserMiddleware;
-use Cake\Http\Middleware\CspMiddleware;
 use Cake\Http\Middleware\CsrfProtectionMiddleware;
 use Cake\Http\Middleware\HttpsEnforcerMiddleware;
 use Cake\Http\Middleware\SecurityHeadersMiddleware;
@@ -140,25 +139,6 @@ class Application extends BaseApplication implements
                 'cacheTime' => Configure::read('Asset.cacheTime'),
             ]))
 
-            // Content Security Policy
-            // @link https://book.cakephp.org/5/en/security/content-security-policy.html#content-security-policy-middleware
-            ->add(new CspMiddleware([
-                'script-src' => [
-                    'allow' => [
-                        // external domains that can load/run javascript.
-                        'https://www.google-analytics.com',
-                    ],
-                    'self' => true,
-                    'unsafe-inline' => false,
-                    'unsafe-eval' => false,
-                    'script-src' => [],
-                    'style-src' => [],
-                ],
-            ], [
-                'scriptNonce' => true,
-                'styleNonce' => true,
-            ]))
-
             // Add routing middleware.
             // If you have a large number of routes connected, turning on routes
             // caching in production could improve performance.
@@ -197,6 +177,28 @@ class Application extends BaseApplication implements
                 ],
             ]));
 
+            /*
+            // TODO: Enable when whatever unsafe-inline is fixed.
+            // It's causing inline onclicks to be blocked, even though unsafe-inline is set to true.
+
+            // Content Security Policy
+            // @link https://book.cakephp.org/5/en/security/content-security-policy.html#content-security-policy-middleware
+            ->add(new CspMiddleware([
+                'script-src' => [
+                    'self' => true,
+                    'unsafe-inline' => true,
+                    'unsafe-eval' => false,
+                    'allow' => [
+                        // external domains that can load/run javascript.
+                        //'https://www.google-analytics.com',
+                    ],
+                ],
+            ], [
+                'scriptNonce' => true,
+                'styleNonce' => true,
+            ]))
+            */
+
         // @link https://book.cakephp.org/5/en/security/security-headers.html
         $securityHeaders = new SecurityHeadersMiddleware();
         $securityHeaders
@@ -209,6 +211,7 @@ class Application extends BaseApplication implements
         $https = new HttpsEnforcerMiddleware([
             'redirect' => true,
             'statusCode' => 302,
+            'disableOnDebug' => true,
             'hsts' => [
                 // How long the header value should be cached for.
                 'maxAge' => 60 * 60 * 24 * 365,

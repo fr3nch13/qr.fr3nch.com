@@ -256,8 +256,9 @@ class CrudTest extends BaseControllerTest
 
         // post
         $this->post('https://localhost/admin/users/delete/3');
-        $this->assertResponseCode(405);
-        $this->assertResponseContains('Method Not Allowed');
+        $this->assertRedirectEquals('https://localhost/admin/users');
+        $this->assertFlashMessage('The user `Delete Me` has been deleted.', 'flash');
+        $this->assertFlashElement('flash/success');
 
         // patch
         $this->patch('https://localhost/admin/users/delete/3');
@@ -270,9 +271,9 @@ class CrudTest extends BaseControllerTest
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('https://localhost/admin/users/delete/3');
-        $this->assertFlashMessage('The user `Delete Me` has been deleted.', 'flash');
-        $this->assertFlashElement('flash/success');
+        $this->delete('https://localhost/admin/users/delete/2');
         $this->assertRedirectEquals('https://localhost/admin/users');
+        $this->assertFlashMessage('The user `Regular` has been deleted.', 'flash');
+        $this->assertFlashElement('flash/success');
     }
 }

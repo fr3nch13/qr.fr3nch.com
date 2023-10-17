@@ -4,21 +4,35 @@
  * @var \App\Model\Entity\QrImage $qrImage
  */
 if (!$this->getRequest()->is('ajax')) {
-    $this->setLayout('pages/form');
+    $this->setLayout('dashboard/form');
 }
 // TODO: make the edit form for images
 // labels: images, templates
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
-<?= $this->Form->create($qrImage, ['type' => 'file']) ?>
-    <fieldset>
-        <legend><?= __('Edit QR Image') ?></legend>
-
-        <?= $this->Form->control('name'); ?>
-
-        <?= $this->Form->control('file', ['type' => 'file']); ?>
-
-    </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
+<?= $this->Form->create($qrImage) ?>
+<div class="row">
+    <div class="col-12 col-md-4 order-2 order-md-1 form-switch mt-4">
+        <?= $this->Form->control('is_active', [
+            'spacing' => 'mb-2',
+            'label' => __('Active?'),
+        ]); ?>
+    </div>
+    <div class="col-12 col-md-8 order-1 order-md-2">
+        <?= $this->Form->control('name', [
+            'required' => true,
+            'spacing' => 'mb-2',
+            'label' => __('Name'),
+        ]); ?>
+    </div>
+</div>
+<div class="row">
+    <div class="col text-end">
+        <?= $this->Form->button(__('Save'), [
+            'type' => 'submit',
+            'class' => 'btn btn-primary btn-block',
+        ]); ?>
+    </div>
+</div>
 <?= $this->Form->end() ?>
 <?= $this->Template->templateComment(false, __FILE__); ?>

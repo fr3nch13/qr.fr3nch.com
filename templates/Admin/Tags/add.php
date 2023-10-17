@@ -5,31 +5,27 @@
  * @var \Cake\Collection\CollectionInterface|array<string> $qrCodes
  */
 if (!$this->getRequest()->is('ajax')) {
-    $this->setLayout('pages/form');
+    $this->setLayout('dashboard/form');
 }
-?>
+?><del></del>
 <?= $this->Template->templateComment(true, __FILE__); ?>
+<?= $this->Form->create($tag) ?>
 <div class="row">
-    <aside class="column">
-        <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('List Tags'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-        </div>
-    </aside>
-    <div class="column column-80">
-        <div class="tags form content">
-            <?= $this->Form->create($tag) ?>
-            <fieldset>
-                <legend><?= __('Add Tag') ?></legend>
-
-                <?= $this->Form->control('name'); ?>
-
-                <?= $this->Form->control('qr_codes._ids', ['options' => $qrCodes]); ?>
-
-            </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
-            <?= $this->Form->end() ?>
-        </div>
+    <div class="col">
+        <?= $this->Form->control('name', [
+            'required' => true,
+            'spacing' => 'mb-2',
+            'label' => __('Name'),
+        ]); ?>
     </div>
 </div>
+<div class="row">
+    <div class="col text-end">
+        <?= $this->Form->button(__('Save'), [
+            'type' => 'submit',
+            'class' => 'btn btn-primary btn-block',
+        ]); ?>
+    </div>
+</div>
+<?= $this->Form->end() ?>
 <?= $this->Template->templateComment(false, __FILE__); ?>

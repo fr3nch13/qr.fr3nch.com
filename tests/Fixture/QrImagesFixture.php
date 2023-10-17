@@ -97,6 +97,16 @@ class QrImagesFixture extends CoreFixture
                 'imorder' => 2,
                 'qr_code_id' => 3,
             ],
+            [
+                // Gif image.
+                'id' => 8,
+                'name' => 'Bananna Dance',
+                'ext' => 'gif',
+                'created' => new DateTime(),
+                'is_active' => true,
+                'imorder' => 2,
+                'qr_code_id' => 1,
+            ],
         ];
         parent::init();
     }

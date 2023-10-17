@@ -61,6 +61,79 @@ class GeneralTest extends BaseControllerTest
     }
 
     /**
+     * Test show thub method
+     *
+     * @return void
+     * @uses \App\Controller\QrCodesController::show()
+     */
+    public function testShowThumbSm(): void
+    {
+        $this->get('https://localhost/admin/qr-images/show/1?thumb=sm');
+        $this->assertResponseOk();
+        $this->assertResponseNotEmpty();
+        $headers = $this->_response->getHeaders();
+        $this->assertFalse(isset($headers['Cache-Control']));
+        $this->assertFalse(isset($headers['Content-Disposition']));
+        $this->assertSame('image/jpeg', $headers['Content-Type'][0]);
+        $this->assertGreaterThan(0, $headers['Content-Length'][0]);
+    }
+
+    /**
+     * Test show thumb method
+     *
+     * @return void
+     * @uses \App\Controller\QrCodesController::show()
+     */
+    public function testShowThumbMd(): void
+    {
+        $this->get('https://localhost/admin/qr-images/show/1?thumb=md');
+        $this->assertResponseOk();
+        $this->assertResponseNotEmpty();
+        $headers = $this->_response->getHeaders();
+        $this->assertFalse(isset($headers['Cache-Control']));
+        $this->assertFalse(isset($headers['Content-Disposition']));
+        $this->assertSame('image/jpeg', $headers['Content-Type'][0]);
+        $this->assertGreaterThan(0, $headers['Content-Length'][0]);
+    }
+
+    /**
+     * Test show thumb method
+     *
+     * @return void
+     * @uses \App\Controller\QrCodesController::show()
+     */
+    public function testShowThumbLg(): void
+    {
+        $this->get('https://localhost/admin/qr-images/show/1?thumb=lg');
+        $this->assertResponseOk();
+        $this->assertResponseNotEmpty();
+        $headers = $this->_response->getHeaders();
+        $this->assertFalse(isset($headers['Cache-Control']));
+        $this->assertFalse(isset($headers['Content-Disposition']));
+        $this->assertSame('image/jpeg', $headers['Content-Type'][0]);
+        $this->assertGreaterThan(0, $headers['Content-Length'][0]);
+    }
+
+    /**
+     * Test show download method
+     *
+     * @return void
+     * @uses \App\Controller\QrCodesController::show()
+     */
+    public function testShowDownload(): void
+    {
+        $this->get('https://localhost/admin/qr-images/show/1?download=1');
+        $this->assertResponseOk();
+        $this->assertResponseNotEmpty();
+        $headers = $this->_response->getHeaders();
+        $this->assertFalse(isset($headers['Cache-Control']));
+        $this->assertSame('image/jpeg', $headers['Content-Type'][0]);
+        $this->assertGreaterThan(0, $headers['Content-Length'][0]);
+        $this->assertSame('attachment; filename="Front Cover.jpg"', $headers['Content-Disposition'][0]);
+        $this->assertSame('binary', $headers['Content-Transfer-Encoding'][0]);
+    }
+
+    /**
      * Test show method
      *
      * @return void

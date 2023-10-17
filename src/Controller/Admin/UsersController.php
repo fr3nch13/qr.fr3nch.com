@@ -177,7 +177,7 @@ class UsersController extends AppController
      */
     public function delete(?string $id = null): ?Response
     {
-        $this->request->allowMethod(['delete']);
+        $this->request->allowMethod(['delete', 'post']);
 
         $user = $this->Users->get((int)$id);
         $this->Authorization->authorize($user);

@@ -28,22 +28,6 @@ class TagsControllerPolicy extends AppControllerPolicy
     }
 
     /**
-     * Logged in can view a tag.
-     *
-     * @param \App\Model\Entity\User|null $user The identity object.
-     * @param \App\Controller\Admin\TagsController $TagsController
-     * @return bool
-     */
-    public function canView(?User $user, TagsController $TagsController): bool
-    {
-        if (!$user) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
      * Logged in to add a tag
      *
      * @param \App\Model\Entity\User|null $user The identity object.

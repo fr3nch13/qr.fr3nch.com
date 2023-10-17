@@ -45,7 +45,7 @@ class TemplateTest extends BaseControllerTest
         $this->loginUserRegular();
         $this->get('https://localhost/admin/qr-codes');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesDashboard();
+        $this->helperTestLayoutDashboardIndex();
         $this->helperTestTemplate('Admin/QrCodes/index');
         $this->helperValidateHTML();
 
@@ -54,9 +54,12 @@ class TemplateTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/qr-codes');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesDashboard();
+        $this->helperTestLayoutDashboardIndex();
         // TODO: Also look for sub-layout page.
         $this->helperTestTemplate('Admin/QrCodes/index');
+
+        // validate the html
+        $this->helperValidateHTML();
     }
 
     /**
@@ -96,16 +99,20 @@ class TemplateTest extends BaseControllerTest
         $this->loginUserRegular();
         $this->get('https://localhost/admin/qr-codes/view/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesDashboard();
+        $this->helperTestLayoutDashboardView();
+        $this->helperTestTemplate('Admin/QrCodes/details');
         $this->helperTestTemplate('Admin/QrCodes/view');
 
         // test with admin
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/qr-codes/view/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesDashboard();
-        // TODO: Also look for sub-layout page.
+        $this->helperTestLayoutDashboardView();
+        $this->helperTestTemplate('Admin/QrCodes/details');
         $this->helperTestTemplate('Admin/QrCodes/view');
+
+        // validate the html
+        $this->helperValidateHTML();
     }
 
     /**
@@ -145,15 +152,18 @@ class TemplateTest extends BaseControllerTest
         $this->loginUserRegular();
         $this->get('https://localhost/admin/qr-codes/add');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesForm();
+        $this->helperTestLayoutDashboardForm();
         $this->helperTestTemplate('Admin/QrCodes/add');
 
         // test with admin, get
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/qr-codes/add');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesForm();
+        $this->helperTestLayoutDashboardForm();
         $this->helperTestTemplate('Admin/QrCodes/add');
+
+        // validate the html
+        $this->helperValidateHTML();
     }
 
     /**
@@ -193,15 +203,18 @@ class TemplateTest extends BaseControllerTest
         $this->loginUserRegular();
         $this->get('https://localhost/admin/qr-codes/edit/3');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesForm();
+        $this->helperTestLayoutDashboardView();
         $this->helperTestTemplate('Admin/QrCodes/edit');
 
         // test with admin, get
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/qr-codes/edit/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesForm();
+        $this->helperTestLayoutDashboardView();
         $this->helperTestTemplate('Admin/QrCodes/edit');
+
+        // validate the html
+        $this->helperValidateHTML();
     }
 
     /**

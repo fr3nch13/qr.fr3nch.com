@@ -52,12 +52,32 @@ class QrImagesController extends AppController
         $qrImage = $this->QrImages->get((int)$id, contain: ['QrCodes']);
         $this->Authorization->authorize($qrImage);
 
-        if (!$qrImage->path) {
+        $path = $qrImage->path;
+        if (!$path) {
             throw new NotFoundException('Unable to find the image file.');
         }
 
-        $response = $this->response->withFile($qrImage->path);
-        $modified = date('Y-m-d H:i:s.', filemtime($qrImage->path) ?: null);
+        $params = $this->request->getQueryParams();
+        if (isset($params['thumb']) && in_array($params['thumb'], ['sm', 'md', 'lg'])) {
+            $path = $qrImage->getPathThumb($params['thumb']);
+            if (!$path) {
+                throw new NotFoundException('Unable to find the thumbnail file.');
+            }
+        }
+
+        $fileOptions = [];
+
+        // look for a download request.
+        // anything truthy
+        if ($this->request->getQuery('download')) {
+            $fileOptions = [
+                'download' => true,
+                'name' => $qrImage->name . '.' . $qrImage->ext,
+            ];
+        }
+
+        $response = $this->response->withFile($path, $fileOptions);
+        $modified = date('Y-m-d H:i:s.', filemtime($path) ?: null);
         $response = $response->withModified($modified);
 
         // allow browser and proxy caching when debug is off
@@ -115,11 +135,11 @@ class QrImagesController extends AppController
         $this->Authorization->authorize($qrImage);
 
         if ($this->request->is('post')) {
-            $qrImage = $this->QrImages->patchEntity($qrImage, $this->request->getData());
             $qrImage->qr_code_id = $qrCode->id;
             $qrImage->qr_code = $qrCode;
-            if ($this->QrImages->save($qrImage)) {
-                $this->Flash->success(__('The image has been saved.'));
+            $qrImage = $this->QrImages->handleNewImages($qrImage, $this->request);
+            if (!$qrImage->hasErrors()) {
+                $this->Flash->success(__('The images have been saved.'));
 
                 return $this->redirect([
                     'action' => 'qrCode',
@@ -127,7 +147,7 @@ class QrImagesController extends AppController
                     '_ext' => $this->getRequest()->getParam('_ext'),
                 ]);
             }
-            $this->Flash->error(__('The image could not be saved. Please, try again.'));
+            $this->Flash->error(__('The images could not be saved. Please, try again.'));
         }
 
         $errors = $qrImage->getErrors();
@@ -183,7 +203,7 @@ class QrImagesController extends AppController
      */
     public function delete(?string $id = null): ?Response
     {
-        $this->request->allowMethod(['delete']);
+        $this->request->allowMethod(['delete', 'post']);
 
         $qrImage = $this->QrImages->get((int)$id, contain: ['QrCodes']);
         $this->Authorization->authorize($qrImage);

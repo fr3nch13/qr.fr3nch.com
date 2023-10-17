@@ -46,10 +46,15 @@ class TemplateTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/qr-images/qr-code/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesIndex();
+        // must be view as it extends /admin/QrCodes/details
+        $this->helperTestLayoutDashboardView();
+        $this->helperTestTemplate('Admin/QrCodes/details');
         $this->helperTestTemplate('Admin/QrImages/qr_code');
-        $this->helperTestObjectComment(2, 'QrImages/entity');
-        $this->helperTestObjectComment(2, 'QrImages/entity/active');
+        $this->helperTestObjectComment(3, 'QrImages/entity');
+        $this->helperTestObjectComment(3, 'QrImages/entity/active');
+
+        // validate the html
+        $this->helperValidateHTML();
     }
 
     /**
@@ -67,8 +72,8 @@ class TemplateTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
         $this->helperTestTemplate('Admin/QrImages/qr_code');
-        $this->helperTestObjectComment(2, 'QrImages/entity');
-        $this->helperTestObjectComment(2, 'QrImages/entity/active');
+        $this->helperTestObjectComment(3, 'QrImages/entity');
+        $this->helperTestObjectComment(3, 'QrImages/entity/active');
     }
 
     /**
@@ -83,15 +88,22 @@ class TemplateTest extends BaseControllerTest
         $this->loginUserRegular();
         $this->get('https://localhost/admin/qr-images/add/3');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesForm();
+        // must be view as it extends /admin/QrCodes/details
+        $this->helperTestLayoutDashboardView();
+        $this->helperTestTemplate('Admin/QrCodes/details');
         $this->helperTestTemplate('Admin/QrImages/add');
 
         // test with admin, get, can edit any.
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/qr-images/add/3');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesForm();
+        // must be view as it extends /admin/QrCodes/details
+        $this->helperTestLayoutDashboardView();
+        $this->helperTestTemplate('Admin/QrCodes/details');
         $this->helperTestTemplate('Admin/QrImages/add');
+
+        // validate the html
+        $this->helperValidateHTML();
     }
 
     /**
@@ -131,15 +143,20 @@ class TemplateTest extends BaseControllerTest
         $this->loginUserRegular();
         $this->get('https://localhost/admin/qr-images/edit/5');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesForm();
+        // must be view as it extends /admin/QrCodes/details
+        $this->helperTestLayoutDashboardForm();
         $this->helperTestTemplate('Admin/QrImages/edit');
 
         // test with admin, get, can edit any.
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/qr-images/edit/5');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesForm();
+        // must be view as it extends /admin/QrCodes/details
+        $this->helperTestLayoutDashboardForm();
         $this->helperTestTemplate('Admin/QrImages/edit');
+
+        // validate the html
+        $this->helperValidateHTML();
     }
 
     /**

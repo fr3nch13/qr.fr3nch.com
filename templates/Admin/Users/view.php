@@ -4,10 +4,21 @@
  * @var \App\Model\Entity\User $user
  */
 if (!$this->getRequest()->is('ajax')) {
-    $this->setLayout('pages/dashboard');
+    $this->setLayout('dashboard/view');
 }
+
+$this->assign('page_title', __('Profile'));
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
+
+<div class="container bg-white">
+    <div class="row py-2">
+        <div class="col text-center">
+            Coming Soon
+        </div>
+    </div>
+</div>
+<!--
 <div class="row">
     <aside class="column">
         <div class="side-nav">
@@ -52,4 +63,5 @@ if (!$this->getRequest()->is('ajax')) {
         </div>
     </div>
 </div>
+-->
 <?= $this->Template->templateComment(false, __FILE__); ?>

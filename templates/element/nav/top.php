@@ -11,8 +11,8 @@ if (in_array($this->getLayout(), ['login', 'error'])) {
     $navClasses = 'qr-navbar-top navbar navbar-expand-lg navbar-sticky navbar-dark';
     $logoImage = 'logo_light.png';
 }
-
-if (in_array($this->getLayout(), ['pages/dashboard'])) {
+$prefix = $this->getRequest()->getParam('prefix');
+if ($prefix == 'Admin') {
     $navClasses .= ' bg-light';
 }
 
@@ -50,19 +50,25 @@ $logoImage = $this->Html->image($logoImage, [
                     aria-expanded="false"><i class="bi bi-person"></i>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                    <li><?= $this->Html->link('Dashboard', [
+                    <li class="mb-1"><?= __('Hello {0}', [
+                        $this->ActiveUser->getUser('name'),
+                    ]) ?></li>
+                    <li>
+                        <div class="border-bottom"></div>
+                    </li>
+                    <li><?= $this->Html->link(__('Dashboard'), [
                         'plugin' => false,
                         'prefix' => 'Admin',
                         'controller' => 'Users',
                         'action' => 'dashboard',
                     ], ['class' => ['dropdown-item']]) ?></li>
-                    <li><?= $this->Html->link('Profile', [
+                    <li><?= $this->Html->link(__('Profile'), [
                         'plugin' => false,
                         'prefix' => 'Admin',
                         'controller' => 'Users',
                         'action' => 'view',
                     ], ['class' => ['dropdown-item']]) ?></li>
-                    <li><?= $this->Html->link('Sign Out', [
+                    <li><?= $this->Html->link(__('Sign Out'), [
                         'plugin' => false,
                         'prefix' => false,
                         'controller' => 'Users',
@@ -123,24 +129,57 @@ $logoImage = $this->Html->image($logoImage, [
         <div class="collapse account-collapse" id="userNav" data-bs-parent="#mainNav">
             <ul class="navbar-nav">
                 <?php if ($this->ActiveUser->isLoggedIn()) : ?>
-                <li class="nav-item"><?= $this->Html->link('Dashboard', [
-                    'plugin' => false,
-                    'prefix' => 'Admin',
-                    'controller' => 'Users',
-                    'action' => 'dashboard',
-                ], ['class' => ['nav-link']]) ?></li>
-                <li class="nav-item"><?= $this->Html->link('Profile', [
-                    'plugin' => false,
-                    'prefix' => 'Admin',
-                    'controller' => 'Users',
-                    'action' => 'view',
-                ], ['class' => ['nav-link']]) ?></li>
-                <li class="nav-item"><?= $this->Html->link('Sign Out', [
-                    'plugin' => false,
-                    'prefix' => false,
-                    'controller' => 'Users',
-                    'action' => 'logout',
-                ], ['class' => 'nav-link text-red']); ?></li>
+                                <li class="nav-item"><?= $this->Html->link(__('Dashboard'), [
+                                    'plugin' => false,
+                                    'prefix' => 'Admin',
+                                    'controller' => 'Users',
+                                    'action' => 'dashboard',
+                                ], ['class' => 'nav-link fs-lg']) ?></li>
+                                <li class="nav-item"><?= $this->Html->link(__('QR Codes'), [
+                                    'plugin' => false,
+                                    'prefix' => 'Admin',
+                                    'controller' => 'QrCodes',
+                                    'action' => 'index',
+                                ], ['class' => 'nav-link fs-lg']) ?></li>
+                                <li class="nav-item"><?= $this->Html->link(__('Tags'), [
+                                    'plugin' => false,
+                                    'prefix' => 'Admin',
+                                    'controller' => 'Tags',
+                                    'action' => 'index',
+                                ], ['class' => 'nav-link fs-lg']) ?></li>
+                                <li class="nav-item"><?= $this->Html->link(__('Sources'), [
+                                    'plugin' => false,
+                                    'prefix' => 'Admin',
+                                    'controller' => 'Sources',
+                                    'action' => 'index',
+                                ], ['class' => 'nav-link fs-lg']) ?></li>
+                                <li class="nav-item"><?= $this->Html->link(__('Users'), [
+                                    'plugin' => false,
+                                    'prefix' => 'Admin',
+                                    'controller' => 'Users',
+                                    'action' => 'index',
+                                ], ['class' => 'nav-link fs-lg']) ?></li>
+                                <li class="nav-item">
+                                    <div class="border-bottom"></div>
+                                </li>
+                                <li class="nav-item"><?= $this->Html->link(__('Profile'), [
+                                    'plugin' => false,
+                                    'prefix' => 'Admin',
+                                    'controller' => 'Users',
+                                    'action' => 'view',
+                                ], ['class' => 'nav-link fs-lg']) ?></li>
+                                <li class="nav-item"><?= $this->Html->link(__('Settings'), [
+                                    'plugin' => false,
+                                    'prefix' => 'Admin',
+                                    'controller' => 'Users',
+                                    'action' => 'edit',
+                                ], ['class' => 'nav-link fs-lg']) ?></li>
+                                <li class="nav-item"><?= $this->Html->link(__('Sign Out'), [
+                                    'plugin' => false,
+                                    'prefix' => false,
+                                    'controller' => 'Users',
+                                    'action' => 'logout',
+                                ], ['class' => 'nav-link fs-lg text-red']) ?></li>
                 <?php else : ?>
                 <li class="nav-item">
                     <?php

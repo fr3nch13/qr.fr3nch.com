@@ -108,12 +108,45 @@ class QrCodesController extends AppController
         $qrCode = $this->QrCodes->get((int)$id);
         $this->Authorization->authorize($qrCode);
 
-        if (!$qrCode->path) {
+        // truthy
+        if ($this->request->getQuery('regen')) {
+            $qrCode->regenerate = true;
+        }
+
+        $path = $qrCode->path;
+        if (!$path) {
             throw new NotFoundException('Unable to find the image file.');
         }
 
-        $response = $this->response->withFile($qrCode->path);
-        $modified = date('Y-m-d H:i:s.', filemtime($qrCode->path) ?: null);
+        if ($this->request->getQuery('regen')) {
+            $this->redirect($this->referer([
+                'action' => 'view',
+                $qrCode->id,
+            ]));
+        }
+
+        $thumb = $this->request->getQuery('thumb');
+
+        if ($thumb && in_array($thumb, ['sm', 'md', 'lg'])) {
+            $path = $qrCode->getPathThumb($thumb);
+            if (!$path) {
+                throw new NotFoundException('Unable to find the thumbnail file.');
+            }
+        }
+
+        $fileOptions = [];
+
+        // look for a download request.
+        // anything truthy
+        if ($this->request->getQuery('download')) {
+            $fileOptions = [
+                'download' => true,
+                'name' => 'QR-' . $qrCode->qrkey . '.png',
+            ];
+        }
+
+        $response = $this->response->withFile($path, $fileOptions);
+        $modified = date('Y-m-d H:i:s.', filemtime($path) ?: null);
         $response = $response->withModified($modified);
 
         // allow browser and proxy caching when debug is off
@@ -275,7 +308,7 @@ class QrCodesController extends AppController
      */
     public function delete(?string $id = null): ?Response
     {
-        $this->request->allowMethod(['delete']);
+        $this->request->allowMethod(['delete', 'post']);
 
         $qrCode = $this->QrCodes->get((int)$id);
         $this->Authorization->authorize($qrCode);

@@ -68,7 +68,7 @@ class FormsTest extends BaseControllerTest
             'name' => 'new name',
             'description' => 'description',
         ]);
-        $this->assertRedirectEquals('https://localhost/admin/sources/view/4');
+        $this->assertRedirectEquals('https://localhost/admin/sources');
         $this->assertFlashMessage('The source has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -97,7 +97,7 @@ class FormsTest extends BaseControllerTest
             'name' => 'New Source',
             'description' => 'The Description',
         ]);
-        $this->assertRedirectEquals('https://localhost/admin/sources/view/1');
+        $this->assertRedirectEquals('https://localhost/admin/sources');
         $this->assertFlashMessage('The source has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }

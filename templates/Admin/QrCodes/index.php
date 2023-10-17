@@ -5,81 +5,200 @@
  */
 
 if (!$this->getRequest()->is('ajax')) {
-    $this->setLayout('pages/dashboard');
+    $this->setLayout('dashboard/index');
 }
+
+$this->assign('page_title', __('QR Codes'));
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
-    <h1><?= __('QR Codes') ?></h1>
-
-    <section>
-        <div class="row">
+<div class="container bg-white">
+    <?php foreach ($qrCodes as $qrCode) : ?>
+    <div class="row border-bottom py-2">
+        <a
+            class="col-12 <?= $qrCode->is_active ? 'text-dark' : 'text-muted' ?>" href="<?= $this->Url->build([
+                'controller' => 'QrCodes',
+                'action' => 'view',
+                $qrCode->id,
+            ]) ?>">
             <div class="col">
-                <div class="card bg-opaque-white">
-                    <div class="card-body bg-white">
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th scope="col"><?= __('Key') ?></th>
-                                        <th scope="col"><?= __('Active') ?></th>
-                                        <th scope="col"><?= __('Hits') ?></th>
-                                        <th scope="col" class="actions"><?= __('Actions') ?></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                <?php foreach ($qrCodes as $qrCode) : ?>
-                                    <tr  class="<?= $qrCode->is_active ? '' : 'text-muted' ?>">
-                                        <td>
-                                            <?= $qrCode->qrkey ?>
-                                        </td>
-                                        <td>
-                                            <?php
-                                            if ($qrCode->is_active) {
-                                                echo '<i class="bi bi-check2 text-success fs-6"></i>';
-                                            } else {
-                                                echo '<i class="bi bi-x fs-6"></i>';
-                                            }
-                                            ?>
-                                        </td>
-                                        <td>
-                                            <span class="badge badge-pill badge-primary"><?= $qrCode->hits ?></span>
-                                        </td>
-                                        <td class="text-center table-actions">
-                                            <div class="dropdown">
-                                                <a
-                                                    class="btn btn-light"
-                                                    href="#"
-                                                    role="button"
-                                                    data-toggle="dropdown"
-                                                    aria-haspopup="true"
-                                                    aria-expanded="false">
-                                                    <i class="bi bi-gear"></i>
-                                                </a>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item" href="#">Details</a>
-                                                    <a class="dropdown-item" href="#">Edit</a>
-                                                    <a class="dropdown-item" href="#">Images</a>
-                                                    <a class="dropdown-item" href="#">Toggle Active</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                                </tbody>
-                            </table>
-                            <nav aria-label="Pagination">
-                                <ul class="pagination">
-                                    <?= $this->Paginator->first('&laquo;', ['label' => 'First']) ?>
-                                    <?= $this->Paginator->prev('<', ['label' => 'Previous']) ?>
-                                    <?= $this->Paginator->numbers() ?>
-                                    <?= $this->Paginator->next('>', ['label' => 'Next']) ?>
-                                    <?= $this->Paginator->last('&laquo;', ['label' => 'Last']) ?>
-                                </ul>
-                            </nav>
-                        </div>
+                <div class="row">
+                    <h5><?= $qrCode->name ?></h5>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <span class="text-muted"><?= $qrCode->qrkey ?></span>
+                    </div>
+                    <div class="col">
+                        <span class="
+                            badge
+                            bg-light
+                            text-dark
+                            rounded-pill
+                            "><i
+                                class="bi bi-qr-code-scan"></i>
+                                <?= $qrCode->hits ?> -  <?= $qrCode->last_hit ?>
+                        </span>
+                    </div>
+                    <div class="col">
+                        <?php
+                        if ($qrCode->is_active) {
+                            echo '<span class="
+                            badge
+                            bg-primary
+                            rounded-pill
+                            "><i class="bi bi-check2 fs-8"></i></span>';
+                        } else {
+                            echo '<span class="
+                            badge
+                            bg-light
+                            text-dark
+                            rounded-pill
+                            "><i class="bi bi-x fs-8"></i></span>';
+                        }
+                        ?>
                     </div>
                 </div>
+
+
+            </div>
+        </a>
+    </div>
+    <?php endforeach; ?>
+</div>
+
+<div class="container py-2">
+    <nav aria-label="Pagination" class="text-center">
+        <ul class="pagination">
+            <?= $this->Paginator->first('&laquo;', ['label' => 'First']) ?>
+            <?= $this->Paginator->prev('<', ['label' => 'Previous']) ?>
+            <?= $this->Paginator->numbers() ?>
+            <?= $this->Paginator->next('>', ['label' => 'Next']) ?>
+            <?= $this->Paginator->last('&laquo;', ['label' => 'Last']) ?>
+        </ul>
+    </nav>
+</div>
+
+<?php $this->start('page_options'); ?>
+<ul class="list-inline">
+    <li class="list-inline-item ms-2">
+        <?= $this->Html->link(__('Add a QR Code'), [
+            'controller' => 'QrCodes',
+            'action' => 'add',
+        ], [
+            'class' => 'underline text-black',
+        ]); ?>
+    </li>
+
+    <li class="list-inline-item ms-2">
+        <a
+            class=" underline text-black position-relative"
+            data-bs-toggle="offcanvas"
+            href="#offcanvasFilter"
+            role="button"
+            aria-controls="offcanvasFilter"><?= __('Filters') ?>
+            <?php if ($this->Search->isSearch() || $this->Paginator->param('sort')) : ?>
+            <span
+                class="
+                    position-absolute
+                    top-0
+                    start-100
+                    translate-middle
+                    rounded-pill
+                    text-red
+                    p-1">
+                <i class="bi bi-check filtering-applied"></i>
+                <span class="visually-hidden"><?= __('Filters are applied') ?></span>
+            </span>
+            <?php endif; ?>
+        </a>
+    </li>
+</ul>
+<?php $this->end(); // page_options ?>
+
+<?php $this->start('offcanvas') ?>
+<?= $this->Template->objectComment('OffCanvas/filters') ?>
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasFilter" aria-labelledby="offcanvasFilterLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasFilterLabel"><?= __('Filters') ?></h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <?= $this->Form->create(null, [
+            'valueSources' => 'query',
+        ]); ?>
+
+        <!-- Search Form -->
+        <div class="widget mb-2">
+            <?= $this->Form->control('q', [
+                'spacing' => 'mb-2',
+                'label' => [
+                    'floating' => true,
+                    'text' => __('What are you looking for ?'),
+                ],
+            ]) ?>
+        </div>
+
+        <!-- Tags -->
+        <div class="widget mb-2">
+            <?= $this->Form->control('t', [
+                'options' => $tags,
+                'empty' => '[select]',
+                'label' => [
+                    'floating' => true,
+                    'text' => __('Tags'),
+                ],
+            ]); ?>
+        </div>
+
+        <!-- Sources -->
+        <div class="widget mb-2">
+            <?= $this->Form->control('s', [
+                'options' => $sources,
+                'empty' => '[select]',
+                'label' => [
+                    'floating' => true,
+                    'text' => __('Sources'),
+                ],
+            ]); ?>
+        </div>
+
+        <!-- Buttons -->
+        <div class="widget mb-2 text-end">
+            <div class="btn-group" role="group" aria-label="Filter Options">
+                <?php if ($this->Search->isSearch()) : ?>
+                    <?= $this->Search->resetLink(__('Clear'), [
+                    'class' => 'btn btn-sm btn-light',
+                ]); ?>
+                <?php endif; ?>
+                <?= $this->Form->button(__('Filter'), [
+                    'type' => 'submit',
+                    'class' => 'btn btn-sm btn-primary',
+                    'escapeTitle' => false,
+                ]); ?>
             </div>
         </div>
-    </section>
+        <?= $this->Form->end(); ?>
+
+        <!-- Sort -->
+        <div class="widget pb-2 mb-2 border-bottom">
+            <h5 class="offcanvas-title"><?= __('Sort') ?></h5>
+        </div>
+
+        <div class="widget mb-2">
+        <?php
+            $sorts = [
+                'QrCodes.name' => __('Name'),
+                'QrCodes.qrkey' => __('Key'),
+                'QrCodes.hits' => __('Hits'),
+                'QrCodes.is_active' => __('Active'),
+                'QrCodes.created' => __('Created'),
+            ];
+            echo $this->element('filter/sort_links', [
+                'sorts' => $sorts,
+            ]);
+            ?>
+        </div>
+    </div>
+</div>
+<?php $this->end(); // offcanvas ?>
 <?= $this->Template->templateComment(false, __FILE__); ?>

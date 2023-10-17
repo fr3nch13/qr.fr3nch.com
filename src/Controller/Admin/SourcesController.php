@@ -44,32 +44,12 @@ class SourcesController extends AppController
     {
         $this->request->allowMethod(['get']);
 
-        $query = $this->Sources->find('all');
+        $query = $this->Sources->find('all')->contain(['QrCodes']);
         $query = $this->Authorization->applyScope($query);
         $sources = $this->paginate($query);
 
         $this->set(compact('sources'));
         $this->viewBuilder()->setOption('serialize', ['sources']);
-
-        return null;
-    }
-
-    /**
-     * View method
-     *
-     * @param ?string $id Source id.
-     * @return ?\Cake\Http\Response Renders view
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function view(?string $id = null): ?Response
-    {
-        $this->request->allowMethod(['get']);
-
-        $source = $this->Sources->get((int)$id, contain: ['QrCodes']);
-        $this->Authorization->authorize($source);
-
-        $this->set(compact('source'));
-        $this->viewBuilder()->setOption('serialize', ['source']);
 
         return null;
     }
@@ -93,8 +73,7 @@ class SourcesController extends AppController
                 $this->Flash->success(__('The source has been saved.'));
 
                 return $this->redirect([
-                    'action' => 'view',
-                    $source->id,
+                    'action' => 'index',
                     '_ext' => $this->getRequest()->getParam('_ext'),
                 ]);
             }
@@ -129,8 +108,7 @@ class SourcesController extends AppController
                 $this->Flash->success(__('The source has been saved.'));
 
                 return $this->redirect([
-                    'action' => 'view',
-                    $source->id,
+                    'action' => 'index',
                     '_ext' => $this->getRequest()->getParam('_ext'),
                 ]);
             }
@@ -154,7 +132,7 @@ class SourcesController extends AppController
      */
     public function delete(?string $id = null): ?Response
     {
-        $this->request->allowMethod(['delete']);
+        $this->request->allowMethod(['delete', 'post', 'get']);
 
         $source = $this->Sources->get((int)$id);
         $this->Authorization->authorize($source);

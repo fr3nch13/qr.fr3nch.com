@@ -14,24 +14,6 @@ if (!$this->getRequest()->is('ajax')) {
                 <div class="col-md-6">
                     <h1><?= __('Tags') ?></h1>
                 </div>
-
-                <?php
-                // TODO: Create a page options element to generate page options.
-                ?>
-                <div class="col-md-6 text-md-end">
-                    <ul class="list-inline">
-                        <?php if ($this->ActiveUser->isLoggedIn()) : ?>
-                        <li class="list-inline-item ms-2">
-                            <?= $this->Html->link(__('Add a Tag'), [
-                                'controller' => 'Tags',
-                                'action' => 'add',
-                            ], [
-                                'class' => 'underline text-black',
-                            ]); ?>
-                        </li>
-                        <?php endif; ?>
-                    </ul>
-                </div>
             </div>
         </div>
 
@@ -39,6 +21,11 @@ if (!$this->getRequest()->is('ajax')) {
             <div class="row g-3 g-lg-5 tags">
                 <div class="col text-center">
                 <?php foreach ($tags as $tag) : ?>
+                    <?php
+                    if (!$tag->hasValue('qr_codes')) {
+                        continue;
+                    }
+                    ?>
                     <?= $this->Html->link(
                         $tag->name,
                         [

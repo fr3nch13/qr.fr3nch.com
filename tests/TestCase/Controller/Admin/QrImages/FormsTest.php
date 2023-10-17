@@ -5,6 +5,7 @@ namespace App\Test\TestCase\Controller\Admin\QrImages;
 
 use App\Test\TestCase\Controller\BaseControllerTest;
 use Cake\Core\Configure;
+use const UPLOAD_ERR_NO_FILE;
 
 /**
  * App\Controller\Admin\QrImagesController Test Case
@@ -33,12 +34,12 @@ class FormsTest extends BaseControllerTest
     }
 
     /**
-     * Test add method
+     * Test add method with no images
      *
      * @return void
      * @uses \App\Controller\Admin\QrImagesController::add()
      */
-    public function testAdd(): void
+    public function testAddNoFiles(): void
     {
         // test failed
         $this->post('https://localhost/admin/qr-images/add/1', [
@@ -46,20 +47,60 @@ class FormsTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/QrImages/add');
         $this->helperTestFormTag('/admin/qr-images/add/1', 'post', true);
-        $this->helperTestAlert('The image could not be saved. Please, try again.', 'danger');
+        $this->helperTestAlert('The images could not be saved. Please, try again.', 'danger');
         // test to make sure the fields that are required are actually tagged as so.
-        $this->helperTestFormFieldError('This field is required', 'name-error');
-        // TODO: add testing for the file form field
-        // labels: frontend, templates, form, upload
-        // user is added in the controller, so no form element for it.
+        $this->helperTestString('<p class="text-danger">No images were uploaded</p>');
+    }
+
+    /**
+     * Test add with a bad file
+     *
+     * @return void
+     * @uses \App\Controller\Admin\QrImagesController::add()
+     */
+    public function testAddBadFile(): void
+    {
+        // test fail with a file upload
+        $imagePaths = [
+            TESTS . 'assets' . DS . 'qr_images' . DS . '1' . DS . '1.jpg',
+            TESTS . 'assets' . DS . 'qr_images' . DS . '1' . DS . 'dontexist.jpg',
+        ];
+        $images = $this->helperTestUploads($imagePaths, 'newimages', UPLOAD_ERR_NO_FILE);
 
         // test success
         $this->post('https://localhost/admin/qr-images/add/1', [
-            'name' => 'New QrImage',
-            'ext' => 'jpg', // TODO: change this once we get file uploading working.
+            'newimages' => $images,
+        ]);
+        $this->assertResponseOk();
+        $this->helperTestTemplate('Admin/QrImages/add');
+        $this->helperTestFormTag('/admin/qr-images/add/1', 'post', true);
+        $this->helperTestAlert('The images could not be saved. Please, try again.', 'danger');
+        // test to make sure the fields that are required are actually tagged as so.
+        $this->helperTestString('<p class="text-danger">There was an issue with the file: ' .
+            'tests_assets_qr_images_1_dontexist.jpg - 4</p>');
+    }
+
+    /**
+     * Test add success
+     *
+     * @return void
+     * @uses \App\Controller\Admin\QrImagesController::add()
+     */
+    public function testAddSuccess(): void
+    {
+        // test success with a file upload
+        $imagePaths = [
+            TESTS . 'assets' . DS . 'qr_images' . DS . '1' . DS . '1.jpg',
+            TESTS . 'assets' . DS . 'qr_images' . DS . '1' . DS . '2.jpg',
+        ];
+        $images = $this->helperTestUploads($imagePaths, 'newimages');
+
+        // test success
+        $this->post('https://localhost/admin/qr-images/add/1', [
+            'newimages' => $images,
         ]);
         $this->assertRedirectEquals('https://localhost/admin/qr-images/qr-code/1');
-        $this->assertFlashMessage('The image has been saved.', 'flash');
+        $this->assertFlashMessage('The images have been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
 
@@ -79,7 +120,7 @@ class FormsTest extends BaseControllerTest
         ]);
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/QrImages/edit');
-        $this->helperTestFormTag('/admin/qr-images/edit/2', 'put', true);
+        $this->helperTestFormTag('/admin/qr-images/edit/2', 'put');
         $this->helperTestAlert('The image could not be saved. Please, try again.', 'danger');
         // test to make sure the fields that are required are actually tagged as so.
         $this->helperTestFormFieldError('This field cannot be left empty', 'name-error');

@@ -17,11 +17,14 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
     <link rel="manifest" href="/img/site.webmanifest">
-    <title><?= $this->fetch('title') ?></title>
+    <title><?= __('QR Fr3nch') ?> : <?= $this->fetch('title') ?></title>
 
     <?= $this->Html->css([
         'libs.bundle',
         'index.bundle',
+        '/assets/npm-asset/bootstrap-icons/font/bootstrap-icons.css',
+        '/assets/npm-asset/bootstrap5-tags/tags-pure.css',
+        '/assets/npm-asset/bootstrap-fileinput/css/fileinput.css',
         'qr.css',
         ]) ?>
 
@@ -32,12 +35,25 @@
 <body>
 
 <?= $this->fetch('layout'); ?>
+<?= $this->fetch('modal') ?>
 <?= $this->fetch('offcanvas') ?>
+
+
 <?= $this->Html->script([
     'vendor.bundle',
     'index.bundle',
     '/assets/npm-asset/jquery/dist/jquery.min.js',
+    //'/assets/npm-asset/piexifjs/piexif.js',
+    '/assets/npm-asset/sortablejs/Sortable.js',
+    '/assets/npm-asset/bootstrap-fileinput/js/plugins/buffer.js',
+    '/assets/npm-asset/bootstrap-fileinput/js/plugins/filetype.js',
+    //'/assets/npm-asset/bootstrap-fileinput/js/plugins/sortable.js',
+    '/assets/npm-asset/bootstrap-fileinput/js/fileinput.js',
     'qr',
-    ]) ?></body>
+    ]) ?>
+<?= $this->Html->script('qr_module', [
+    'type' => 'module',
+]) ?>
+</body>
 <?= $this->Template->templateComment(false, __FILE__); ?>
 </html>

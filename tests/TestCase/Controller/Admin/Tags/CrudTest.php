@@ -68,40 +68,6 @@ class CrudTest extends BaseControllerTest
     }
 
     /**
-     * Test view method
-     *
-     * @return void
-     * @uses \App\Controller\Admin\TagsController::view()
-     */
-    public function testView(): void
-    {
-        // test get
-        $this->get('https://localhost/admin/tags/view/1');
-        $this->assertResponseOk();
-        $this->helperTestTemplate('Admin/Tags/view');
-
-        // post
-        $this->post('https://localhost/admin/tags/view/1');
-        $this->assertResponseCode(405);
-        $this->assertResponseContains('Method Not Allowed');
-
-        // patch
-        $this->patch('https://localhost/admin/tags/view/1');
-        $this->assertResponseCode(405);
-        $this->assertResponseContains('Method Not Allowed');
-
-        // put
-        $this->put('https://localhost/admin/tags/view/1');
-        $this->assertResponseCode(405);
-        $this->assertResponseContains('Method Not Allowed');
-
-        // delete
-        $this->delete('https://localhost/admin/tags/view/1');
-        $this->assertResponseCode(405);
-        $this->assertResponseContains('Method Not Allowed');
-    }
-
-    /**
      * Test add method
      *
      * @return void
@@ -118,7 +84,7 @@ class CrudTest extends BaseControllerTest
         $this->post('https://localhost/admin/tags/add', [
             'name' => 'New Tag',
         ]);
-        $this->assertRedirectEquals('https://localhost/admin/tags/view/6');
+        $this->assertRedirectEquals('https://localhost/admin/tags');
         $this->assertFlashMessage('The tag has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
@@ -173,7 +139,7 @@ class CrudTest extends BaseControllerTest
         $this->put('https://localhost/admin/tags/edit/1', [
             'name' => 'Updated Tag',
         ]);
-        $this->assertRedirectEquals('https://localhost/admin/tags/view/1');
+        $this->assertRedirectEquals('https://localhost/admin/tags');
         $this->assertFlashMessage('The tag has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
@@ -193,13 +159,16 @@ class CrudTest extends BaseControllerTest
     {
         // test get
         $this->get('https://localhost/admin/tags/delete/1');
-        $this->assertResponseCode(405);
-        $this->assertResponseContains('Method Not Allowed');
+        // allow get, as the delete button is loaded via ajax into a modal.
+        $this->assertRedirectEquals('https://localhost/admin/tags');
+        $this->assertFlashMessage('The tag `Notebook` has been deleted.', 'flash');
+        $this->assertFlashElement('flash/success');
 
         // post
-        $this->post('https://localhost/admin/tags/delete/1');
-        $this->assertResponseCode(405);
-        $this->assertResponseContains('Method Not Allowed');
+        $this->post('https://localhost/admin/tags/delete/2');
+        $this->assertRedirectEquals('https://localhost/admin/tags');
+        $this->assertFlashMessage('The tag `Journal` has been deleted.', 'flash');
+        $this->assertFlashElement('flash/success');
 
         // patch
         $this->patch('https://localhost/admin/tags/delete/1');
@@ -212,9 +181,9 @@ class CrudTest extends BaseControllerTest
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('https://localhost/admin/tags/delete/1');
-        $this->assertFlashMessage('The tag `Notebook` has been deleted.', 'flash');
-        $this->assertFlashElement('flash/success');
+        $this->delete('https://localhost/admin/tags/delete/3');
         $this->assertRedirectEquals('https://localhost/admin/tags');
+        $this->assertFlashMessage('The tag `Delete Me` has been deleted.', 'flash');
+        $this->assertFlashElement('flash/success');
     }
 }

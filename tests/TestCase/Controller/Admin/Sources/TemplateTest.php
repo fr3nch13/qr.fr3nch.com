@@ -49,15 +49,18 @@ class TemplateTest extends BaseControllerTest
         $this->loginUserRegular();
         $this->get('https://localhost/admin/sources');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesIndex();
+        $this->helperTestLayoutDashboardIndex();
         $this->helperTestTemplate('Admin/Sources/index');
 
         // test with admin
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/sources');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesIndex();
+        $this->helperTestLayoutDashboardIndex();
         $this->helperTestTemplate('Admin/Sources/index');
+
+        // validate the html
+        $this->helperValidateHTML();
     }
 
     /**
@@ -91,63 +94,6 @@ class TemplateTest extends BaseControllerTest
     }
 
     /**
-     * Test view method
-     *
-     * @return void
-     * @uses \App\Controller\Admin\SourcesController::view()
-     */
-    public function testViewNormal(): void
-    {
-        // not logged in
-        $this->get('https://localhost/admin/sources/view/1');
-        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fadmin%2Fsources%2Fview%2F1');
-
-        // test with reqular
-        $this->loginUserRegular();
-        $this->get('https://localhost/admin/sources/view/1');
-        $this->assertResponseOk();
-        $this->helperTestLayoutPagesView();
-        $this->helperTestTemplate('Admin/Sources/view');
-
-        // test with admin
-        $this->loginUserAdmin();
-        $this->get('https://localhost/admin/sources/view/1');
-        $this->assertResponseOk();
-        $this->helperTestLayoutPagesView();
-        $this->helperTestTemplate('Admin/Sources/view');
-    }
-
-    /**
-     * Test view method
-     *
-     * @return void
-     * @uses \App\Controller\Admin\SourcesController::view()
-     */
-    public function testViewAjax(): void
-    {
-        // not logged in
-        $this->requestAsAjax();
-        $this->get('https://localhost/admin/sources/view/1');
-        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fadmin%2Fsources%2Fview%2F1');
-
-        // test with reqular
-        $this->requestAsAjax();
-        $this->loginUserRegular();
-        $this->get('https://localhost/admin/sources/view/1');
-        $this->assertResponseOk();
-        $this->helperTestLayoutAjax();
-        $this->helperTestTemplate('Admin/Sources/view');
-
-        // test with admin
-        $this->requestAsAjax();
-        $this->loginUserAdmin();
-        $this->get('https://localhost/admin/sources/view/1');
-        $this->assertResponseOk();
-        $this->helperTestLayoutAjax();
-        $this->helperTestTemplate('Admin/Sources/view');
-    }
-
-    /**
      * Test add method
      *
      * @return void
@@ -164,8 +110,11 @@ class TemplateTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/sources/add');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesForm();
+        $this->helperTestLayoutDashboardForm();
         $this->helperTestTemplate('Admin/Sources/add');
+
+        // validate the html
+        $this->helperValidateHTML();
     }
 
     /**
@@ -208,8 +157,11 @@ class TemplateTest extends BaseControllerTest
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/sources/edit/1');
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesForm();
+        $this->helperTestLayoutDashboardForm();
         $this->helperTestTemplate('Admin/Sources/edit');
+
+        // validate the html
+        $this->helperValidateHTML();
     }
 
     /**

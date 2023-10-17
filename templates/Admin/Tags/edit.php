@@ -5,36 +5,36 @@
  * @var \Cake\Collection\CollectionInterface|array<string> $qrCodes
  */
 if (!$this->getRequest()->is('ajax')) {
-    $this->setLayout('pages/form');
+    $this->setLayout('dashboard/form');
 }
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
+<?= $this->Form->create($tag) ?>
 <div class="row">
-    <aside class="column">
-        <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Form->postLink(
-                __('Delete'),
-                ['action' => 'delete', $tag->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $tag->id), 'class' => 'side-nav-item']
-            ) ?>
-            <?= $this->Html->link(__('List Tags'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-        </div>
-    </aside>
-    <div class="column column-80">
-        <div class="tags form content">
-            <?= $this->Form->create($tag) ?>
-            <fieldset>
-                <legend><?= __('Edit Tag') ?></legend>
-
-                <?= $this->Form->control('name'); ?>
-
-                <?= $this->Form->control('qr_codes._ids', ['options' => $qrCodes]); ?>
-
-            </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
-            <?= $this->Form->end() ?>
-        </div>
+    <div class="col">
+        <?= $this->Form->control('name', [
+            'required' => true,
+            'spacing' => 'mb-2',
+            'label' => __('Name'),
+        ]); ?>
     </div>
 </div>
+<div class="row">
+    <div class="col text-end btn-group" role="group" aria-label="Tag Options">
+        <?= $this->Html->link(__('Delete'), [
+            'action' => 'delete',
+            $tag->id,
+        ], [
+            'class' => 'btn btn-warning',
+            'confirm' => __('Are you sure you want to delete the image: {0}', [
+                $tag->name,
+            ]),
+        ]) ?>
+        <?= $this->Form->button(__('Save'), [
+            'type' => 'submit',
+            'class' => 'btn btn-primary',
+        ]); ?>
+    </div>
+</div>
+<?= $this->Form->end() ?>
 <?= $this->Template->templateComment(false, __FILE__); ?>

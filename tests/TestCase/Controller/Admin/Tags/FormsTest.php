@@ -54,7 +54,7 @@ class FormsTest extends BaseControllerTest
         $this->post('https://localhost/admin/tags/add', [
             'name' => 'new tag',
         ]);
-        $this->assertRedirectEquals('https://localhost/admin/tags/view/6');
+        $this->assertRedirectEquals('https://localhost/admin/tags');
         $this->assertFlashMessage('The tag has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -83,7 +83,7 @@ class FormsTest extends BaseControllerTest
             'name' => 'New Tag',
             'description' => 'The Description',
         ]);
-        $this->assertRedirectEquals('https://localhost/admin/tags/view/1');
+        $this->assertRedirectEquals('https://localhost/admin/tags');
         $this->assertFlashMessage('The tag has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
