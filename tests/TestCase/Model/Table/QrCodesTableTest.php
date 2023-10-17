@@ -475,6 +475,31 @@ class QrCodesTableTest extends TestCase
     }
 
     /**
+     * Test bad thumbnail size.
+     *
+     * @return void
+     * @uses \App\Model\Entity\User
+     */
+    public function testThumbBadSize(): void
+    {
+        Configure::write('debug', true);
+
+        $tmpdir = TMP . 'qr_images_test';
+        Configure::write('App.paths.qr_images', $tmpdir);
+
+        $entity = $this->QrCodes->get(1);
+        $entityPath = $tmpdir . DS . $entity->id . '.png';
+        $this->assertTrue(is_file($entityPath));
+        $this->assertSame($entityPath, $entity->path);
+
+        // the thumbnail bad size
+        $this->expectException(ThumbException::class);
+        $this->expectExceptionMessage('Unknown size option');
+        $result = $entity->getPathThumb('bad');
+        debug($result);
+    }
+
+    /**
      * Test Implemented Generator
      *
      * @return void

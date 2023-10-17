@@ -27,10 +27,9 @@ trait ThumbTrait
      */
     public function getPathThumb(string $size = 'md'): ?string
     {
-        assert(
-            in_array($size, ['sm', 'md', 'lg']),
-            new ThumbException(__('Unknown size option.'))
-        );
+        if (!in_array($size, ['sm', 'md', 'lg'])) {
+            throw new ThumbException(__('Unknown size option.'))
+        }
 
         if ($size === 'sm') {
             return $this->path_sm;
@@ -56,10 +55,9 @@ trait ThumbTrait
      */
     protected function _getPathSm(): ?string
     {
-        assert(
-            $this instanceof Entity,
-            new ThumbException(__('Must be an instance of `\Cake\ORM\Entity`.'))
-        );
+        if (!$this instanceof Entity) {
+            throw new ThumbException(__('Must be an instance of `\Cake\ORM\Entity`.'))
+        }
 
         $thumbPath = $this->getThumbPath('sm');
         if (!$thumbPath) {
@@ -82,10 +80,9 @@ trait ThumbTrait
      */
     protected function _getPathMd(): ?string
     {
-        assert(
-            $this instanceof Entity,
-            new ThumbException(__('Must be an instance of `\Cake\ORM\Entity`.'))
-        );
+        if (!$this instanceof Entity) {
+            throw new ThumbException(__('Must be an instance of `\Cake\ORM\Entity`.'))
+        }
 
         $thumbPath = $this->getThumbPath('md');
         if (!$thumbPath) {
@@ -108,10 +105,9 @@ trait ThumbTrait
      */
     protected function _getPathLg(): ?string
     {
-        assert(
-            $this instanceof Entity,
-            new ThumbException(__('Must be an instance of `\Cake\ORM\Entity`.'))
-        );
+        if (!$this instanceof Entity) {
+            throw new ThumbException(__('Must be an instance of `\Cake\ORM\Entity`.'))
+        }
 
         $thumbPath = $this->getThumbPath('lg');
         if (!$thumbPath) {
@@ -134,14 +130,13 @@ trait ThumbTrait
      */
     public function generateThumb(string $size = 'sm'): bool
     {
-        assert(
-            $this instanceof Entity,
-            new ThumbException(__('Must be an instance of `\Cake\ORM\Entity`.'))
-        );
-        assert(
-            in_array($size, ['sm', 'md', 'lg']),
-            new ThumbException(__('Unknown size option.'))
-        );
+        if (!$this instanceof Entity) {
+            throw new ThumbException(__('Must be an instance of `\Cake\ORM\Entity`.'))
+        }
+
+        if (!in_array($size, ['sm', 'md', 'lg'])) {
+            throw new ThumbException(__('Must be an instance of `\Cake\ORM\Entity`.'))
+        }
 
         // path to the original image.
         $originalPath = $this->path;
@@ -237,10 +232,9 @@ trait ThumbTrait
      */
     public function deleteThumbs(bool $includeOriginal = false): void
     {
-        assert(
-            $this instanceof Entity,
-            new ThumbException(__('Must be an instance of `\Cake\ORM\Entity`.'))
-        );
+        if (!$this instanceof Entity) {
+            throw new ThumbException(__('Must be an instance of `\Cake\ORM\Entity`.'))
+        }
 
         // yes I know they may generate the thumbnails.
         $paths = [
@@ -268,14 +262,13 @@ trait ThumbTrait
      */
     public function getThumbPath(string $size = 'sm'): ?string
     {
-        assert(
-            $this instanceof Entity,
-            new ThumbException(__('Must be an instance of `\Cake\ORM\Entity`.'))
-        );
-        assert(
-            in_array($size, ['sm', 'md', 'lg']),
-            new ThumbException(__('Unknown size option.'))
-        );
+        if (!$this instanceof Entity) {
+            throw new ThumbException(__('Must be an instance of `\Cake\ORM\Entity`.'))
+        }
+
+        if (!in_array($size, ['sm', 'md', 'lg'])) {
+            throw new ThumbException(__('Must be an instance of `\Cake\ORM\Entity`.'))
+        }
 
         // path to the original image.
         $path = $this->path;
