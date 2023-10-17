@@ -50,6 +50,12 @@ $logoImage = $this->Html->image($logoImage, [
                     aria-expanded="false"><i class="bi bi-person"></i>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li class="mb-1"><?= __('Hello {0}', [
+                        $this->ActiveUser->getUser('name'),
+                    ]) ?></li>
+                    <li>
+                        <div class="border-bottom"></div>
+                    </li>
                     <li><?= $this->Html->link(__('Dashboard'), [
                         'plugin' => false,
                         'prefix' => 'Admin',

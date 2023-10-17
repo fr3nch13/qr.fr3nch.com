@@ -14,6 +14,7 @@ if ($qrCode->id) {
 
     $controller = $this->getRequest()->getParam('controller');
     $action = $this->getRequest()->getParam('action');
+    $here = $controller . '.' . $action;
     $tabs = [
         'QrCodes.view' => [__('Details'), [
             'controller' => 'QrCodes',
@@ -24,20 +25,6 @@ if ($qrCode->id) {
             'controller' => 'QrImages',
             'action' => 'qrCode',
             $qrCode->id,
-        ]],
-        'QrCodes.download' => [__('Download'), [
-            'plugin' => false,
-            'prefix' => false,
-            'controller' => 'QrCodes',
-            'action' => 'show',
-            $qrCode->id,
-            '?' => ['download' => true],
-        ]],
-        'QrCodes.regen' => [__('Regen'), [
-            'controller' => 'QrCodes',
-            'action' => 'show',
-            $qrCode->id,
-            '?' => ['regen' => true],
         ]],
         'QrCodes.edit' => [__('Edit'), [
             'controller' => 'QrCodes',
@@ -53,29 +40,62 @@ if ($qrCode->id) {
 
     ?>
     <ul class="nav justify-content-end">
-    <?php foreach ($tabs as $k => $tab) :
-        $options = [
-            'class' => 'nav-link pe-0',
-        ];
-
-        if ($k === $controller . '.' . $action) {
-            $options['class'] .= ' active';
-            $options['aria-current'] = 'page';
-        }
-
-        if ($tab[1]['action'] === 'delete') {
-            $options['class'] .= ' text-red';
-            $options['confirm'] = __('Are you sure you want to delete: {0}?', $qrCode->qrkey);
-            $link = $this->Form->postLink($tab[0], $tab[1], $options);
-        } else {
-            $options['class'] .= ' text-black';
-            $link = $this->Html->link($tab[0], $tab[1], $options);
-        }
-        ?>
         <li class="nav-item">
-            <?= $link ?>
+            <?= $this->Html->link(__('Details'), [
+                'controller' => 'QrCodes',
+                'action' => 'view',
+                $qrCode->id,
+            ], [
+                'class' => 'nav-link pe-0' . ($here == 'QrCodes.view'  ?? ' active'),
+            ]) ?>
         </li>
-    <?php endforeach; ?>
+        <li class="nav-item">
+            <?= $this->Html->link(__('Images'), [
+                'controller' => 'QrImages',
+                'action' => 'qrCode',
+                $qrCode->id,
+            ], [
+                'class' => 'nav-link pe-0' . ($here == 'QrImages.qrCode'  ?? ' active'),
+            ]) ?>
+        </li>
+        <li class="nav-item dropdown dropdown-hover">
+            <a
+                class="nav-link"
+                role="button"
+                id="dropdownActions"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"><?= __('Actions') ?> <i class="bi bi-chevron-down"></i>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="dropdownActions">
+                <li><?= $this->Html->link(__('Download'), [
+                    'plugin' => false,
+                    'prefix' => false,
+                    'controller' => 'QrCodes',
+                    'action' => 'show',
+                    $qrCode->id,
+                    '?' => ['download' => true],
+                ], ['class' => 'dropdown-item']) ?></li>
+                <li><?= $this->Html->link(__('Regenerate'), [
+                    'controller' => 'QrCodes',
+                    'action' => 'show',
+                    $qrCode->id,
+                    '?' => ['regen' => true],
+                ], ['class' => 'dropdown-item']) ?></li>
+                <li><?= $this->Html->link(__('Edit'), [
+                    'controller' => 'QrCodes',
+                    'action' => 'edit',
+                    $qrCode->id,
+                ], ['class' => 'dropdown-item']) ?></li>
+                <li><?= $this->Form->postLink(__('Delete'), [
+                    'controller' => 'QrCodes',
+                    'action' => 'delete',
+                    $qrCode->id,
+                ], [
+                    'class' => 'dropdown-item text-red',
+                    'confirm' => __('Are you sure you want to delete: {0}?', $qrCode->qrkey)
+                    ]); ?></li>
+            </ul>
+        </li>
     </ul>
     <?php
     $this->end(); // page_options
