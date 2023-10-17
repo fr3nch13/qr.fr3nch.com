@@ -173,8 +173,9 @@ class BaseControllerTest extends TestCase
     /**
      * Sets up the file upload mocking
      *
-     * @param array<string> $files Files to use as uploaded files
+     * @param array<string> $filePaths Files to use as uploaded files
      * @param string $key The key in the request.
+     * @param int $errCode The error code to use for testing a bad file.
      * @return array<\Laminas\Diactoros\UploadedFile> The prepared files.
      */
     public function helperTestUploads(array $filePaths, string $key, int $errCode = UPLOAD_ERR_OK): array
@@ -194,13 +195,13 @@ class BaseControllerTest extends TestCase
                     // stream or path to file representing the temp file
                     $tmpPath,
                     // the filesize in bytes
-                    filesize($tmpPath),
+                    filesize($tmpPath) ?: null,
                     // the upload/error status
                     $errCode,
                     // the filename as sent by the client
                     basename($tmpPath),
                     // the mimetype as sent by the client
-                    mime_content_type($tmpPath)
+                    mime_content_type($tmpPath) ?: null
                 );
             } else {
                 $files[] = new UploadedFile(
