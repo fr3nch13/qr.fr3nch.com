@@ -169,6 +169,73 @@ class BaseControllerTest extends TestCase
     }
 
     /**
+     * Sets up the file upload mocking
+     *
+     * @param array<string> $files Files to use as uploaded files
+     * @param string $key The key in the request.
+     * @return array<\Laminas\Diactoros\UploadedFile> The prepared files.
+     */
+    public function helperTestUploads(array $filePaths, string $key, int $errCode = \UPLOAD_ERR_OK): array
+    {
+        $tmpPaths = [];
+        foreach ($filePaths as $i => $filePath) {
+            $tmpPath =  TMP . str_replace('/', '_', trim(str_replace(ROOT, '', $filePath), '/'));
+            $tmpPaths[] = $tmpPath;
+            if (file_exists($filePath)) {
+                copy($filePath, $tmpPath);
+            }
+        }
+        $files = [];
+        foreach ($tmpPaths as $i => $tmpPath) {
+            if (file_exists($filePath)) {
+                $files[] = new \Laminas\Diactoros\UploadedFile(
+                    // stream or path to file representing the temp file
+                    $tmpPath,
+                    // the filesize in bytes
+                    filesize($tmpPath),
+                    // the upload/error status
+                    $errCode,
+                    // the filename as sent by the client
+                    basename($tmpPath),
+                    // the mimetype as sent by the client
+                    mime_content_type($tmpPath)
+                );
+            } else {
+                $files[] = new \Laminas\Diactoros\UploadedFile(
+                    // stream or path to file representing the temp file
+                    $tmpPath,
+                    // the filesize in bytes
+                    0,
+                    // the upload/error status
+                    $errCode,
+                    // the filename as sent by the client
+                    basename($tmpPath),
+                    // the mimetype as sent by the client
+                    ''
+                );
+            }
+        }
+        $this->configRequest([
+            'files' => [$key => $files],
+        ]);
+
+        return $files;
+    }
+
+    /**
+     * Looks for any generic sctring.
+     *
+     * @param $string The scring to look for.
+     * @return void
+     */
+    public function helperTestString(string $string): void
+    {
+        $content = (string)$this->_response->getBody();
+
+        $this->assertSame(1, substr_count($content, $string));
+    }
+
+    /**
      * Tests alerts
      *
      * @param string $message The alert message.

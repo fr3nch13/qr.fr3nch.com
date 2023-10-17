@@ -79,26 +79,19 @@ class CrudTest extends BaseControllerTest
 
         // post
         $this->post('https://localhost/admin/qr-images/add/1', [
-            'name' => 'New QrImage',
-            'ext' => 'jpg',
-            'qr_code_id' => 1,
         ]);
-        $this->assertRedirectEquals('https://localhost/admin/qr-images/qr-code/1');
-        $this->assertFlashMessage('The image has been saved.', 'flash');
-        $this->assertFlashElement('flash/success');
+        $this->assertResponseOk();
+        $this->helperTestAlert('The images could not be saved. Please, try again.', 'danger');
+        $this->helperTestTemplate('Admin/QrImages/add');
 
         // patch
         $this->patch('https://localhost/admin/qr-images/add/1', [
-            'name' => 'New QrImage',
-            'qr_code_id' => 1,
         ]);
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // put
         $this->put('https://localhost/admin/qr-images/add/1', [
-            'name' => 'New QrImage',
-            'qr_code_id' => 1,
         ]);
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
@@ -165,8 +158,9 @@ class CrudTest extends BaseControllerTest
 
         // post
         $this->post('https://localhost/admin/qr-images/delete/1');
-        $this->assertResponseCode(405);
-        $this->assertResponseContains('Method Not Allowed');
+        $this->assertRedirectEquals('https://localhost/admin/qr-images/qr-code/1');
+        $this->assertFlashMessage('The image `Front Cover` for `Sow & Scribe` has been deleted.', 'flash');
+        $this->assertFlashElement('flash/success');
 
         // patch
         $this->patch('https://localhost/admin/qr-images/delete/1');
@@ -179,9 +173,9 @@ class CrudTest extends BaseControllerTest
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('https://localhost/admin/qr-images/delete/1');
+        $this->delete('https://localhost/admin/qr-images/delete/2');
         $this->assertRedirectEquals('https://localhost/admin/qr-images/qr-code/1');
-        $this->assertFlashMessage('The image `Front Cover` for `Sow & Scribe` has been deleted.', 'flash');
+        $this->assertFlashMessage('The image `Open Pages` for `Sow & Scribe` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
     }
 }
