@@ -5,6 +5,7 @@ namespace App\Test\TestCase\Controller\Admin\QrImages;
 
 use App\Test\TestCase\Controller\BaseControllerTest;
 use Cake\Core\Configure;
+use const UPLOAD_ERR_NO_FILE;
 
 /**
  * App\Controller\Admin\QrImagesController Test Case
@@ -64,7 +65,7 @@ class FormsTest extends BaseControllerTest
             TESTS . 'assets' . DS . 'qr_images' . DS . '1' . DS . '1.jpg',
             TESTS . 'assets' . DS . 'qr_images' . DS . '1' . DS . 'dontexist.jpg',
         ];
-        $images = $this->helperTestUploads($imagePaths, 'newimages', \UPLOAD_ERR_NO_FILE);
+        $images = $this->helperTestUploads($imagePaths, 'newimages', UPLOAD_ERR_NO_FILE);
 
         // test success
         $this->post('https://localhost/admin/qr-images/add/1', [

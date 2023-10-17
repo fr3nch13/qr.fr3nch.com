@@ -31,9 +31,9 @@ if (!$this->getRequest()->is('ajax')) {
                 <?= $this->Template->objectComment('QrImages/entity'); ?>
                 <?php if (!$qrImage->is_active) : ?>
                 <div class="ribbon red"><span><?= __('Inactive') ?></span></div>
-                <?= $this->Template->objectComment('QrImages/entity/inactive'); ?>
-                <?php else: ?>
-                <?= $this->Template->objectComment('QrImages/entity/active'); ?>
+                    <?= $this->Template->objectComment('QrImages/entity/inactive'); ?>
+                <?php else : ?>
+                    <?= $this->Template->objectComment('QrImages/entity/active'); ?>
                 <?php endif; ?>
                 <div class="card-body p-3">
 

@@ -8,6 +8,8 @@ use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use HtmlValidator\Exception\ServerException as ValidatorServerException;
 use HtmlValidator\Validator as HtmlValidator;
+use Laminas\Diactoros\UploadedFile;
+use const UPLOAD_ERR_OK;
 
 /**
  * Base Controller test for the other tests that use
@@ -175,7 +177,7 @@ class BaseControllerTest extends TestCase
      * @param string $key The key in the request.
      * @return array<\Laminas\Diactoros\UploadedFile> The prepared files.
      */
-    public function helperTestUploads(array $filePaths, string $key, int $errCode = \UPLOAD_ERR_OK): array
+    public function helperTestUploads(array $filePaths, string $key, int $errCode = UPLOAD_ERR_OK): array
     {
         $tmpPaths = [];
         foreach ($filePaths as $i => $filePath) {
@@ -188,7 +190,7 @@ class BaseControllerTest extends TestCase
         $files = [];
         foreach ($tmpPaths as $i => $tmpPath) {
             if (file_exists($filePath)) {
-                $files[] = new \Laminas\Diactoros\UploadedFile(
+                $files[] = new UploadedFile(
                     // stream or path to file representing the temp file
                     $tmpPath,
                     // the filesize in bytes
@@ -201,7 +203,7 @@ class BaseControllerTest extends TestCase
                     mime_content_type($tmpPath)
                 );
             } else {
-                $files[] = new \Laminas\Diactoros\UploadedFile(
+                $files[] = new UploadedFile(
                     // stream or path to file representing the temp file
                     $tmpPath,
                     // the filesize in bytes

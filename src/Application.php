@@ -102,7 +102,7 @@ class Application extends BaseApplication implements
          * Debug Kit should not be installed on a production system
          */
         if (Configure::read('debug')) {
-            //$this->addPlugin('DebugKit');
+            $this->addPlugin('DebugKit');
         }
 
         // Load more plugins here
@@ -138,28 +138,6 @@ class Application extends BaseApplication implements
             ->add(new AssetMiddleware([
                 'cacheTime' => Configure::read('Asset.cacheTime'),
             ]))
-
-            /*
-            // TODO: Enable when whatever unsafe-inline is fixed.
-            // It's causing inlie onclicks to be blocked, even though unsafe-inline is set to true.
-
-            // Content Security Policy
-            // @link https://book.cakephp.org/5/en/security/content-security-policy.html#content-security-policy-middleware
-            ->add(new CspMiddleware([
-                'script-src' => [
-                    'self' => true,
-                    'unsafe-inline' => true,
-                    'unsafe-eval' => false,
-                    'allow' => [
-                        // external domains that can load/run javascript.
-                        //'https://www.google-analytics.com',
-                    ],
-                ],
-            ], [
-                'scriptNonce' => true,
-                'styleNonce' => true,
-            ]))
-            */
 
             // Add routing middleware.
             // If you have a large number of routes connected, turning on routes
@@ -198,6 +176,28 @@ class Application extends BaseApplication implements
                     'custom_param' => true,
                 ],
             ]));
+
+            /*
+            // TODO: Enable when whatever unsafe-inline is fixed.
+            // It's causing inline onclicks to be blocked, even though unsafe-inline is set to true.
+
+            // Content Security Policy
+            // @link https://book.cakephp.org/5/en/security/content-security-policy.html#content-security-policy-middleware
+            ->add(new CspMiddleware([
+                'script-src' => [
+                    'self' => true,
+                    'unsafe-inline' => true,
+                    'unsafe-eval' => false,
+                    'allow' => [
+                        // external domains that can load/run javascript.
+                        //'https://www.google-analytics.com',
+                    ],
+                ],
+            ], [
+                'scriptNonce' => true,
+                'styleNonce' => true,
+            ]))
+            */
 
         // @link https://book.cakephp.org/5/en/security/security-headers.html
         $securityHeaders = new SecurityHeadersMiddleware();

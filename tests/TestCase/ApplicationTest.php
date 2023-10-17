@@ -22,7 +22,6 @@ use Authorization\Middleware\AuthorizationMiddleware;
 use Cake\Core\Configure;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\Middleware\BodyParserMiddleware;
-use Cake\Http\Middleware\CspMiddleware;
 use Cake\Http\Middleware\CsrfProtectionMiddleware;
 use Cake\Http\Middleware\HttpsEnforcerMiddleware;
 use Cake\Http\Middleware\SecurityHeadersMiddleware;
@@ -55,6 +54,11 @@ class ApplicationTest extends TestCase
         $this->assertTrue($plugins->has('Bake'), 'plugins has Bake?');
         $this->assertFalse($plugins->has('DebugKit'), 'plugins has DebugKit?');
         $this->assertTrue($plugins->has('Migrations'), 'plugins has Migrations?');
+
+        $this->assertTrue($plugins->has('Authentication'), 'plugins has Authentication?');
+        $this->assertTrue($plugins->has('Authorization'), 'plugins has Authorization?');
+        $this->assertTrue($plugins->has('BootstrapUI'), 'plugins has BootstrapUI?');
+        $this->assertTrue($plugins->has('Search'), 'plugins has Search?');
     }
 
     /**
@@ -108,20 +112,21 @@ class ApplicationTest extends TestCase
         $middleware->seek(1);
         $this->assertInstanceOf(AssetMiddleware::class, $middleware->current());
         $middleware->seek(2);
-        $this->assertInstanceOf(CspMiddleware::class, $middleware->current());
-        $middleware->seek(3);
         $this->assertInstanceOf(RoutingMiddleware::class, $middleware->current());
-        $middleware->seek(4);
+        $middleware->seek(3);
         $this->assertInstanceOf(BodyParserMiddleware::class, $middleware->current());
-        $middleware->seek(5);
+        $middleware->seek(4);
         $this->assertInstanceOf(CsrfProtectionMiddleware::class, $middleware->current());
-        $middleware->seek(6);
+        $middleware->seek(5);
         $this->assertInstanceOf(AuthenticationMiddleware::class, $middleware->current());
-        $middleware->seek(7);
+        $middleware->seek(6);
         $this->assertInstanceOf(AuthorizationMiddleware::class, $middleware->current());
-        $middleware->seek(8);
+        $middleware->seek(7);
         $this->assertInstanceOf(SecurityHeadersMiddleware::class, $middleware->current());
-        $middleware->seek(9);
+        $middleware->seek(8);
         $this->assertInstanceOf(HttpsEnforcerMiddleware::class, $middleware->current());
+        // not used until it's fixed. See Application.php for details.
+        //$middleware->seek(9);
+        //$this->assertInstanceOf(CspMiddleware::class, $middleware->current());
     }
 }
