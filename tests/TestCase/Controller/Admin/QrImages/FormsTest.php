@@ -5,6 +5,8 @@ namespace App\Test\TestCase\Controller\Admin\QrImages;
 
 use App\Test\TestCase\Controller\BaseControllerTest;
 use Cake\Core\Configure;
+use const UPLOAD_ERR_FORM_SIZE;
+use const UPLOAD_ERR_INI_SIZE;
 use const UPLOAD_ERR_NO_FILE;
 
 /**
@@ -53,19 +55,41 @@ class FormsTest extends BaseControllerTest
     }
 
     /**
-     * Test add with a bad file
+     * Test add method with no images
      *
      * @return void
      * @uses \App\Controller\Admin\QrImagesController::add()
      */
-    public function testAddBadFile(): void
+    public function testAddEmptyFiles(): void
     {
-        // test fail with a file upload
+        // test failed
+        $this->post('https://localhost/admin/qr-images/add/1', [
+            'newimages' => [
+                'notanuploadedfile',
+            ],
+        ]);
+        $this->assertResponseOk();
+        $this->helperTestTemplate('Admin/QrImages/add');
+        $this->helperTestFormTag('/admin/qr-images/add/1', 'post', true);
+        $this->helperTestAlert('The images could not be saved. Please, try again.', 'danger');
+        // test to make sure the fields that are required are actually tagged as so.
+        $this->helperTestString('<p class="text-danger">No images were uploaded</p>');
+    }
+
+    /**
+     * Test add method with missing config path
+     *
+     * @return void
+     * @uses \App\Controller\Admin\QrImagesController::add()
+     */
+    public function testAddMissingConfig(): void
+    {
+        Configure::write('App.paths.qr_images', null);
         $imagePaths = [
             TESTS . 'assets' . DS . 'qr_images' . DS . '1' . DS . '1.jpg',
-            TESTS . 'assets' . DS . 'qr_images' . DS . '1' . DS . 'dontexist.jpg',
+            TESTS . 'assets' . DS . 'qr_images' . DS . '1' . DS . '2.jpg',
         ];
-        $images = $this->helperTestUploads($imagePaths, 'newimages', UPLOAD_ERR_NO_FILE);
+        $images = $this->helperTestUploads($imagePaths, 'newimages');
 
         // test success
         $this->post('https://localhost/admin/qr-images/add/1', [
@@ -76,8 +100,136 @@ class FormsTest extends BaseControllerTest
         $this->helperTestFormTag('/admin/qr-images/add/1', 'post', true);
         $this->helperTestAlert('The images could not be saved. Please, try again.', 'danger');
         // test to make sure the fields that are required are actually tagged as so.
-        $this->helperTestString('<p class="text-danger">There was an issue with the file: ' .
-            'tests_assets_qr_images_1_dontexist.jpg - 4</p>');
+        $this->helperTestString('<p class="text-danger">Unable to save the image, unknown path</p>');
+    }
+
+    /**
+     * Test add method with missing config path
+     *
+     * @return void
+     * @uses \App\Controller\Admin\QrImagesController::add()
+     */
+    public function testAddPostMissingCode(): void
+    {
+        Configure::write('debug', true);
+        $imagePaths = [
+            TESTS . 'assets' . DS . 'qr_images' . DS . '1' . DS . '1.jpg',
+            TESTS . 'assets' . DS . 'qr_images' . DS . '1' . DS . '2.jpg',
+        ];
+        $images = $this->helperTestUploads($imagePaths, 'newimages');
+
+        // test success
+        $this->post('https://localhost/admin/qr-images/add/999', [
+            'newimages' => $images,
+        ]);
+        $this->assertResponseCode(404);
+        $this->assertResponseContains('Error: Record not found in table `qr_codes`.');
+    }
+
+    /**
+     * Test add with a bad file
+     *
+     * @return void
+     * @uses \App\Controller\Admin\QrImagesController::add()
+     */
+    public function testAddBadFile(): void
+    {
+        // test fail with a file upload
+        $imagePaths = [
+            TESTS . 'assets' . DS . 'qr_images' . DS . '1' . DS . 'dontexist.jpg',
+        ];
+        $images = $this->helperTestUploads($imagePaths, 'newimages', UPLOAD_ERR_NO_FILE);
+
+        // test
+        $this->post('https://localhost/admin/qr-images/add/1', [
+            'newimages' => $images,
+        ]);
+        $this->assertResponseOk();
+        $this->helperTestTemplate('Admin/QrImages/add');
+        $this->helperTestFormTag('/admin/qr-images/add/1', 'post', true);
+        $this->helperTestAlert('The images could not be saved. Please, try again.', 'danger');
+        // test to make sure the fields that are required are actually tagged as so.
+        $this->helperTestString('<p class="text-danger">No images were uploaded</p>');
+    }
+
+    /**
+     * Test add goo big
+     *
+     * @return void
+     * @uses \App\Controller\Admin\QrImagesController::add()
+     */
+    public function testAddTooBig1(): void
+    {
+        // test success with a file upload
+        $imagePaths = [
+            TESTS . 'assets' . DS . 'qr_images' . DS . '1' . DS . '1.jpg',
+            TESTS . 'assets' . DS . 'qr_images' . DS . '1' . DS . '2.jpg',
+        ];
+        $images = $this->helperTestUploads($imagePaths, 'newimages', UPLOAD_ERR_INI_SIZE);
+
+        // test success
+        $this->post('https://localhost/admin/qr-images/add/1', [
+            'newimages' => $images,
+        ]);
+        $this->assertResponseOk();
+        $this->helperTestTemplate('Admin/QrImages/add');
+        $this->helperTestFormTag('/admin/qr-images/add/1', 'post', true);
+        $this->helperTestAlert('The images could not be saved. Please, try again.', 'danger');
+        // test to make sure the fields that are required are actually tagged as so.
+        $this->helperTestString('<p class="text-danger">The file `tests_assets_qr_images_1_2.jpg` is too big.</p>');
+    }
+
+    /**
+     * Test add goo big
+     *
+     * @return void
+     * @uses \App\Controller\Admin\QrImagesController::add()
+     */
+    public function testAddTooBig2(): void
+    {
+        // test success with a file upload
+        $imagePaths = [
+            TESTS . 'assets' . DS . 'qr_images' . DS . '1' . DS . '1.jpg',
+            TESTS . 'assets' . DS . 'qr_images' . DS . '1' . DS . '2.jpg',
+        ];
+        $images = $this->helperTestUploads($imagePaths, 'newimages', UPLOAD_ERR_FORM_SIZE);
+
+        // test success
+        $this->post('https://localhost/admin/qr-images/add/1', [
+            'newimages' => $images,
+        ]);
+        $this->assertResponseOk();
+        $this->helperTestTemplate('Admin/QrImages/add');
+        $this->helperTestFormTag('/admin/qr-images/add/1', 'post', true);
+        $this->helperTestAlert('The images could not be saved. Please, try again.', 'danger');
+        // test to make sure the fields that are required are actually tagged as so.
+        $this->helperTestString('<p class="text-danger">The file `tests_assets_qr_images_1_2.jpg` is too big.</p>');
+    }
+
+    /**
+     * Test add goo big
+     *
+     * @return void
+     * @uses \App\Controller\Admin\QrImagesController::add()
+     */
+    public function testAddNotImage(): void
+    {
+        // test success with a file upload
+        $imagePaths = [
+            TESTS . 'assets' . DS . 'notanimage.txt',
+        ];
+        $images = $this->helperTestUploads($imagePaths, 'newimages');
+
+        // test success
+        $this->post('https://localhost/admin/qr-images/add/1', [
+            'newimages' => $images,
+        ]);
+        $this->assertResponseOk();
+        $this->helperTestTemplate('Admin/QrImages/add');
+        $this->helperTestFormTag('/admin/qr-images/add/1', 'post', true);
+        $this->helperTestAlert('The images could not be saved. Please, try again.', 'danger');
+        // test to make sure the fields that are required are actually tagged as so.
+        $this->helperTestString('<p class="text-danger">The file type is invalid: tests_assets_notanimage.txt</p>');
     }
 
     /**
