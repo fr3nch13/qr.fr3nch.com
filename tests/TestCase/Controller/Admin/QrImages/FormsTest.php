@@ -5,6 +5,8 @@ namespace App\Test\TestCase\Controller\Admin\QrImages;
 
 use App\Test\TestCase\Controller\BaseControllerTest;
 use Cake\Core\Configure;
+use const UPLOAD_ERR_FORM_SIZE;
+use const UPLOAD_ERR_INI_SIZE;
 use const UPLOAD_ERR_NO_FILE;
 
 /**
@@ -63,7 +65,7 @@ class FormsTest extends BaseControllerTest
         // test failed
         $this->post('https://localhost/admin/qr-images/add/1', [
             'newimages' => [
-                'notanuploadedfile'
+                'notanuploadedfile',
             ],
         ]);
         $this->assertResponseOk();
@@ -76,6 +78,7 @@ class FormsTest extends BaseControllerTest
 
     /**
      * Test add method with missing config path
+     *
      * @return void
      * @uses \App\Controller\Admin\QrImagesController::add()
      */
@@ -102,6 +105,7 @@ class FormsTest extends BaseControllerTest
 
     /**
      * Test add method with missing config path
+     *
      * @return void
      * @uses \App\Controller\Admin\QrImagesController::add()
      */
@@ -161,7 +165,7 @@ class FormsTest extends BaseControllerTest
             TESTS . 'assets' . DS . 'qr_images' . DS . '1' . DS . '1.jpg',
             TESTS . 'assets' . DS . 'qr_images' . DS . '1' . DS . '2.jpg',
         ];
-        $images = $this->helperTestUploads($imagePaths, 'newimages', \UPLOAD_ERR_INI_SIZE);
+        $images = $this->helperTestUploads($imagePaths, 'newimages', UPLOAD_ERR_INI_SIZE);
 
         // test success
         $this->post('https://localhost/admin/qr-images/add/1', [
@@ -188,7 +192,7 @@ class FormsTest extends BaseControllerTest
             TESTS . 'assets' . DS . 'qr_images' . DS . '1' . DS . '1.jpg',
             TESTS . 'assets' . DS . 'qr_images' . DS . '1' . DS . '2.jpg',
         ];
-        $images = $this->helperTestUploads($imagePaths, 'newimages', \UPLOAD_ERR_FORM_SIZE);
+        $images = $this->helperTestUploads($imagePaths, 'newimages', UPLOAD_ERR_FORM_SIZE);
 
         // test success
         $this->post('https://localhost/admin/qr-images/add/1', [
@@ -225,7 +229,6 @@ class FormsTest extends BaseControllerTest
         $this->helperTestFormTag('/admin/qr-images/add/1', 'post', true);
         $this->helperTestAlert('The images could not be saved. Please, try again.', 'danger');
         // test to make sure the fields that are required are actually tagged as so.
-        $content = (string)$this->_response->getBody();
         $this->helperTestString('<p class="text-danger">The file type is invalid: tests_assets_notanimage.txt</p>');
     }
 

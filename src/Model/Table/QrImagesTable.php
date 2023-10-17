@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Model\Table;
 
-use App\Exception\ImageException;
 use App\Model\Entity\QrCode;
 use App\Model\Entity\QrImage;
 use ArrayObject;
@@ -16,7 +15,7 @@ use Cake\ORM\Table;
 use Cake\Utility\Inflector;
 use Cake\Validation\Validator;
 use Laminas\Diactoros\Exception\ExceptionInterface;
-use Laminas\Diactoros\UploadedFile;
+use const UPLOAD_ERR_NO_FILE;
 
 /**
  * QrImages Model
@@ -157,7 +156,7 @@ class QrImagesTable extends Table
         // the save button was hit, and the images interface loaded, but the user didn't upload an image.
         if (count($images['newimages']) === 1) {
             $image = reset($images['newimages']);
-            if ($image->getError() === \UPLOAD_ERR_NO_FILE) {
+            if ($image->getError() === UPLOAD_ERR_NO_FILE) {
                 $qrImage->setError('newimages', __('No images were uploaded'));
 
                 return $qrImage;
