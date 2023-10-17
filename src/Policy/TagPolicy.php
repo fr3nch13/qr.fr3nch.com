@@ -12,18 +12,6 @@ use App\Model\Entity\User;
 class TagPolicy
 {
     /**
-     * Admins and Creators can view Tag
-     *
-     * @param \App\Model\Entity\User $user The identity object.
-     * @param \App\Model\Entity\Tag $Tag
-     * @return bool
-     */
-    public function canView(User $user, Tag $Tag): bool
-    {
-        return $this->isCreator($user, $Tag) || $user->isAdmin();
-    }
-
-    /**
      * Logged in can add Tag
      *
      * @param \App\Model\Entity\User $user The identity object.

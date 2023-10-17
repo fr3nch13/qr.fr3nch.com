@@ -13,16 +13,4 @@ use BootstrapUI\View\Helper\HtmlHelper as BootstrapUiHtmlHelper;
  */
 class HtmlHelper extends BootstrapUiHtmlHelper
 {
-    /**
-     * Fixes the paginator sort html
-     *
-     * @param string $html The generated html from the paginator helper
-     * @return string The fixed html
-     */
-    public function fixPaginatorSort(string $html): string
-    {
-        $html = str_replace('<a ', '<a class="dropdown-item" ', $html);
-
-        return $html;
-    }
 }

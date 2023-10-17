@@ -115,18 +115,8 @@ class QrImagesTable extends Table
      */
     public function afterDelete(Event $event, QrImage $qrImage, ArrayObject $options): void
     {
-        // thumbnails
-        // use getThumbPath so we don't generate the thumbs.
-        foreach (['lg', 'md', 'sm'] as $size) {
-            if ($qrImage->getThumbPath('lg') && is_file($qrImage->getThumbPath('lg'))) {
-                unlink($qrImage->getThumbPath('lg'));
-            }
-        }
-
-        // then the original
-        if ($qrImage->path) {
-            unlink($qrImage->path);
-        }
+        // delete the images.
+        $qrImage->deleteThumbs(true);
     }
 
     /**

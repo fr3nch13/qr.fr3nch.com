@@ -50,8 +50,8 @@ class TemplateTest extends BaseControllerTest
         $this->helperTestLayoutDashboardView();
         $this->helperTestTemplate('Admin/QrCodes/details');
         $this->helperTestTemplate('Admin/QrImages/qr_code');
-        $this->helperTestObjectComment(2, 'QrImages/entity');
-        $this->helperTestObjectComment(2, 'QrImages/entity/active');
+        $this->helperTestObjectComment(3, 'QrImages/entity');
+        $this->helperTestObjectComment(3, 'QrImages/entity/active');
 
         // validate the html
         $this->helperValidateHTML();
@@ -72,8 +72,8 @@ class TemplateTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
         $this->helperTestTemplate('Admin/QrImages/qr_code');
-        $this->helperTestObjectComment(2, 'QrImages/entity');
-        $this->helperTestObjectComment(2, 'QrImages/entity/active');
+        $this->helperTestObjectComment(3, 'QrImages/entity');
+        $this->helperTestObjectComment(3, 'QrImages/entity/active');
     }
 
     /**

@@ -70,11 +70,7 @@ trait ThumbTrait
             $this->generateThumb('sm');
         }
 
-        if (is_readable($thumbPath)) {
-            return $thumbPath;
-        }
-
-        return null;
+        return $thumbPath;
     }
 
     /**
@@ -100,11 +96,7 @@ trait ThumbTrait
             $this->generateThumb('md');
         }
 
-        if (is_readable($thumbPath)) {
-            return $thumbPath;
-        }
-
-        return null;
+        return $thumbPath;
     }
 
     /**
@@ -130,11 +122,7 @@ trait ThumbTrait
             $this->generateThumb('lg');
         }
 
-        if (is_readable($thumbPath)) {
-            return $thumbPath;
-        }
-
-        return null;
+        return $thumbPath;
     }
 
     /**
@@ -144,7 +132,7 @@ trait ThumbTrait
      * @return bool If the thumb was generated
      * @throws \App\Exception\ThumbException When size unknown, or not used in an entity.
      */
-    protected function generateThumb(string $size = 'sm'): bool
+    public function generateThumb(string $size = 'sm'): bool
     {
         assert(
             $this instanceof Entity,
@@ -247,7 +235,7 @@ trait ThumbTrait
      * @return void
      * @throws \App\Exception\ThumbException When not used in an entity.
      */
-    protected function deleteThumbs(bool $includeOriginal = false): void
+    public function deleteThumbs(bool $includeOriginal = false): void
     {
         assert(
             $this instanceof Entity,

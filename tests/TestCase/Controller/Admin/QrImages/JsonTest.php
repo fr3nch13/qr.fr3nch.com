@@ -51,7 +51,7 @@ class JsonTest extends BaseControllerTest
         $this->assertTrue(isset($content['qrCode']));
         $this->assertSame(1, $content['qrCode']['id']);
         $this->assertTrue(isset($content['qrImages']));
-        $this->assertCount(2, $content['qrImages']);
+        $this->assertCount(3, $content['qrImages']);
 
         $first = reset($content['qrImages']);
         $this->assertSame(1, $first['id']);

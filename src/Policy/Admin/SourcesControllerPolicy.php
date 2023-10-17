@@ -28,22 +28,6 @@ class SourcesControllerPolicy extends AppControllerPolicy
     }
 
     /**
-     * Must be logged in to view a Source.
-     *
-     * @param \App\Model\Entity\User|null $user The identity object.
-     * @param \App\Controller\Admin\SourcesController $SourcesController
-     * @return bool
-     */
-    public function canView(?User $user, SourcesController $SourcesController): bool
-    {
-        if (!$user) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
      * Must be an admin to add a Source
      *
      * @param \App\Model\Entity\User|null $user The identity object.
