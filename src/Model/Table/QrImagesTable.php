@@ -15,9 +15,9 @@ use Cake\ORM\Table;
 use Cake\Utility\Inflector;
 use Cake\Validation\Validator;
 use Laminas\Diactoros\Exception\ExceptionInterface;
-use const UPLOAD_ERR_NO_FILE;
-use const UPLOAD_ERR_INI_SIZE;
 use const UPLOAD_ERR_FORM_SIZE;
+use const UPLOAD_ERR_INI_SIZE;
+use const UPLOAD_ERR_NO_FILE;
 
 /**
  * QrImages Model
