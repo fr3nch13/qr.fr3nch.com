@@ -465,6 +465,13 @@ class QrCodesTableTest extends TestCase
         $this->assertFalse(is_file($thumbPathLg));
         $this->assertSame($thumbPathLg, $entity->path_lg);
         $this->assertTrue(is_file($thumbPathLg));
+
+        $this->QrCodes->delete($entity);
+
+        $this->assertFalse(is_file($thumbPathSm));
+        $this->assertFalse(is_file($thumbPathMd));
+        $this->assertFalse(is_file($thumbPathLg));
+        $this->assertFalse(is_file($entityPath));
     }
 
     /**

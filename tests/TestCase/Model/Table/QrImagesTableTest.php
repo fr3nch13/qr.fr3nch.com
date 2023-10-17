@@ -334,6 +334,8 @@ class QrImagesTableTest extends TestCase
      */
     public function testThumbBadSize(): void
     {
+        Configure::write('debug', true);
+
         $tmpdir = TMP . 'qr_images_test';
         Configure::write('App.paths.qr_images', $tmpdir);
 
@@ -345,7 +347,8 @@ class QrImagesTableTest extends TestCase
         // the thumbnail bad size
         $this->expectException(ThumbException::class);
         $this->expectExceptionMessage('Unknown size option');
-        $this->assertNull($entity->getPathThumb('bad'));
+        $result = $entity->getPathThumb('bad');
+        debug($result);
     }
 
     /**
@@ -417,7 +420,7 @@ class QrImagesTableTest extends TestCase
      * @return void
      * @uses \App\Model\Entity\User
      */
-    public function testAdterDelete(): void
+    public function testAfterDelete(): void
     {
         $tmpdir = TMP . 'qr_images_test';
         Configure::write('App.paths.qr_images', $tmpdir);
