@@ -485,13 +485,14 @@ class QrCodesTableTest extends TestCase
     {
         Configure::write('debug', true);
 
-        $tmpdir = TMP . 'qr_images_test';
-        Configure::write('App.paths.qr_images', $tmpdir);
+        $tmpdir = Configure::read('App.paths.qr_codes');
+        $this->assertNotNull($tmpdir);
+        $this->assertTrue(is_dir($tmpdir));
 
         $entity = $this->QrCodes->get(1);
         $entityPath = $tmpdir . DS . $entity->id . '.png';
-        $this->assertTrue(is_file($entityPath));
         $this->assertSame($entityPath, $entity->path);
+        $this->assertTrue(is_file($entityPath));
 
         // the thumbnail bad size
         $this->expectException(ThumbException::class);
