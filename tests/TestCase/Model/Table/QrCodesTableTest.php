@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Model\Table;
 
 use App\Exception\ThumbException;
-use App\Lib\GoogleQrGenerator;
 use App\Lib\LogoOptions;
 use App\Lib\PhpQrGenerator;
 use App\Lib\QRImageWithLogo;
@@ -700,32 +699,6 @@ class QrCodesTableTest extends TestCase
         $this->assertFalse(is_readable($path));
 
         Configure::write('App.paths.qr_codes', $originalPath);
-    }
-
-    /**
-     * Test GoogleQrGenerator
-     *
-     * @return void
-     */
-    public function testGoogleQrGenerator(): void
-    {
-        $this->loadRoutes();
-        Configure::write('debug', true);
-
-        // existing entity
-        $path = Configure::read('App.paths.qr_codes') . DS . '1.png';
-        if (file_exists($path)) {
-            unlink($path);
-        }
-        $this->assertFalse(is_readable($path));
-        // test the Generator Directly
-        $entity = $this->QrCodes->get(1);
-
-        $QR = new GoogleQrGenerator($entity);
-        $this->assertSame('https://localhost/f/sownscribe', $QR->data);
-        $this->assertSame('https://chart.googleapis.com/chart?cht=qr&chld=H|1&chs=200x200&chl=https%3A%2F%2Flocalhost%2Ff%2Fsownscribe', $QR->compileUrl());
-        $this->assertTrue($QR->save());
-        $this->assertTrue(is_readable($path));
     }
 
     /**
