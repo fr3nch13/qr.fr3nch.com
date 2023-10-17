@@ -157,12 +157,7 @@ class QrImagesTable extends Table
         // the save button was hit, and the images interface loaded, but the user didn't upload an image.
         if (count($images['newimages']) === 1) {
             $image = reset($images['newimages']);
-            assert(
-                $image instanceof UploadedFile,
-                new ImageException(__('Something fishy is going on.', 500))
-            );
-
-            if ($image->getError() === 4) {
+            if ($image->getError() === \UPLOAD_ERR_NO_FILE) {
                 $qrImage->setError('newimages', __('No images were uploaded'));
 
                 return $qrImage;
@@ -174,11 +169,7 @@ class QrImagesTable extends Table
 
         // now process each of the images before saving them.
         foreach ($images['newimages'] as $image) {
-            assert(
-                $image instanceof UploadedFile,
-                new ImageException(__('Something fishy is going on.', 500))
-            );
-
+            /** @var \Laminas\Diactoros\UploadedFile $image */
             $error = $image->getError();
 
             if ($error) {
@@ -220,10 +211,9 @@ class QrImagesTable extends Table
             $newImage = clone $qrImage;
 
             // file info
+            /** @var string $file_name The checks above should cover it enough to have this be a string. */
             $file_name = $image->getClientFilename();
-            if (!$file_name) {
-                continue;
-            }
+
             $filename = pathinfo($file_name, PATHINFO_FILENAME);
             $ext = pathinfo($file_name, PATHINFO_EXTENSION);
 
@@ -265,10 +255,15 @@ class QrImagesTable extends Table
                     // delete the image from the database.
                     $this->delete($newImage);
 
+                    $emsg = null;
+                    if (Configure::read('debug')) {
+                        $emsg = ' - ' . $exception->getMessage();
+                    }
+
                     // report an error to the web.
-                    $qrImage->setError('newimages', __('Error: {0} - {1}', [
+                    $qrImage->setError('newimages', __('Error: {0}', [
                         $file_name,
-                        $exception->getMessage(),
+                        $emsg,
                     ]));
 
                     continue;
