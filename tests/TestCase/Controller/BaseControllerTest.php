@@ -180,15 +180,15 @@ class BaseControllerTest extends TestCase
     public function helperTestUploads(array $filePaths, string $key, int $errCode = UPLOAD_ERR_OK): array
     {
         $tmpPaths = [];
-        foreach ($filePaths as $i => $filePath) {
-            $tmpPath =  TMP . str_replace('/', '_', trim(str_replace(ROOT, '', $filePath), '/'));
+        foreach ($filePaths as $filePath) {
+            $tmpPath = TMP . str_replace('/', '_', trim(str_replace(ROOT, '', $filePath), '/'));
             $tmpPaths[] = $tmpPath;
             if (file_exists($filePath)) {
                 copy($filePath, $tmpPath);
             }
         }
         $files = [];
-        foreach ($tmpPaths as $i => $tmpPath) {
+        foreach ($tmpPaths as $tmpPath) {
             if (file_exists($filePath)) {
                 $files[] = new UploadedFile(
                     // stream or path to file representing the temp file

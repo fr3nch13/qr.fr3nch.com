@@ -17,7 +17,14 @@ $this->assign('page_title', __('Sources'));
 
         <?php foreach ($sources as $source) : ?>
             <?= $this->Html->link(
-                $source->name . '<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                $source->name . '<span class="
+                position-absolute
+                top-0
+                start-100
+                translate-middle
+                badge
+                rounded-pill
+                bg-danger">
                 ' . count($source->qr_codes) . '
                 <span class="visually-hidden">unread messages</span>
               </span>',

@@ -29,14 +29,31 @@ $this->assign('page_title', __('QR Codes'));
                         <span class="text-muted"><?= $qrCode->qrkey ?></span>
                     </div>
                     <div class="col">
-                        <span class="badge bg-light text-dark rounded-pill"><i class="bi bi-qr-code-scan"></i> <?= $qrCode->hits ?> -  <?= $qrCode->last_hit ?></span>
+                        <span class="
+                            badge
+                            bg-light
+                            text-dark
+                            rounded-pill
+                            "><i
+                                class="bi bi-qr-code-scan"></i>
+                                <?= $qrCode->hits ?> -  <?= $qrCode->last_hit ?>
+                        </span>
                     </div>
                     <div class="col">
                         <?php
                         if ($qrCode->is_active) {
-                            echo '<span class="badge bg-primary rounded-pill"><i class="bi bi-check2 fs-8"></i></span>';
+                            echo '<span class="
+                            badge
+                            bg-primary
+                            rounded-pill
+                            "><i class="bi bi-check2 fs-8"></i></span>';
                         } else {
-                            echo '<span class="badge bg-light text-dark rounded-pill"><i class="bi bi-x fs-8"></i></span>';
+                            echo '<span class="
+                            badge
+                            bg-light
+                            text-dark
+                            rounded-pill
+                            "><i class="bi bi-x fs-8"></i></span>';
                         }
                         ?>
                     </div>

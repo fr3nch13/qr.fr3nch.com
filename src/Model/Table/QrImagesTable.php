@@ -249,7 +249,7 @@ class QrImagesTable extends Table
             $newImage->imorder = $imgCount;
 
             if ($newImage->hasErrors()) {
-                foreach ($newImage->getErrors() as $field => $error) {
+                foreach ($newImage->getErrors() as $error) {
                     foreach ($error as $msg) {
                         $qrImage->setError('newimages', __('Error: {0} - {1}', [
                             $file_name,

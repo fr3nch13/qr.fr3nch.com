@@ -17,7 +17,14 @@ $this->assign('page_title', __('Tags'));
 
         <?php foreach ($tags as $tag) : ?>
             <?= $this->Html->link(
-                $tag->name . '<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                $tag->name . '<span class="
+                position-absolute
+                top-0
+                start-100
+                translate-middle
+                badge
+                rounded-pill
+                bg-danger">
                 ' . count($tag->qr_codes) . '
                 <span class="visually-hidden">unread messages</span>
               </span>',

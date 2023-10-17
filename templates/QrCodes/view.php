@@ -21,7 +21,11 @@ if (!$this->getRequest()->is('ajax')) {
 
     <!-- The QR Code's images -->
     <div class="col-lg-6 position-relative">
-        <h1 class="d-block d-lg-none mb-1 <?= ($qrCode->is_active ? 'active' : 'inactive')?>"><?= h($qrCode->name) ?></h1>
+        <h1 class="
+            d-block
+            d-lg-none
+            mb-1
+            <?= ($qrCode->is_active ? 'active' : 'inactive')?>"><?= h($qrCode->name) ?></h1>
         <div class="row">
 
             <!-- smaller images -->
@@ -120,7 +124,12 @@ if (!$this->getRequest()->is('ajax')) {
     <!-- QR Code details -->
 
     <div class="col-lg-6">
-        <h1 class="d-none d-lg-block mb-0 mb-lg-1 <?= ($qrCode->is_active ? 'active' : 'inactive')?>"><?= h($qrCode->name) ?></h1>
+        <h1 class="
+            d-none
+            d-lg-block
+            mb-0
+            mb-lg-1
+            <?= ($qrCode->is_active ? 'active' : 'inactive')?>"><?= h($qrCode->name) ?></h1>
 
         <div class="text-secondary mb-3"><?= $this->Text->autoParagraph(h($qrCode->description)) ?></div>
 
