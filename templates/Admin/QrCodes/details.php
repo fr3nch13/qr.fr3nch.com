@@ -12,32 +12,9 @@ $this->assign('page_title', $qrCode->name);
 if ($qrCode->id) {
     $this->start('page_options');
 
-    $controller = $this->getRequest()->getParam('controller');
-    $action = $this->getRequest()->getParam('action');
-    $here = $controller . '.' . $action;
-    $tabs = [
-        'QrCodes.view' => [__('Details'), [
-            'controller' => 'QrCodes',
-            'action' => 'view',
-            $qrCode->id,
-        ]],
-        'QrImages.qrCode' => [__('Images'), [
-            'controller' => 'QrImages',
-            'action' => 'qrCode',
-            $qrCode->id,
-        ]],
-        'QrCodes.edit' => [__('Edit'), [
-            'controller' => 'QrCodes',
-            'action' => 'edit',
-            $qrCode->id,
-        ]],
-        'QrCodes.delete' => [__('Delete'), [
-            'controller' => 'QrCodes',
-            'action' => 'delete',
-            $qrCode->id,
-        ]],
-    ];
-
+    $here = $this->getRequest()->getParam('controller') .
+        '.' .
+        $this->getRequest()->getParam('action');
     ?>
     <ul class="nav justify-content-end">
         <li class="nav-item">
@@ -46,7 +23,8 @@ if ($qrCode->id) {
                 'action' => 'view',
                 $qrCode->id,
             ], [
-                'class' => 'nav-link pe-0' . ($here == 'QrCodes.view'  ?? ' active'),
+                'class' => 'nav-link pe-0' .
+                    ($here == 'QrCodes.view' ?? ' active'),
             ]) ?>
         </li>
         <li class="nav-item">
@@ -55,7 +33,8 @@ if ($qrCode->id) {
                 'action' => 'qrCode',
                 $qrCode->id,
             ], [
-                'class' => 'nav-link pe-0' . ($here == 'QrImages.qrCode'  ?? ' active'),
+                'class' => 'nav-link pe-0' .
+                    ($here == 'QrImages.qrCode' ?? ' active'),
             ]) ?>
         </li>
         <li class="nav-item dropdown dropdown-hover">
@@ -67,6 +46,14 @@ if ($qrCode->id) {
                 aria-expanded="false"><?= __('Actions') ?> <i class="bi bi-chevron-down"></i>
             </a>
             <ul class="dropdown-menu" aria-labelledby="dropdownActions">
+                <li><?= $this->Html->link(__('Edit'), [
+                    'controller' => 'QrCodes',
+                    'action' => 'edit',
+                    $qrCode->id,
+                ], [
+                    'class' => 'dropdown-item' .
+                        ($here == 'QrImages.qrCode' ?? ' active'),
+                ]) ?></li>
                 <li><?= $this->Html->link(__('Download'), [
                     'plugin' => false,
                     'prefix' => false,
@@ -74,26 +61,25 @@ if ($qrCode->id) {
                     'action' => 'show',
                     $qrCode->id,
                     '?' => ['download' => true],
-                ], ['class' => 'dropdown-item']) ?></li>
+                ], [
+                    'class' => 'dropdown-item',
+                ]) ?></li>
                 <li><?= $this->Html->link(__('Regenerate'), [
                     'controller' => 'QrCodes',
                     'action' => 'show',
                     $qrCode->id,
                     '?' => ['regen' => true],
-                ], ['class' => 'dropdown-item']) ?></li>
-                <li><?= $this->Html->link(__('Edit'), [
-                    'controller' => 'QrCodes',
-                    'action' => 'edit',
-                    $qrCode->id,
-                ], ['class' => 'dropdown-item']) ?></li>
+                ], [
+                    'class' => 'dropdown-item',
+                ]) ?></li>
                 <li><?= $this->Form->postLink(__('Delete'), [
                     'controller' => 'QrCodes',
                     'action' => 'delete',
                     $qrCode->id,
                 ], [
                     'class' => 'dropdown-item text-red',
-                    'confirm' => __('Are you sure you want to delete: {0}?', $qrCode->qrkey)
-                    ]); ?></li>
+                    'confirm' => __('Are you sure you want to delete: {0}?', $qrCode->qrkey),
+                ]); ?></li>
             </ul>
         </li>
     </ul>
