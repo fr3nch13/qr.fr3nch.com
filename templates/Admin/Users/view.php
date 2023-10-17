@@ -7,17 +7,53 @@ if (!$this->getRequest()->is('ajax')) {
     $this->setLayout('dashboard/view');
 }
 
-$this->assign('page_title', __('Profile'));
+$this->assign('page_title', $user->name);
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 
-<div class="container bg-white">
-    <div class="row py-2">
-        <div class="col text-center">
-            Coming Soon
+
+<div class="card bg-opaque-white">
+    <div class="card-body p-2 p-lg-5">
+        <div class="row">
+            <div class="col-lg-4">
+                <?= $this->Html->avatar('lg') ?>
+            </div>
+            <div class="col-lg-8">
+                <dl class="row">
+                    <dt class="col-4 col-md-3"><?= __('Name') ?></dt>
+                    <dd class="col-8 col-md-9"><?= h($user->name) ?> </dd>
+
+                    <dt class="col-4 col-md-3"><?= __('Email') ?></dt>
+                    <dd class="col-8 col-md-9"><?= h($user->email) ?> </dd>
+
+                    <dt class="col-4 col-md-3"><?= __('Created') ?></dt>
+                    <dd class="col-8 col-md-9"><?= h($user->created) ?> </dd>
+                </dl>
+            </div>
+        </div>
+        <div class="row pt-2">
+            <div class="col-lg-12">
+                <h5><?= __('Codes') ?></h5>
+                <?php foreach ($user->qr_codes as $qrCode) : ?>
+                    <a
+                        href="<?= $this->Url->build([
+                            'plugin' => false,
+                            'prefix' => 'Admin',
+                            'controller' => 'QrCodes',
+                            'action' => 'view',
+                            $qrCode->id,
+                        ]) ?>"
+                        class="
+                        my-1 my-md-2 mx-1 mx-md-2
+                        btn btn-sm btn-light btn-outline-secondary
+                        rounded-pill" role="button"><?= $qrCode->name ?></a>
+                <?php endforeach; ?>
+            </div>
         </div>
     </div>
 </div>
+
+
 <!--
 <div class="row">
     <aside class="column">

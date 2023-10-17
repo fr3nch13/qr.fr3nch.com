@@ -30,8 +30,14 @@ class HtmlHelper extends BootstrapUiHtmlHelper
      * Creates the avatar html
      *
      * @param string $size The one of three sizes [sm, md, lg]
+     * @param string $wrapperClasses Classes you want to add to the div wrapper
+     * @param string $iconClasses Classes you want to add to the icon
      */
-    public function avatar(string $size = 'md'): string
+    public function avatar(
+        string $size = 'md',
+        string $wrapperClasses = '',
+        string $iconClasses = ''
+    ): string
     {
         $wrapper = '<div class="avatar-{0} d-flex align-items-center justify-content-center {1}">{2}</div>';
         $wrapperClass = 'bg-light';
@@ -41,8 +47,8 @@ class HtmlHelper extends BootstrapUiHtmlHelper
         if (!$this->ActiveUser->isLoggedIn()) {
             return __($wrapper, [
                 $size,
-                $wrapperClass,
-                __($icon, [$iconClass])
+                $wrapperClass . ' ' . $wrapperClasses,
+                __($icon, [$iconClass. ' ' . $iconClasses])
             ]);
         }
 
@@ -51,8 +57,8 @@ class HtmlHelper extends BootstrapUiHtmlHelper
             $iconClass = 'text-light';
             return __($wrapper, [
                 $size,
-                $wrapperClass,
-                __($icon, [$iconClass])
+                $wrapperClass . ' ' . $wrapperClasses,
+                __($icon, [$iconClass. ' ' . $iconClasses])
             ]);
         }
 

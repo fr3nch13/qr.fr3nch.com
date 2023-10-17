@@ -85,7 +85,9 @@ class UsersController extends AppController
 
         $this->request->allowMethod(['get']);
 
-        $user = $this->Users->get((int)$id, contain: []);
+        $user = $this->Users->get((int)$id, contain: [
+            'QrCodes',
+        ]);
         $this->Authorization->authorize($user);
 
         $this->set(compact('user'));

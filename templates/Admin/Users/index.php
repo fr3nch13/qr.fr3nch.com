@@ -12,10 +12,12 @@ $this->assign('page_title', __('Users'));
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 
-<div class="container bg-white">
-    <div class="row py-2">
-        <div class="col text-center">
-            Coming Soon
+<div class="card bg-opaque-white">
+    <div class="card-body p-2 p-lg-5">
+        <div class="row">
+            <div class="col text-center">
+                Coming Soon
+            </div>
         </div>
     </div>
 </div>

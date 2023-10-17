@@ -11,59 +11,61 @@ if (!$this->getRequest()->is('ajax')) {
 $this->assign('page_title', __('QR Codes'));
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
-<div class="container bg-white">
-    <?php foreach ($qrCodes as $qrCode) : ?>
-    <div class="row border-bottom py-2">
-        <a
-            class="col-12 <?= $qrCode->is_active ? 'text-dark' : 'text-muted' ?>" href="<?= $this->Url->build([
-                'controller' => 'QrCodes',
-                'action' => 'view',
-                $qrCode->id,
-            ]) ?>">
-            <div class="col">
-                <div class="row">
-                    <h5><?= $qrCode->name ?></h5>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <span class="text-muted"><?= $qrCode->qrkey ?></span>
+<div class="card bg-opaque-white">
+    <div class="card-body p-2 p-lg-5">
+        <?php foreach ($qrCodes as $qrCode) : ?>
+        <div class="row border-bottom py-2">
+            <a
+                class="col-12 <?= $qrCode->is_active ? 'text-dark' : 'text-muted' ?>" href="<?= $this->Url->build([
+                    'controller' => 'QrCodes',
+                    'action' => 'view',
+                    $qrCode->id,
+                ]) ?>">
+                <div class="col">
+                    <div class="row">
+                        <h5><?= $qrCode->name ?></h5>
                     </div>
-                    <div class="col">
-                        <span class="
-                            badge
-                            bg-light
-                            text-dark
-                            rounded-pill
-                            "><i
-                                class="bi bi-qr-code-scan"></i>
-                                <?= $qrCode->hits ?> -  <?= $qrCode->last_hit ?>
-                        </span>
+                    <div class="row">
+                        <div class="col">
+                            <span class="text-muted"><?= $qrCode->qrkey ?></span>
+                        </div>
+                        <div class="col">
+                            <span class="
+                                badge
+                                bg-light
+                                text-dark
+                                rounded-pill
+                                "><i
+                                    class="bi bi-qr-code-scan"></i>
+                                    <?= $qrCode->hits ?> -  <?= $qrCode->last_hit ?>
+                            </span>
+                        </div>
+                        <div class="col">
+                            <?php
+                            if ($qrCode->is_active) {
+                                echo '<span class="
+                                badge
+                                bg-primary
+                                rounded-pill
+                                "><i class="bi bi-check2 fs-8"></i></span>';
+                            } else {
+                                echo '<span class="
+                                badge
+                                bg-light
+                                text-dark
+                                rounded-pill
+                                "><i class="bi bi-x fs-8"></i></span>';
+                            }
+                            ?>
+                        </div>
                     </div>
-                    <div class="col">
-                        <?php
-                        if ($qrCode->is_active) {
-                            echo '<span class="
-                            badge
-                            bg-primary
-                            rounded-pill
-                            "><i class="bi bi-check2 fs-8"></i></span>';
-                        } else {
-                            echo '<span class="
-                            badge
-                            bg-light
-                            text-dark
-                            rounded-pill
-                            "><i class="bi bi-x fs-8"></i></span>';
-                        }
-                        ?>
-                    </div>
-                </div>
 
 
-            </div>
-        </a>
+                </div>
+            </a>
+        </div>
+        <?php endforeach; ?>
     </div>
-    <?php endforeach; ?>
 </div>
 
 <div class="container py-2">

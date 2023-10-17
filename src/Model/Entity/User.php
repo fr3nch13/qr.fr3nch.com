@@ -25,6 +25,8 @@ use Cake\ORM\Entity;
  *
  * @property string|null $path (Virtual field) Path to the generated QR Code file.
  *
+ * @property \App\Model\Entity\QrCode[] $qr_codes List of Codes that the user owns.
+ *
  * @property \Authorization\AuthorizationServiceInterface $authorization
  */
 class User extends Entity implements AuthorizationIdentity, AuthenticationIdentity

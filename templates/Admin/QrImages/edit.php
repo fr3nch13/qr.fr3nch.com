@@ -4,7 +4,7 @@
  * @var \App\Model\Entity\QrImage $qrImage
  */
 if (!$this->getRequest()->is('ajax')) {
-    $this->setLayout('dashboard/form');
+    $this->extend('/Admin/QrCodes/details');
 }
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
