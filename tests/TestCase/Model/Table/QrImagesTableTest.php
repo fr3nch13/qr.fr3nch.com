@@ -324,6 +324,23 @@ class QrImagesTableTest extends TestCase
         $this->assertFalse($entity->generateThumb('lg'));
         $this->assertNull($entity->getPathThumb('lg'));
         $this->assertNull($entity->path_lg);
+    }
+
+    /**
+     * Test bad thumbnail size.
+     *
+     * @return void
+     * @uses \App\Model\Entity\User
+     */
+    public function testThumbBadSize(): void
+    {
+        $tmpdir = TMP . 'qr_images_test';
+        Configure::write('App.paths.qr_images', $tmpdir);
+
+        $entity = $this->QrImages->get(1);
+        $entityPath = $tmpdir . DS . $entity->qr_code_id . DS . $entity->id . '.' . $entity->ext;
+        $this->assertTrue(is_file($entityPath));
+        $this->assertSame($entityPath, $entity->path);
 
         // the thumbnail bad size
         $this->expectException(ThumbException::class);
