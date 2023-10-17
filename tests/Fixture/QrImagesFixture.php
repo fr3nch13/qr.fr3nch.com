@@ -114,10 +114,6 @@ class QrImagesFixture extends CoreFixture
     /**
      * Inserts the records into the database before each test.
      *
-     * TODO: Remove this fixture from places that don't need it
-     * Since it copies files and slows down tests.
-     * labels: fixtures, tests
-     *
      * @return bool
      */
     public function insert(ConnectionInterface $connection): bool

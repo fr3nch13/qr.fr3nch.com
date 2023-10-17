@@ -62,9 +62,6 @@ class QrCodesController extends AppController
     /**
      * The method that handles the forwarding
      *
-     * TODO: Increment the `hits` field, but only here, not the admin
-     * lables: database
-     *
      * @param ?string $key The QR Code key to lookup.
      * @return \Cake\Http\Response|null The response object.
      */

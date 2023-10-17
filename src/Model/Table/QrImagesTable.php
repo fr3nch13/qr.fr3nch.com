@@ -15,6 +15,8 @@ use Cake\ORM\Table;
 use Cake\Utility\Inflector;
 use Cake\Validation\Validator;
 use Laminas\Diactoros\Exception\ExceptionInterface;
+use const UPLOAD_ERR_FORM_SIZE;
+use const UPLOAD_ERR_INI_SIZE;
 use const UPLOAD_ERR_NO_FILE;
 
 /**
@@ -172,7 +174,7 @@ class QrImagesTable extends Table
             $error = $image->getError();
 
             if ($error) {
-                if ($error === 1 || $error === 2) {
+                if ($error === UPLOAD_ERR_INI_SIZE || $error === UPLOAD_ERR_FORM_SIZE) {
                     $qrImage->setError('newimages', __('The file `{0}` is too big.', [
                         $image->getClientFilename(),
                         $error,

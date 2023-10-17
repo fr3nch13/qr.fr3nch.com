@@ -258,8 +258,6 @@ class FormsTest extends BaseControllerTest
 
     /**
      * Test edit method
-     * TODO: expend testing, especially when trying to change the image/file.
-     * labels: frontend, templates, form, upload
      *
      * @return void
      * @uses \App\Controller\Admin\QrImagesController::edit()

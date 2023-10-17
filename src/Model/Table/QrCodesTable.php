@@ -252,9 +252,8 @@ class QrCodesTable extends Table
     public function afterSave(Event $event, QrCode $entity, ArrayObject $options): void
     {
         // This should trigger creating a QR Code if it doesn't exist,
-        // as the Entity's firtual field will try to generate one.
+        // as the Entity's virtual field will try to generate one.
         // so we just need to trigger that firtual field.
-        // TODO: Test this to make sure we output the exception properly.
         if (!$entity->path) {
             throw new InternalErrorException('Unable to create QR Code.');
         }

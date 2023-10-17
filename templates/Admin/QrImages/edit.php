@@ -6,8 +6,6 @@
 if (!$this->getRequest()->is('ajax')) {
     $this->setLayout('dashboard/form');
 }
-// TODO: make the edit form for images
-// labels: images, templates
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <?= $this->Form->create($qrImage) ?>
