@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Model\Table;
 
+use App\Exception\ThumbException;
 use App\Lib\GoogleQrGenerator;
 use App\Lib\LogoOptions;
 use App\Lib\PhpQrGenerator;
