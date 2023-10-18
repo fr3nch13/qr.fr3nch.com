@@ -36,7 +36,7 @@ $logoImage = $this->Html->image($logoImage, [
                     role="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#userNav"
-                    aria-expanded="false"><?= $this->Html->avatar('sm') ?></i>
+                    aria-expanded="false"><?= $this->Html->avatar('sm') ?>
                 </a>
             </li>
             <?php if ($this->ActiveUser->isLoggedIn()) : ?>
@@ -47,7 +47,7 @@ $logoImage = $this->Html->image($logoImage, [
                     role="button"
                     id="dropdownMenuButton1"
                     data-bs-toggle="dropdown"
-                    aria-expanded="false"><?= $this->Html->avatar('sm') ?></i>
+                    aria-expanded="false"><?= $this->Html->avatar('sm') ?>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                     <li class="mb-1"><?= __('Hello {0}', [

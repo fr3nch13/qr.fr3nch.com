@@ -14,7 +14,8 @@ $this->start('layout');
 
     <?= $this->Template->objectComment('OffCanvas/wrap') ?>
     <div class="offcanvas-wrap">
-        <section class="py-20 pages-view">
+        <section class="py-20 pages-form">
+            <h2 class="d-none"><?= __('Main COntent') ?></h2>
             <div class="container mt-5">
                 <?= $this->Flash->render() ?>
             </div>

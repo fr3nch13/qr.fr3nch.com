@@ -51,7 +51,7 @@ class TemplateTest extends BaseControllerTest
         $this->helperTestObjectComment(3, 'QrImages/entity/active');
 
         // validate the html
-        $this->helperValidateHTML();
+        $this->helperValidateHTML(true);
     }
 
     /**
@@ -100,7 +100,7 @@ class TemplateTest extends BaseControllerTest
         $this->helperTestTemplate('Admin/QrImages/add');
 
         // validate the html
-        $this->helperValidateHTML();
+        $this->helperValidateHTML(true);
     }
 
     /**
@@ -153,7 +153,7 @@ class TemplateTest extends BaseControllerTest
         $this->helperTestTemplate('Admin/QrImages/edit');
 
         // validate the html
-        $this->helperValidateHTML();
+        $this->helperValidateHTML(true);
     }
 
     /**

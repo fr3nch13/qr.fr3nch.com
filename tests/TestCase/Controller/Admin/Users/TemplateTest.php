@@ -74,7 +74,7 @@ class TemplateTest extends BaseControllerTest
         $this->helperTestTemplate('Admin/Users/dashboard');
 
         // validate the html
-        $this->helperValidateHTML();
+        $this->helperValidateHTML(true);
     }
 
     /**
@@ -157,7 +157,7 @@ class TemplateTest extends BaseControllerTest
         $this->helperTestTemplate('Admin/Users/index');
 
         // validate the html
-        $this->helperValidateHTML();
+        $this->helperValidateHTML(true);
     }
 
     /**
@@ -251,7 +251,7 @@ class TemplateTest extends BaseControllerTest
         $this->helperTestTemplate('Admin/Users/view');
 
         // validate the html
-        $this->helperValidateHTML();
+        $this->helperValidateHTML(true);
     }
 
     /**
@@ -342,7 +342,7 @@ class TemplateTest extends BaseControllerTest
         $this->helperTestTemplate('Admin/Users/add');
 
         // validate the html
-        $this->helperValidateHTML();
+        $this->helperValidateHTML(true);
     }
 
     /**
@@ -395,7 +395,7 @@ class TemplateTest extends BaseControllerTest
         $this->helperTestTemplate('Admin/Users/edit');
 
         // validate the html
-        $this->helperValidateHTML();
+        $this->helperValidateHTML(true);
     }
 
     /**

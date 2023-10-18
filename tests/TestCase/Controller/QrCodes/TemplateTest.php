@@ -71,7 +71,7 @@ class TemplateTest extends BaseControllerTest
         $this->helperTestObjectComment(3, 'QrImages/active/first');
 
         // validate the html
-        $this->helperValidateHTML();
+        $this->helperValidateHTML(true);
     }
 
     /**
@@ -154,7 +154,7 @@ class TemplateTest extends BaseControllerTest
         $this->helperTestObjectComment(1, 'QrCode/forward');
 
         // validate the html
-        $this->helperValidateHTML();
+        $this->helperValidateHTML(true);
     }
 
     /**
