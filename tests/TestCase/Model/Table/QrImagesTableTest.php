@@ -191,18 +191,20 @@ class QrImagesTableTest extends TestCase
         // we also copy over the assets in QrImagesFixture::insert()
 
         $tmpdir = TMP . 'qr_images_test';
+        Configure::write('App.paths.qr_images', $tmpdir);
+
         // test the paths here.
         // this one has an image file.
         $entity = $this->QrImages->get(1);
         $entityPath = $tmpdir . DS . $entity->qr_code_id . DS . $entity->id . '.' . $entity->ext;
-        $this->assertTrue(is_file($entityPath));
         $this->assertSame($entityPath, $entity->path);
+        $this->assertTrue(is_file($entityPath));
 
         // this one is missing an image file.
         $entity = $this->QrImages->get(4);
         $entityPath = $tmpdir . DS . $entity->qr_code_id . DS . $entity->id . '.' . $entity->ext;
-        $this->assertFalse(is_file($entityPath));
         $this->assertNull($entity->path);
+        $this->assertFalse(is_file($entityPath));
     }
 
     /**
