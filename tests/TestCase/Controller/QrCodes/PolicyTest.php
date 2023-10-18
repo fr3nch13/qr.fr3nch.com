@@ -103,7 +103,6 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/qr-codes');
         $this->assertResponseOk();
         $this->helperTestTemplate('QrCodes/index');
-        $content = (string)$this->_response->getBody();
         // make sure only active are listed.
         $this->helperTestObjectComment(3, 'QrCode/active');
         $this->helperTestObjectComment(0, 'QrCode/inactive');

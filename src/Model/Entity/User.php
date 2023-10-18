@@ -8,7 +8,6 @@ use Authentication\PasswordHasher\DefaultPasswordHasher;
 use Authorization\AuthorizationServiceInterface;
 use Authorization\IdentityInterface as AuthorizationIdentity;
 use Authorization\Policy\ResultInterface;
-use Cake\Core\Configure;
 use Cake\ORM\Entity;
 
 /**
