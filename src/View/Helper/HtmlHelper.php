@@ -43,18 +43,12 @@ class HtmlHelper extends BootstrapUiHtmlHelper
         string $wrapperClasses = '',
         string $iconClasses = ''
     ): string {
-        $wrapper = '<div class="avatar-{0} d-flex align-items-center justify-content-center {1}">{2}</div>';
-        $wrapperClass = 'bg-light';
-        $icon = '<i class="bi bi-person {0}"></i>';
-        $iconClass = 'text-primary';
+        $wrapper = '<span class="avatar avatar-{0} {1}">{2}</span>';
+        $wrapperClass = '';
 
         if (!$user) {
             if (!$this->ActiveUser->isLoggedIn()) {
-                return __($wrapper, [
-                    $size,
-                    $wrapperClass . ' ' . $wrapperClasses,
-                    __($icon, [$iconClass . ' ' . $iconClasses]),
-                ]);
+                return $this->icon('person');
             }
             $user = $this->ActiveUser->getUser();
         }
@@ -62,7 +56,7 @@ class HtmlHelper extends BootstrapUiHtmlHelper
         return __($wrapper, [
             $size,
             $wrapperClass . ' ' . $wrapperClasses,
-            $this->Gravatar->avatar($user, ['class' => 'avatar-' . $size]),
+            $this->Gravatar->avatar($user, ['class' => 'rounded-circle img-responsive']),
         ]);
     }
 }

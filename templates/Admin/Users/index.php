@@ -12,12 +12,73 @@ $this->assign('page_title', __('Users'));
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 
+
 <div class="card bg-opaque-white">
     <div class="card-body p-2 p-lg-5">
-        <div class="row">
-            <div class="col text-center">
-                Coming Soon
+        <div class="row justify-content-between">
+        <?php foreach ($users as $user) : ?>
+            <div class="col-md-6">
+                <div class="card mb-2 shadow-sm border bg-white">
+
+                    <?= $this->Template->objectComment('QrImages/entity'); ?>
+                    <?php if (!$user->is_active) : ?>
+                    <div class="ribbon red"><span><?= __('Inactive') ?></span></div>
+                        <?= $this->Template->objectComment('QrImages/entity/inactive'); ?>
+                    <?php else : ?>
+                        <?= $this->Template->objectComment('QrImages/entity/active'); ?>
+                    <?php endif; ?>
+
+                    <div class="card-content">
+                        <div class="row px-4 py-3">
+                            <div class="col-4">
+                                <?= $this->Html->avatar('sm', $user) ?>
+                            </div>
+                            <div class="col-8">
+                                <div class="card-title">
+                                    <?= $user->name ?>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-body p-2 border-top">
+                            <div class="row fs-80">
+                                    <dt class="col-12 col-md-4"><?= __('Email') ?></dt>
+                                    <dd class="col-12 col-md-8"><?= h($user->email) ?> </dd>
+
+                                    <dt class="col-4"><?= __('Admin') ?></dt>
+                                    <dd class="col-8"><?php
+                                    if ($user->is_admin) {
+                                        echo $this->Html->icon('check');
+                                    } else {
+                                        echo $this->Html->icon('x');
+                                    }
+                                    ?></dd>
+
+                                    <dt class="col-4"><?= __('Created') ?></dt>
+                                    <dd class="col-8"><?= h($user->created ? $user->created->format('M d, Y') : null) ?> </dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer text-muted p-0 btn-group">
+                        <?= $this->Html->link(__('View'), [
+                            'action' => 'view',
+                            $user->id,
+                        ], [
+                        'class' => 'btn btn-sm btn-light',
+                        ]) ?>
+
+                        <?= $this->Html->link(__('Edit'), [
+                            'action' => 'edit',
+                            $user->id,
+                        ], [
+                        'class' => 'btn btn-sm btn-light',
+                        ]) ?>
+                    </div>
+                </div>
             </div>
+        <?php endforeach; ?>
         </div>
     </div>
 </div>

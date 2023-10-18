@@ -55,6 +55,11 @@ class TemplateTest extends BaseControllerTest
         // TODO: Also look for sub-layout page.
         $this->helperTestTemplate('Admin/QrCodes/index');
 
+        // look for code comments.
+        $this->helperTestObjectComment(5, 'QrCode/entity');
+        $this->helperTestObjectComment(3, 'QrCode/entity/active');
+        $this->helperTestObjectComment(2, 'QrCode/entity/inactive');
+
         // validate the html
         $this->helperValidateHTML(true);
     }
