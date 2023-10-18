@@ -38,7 +38,7 @@ $this->assign('page_title', __('Settings'));
             <div class="col-6">
                 <?= $this->Form->control('gravatar_email', [
                     'type' => 'text',
-                    'required' => true,
+                    'required' => false,
                     'spacing' => 'mb-2',
                     'placeholder' => 'gravatar@email.com',
                     'label' => __('Gravatar Email'),
@@ -50,6 +50,19 @@ $this->assign('page_title', __('Settings'));
                 ]); ?>
             </div>
         </div>
+        <?php if ($this->ActiveUser->isAdmin() || $this->ActiveUser->isMe($user)) : ?>
+        <div class="row">
+            <div class="col">
+                <?= $this->Form->control('password', [
+                    'required' => false,
+                    'spacing' => 'mb-2',
+                    'label' => __('Change Password'),
+                    'value' => '',
+                    'help' => __('To change the password, enter a new one here. Otherwise leave it blank.'),
+                ]); ?>
+            </div>
+        </div>
+        <?php endif; ?>
         <?php if ($this->ActiveUser->isAdmin()) : ?>
         <div class="row">
             <div class="col-6 form-switch mt-4">

@@ -43,7 +43,7 @@ if ($qrCode->id) {
                 role="button"
                 id="dropdownActions"
                 data-bs-toggle="dropdown"
-                aria-expanded="false"><?= __('Actions') ?> <i class="bi bi-chevron-down"></i>
+                aria-expanded="false"><?= __('Actions') ?> <?= $this->Html->icon('chevron-down') ?>
             </a>
             <ul class="dropdown-menu" aria-labelledby="dropdownActions">
                 <li><?= $this->Html->link(__('Edit'), [

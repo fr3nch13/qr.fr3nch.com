@@ -11,8 +11,8 @@ $sort = $this->Paginator->param('sort');
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <?php foreach ($sorts as $key => $name) {
-    $nameAsc = $name . ' <i class="bi bi-chevron-down"></i>';
-    $nameDesc = $name . ' <i class="bi bi-chevron-up"></i>';
+    $nameAsc = $name . $this->Html->icon('chevron-down');
+    $nameDesc = $name . $this->Html->icon('chevron-up');
 
     $classActive = null;
     if (str_contains($class, 'btn')) {

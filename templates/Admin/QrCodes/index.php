@@ -18,12 +18,12 @@ $this->assign('page_title', __('QR Codes'));
             <div class="col-md-6">
                 <div class="card mb-2 shadow-sm">
 
-                    <?= $this->Template->objectComment('QrImages/entity'); ?>
+                    <?= $this->Template->objectComment('QrCode/entity'); ?>
                     <?php if (!$qrCode->is_active) : ?>
-                    <div class="ribbon red"><span><?= __('Inactive') ?></span></div>
-                        <?= $this->Template->objectComment('QrImages/entity/inactive'); ?>
+                        <div class="ribbon red level-2"><span><?= __('Inactive') ?></span></div>
+                        <?= $this->Template->objectComment('QrCode/entity/inactive'); ?>
                     <?php else : ?>
-                        <?= $this->Template->objectComment('QrImages/entity/active'); ?>
+                        <?= $this->Template->objectComment('QrCode/entity/active'); ?>
                     <?php endif; ?>
 
                     <?php
@@ -47,7 +47,7 @@ $this->assign('page_title', __('QR Codes'));
                         class="background background-overlay"
                         style="background-image: url('<?= $bgUrl ?>')"></figure>
 
-                    <div class="card-content level-2">
+                    <div class="card-content level-3">
                         <div class="card-title text-center text-white"><?= $qrCode->name ?></div>
                         <div class="card-body text-white d-block py-5 py-md-10">
                             <div class="row">

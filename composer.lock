@@ -146,12 +146,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/cakephp.git",
-                "reference": "753830ffef3990348d26c57d633ca30cc4bd6f57"
+                "reference": "47c8ab9c54283799f758c798d12fac41cc061446"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/753830ffef3990348d26c57d633ca30cc4bd6f57",
-                "reference": "753830ffef3990348d26c57d633ca30cc4bd6f57",
+                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/47c8ab9c54283799f758c798d12fac41cc061446",
+                "reference": "47c8ab9c54283799f758c798d12fac41cc061446",
                 "shasum": ""
             },
             "require": {
@@ -167,11 +167,11 @@
                 "psr/container": "^1.1 || ^2.0",
                 "psr/http-client": "^1.0.2",
                 "psr/http-factory": "^1.0.2",
-                "psr/http-message": "^2.0",
+                "psr/http-message": "^1.0 || ^2.0",
                 "psr/http-server-handler": "^1.0.2",
                 "psr/http-server-middleware": "^1.0.2",
                 "psr/log": "^3.0",
-                "psr/simple-cache": "^3.0"
+                "psr/simple-cache": "^2.0 || ^3.0"
             },
             "provide": {
                 "psr/container-implementation": "^2.0",
@@ -256,7 +256,7 @@
                 "issues": "https://github.com/cakephp/cakephp/issues",
                 "source": "https://github.com/cakephp/cakephp"
             },
-            "time": "2023-10-17T21:57:46+00:00"
+            "time": "2023-10-18T07:29:09+00:00"
         },
         {
             "name": "cakephp/chronos",

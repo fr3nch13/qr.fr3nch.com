@@ -11,37 +11,32 @@ $this->assign('page_title', $user->name);
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <div class="card bg-opaque-white">
-    <div class="card-body p-2 p-lg-5">
+    <div class="card-body p-2 p-md-5">
         <div class="row">
-            <div class="col-md-4">
-                <div class="d-flex justify-content-center  position-relative">
-                    <?= $this->Html->avatar('lg', $user) ?>
+            <div class="col-12 col-md-4 position-relative">
+                    <?= $this->Html->avatar('xxl', $user) ?>
                     <a
                         href="https://gravatar.com"
                         target="gravatar"
                         class="
                             position-absolute
-                            top-80
-                            start-80
+                            top-10
+                            start-10
                             translate-middle
-                            pt-5
-                            ps-0
-                            ps-md-5
                             ">
-                        <i class="bi bi-camera"></i>
+                            <?= $this->Html->icon('camera') ?>
                     </a>
-                </div>
             </div>
-            <div class="col-md-8">
+            <div class="col-12 col-md-8">
                 <dl class="row pt-4">
-                    <dt class="col-4 col-md-3"><?= __('Name') ?></dt>
-                    <dd class="col-8 col-md-9"><?= h($user->name) ?> </dd>
+                    <dt class="col-4"><?= __('Name') ?></dt>
+                    <dd class="col-8"><?= h($user->name) ?> </dd>
 
-                    <dt class="col-4 col-md-3"><?= __('Email') ?></dt>
-                    <dd class="col-8 col-md-9"><?= h($user->email) ?> </dd>
+                    <dt class="col-4"><?= __('Email') ?></dt>
+                    <dd class="col-8"><?= h($user->email) ?> </dd>
 
-                    <dt class="col-4 col-md-3"><?= __('Created') ?></dt>
-                    <dd class="col-8 col-md-9"><?= h($user->created ? $user->created->format('M d, Y') : null) ?> </dd>
+                    <dt class="col-4"><?= __('Created') ?></dt>
+                    <dd class="col-8"><?= h($user->created ? $user->created->format('M d, Y') : null) ?> </dd>
                 </dl>
             </div>
         </div>

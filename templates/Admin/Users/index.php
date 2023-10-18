@@ -12,68 +12,92 @@ $this->assign('page_title', __('Users'));
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 
+
 <div class="card bg-opaque-white">
     <div class="card-body p-2 p-lg-5">
-        <div class="row">
-            <div class="col text-center">
-                Coming Soon
+        <div class="row justify-content-between">
+        <?php foreach ($users as $user) : ?>
+            <div class="col-md-6">
+                <div class="card mb-2 shadow-sm border bg-white">
+
+                    <?= $this->Template->objectComment('QrImages/entity'); ?>
+                    <?php if (!$user->is_active) : ?>
+                    <div class="ribbon red"><span><?= __('Inactive') ?></span></div>
+                        <?= $this->Template->objectComment('QrImages/entity/inactive'); ?>
+                    <?php else : ?>
+                        <?= $this->Template->objectComment('QrImages/entity/active'); ?>
+                    <?php endif; ?>
+
+                    <div class="card-content">
+                        <div class="row px-4 py-3">
+                            <div class="col-4">
+                                <?= $this->Html->avatar('sm', $user) ?>
+                            </div>
+                            <div class="col-8">
+                                <div class="card-title">
+                                    <?= $user->name ?>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-body p-2 border-top">
+                            <dl class="row fs-80">
+                                <dt class="col-12 col-md-4"><?= __('Email') ?></dt>
+                                <dd class="col-12 col-md-8"><?= h($user->email) ?> </dd>
+
+                                <dt class="col-4"><?= __('Admin') ?></dt>
+                                <dd class="col-8"><?php
+                                if ($user->is_admin) {
+                                    echo $this->Html->icon('check');
+                                } else {
+                                    echo $this->Html->icon('x');
+                                }
+                                ?></dd>
+
+                                <dt class="col-4"><?= __('Created') ?></dt>
+                                <dd class="col-8"><?php
+                                if ($user->created) {
+                                    echo $user->created->format('M d, Y');
+                                }
+                                ?></dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <div class="card-footer text-muted p-0 btn-group">
+
+                        <?= $this->Html->link(__('View'), [
+                            'action' => 'view',
+                            $user->id,
+                                    ], [
+                                    'class' => 'btn btn-sm btn-light',
+                                    ]) ?>
+
+                        <?= $this->Html->link(__('Edit'), [
+                            'action' => 'edit',
+                            $user->id,
+                        ], [
+                        'class' => 'btn btn-sm btn-light',
+                        ]) ?>
+                    </div>
+                </div>
             </div>
+        <?php endforeach; ?>
         </div>
     </div>
 </div>
-<!--
-<div class="users index content">
-    <?= $this->Html->link(__('New User'), ['action' => 'add'], ['class' => 'button float-right']) ?>
-    <h3><?= __('Users') ?></h3>
-    <div class="table-responsive">
-        <table>
-            <thead>
-                <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
-                    <th><?= $this->Paginator->sort('name') ?></th>
-                    <th><?= $this->Paginator->sort('email') ?></th>
-                    <th><?= $this->Paginator->sort('created') ?></th>
-                    <th><?= $this->Paginator->sort('modified') ?></th>
-                    <th class="actions"><?= __('Actions') ?></th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($users as $user) : ?>
-                <tr>
-                    <td><?= $this->Number->format($user->id) ?></td>
-                    <td><?= h($user->name) ?></td>
-                    <td><?= h($user->email) ?></td>
-                    <td><?= h($user->created) ?></td>
-                    <td><?= h($user->modified) ?></td>
-                    <td class="actions">
-                        <?= $this->Html->link(__('View'), ['action' => 'view', $user->id]) ?>
-                        <?= $this->Html->link(__('Edit'), ['action' => 'edit', $user->id]) ?>
-                        <?= $this->Form->postLink(__('Delete'), [
-                            'action' => 'delete',
-                            $user->id,
-                        ], [
-                            'confirm' => __('Are you sure you want to delete # {0}?', $user->id),
-                        ]) ?>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    </div>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(__('Page {{page}} of {{pages}}, ' .
-            'showing {{current}} record(s) out of {{count}} total')) ?></p>
-    </div>
-</div>
--->
 
+<div class="container py-2">
+    <nav aria-label="Pagination" class="text-center">
+        <ul class="pagination">
+            <?= $this->Paginator->first('&laquo;', ['label' => 'First']) ?>
+            <?= $this->Paginator->prev('<', ['label' => 'Previous']) ?>
+            <?= $this->Paginator->numbers() ?>
+            <?= $this->Paginator->next('>', ['label' => 'Next']) ?>
+            <?= $this->Paginator->last('&laquo;', ['label' => 'Last']) ?>
+        </ul>
+    </nav>
+</div>
 
 <?php $this->start('page_options'); ?>
 <ul class="list-inline">

@@ -7,32 +7,18 @@ footer img.logo-bottom {
 
 }
 
-/** Avatars **/
-.avatar-sm {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+.avatar[class*="-xl"] {
+    width: 7rem;
+    height: 7rem;
 }
-    .avatar-sm i.bi {
-        font-size: 1rem;
-    }
-.avatar-md {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
+.avatar[class*="-xxl"] {
+    width: 9rem;
+    height: 9rem;
 }
-    .avatar-md i.bi {
-        font-size: 3.5rem;
-    }
-.avatar-lg {
-    vertical-align: middle;
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
+
+.fs-80 {
+    font-size: 80%;
 }
-    .avatar-lg i.bi {
-        font-size: 7rem;
-    }
 
 /** Hover for main page **/
 .card .background-overlay:has(+ .card-content:hover)::after {
