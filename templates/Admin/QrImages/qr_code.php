@@ -26,31 +26,32 @@ if (!$this->getRequest()->is('ajax')) {
 
 <div class="row">
     <?php foreach ($qrImages as $qrImage) : ?>
-        <div class="col">
-            <div class="card text-center border mb-2">
-                <?= $this->Template->objectComment('QrImages/entity'); ?>
+        <div class="col-md-6">
+            <div class="card text-center border mb-2 shadow-sm">
+
+            <?= $this->Template->objectComment('QrImages/entity'); ?>
                 <?php if (!$qrImage->is_active) : ?>
                 <div class="ribbon red"><span><?= __('Inactive') ?></span></div>
                     <?= $this->Template->objectComment('QrImages/entity/inactive'); ?>
                 <?php else : ?>
                     <?= $this->Template->objectComment('QrImages/entity/active'); ?>
                 <?php endif; ?>
-                <div class="card-body p-3">
 
-                    <div class="card-title"><?= $qrImage->name ?></div>
-                    <a
-                        href="#"
-                        data-bs-toggle="modal"
-                        data-bs-target="#modal-<?= $qrImage->id ?>">
-                        <img
-                            class="img-fluid"
-                            src="<?= $this->Url->build([
+                <div class="card-body py-5 py-md-10">
+                <a
+                    href="#"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modal-<?= $qrImage->id ?>">
+                        <figure
+                            class="background background-overlay"
+                            style="background-image: url('<?= $this->Url->build([
+                                'prefix' => false,
                                 'action' => 'show',
                                 $qrImage->id,
-                                '?' => ['thumb' => 'sm'],
-                                ]) ?>"
-                            alt="<?= $qrImage->name ?>">
-                    </a>
+                                '?' => ['thumb' => 'md'],
+                            ]) ?>')"></figure>
+                    <div class="card-title text-white"><?= $qrImage->name ?></div>
+                </a>
                 </div>
                 <div class="card-footer text-muted p-0 btn-group">
                     <?= $this->Html->link(__('Edit'), [

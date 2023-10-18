@@ -11,59 +11,100 @@ if (!$this->getRequest()->is('ajax')) {
 $this->assign('page_title', __('QR Codes'));
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
-<div class="container bg-white">
-    <?php foreach ($qrCodes as $qrCode) : ?>
-    <div class="row border-bottom py-2">
-        <a
-            class="col-12 <?= $qrCode->is_active ? 'text-dark' : 'text-muted' ?>" href="<?= $this->Url->build([
-                'controller' => 'QrCodes',
-                'action' => 'view',
-                $qrCode->id,
-            ]) ?>">
-            <div class="col">
-                <div class="row">
-                    <h5><?= $qrCode->name ?></h5>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <span class="text-muted"><?= $qrCode->qrkey ?></span>
+<div class="card bg-opaque-white">
+    <div class="card-body p-2 p-lg-5">
+        <div class="row justify-content-between">
+        <?php foreach ($qrCodes as $qrCode) : ?>
+            <div class="col-md-6">
+                <div class="card mb-2 shadow-sm">
+
+                    <?= $this->Template->objectComment('QrImages/entity'); ?>
+                    <?php if (!$qrCode->is_active) : ?>
+                    <div class="ribbon red"><span><?= __('Inactive') ?></span></div>
+                        <?= $this->Template->objectComment('QrImages/entity/inactive'); ?>
+                    <?php else : ?>
+                        <?= $this->Template->objectComment('QrImages/entity/active'); ?>
+                    <?php endif; ?>
+
+                    <?php
+                    $bgUrl = $this->Url->build([
+                        'prefix' => false,
+                        'action' => 'show',
+                        $qrCode->id,
+                        '?' => ['thumb' => 'md'],
+                    ]);
+                    if (!empty($qrCode->qr_images)) {
+                        $bgUrl = $this->Url->build([
+                            'prefix' => false,
+                            'controller' => 'QrImages',
+                            'action' => 'show',
+                            $qrCode->qr_images[0]->id,
+                            '?' => ['thumb' => 'md'],
+                        ]);
+                    }
+                    ?>
+                    <figure
+                        class="background background-overlay"
+                        style="background-image: url('<?= $bgUrl ?>')"></figure>
+
+                    <div class="card-title text-center text-white"><?= $qrCode->name ?></div>
+
+                    <div class="card-body text-white d-block level-2 py-5 py-md-10">
+                        <div class="row">
+                            <div class="col mb-2">
+                                <span class="
+                                    badge
+                                    bg-light
+                                    text-dark
+                                    rounded-pill
+                                    "><i
+                                        class="bi bi-qr-code-scan"></i>
+                                        <?= $qrCode->hits ?>
+                                        <?= $qrCode->last_hit ? ' - ' . $qrCode->last_hit->format('M d, Y') : null ?>
+                                </span>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <span class="
+                                        badge
+                                        bg-light
+                                        text-dark
+                                        rounded-pill
+                                        "><?= $qrCode->qrkey ?></span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col">
-                        <span class="
-                            badge
-                            bg-light
-                            text-dark
-                            rounded-pill
-                            "><i
-                                class="bi bi-qr-code-scan"></i>
-                                <?= $qrCode->hits ?> -  <?= $qrCode->last_hit ?>
-                        </span>
-                    </div>
-                    <div class="col">
-                        <?php
-                        if ($qrCode->is_active) {
-                            echo '<span class="
-                            badge
-                            bg-primary
-                            rounded-pill
-                            "><i class="bi bi-check2 fs-8"></i></span>';
-                        } else {
-                            echo '<span class="
-                            badge
-                            bg-light
-                            text-dark
-                            rounded-pill
-                            "><i class="bi bi-x fs-8"></i></span>';
-                        }
-                        ?>
-                    </div>
-                </div>
+
+                    <div class="card-footer text-muted p-0 btn-group">
+                        <?= $this->Html->link(__('View'), [
+                            'action' => 'view',
+                            $qrCode->id,
+                        ], [
+                        'class' => 'btn btn-sm btn-light',
+                        ]) ?>
+
+                        <?= $this->Html->link(__('Edit'), [
+                            'action' => 'edit',
+                            $qrCode->id,
+                        ], [
+                        'class' => 'btn btn-sm btn-light',
+                        ]) ?>
 
 
+                        <?= $this->Html->link(__('Download'), [
+                            'action' => 'show',
+                            $qrCode->id,
+                            '?' => ['download' => true],
+                        ], [
+                            'class' => 'btn btn-sm btn-light',
+                        ]) ?>
+                    </div>
+                </div>
             </div>
-        </a>
+        <?php endforeach; ?>
+        </div>
     </div>
-    <?php endforeach; ?>
 </div>
 
 <div class="container py-2">
@@ -117,7 +158,7 @@ $this->assign('page_title', __('QR Codes'));
 
 <?php $this->start('offcanvas') ?>
 <?= $this->Template->objectComment('OffCanvas/filters') ?>
-<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasFilter" aria-labelledby="offcanvasFilterLabel">
+<div class="offcanvas offcanvas-end p-3" tabindex="-1" id="offcanvasFilter" aria-labelledby="offcanvasFilterLabel">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasFilterLabel"><?= __('Filters') ?></h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>

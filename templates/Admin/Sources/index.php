@@ -11,37 +11,39 @@ if (!$this->getRequest()->is('ajax')) {
 $this->assign('page_title', __('Sources'));
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
-<div class="container bg-white">
-    <div class="row py-2">
-        <div class="col text-center">
+<div class="card bg-opaque-white">
+    <div class="card-body p-2 p-lg-5">
+        <div class="row">
+            <div class="col text-center">
 
-        <?php foreach ($sources as $source) : ?>
-            <?= $this->Html->link(
-                $source->name . '<span class="
-                position-absolute
-                top-0
-                start-100
-                translate-middle
-                badge
-                rounded-pill
-                bg-danger">
-                ' . count($source->qr_codes) . '
-                <span class="visually-hidden">unread messages</span>
-              </span>',
-                [
-                    'action' => 'edit',
-                    $source->id,
-                ],
-                [
-                    'class' => 'my-2 mx-2 btn btn-light btn-outline-secondary position-relative ajax-modal',
-                    'role' => 'button',
-                    'data-bs-toggle' => 'modal',
-                    'data-bs-target' => '#edit-modal',
-                    'data-ajax-target' => '#editModalBody',
-                    'escape' => false,
-                ]
-            ); ?>
-        <?php endforeach; ?>
+            <?php foreach ($sources as $source) : ?>
+                <?= $this->Html->link(
+                    $source->name . '<span class="
+                    position-absolute
+                    top-0
+                    start-100
+                    translate-middle
+                    badge
+                    rounded-pill
+                    bg-danger">
+                    ' . count($source->qr_codes) . '
+                    <span class="visually-hidden">unread messages</span>
+                </span>',
+                    [
+                        'action' => 'edit',
+                        $source->id,
+                    ],
+                    [
+                        'class' => 'my-2 mx-2 btn btn-light btn-outline-secondary position-relative ajax-modal',
+                        'role' => 'button',
+                        'data-bs-toggle' => 'modal',
+                        'data-bs-target' => '#edit-modal',
+                        'data-ajax-target' => '#editModalBody',
+                        'escape' => false,
+                    ]
+                ); ?>
+            <?php endforeach; ?>
+            </div>
         </div>
     </div>
 </div>
@@ -123,7 +125,7 @@ $this->assign('page_title', __('Sources'));
 
 <?php $this->start('offcanvas') ?>
 <?= $this->Template->objectComment('OffCanvas/filters') ?>
-<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasFilter" aria-labelledby="offcanvasFilterLabel">
+<div class="offcanvas offcanvas-end p-3" tabindex="-1" id="offcanvasFilter" aria-labelledby="offcanvasFilterLabel">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasFilterLabel"><?= __('Filters') ?></h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>

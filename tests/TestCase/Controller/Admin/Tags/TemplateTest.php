@@ -53,7 +53,7 @@ class TemplateTest extends BaseControllerTest
         $this->helperTestTemplate('Admin/Tags/index');
 
         // validate the html
-        $this->helperValidateHTML();
+        $this->helperValidateHTML(true);
     }
 
     /**
@@ -129,7 +129,7 @@ class TemplateTest extends BaseControllerTest
         $this->helperTestTemplate('Admin/Tags/edit');
 
         // validate the html
-        $this->helperValidateHTML();
+        $this->helperValidateHTML(true);
     }
 
     /**

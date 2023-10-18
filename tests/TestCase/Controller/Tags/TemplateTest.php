@@ -59,7 +59,7 @@ class TemplateTest extends BaseControllerTest
         $this->helperTestTemplate('Tags/index');
 
         // validate the html
-        $this->helperValidateHTML();
+        $this->helperValidateHTML(true);
     }
 
     /**

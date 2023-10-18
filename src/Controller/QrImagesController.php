@@ -52,7 +52,7 @@ class QrImagesController extends AppController
     {
         $this->request->allowMethod(['get']);
 
-        $qrImage = $this->QrImages->get((int)$id, contain: ['QrCodes']);
+        $qrImage = $this->QrImages->get((int)$id);
         $this->Authorization->authorize($qrImage);
 
         $path = $qrImage->path;

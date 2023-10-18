@@ -16,8 +16,8 @@ return [
      * Development Mode:
      * true: Errors and warnings shown.
      */
-    'debug' => filter_var(env('DEBUG', false), FILTER_VALIDATE_BOOLEAN),
-
+    //'debug' => filter_var(env('DEBUG', false), FILTER_VALIDATE_BOOLEAN),
+    'debug' => true,
     /*
      * Configure basic information about the application.
      *
@@ -66,8 +66,10 @@ return [
             'locales' => [RESOURCES . 'locales' . DS],
             // This is where the generated QR Codes are stored.
             'qr_codes' => TMP . 'qr_codes',
-            // This is where the images fpr QR Codes are stored.
+            // This is where the images for QR Codes are stored.
             'qr_images' => TMP . 'qr_images',
+            // This is where the avatars for users.
+            'users' => TMP . 'users',
         ],
     ],
 

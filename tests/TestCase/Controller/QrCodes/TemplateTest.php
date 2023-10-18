@@ -60,18 +60,16 @@ class TemplateTest extends BaseControllerTest
         $this->helperTestTemplate('QrCodes/index');
 
         // make sure the codes are listed.
-        // make sure only active codes are listed.
-        $this->helperTestObjectComment(3, 'QrCodes/active');
-        $this->helperTestObjectComment(0, 'QrCodes/inactive');
+        // make sure only active
+        $this->helperTestObjectComment(3, 'QrCode/active');
+        $this->helperTestObjectComment(0, 'QrCode/inactive');
         // make sure the qcode is listed for each one.
-        $this->helperTestObjectComment(3, 'QrCode/show');
-        $this->helperTestObjectComment(3, 'QrCode/forward');
         $this->helperTestObjectComment(3, 'QrCode/view');
+        $this->helperTestObjectComment(3, 'QrCode/forward');
         // make sure only active primary images are listed.
-        $this->helperTestObjectComment(3, 'QrImages/active/first');
-
+        $this->helperTestObjectComment(3, 'QrImage/active/first');
         // validate the html
-        $this->helperValidateHTML();
+        $this->helperValidateHTML(true);
     }
 
     /**
@@ -107,13 +105,13 @@ class TemplateTest extends BaseControllerTest
 
         // make sure the products are listed.
         // make sure only active
-        $this->helperTestObjectComment(3, 'QrCodes/active');
-        $this->helperTestObjectComment(0, 'QrCodes/inactive');
+        $this->helperTestObjectComment(3, 'QrCode/active');
+        $this->helperTestObjectComment(0, 'QrCode/inactive');
         // make sure the qcode is listed for each one.
-        $this->helperTestObjectComment(3, 'QrCode/show');
+        $this->helperTestObjectComment(3, 'QrCode/view');
         $this->helperTestObjectComment(3, 'QrCode/forward');
         // make sure only active primary images are listed.
-        $this->helperTestObjectComment(3, 'QrImages/active/first');
+        $this->helperTestObjectComment(3, 'QrImage/active/first');
     }
 
     /**
@@ -154,7 +152,7 @@ class TemplateTest extends BaseControllerTest
         $this->helperTestObjectComment(1, 'QrCode/forward');
 
         // validate the html
-        $this->helperValidateHTML();
+        $this->helperValidateHTML(true);
     }
 
     /**

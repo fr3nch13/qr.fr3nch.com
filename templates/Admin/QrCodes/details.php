@@ -24,7 +24,7 @@ if ($qrCode->id) {
                 $qrCode->id,
             ], [
                 'class' => 'nav-link pe-0' .
-                    ($here == 'QrCodes.view' ?? ' active'),
+                ($here == 'QrCodes.view' ? ' active' : ''),
             ]) ?>
         </li>
         <li class="nav-item">
@@ -34,7 +34,7 @@ if ($qrCode->id) {
                 $qrCode->id,
             ], [
                 'class' => 'nav-link pe-0' .
-                    ($here == 'QrImages.qrCode' ?? ' active'),
+                ($here == 'QrImages.qrCode' ? ' active' : ''),
             ]) ?>
         </li>
         <li class="nav-item dropdown dropdown-hover">
@@ -52,7 +52,7 @@ if ($qrCode->id) {
                     $qrCode->id,
                 ], [
                     'class' => 'dropdown-item' .
-                        ($here == 'QrImages.qrCode' ?? ' active'),
+                        ($here == 'QrCodes.edit' ? ' active' : ''),
                 ]) ?></li>
                 <li><?= $this->Html->link(__('Download'), [
                     'plugin' => false,
@@ -93,7 +93,7 @@ if ($qrCode->id) {
     <?php if (!$qrCode->is_active) : ?>
     <div class="ribbon red"><span><?= __('Inactive') ?></span></div>
     <?php endif; ?>
-    <div class="card-body bg-white p-2 p-lg-5">
+    <div class="card-body p-2 p-lg-5">
         <?= $this->fetch('content'); ?>
     </div>
 </div>

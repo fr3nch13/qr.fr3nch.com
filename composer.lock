@@ -146,12 +146,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/cakephp.git",
-                "reference": "09078d8eb345b9b76c368f74d946eab8b6311696"
+                "reference": "753830ffef3990348d26c57d633ca30cc4bd6f57"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/09078d8eb345b9b76c368f74d946eab8b6311696",
-                "reference": "09078d8eb345b9b76c368f74d946eab8b6311696",
+                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/753830ffef3990348d26c57d633ca30cc4bd6f57",
+                "reference": "753830ffef3990348d26c57d633ca30cc4bd6f57",
                 "shasum": ""
             },
             "require": {
@@ -164,7 +164,7 @@
                 "laminas/laminas-httphandlerrunner": "^2.6",
                 "league/container": "^4.2",
                 "php": ">=8.1",
-                "psr/container": "^2.0",
+                "psr/container": "^1.1 || ^2.0",
                 "psr/http-client": "^1.0.2",
                 "psr/http-factory": "^1.0.2",
                 "psr/http-message": "^2.0",
@@ -256,20 +256,20 @@
                 "issues": "https://github.com/cakephp/cakephp/issues",
                 "source": "https://github.com/cakephp/cakephp"
             },
-            "time": "2023-10-16T10:51:33+00:00"
+            "time": "2023-10-17T21:57:46+00:00"
         },
         {
             "name": "cakephp/chronos",
-            "version": "3.0.3",
+            "version": "3.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/chronos.git",
-                "reference": "54164f6775ae5c8a930583983d62c9ee0815fcf0"
+                "reference": "9cb035acd10152a6b74df936986f15c4e6015bd3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/chronos/zipball/54164f6775ae5c8a930583983d62c9ee0815fcf0",
-                "reference": "54164f6775ae5c8a930583983d62c9ee0815fcf0",
+                "url": "https://api.github.com/repos/cakephp/chronos/zipball/9cb035acd10152a6b74df936986f15c4e6015bd3",
+                "reference": "9cb035acd10152a6b74df936986f15c4e6015bd3",
                 "shasum": ""
             },
             "require": {
@@ -311,7 +311,7 @@
                 "issues": "https://github.com/cakephp/chronos/issues",
                 "source": "https://github.com/cakephp/chronos"
             },
-            "time": "2023-10-02T16:47:43+00:00"
+            "time": "2023-10-17T07:41:48+00:00"
         },
         {
             "name": "cakephp/migrations",
@@ -4609,16 +4609,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.10.38",
+            "version": "1.10.39",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "5302bb402c57f00fb3c2c015bac86e0827e4b691"
+                "reference": "d9dedb0413f678b4d03cbc2279a48f91592c97c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/5302bb402c57f00fb3c2c015bac86e0827e4b691",
-                "reference": "5302bb402c57f00fb3c2c015bac86e0827e4b691",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/d9dedb0413f678b4d03cbc2279a48f91592c97c4",
+                "reference": "d9dedb0413f678b4d03cbc2279a48f91592c97c4",
                 "shasum": ""
             },
             "require": {
@@ -4667,7 +4667,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-10-06T14:19:14+00:00"
+            "time": "2023-10-17T15:46:26+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",

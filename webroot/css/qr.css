@@ -1,3 +1,4 @@
+/** Keep the logo in check **/
 .navbar.qr-navbar-top img.logo-top {
     max-width: 200px;
 }
@@ -5,6 +6,33 @@ footer img.logo-bottom {
     max-width: 150px;
 
 }
+
+/** Avatars **/
+.avatar-sm {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+    .avatar-sm i.bi {
+        font-size: 1rem;
+    }
+.avatar-md {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+    .avatar-md i.bi {
+        font-size: 3.5rem;
+    }
+.avatar-lg {
+    vertical-align: middle;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+}
+    .avatar-lg i.bi {
+        font-size: 7rem;
+    }
 
 /**
  * Product listing page
@@ -25,6 +53,12 @@ footer img.logo-bottom {
  */
 .product-view .product {
     position: relative;
+}
+
+/** Hover for main page **/
+.card .background-overlay:hover::after {
+    background: transparent !important;
+    transition: background-color 1s ease-out;
 }
 
 /**

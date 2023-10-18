@@ -16,7 +16,7 @@ $this->assign('page_title', __('Add a QR Code'));
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <div class="card bg-opaque-white">
-    <div class="card-body bg-white p-2 p-lg-5">
+    <div class="card-body p-2 p-lg-5">
         <?= $this->Form->create($qrCode) ?>
         <div class="row">
             <div class="col-4">

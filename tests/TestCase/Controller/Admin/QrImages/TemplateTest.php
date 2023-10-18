@@ -51,7 +51,7 @@ class TemplateTest extends BaseControllerTest
         $this->helperTestObjectComment(3, 'QrImages/entity/active');
 
         // validate the html
-        $this->helperValidateHTML();
+        $this->helperValidateHTML(true);
     }
 
     /**
@@ -100,7 +100,7 @@ class TemplateTest extends BaseControllerTest
         $this->helperTestTemplate('Admin/QrImages/add');
 
         // validate the html
-        $this->helperValidateHTML();
+        $this->helperValidateHTML(true);
     }
 
     /**
@@ -141,7 +141,8 @@ class TemplateTest extends BaseControllerTest
         $this->get('https://localhost/admin/qr-images/edit/5');
         $this->assertResponseOk();
         // must be view as it extends /admin/QrCodes/details
-        $this->helperTestLayoutDashboardForm();
+        $this->helperTestLayoutDashboardView();
+        $this->helperTestTemplate('Admin/QrCodes/details');
         $this->helperTestTemplate('Admin/QrImages/edit');
 
         // test with admin, get, can edit any.
@@ -149,11 +150,12 @@ class TemplateTest extends BaseControllerTest
         $this->get('https://localhost/admin/qr-images/edit/5');
         $this->assertResponseOk();
         // must be view as it extends /admin/QrCodes/details
-        $this->helperTestLayoutDashboardForm();
+        $this->helperTestLayoutDashboardView();
+        $this->helperTestTemplate('Admin/QrCodes/details');
         $this->helperTestTemplate('Admin/QrImages/edit');
 
         // validate the html
-        $this->helperValidateHTML();
+        $this->helperValidateHTML(true);
     }
 
     /**

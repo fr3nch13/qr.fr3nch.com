@@ -172,6 +172,8 @@ class QrImagesController extends AppController
         $qrImage = $this->QrImages->get((int)$id, contain: ['QrCodes']);
         $this->Authorization->authorize($qrImage);
 
+        $qrCode = $qrImage->qr_code;
+
         if ($this->request->is('put')) {
             $qrImage = $this->QrImages->patchEntity($qrImage, $this->request->getData());
             if ($this->QrImages->save($qrImage)) {
@@ -188,8 +190,8 @@ class QrImagesController extends AppController
 
         $errors = $qrImage->getErrors();
 
-        $this->set(compact('qrImage', 'errors'));
-        $this->viewBuilder()->setOption('serialize', ['qrImage', 'errors']);
+        $this->set(compact('qrCode', 'qrImage', 'errors'));
+        $this->viewBuilder()->setOption('serialize', ['qrCode', 'qrImage', 'errors']);
 
         return null;
     }

@@ -143,9 +143,10 @@ class BaseControllerTest extends TestCase
     /**
      * Uses an HTML validator to validate the compiled html.
      *
+     * @param bool $showContent If we should print out the html in debug on an issue
      * @return void
      */
-    public function helperValidateHTML(): void
+    public function helperValidateHTML(bool $showContent = false): void
     {
         $content = (string)$this->_response->getBody();
 
@@ -157,6 +158,9 @@ class BaseControllerTest extends TestCase
 
             $validator = new HtmlValidator();
             $result = $validator->validateDocument($content);
+            if ($showContent && ($result->hasErrors() || $result->hasWarnings())) {
+                debug($content);
+            }
             $this->assertFalse($result->hasErrors(), (string)$result);
             $this->assertFalse($result->hasWarnings(), (string)$result);
 

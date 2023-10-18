@@ -57,7 +57,7 @@ class TemplateTest extends BaseControllerTest
         $this->helperTestTemplate('Admin/Sources/index');
 
         // validate the html
-        $this->helperValidateHTML();
+        $this->helperValidateHTML(true);
     }
 
     /**
@@ -111,7 +111,7 @@ class TemplateTest extends BaseControllerTest
         $this->helperTestTemplate('Admin/Sources/add');
 
         // validate the html
-        $this->helperValidateHTML();
+        $this->helperValidateHTML(true);
     }
 
     /**
@@ -158,7 +158,7 @@ class TemplateTest extends BaseControllerTest
         $this->helperTestTemplate('Admin/Sources/edit');
 
         // validate the html
-        $this->helperValidateHTML();
+        $this->helperValidateHTML(true);
     }
 
     /**

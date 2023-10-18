@@ -12,10 +12,12 @@ $this->assign('page_title', __('Users'));
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 
-<div class="container bg-white">
-    <div class="row py-2">
-        <div class="col text-center">
-            Coming Soon
+<div class="card bg-opaque-white">
+    <div class="card-body p-2 p-lg-5">
+        <div class="row">
+            <div class="col text-center">
+                Coming Soon
+            </div>
         </div>
     </div>
 </div>
@@ -112,7 +114,7 @@ $this->assign('page_title', __('Users'));
 
 <?php $this->start('offcanvas') ?>
 <?= $this->Template->objectComment('OffCanvas/filters') ?>
-<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasFilter" aria-labelledby="offcanvasFilterLabel">
+<div class="offcanvas offcanvas-end p-3" tabindex="-1" id="offcanvasFilter" aria-labelledby="offcanvasFilterLabel">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasFilterLabel"><?= __('Filters') ?></h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
