@@ -168,7 +168,7 @@ if (!$this->getRequest()->is('ajax')) {
                             <dt class="col-4 col-md-3"><?= __('Last Hit') ?></dt>
                             <dd class="col-8 col-md-9"><?php
                             if ($qrCode->hasValue('last_hit')) {
-                                echo $$qrCode->last_hit->format('M d, Y');
+                                echo $qrCode->last_hit->format('M d, Y');
                             } ?> </dd>
 
                             <dt class="col-4 col-md-3"><?= __('Created') ?></dt>
