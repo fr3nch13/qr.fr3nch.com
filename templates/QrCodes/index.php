@@ -49,6 +49,13 @@ if (!$this->getRequest()->is('ajax')) {
         <div class="row g-3 g-lg-5 justify-content-between">
 
         <?php foreach ($qrCodes as $qrCode) : ?>
+            <?php
+            if ($qrCode->is_active) {
+                echo $this->Template->objectComment('QrCode/active');
+            } else {
+                echo $this->Template->objectComment('QrCode/inactive');
+            }
+            ?>
             <div class="col-md-6 col-lg-4">
                 <div class="card mb-2 border shadow-sm">
 
@@ -59,6 +66,7 @@ if (!$this->getRequest()->is('ajax')) {
                         '?' => ['thumb' => 'md'],
                     ]);
                     if (!empty($qrCode->qr_images)) {
+                        echo $this->Template->objectComment('QrImage/active/first');
                         $bgUrl = $this->Url->build([
                             'controller' => 'QrImages',
                             'action' => 'show',
