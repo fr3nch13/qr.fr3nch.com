@@ -24,10 +24,7 @@ class AddLastHitToQrCodes extends AbstractMigration
             'qr_codes',
         ]));
 
-        $table->addColumn('last_hit', 'datetime', [
-            'default' => null,
-            'null' => true,
-        ]);
+        $table->addColumn('last_hit', 'datetime');
         $table->update();
 
         $this->afterChange();

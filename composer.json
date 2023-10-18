@@ -4,6 +4,12 @@
     "homepage": "https://qr.fr3nch.com",
     "type": "project",
     "license": "MIT",
+    "authors": [
+        {
+            "name": "Brian French",
+            "homepage": "https://fr3nch.com"
+        }
+    ],
     "repositories": [
         {
             "type": "composer",

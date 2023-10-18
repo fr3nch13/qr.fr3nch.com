@@ -23,11 +23,7 @@ class AddGravatarEmailToUsers extends AbstractMigration
             'gravatar_email',
             'users',
         ]));
-        $table->addColumn('gravatar_email', 'string', [
-            'default' => null,
-            'limit' => 255,
-            'null' => true,
-        ]);
+        $table->addColumn('gravatar_email', 'string');
         $table->update();
 
         $this->afterChange();
