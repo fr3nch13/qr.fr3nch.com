@@ -27,7 +27,7 @@ use chillerlan\QRCode\Output\QRCodeOutputException;
  *
  * @property string|null $path (Virtual field) Path to the generated QR Code file.
  *
- * @property \App\Model\Entity\Source $source The source, mainly used internally to track where the product is located.
+ * @property \App\Model\Entity\Source $source The source, mainly used internally to track where the code is located.
  * @property \App\Model\Entity\User $user The user that created and/or owns the code.
  * @property \App\Model\Entity\QrImage[] $qr_images List of Images that this code owns.
  * @property \App\Model\Entity\Tag[] $tags List of Tags that this is assigned to.
