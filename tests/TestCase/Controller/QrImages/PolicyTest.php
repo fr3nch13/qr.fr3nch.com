@@ -131,11 +131,10 @@ class PolicyTest extends BaseControllerTest
         // test with reqular, inactive image, owner
         $this->loginUserRegular();
         $this->get('https://localhost/qr-images/show/7');
-        $this->assertResponseOk();
-        $this->assertResponseNotEmpty();
-        $headers = $this->_response->getHeaders();
-        $this->assertSame('image/jpeg', $headers['Content-Type'][0]);
-        $this->assertGreaterThan(0, $headers['Content-Length'][0]);
+        $this->assertRedirectEquals('https://localhost/admin?redirect=%2Fqr-images%2Fshow%2F7');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
 
         // test with reqular, inactive image, not owner
         $this->loginUserRegular();
