@@ -47,30 +47,31 @@ $this->assign('page_title', __('QR Codes'));
                         class="background background-overlay"
                         style="background-image: url('<?= $bgUrl ?>')"></figure>
 
-                    <div class="card-title text-center text-white"><?= $qrCode->name ?></div>
-
-                    <div class="card-body text-white d-block level-2 py-5 py-md-10">
-                        <div class="row">
-                            <div class="col mb-2">
-                                <span class="
-                                    badge
-                                    bg-light
-                                    text-dark
-                                    rounded-pill
-                                    "><i
-                                        class="bi bi-qr-code-scan"></i>
-                                        <?= $qrCode->hits ?>
-                                        <?= $qrCode->last_hit ? ' - ' . $qrCode->last_hit->format('M d, Y') : null ?>
-                                </span>
-                            </div>
+                    <div class="card-content level-2">
+                        <div class="card-title text-center text-white"><?= $qrCode->name ?></div>
+                        <div class="card-body text-white d-block py-5 py-md-10">
                             <div class="row">
-                                <div class="col">
+                                <div class="col mb-2">
                                     <span class="
                                         badge
                                         bg-light
                                         text-dark
                                         rounded-pill
-                                        "><?= $qrCode->qrkey ?></span>
+                                        "><i
+                                            class="bi bi-qr-code-scan"></i>
+                                            <?= $qrCode->hits ?>
+                                            <?= $qrCode->last_hit ? ' - ' . $qrCode->last_hit->format('M d, Y') : null ?>
+                                    </span>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <span class="
+                                            badge
+                                            bg-light
+                                            text-dark
+                                            rounded-pill
+                                            "><?= $qrCode->qrkey ?></span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
