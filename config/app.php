@@ -68,8 +68,6 @@ return [
             'qr_codes' => TMP . 'qr_codes',
             // This is where the images for QR Codes are stored.
             'qr_images' => TMP . 'qr_images',
-            // This is where the avatars for users.
-            'users' => TMP . 'users',
         ],
     ],
 

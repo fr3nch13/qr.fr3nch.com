@@ -6,6 +6,7 @@ namespace App\Model\Table;
 use App\Model\Entity\QrCode;
 use App\Model\Entity\User;
 use ArrayObject;
+use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Http\Exception\InternalErrorException;
 use Cake\Http\Exception\NotFoundException;
@@ -18,6 +19,7 @@ use Search\Model\Filter\Base;
 /**
  * QrCodes Model
  *
+ * @property \App\Model\Table\QrImagesTable&\Cake\ORM\Association\HasMany $QrImages
  * @property \App\Model\Table\SourcesTable&\Cake\ORM\Association\BelongsTo $Sources
  * @property \App\Model\Table\TagsTable&\Cake\ORM\Association\BelongsToMany $Tags
  * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
@@ -260,6 +262,34 @@ class QrCodesTable extends Table
     }
 
     /**
+     * Make sure it's Qr Images are deleted first.
+     *
+     * @param \Cake\Event\Event $event
+     * @param \App\Model\Entity\QrCode $qrCode
+     * @param \ArrayObject $options
+     * @return void
+     */
+    public function beforeDelete(Event $event, QrCode $qrCode, ArrayObject $options): void
+    {
+        // delete the images.
+        // I know the foreign key constraints will delete the QR Images from the database automatically,
+        // But I want to have CakePHP delete them first.
+        // so that the image files and thembnails are deleted as well.
+        $qrImages = $this->QrImages->find('qrCode', QrCode: $qrCode);
+
+        foreach ($qrImages as $qrImage) {
+            // this should trigger the afterDelete in QrImagesTable
+            $this->QrImages->delete($qrImage);
+        }
+
+        // the directory that holds the images should be empty, delete it.
+        $imgPath = Configure::read('App.paths.qr_images', TMP . 'qr_images') . DS . $qrCode->id;
+        if (is_dir($imgPath)) {
+            rmdir($imgPath);
+        }
+    }
+
+    /**
      * Make sure it's image and thumbnails are deleted.
      *
      * @param \Cake\Event\Event $event
@@ -269,7 +299,7 @@ class QrCodesTable extends Table
      */
     public function afterDelete(Event $event, QrCode $qrCode, ArrayObject $options): void
     {
-        // delete the images.
+        // delete the QR Code Image and thumbnails.
         $qrCode->deleteThumbs(true);
     }
 

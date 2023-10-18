@@ -43,6 +43,7 @@ class QrCodesTableTest extends TestCase
         'app.Users',
         'app.Sources',
         'app.QrCodes',
+        'app.QrImages',
         'app.Tags',
         'app.QrCodesTags',
     ];
@@ -402,11 +403,11 @@ class QrCodesTableTest extends TestCase
 
         $tmpdir = TMP . 'qr_codes';
 
-        // a successful test, code exists.
+        // a successful test, code generates and file exists.
         $entity = $this->QrCodes->get(1);
         $entityPath = $tmpdir . DS . $entity->id . '.png';
-        $this->assertTrue(is_file($entityPath));
         $this->assertSame($entityPath, $entity->path);
+        $this->assertTrue(is_file($entityPath));
 
         // test with a failed generation when envoking path
         $originalPath = Configure::read('App.paths.qr_codes');
@@ -428,12 +429,38 @@ class QrCodesTableTest extends TestCase
         $tmpdir = Configure::read('App.paths.qr_codes');
         // make sure this setting exists.
         $this->assertNotNull($tmpdir);
+        $this->assertTrue(is_dir($tmpdir));
+
+        $tmpdir = Configure::read('App.paths.qr_images');
+        // make sure this setting exists.
+        $this->assertNotNull($tmpdir);
+
+        // for tests, we use this dir so we don't mess with the actual dir
+        // we also copy over the assets in QrImagesFixture::insert()
+
+        $tmpimgdir = TMP . 'qr_images_test';
+        Configure::write('App.paths.qr_images', $tmpimgdir);
+        if (!is_dir($tmpimgdir) && !mkdir($tmpimgdir)) {
+            $this->assertTrue(false, __('Unable to make the `tmpimgdir` directory: {0}', [
+                $tmpimgdir,
+            ]));
+        }
+        $this->assertTrue(is_dir($tmpdir));
+
+        $tmpdir = TMP . 'qr_codes_test';
+        Configure::write('App.paths.qr_codes', $tmpdir);
+        if (!is_dir($tmpdir) && !mkdir($tmpdir)) {
+            $this->assertTrue(false, __('Unable to make the `tmpdir` directory: {0}', [
+                $tmpdir,
+            ]));
+        }
+        $this->assertTrue(is_dir($tmpdir));
 
         // a successful test, code exists.
-        $entity = $this->QrCodes->get(1);
+        $entity = $this->QrCodes->get(1, contain: ['QrImages']);
         $entityPath = $tmpdir . DS . $entity->id . '.png';
-        $this->assertTrue(is_file($entityPath));
         $this->assertSame($entityPath, $entity->path);
+        $this->assertTrue(is_file($entityPath));
 
         // test the 3 different thumbnail sizes.
         // the small thumbnail
@@ -466,12 +493,52 @@ class QrCodesTableTest extends TestCase
         $this->assertSame($thumbPathLg, $entity->path_lg);
         $this->assertTrue(is_file($thumbPathLg));
 
+        $this->assertCount(3, $entity->qr_images);
+
+        // test that each of its images also has a file
+        // and generate the thumbs if they don't exist.
+
+        // used for tracking after delete.
+        $images = [];
+        foreach ($entity->qr_images as $qrImage) {
+            $this->assertNotNull($qrImage->path);
+            $this->assertTrue(is_file($qrImage->path));
+            $this->assertNotNull($qrImage->path_sm);
+            $this->assertTrue(is_file($qrImage->path_sm));
+            $this->assertNotNull($qrImage->path_md);
+            $this->assertTrue(is_file($qrImage->path_md));
+            $this->assertNotNull($qrImage->path_lg);
+            $this->assertTrue(is_file($qrImage->path_lg));
+            $images[$qrImage->id] = [
+                'path' => $qrImage->path,
+                'path_sm' => $qrImage->path_sm,
+                'path_md' => $qrImage->path_md,
+                'path_lg' => $qrImage->path_lg,
+            ];
+        }
+
         $this->QrCodes->delete($entity);
 
         $this->assertFalse(is_file($thumbPathSm));
         $this->assertFalse(is_file($thumbPathMd));
         $this->assertFalse(is_file($thumbPathLg));
         $this->assertFalse(is_file($entityPath));
+
+        // maker sure the images and their thumbnails were also deleted.
+        foreach ($entity->qr_images as $qrImage) {
+            $this->assertNull($qrImage->path);
+            $this->assertFalse(is_file($images[$qrImage->id]['path']));
+            $this->assertNull($qrImage->path_sm);
+            $this->assertFalse(is_file($images[$qrImage->id]['path_sm']));
+            $this->assertNull($qrImage->path_md);
+            $this->assertFalse(is_file($images[$qrImage->id]['path_md']));
+            $this->assertNull($qrImage->path_lg);
+            $this->assertFalse(is_file($images[$qrImage->id]['path_lg']));
+        }
+
+        // maker sure the folder for the qr_images is also deleted.
+        $imgPath = Configure::read('App.paths.qr_images', TMP . 'qr_images') . DS . $entity->id;
+        $this->assertFalse(is_dir($imgPath));
     }
 
     /**
