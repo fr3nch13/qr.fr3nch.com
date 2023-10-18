@@ -34,6 +34,27 @@ class ActiveUserHelper extends Helper
     }
 
     /**
+     * If the user logged in is this user
+     *
+     * @param \App\Model\Entity\User $user
+     * @return bool
+     */
+    public function isMe(\App\Model\Entity\User $user): bool
+    {
+        return $user->id === $this->Identity->get('id');
+    }
+
+    /**
+     * If the user is an admin
+     *
+     * @return bool
+     */
+    public function isAdmin(): bool
+    {
+        return $this->Identity->get('is_admin');
+    }
+
+    /**
      * If the user is logged in or not
      *
      * @return bool

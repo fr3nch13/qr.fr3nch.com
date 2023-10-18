@@ -6,49 +6,75 @@
 if (!$this->getRequest()->is('ajax')) {
     $this->setLayout('dashboard/form');
 }
+// TODO: Hold out until cakedc/users is CakePHP 5 compatible
+// then switch to it.
+// labels: User Management, CakeDC
 
 $this->assign('page_title', __('Settings'));
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
+<?= $this->Form->create($user) ?>
 <div class="card bg-opaque-white">
     <div class="card-body p-2 p-lg-5">
         <div class="row">
-            <div class="col text-center">
-                Coming Soon
+            <div class="col">
+                <?= $this->Form->control('name', [
+                    'required' => true,
+                    'spacing' => 'mb-2',
+                    'label' => __('Name'),
+                ]); ?>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <?= $this->Form->control('email', [
+                    'type' => 'text',
+                    'required' => true,
+                    'spacing' => 'mb-2',
+                    'placeholder' => 'user@email.com',
+                    'label' => __('Login Email'),
+                ]); ?>
+            </div>
+            <div class="col-6">
+                <?= $this->Form->control('gravatar_email', [
+                    'type' => 'text',
+                    'required' => true,
+                    'spacing' => 'mb-2',
+                    'placeholder' => 'gravatar@email.com',
+                    'label' => __('Gravatar Email'),
+                    'help' => __('We use {1} for our avatar images. ' .
+                        'If your {0} email is different from your login email, enter it here.', [
+                            __('Gravatar'),
+                            $this->Html->link(__('Gravatar'), 'https://gravatar.com', ['target' => 'gravatar']),
+                        ]),
+                ]); ?>
+            </div>
+        </div>
+        <?php if ($this->ActiveUser->isAdmin()) : ?>
+        <div class="row">
+            <div class="col-6 form-switch mt-4">
+                <?= $this->Form->control('is_active', [
+                    'spacing' => 'mb-2',
+                    'label' => __('Active?'),
+                ]); ?>
+            </div>
+            <div class="col-6 form-switch mt-4">
+                <?= $this->Form->control('is_admin', [
+                    'spacing' => 'mb-2',
+                    'label' => __('Admin?'),
+                ]); ?>
+            </div>
+        </div>
+        <?php endif; ?>
+        <div class="row">
+            <div class="col text-end">
+                <?= $this->Form->button(__('Save'), [
+                    'type' => 'submit',
+                    'class' => 'btn btn-lg btn-primary btn-block',
+                ]); ?>
             </div>
         </div>
     </div>
 </div>
-<!--
-<div class="row">
-    <aside class="column">
-        <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Form->postLink(
-                __('Delete'),
-                ['action' => 'delete', $user->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $user->id), 'class' => 'side-nav-item']
-            ) ?>
-            <?= $this->Html->link(__('List Users'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-        </div>
-    </aside>
-    <div class="column column-80">
-        <div class="users form content">
-            <?= $this->Form->create($user) ?>
-            <fieldset>
-                <legend><?= __('Edit User') ?></legend>
-
-                <?= $this->Form->control('name'); ?>
-
-                <?= $this->Form->control('email'); ?>
-
-                <?= $this->Form->control('password'); ?>
-
-            </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
-            <?= $this->Form->end() ?>
-        </div>
-    </div>
-</div>
--->
+<?= $this->Form->end() ?>
 <?= $this->Template->templateComment(false, __FILE__); ?>

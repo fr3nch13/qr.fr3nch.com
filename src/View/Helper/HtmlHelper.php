@@ -12,6 +12,7 @@ use BootstrapUI\View\Helper\HtmlHelper as BootstrapUiHtmlHelper;
  * Html helper library.
  *
  * @property \App\View\Helper\ActiveUserHelper $ActiveUser
+ * @property \App\View\Helper\GravatarHelper $Gravatar
  * @property \Cake\View\Helper\UrlHelper $Url
  */
 class HtmlHelper extends BootstrapUiHtmlHelper
@@ -23,6 +24,7 @@ class HtmlHelper extends BootstrapUiHtmlHelper
      */
     protected array $helpers = [
         'ActiveUser',
+        'Gravatar',
         'Url',
     ];
 
@@ -30,11 +32,13 @@ class HtmlHelper extends BootstrapUiHtmlHelper
      * Creates the avatar html
      *
      * @param string $size The one of three sizes [sm, md, lg]
+     * @param null|\App\Model\Entity\User $user The user to make the avatar for, if none, the logged in user is used.
      * @param string $wrapperClasses Classes you want to add to the div wrapper
      * @param string $iconClasses Classes you want to add to the icon
      */
     public function avatar(
         string $size = 'md',
+        ?\App\Model\Entity\User $user = null,
         string $wrapperClasses = '',
         string $iconClasses = ''
     ): string
@@ -44,41 +48,21 @@ class HtmlHelper extends BootstrapUiHtmlHelper
         $icon = '<i class="bi bi-person {0}"></i>';
         $iconClass = 'text-primary';
 
-        if (!$this->ActiveUser->isLoggedIn()) {
-            return __($wrapper, [
-                $size,
-                $wrapperClass . ' ' . $wrapperClasses,
-                __($icon, [$iconClass. ' ' . $iconClasses])
-            ]);
+        if (!$user) {
+            if (!$this->ActiveUser->isLoggedIn()) {
+                return __($wrapper, [
+                    $size,
+                    $wrapperClass . ' ' . $wrapperClasses,
+                    __($icon, [$iconClass. ' ' . $iconClasses])
+                ]);
+            }
+            $user = $this->ActiveUser->getUser();
         }
-
-        if (!$this->ActiveUser->getUser()->getPathThumb()) {
-            $wrapperClass = 'bg-primary';
-            $iconClass = 'text-light';
-            return __($wrapper, [
-                $size,
-                $wrapperClass . ' ' . $wrapperClasses,
-                __($icon, [$iconClass. ' ' . $iconClasses])
-            ]);
-        }
-
-        $avatarUrl = $this->Url->build([
-            'plugin' => false,
-            'prefix' => false,
-            'controller' => 'Users',
-            'action' => 'avatar',
-            $this->ActiveUser->getUser('id'),
-            '?' => ['thumb' => $size],
-        ]);
-
-        $img = $this->image($avatarUrl, [
-            'alt' => $this->ActiveUser->getUser('name'),
-        ]);
 
         return __($wrapper, [
             $size,
-            $wrapperClass,
-            $img
+            $wrapperClass . ' ' . $wrapperClasses,
+            $this->Gravatar->avatar($user, ['class' => 'avatar-' . $size]),
         ]);
     }
 }

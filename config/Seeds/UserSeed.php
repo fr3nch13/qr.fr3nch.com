@@ -36,6 +36,7 @@ class UserSeed extends AbstractSeed
                 'is_admin' => 1,
                 'is_active' => 1,
                 'created' => (new DateTime())->format('Y-m-d H:i:s'),
+                'gravatar_email' => 'fr3nchllc@gmail.com',
             ],
             [
                 'id' => 2,

@@ -16,6 +16,7 @@ use Cake\View\View;
  * @link https://book.cakephp.org/4/en/views.html#the-app-view
  * @property \App\View\Helper\ActiveUserHelper $ActiveUser
  * @property \App\View\Helper\FormHelper $Form
+ * @property \App\View\Helper\GravatarHelper $Gravatar
  * @property \App\View\Helper\HtmlHelper $Html
  * @property \App\View\Helper\TemplateHelper $Template
  * @property \Authentication\View\Helper\IdentityHelper $Identity

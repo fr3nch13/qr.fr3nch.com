@@ -59,7 +59,7 @@ $this->assign('page_title', __('QR Codes'));
                                     "><i
                                         class="bi bi-qr-code-scan"></i>
                                         <?= $qrCode->hits ?>
-                                        <?= $qrCode->last_hit ? ' - '. $qrCode->last_hit->format('M d, Y') : '' ?>
+                                        <?= $qrCode->last_hit ? ' - '. $qrCode->last_hit->format('M d, Y') : null ?>
                                 </span>
                             </div>
                             <div class="row">

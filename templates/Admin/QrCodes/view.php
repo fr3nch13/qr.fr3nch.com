@@ -34,10 +34,10 @@ if (!$this->getRequest()->is('ajax')) {
                 class="badge bg-light text-dark rounded-pill"><?= $qrCode->hits ?></span> </dd>
 
             <dt class="col-4 col-md-3"><?= __('Last Hit') ?></dt>
-            <dd class="col-8 col-md-9"><?= h($qrCode->last_hit) ?> </dd>
+            <dd class="col-8 col-md-9"><?= h($qrCode->last_hit ? $qrCode->last_hit->format('M d, Y') : null) ?> </dd>
 
             <dt class="col-4 col-md-3"><?= __('Created') ?></dt>
-            <dd class="col-8 col-md-9"><?= h($qrCode->created) ?> </dd>
+            <dd class="col-8 col-md-9"><?= h($qrCode->created ? $qrCode->created->format('M d, Y') : null) ?> </dd>
 
             <dt class="col-4 col-md-3"><?= __('Source') ?></dt>
             <dd class="col-8 col-md-9"><?= $qrCode->hasValue('source') ? $this->Html->link(

@@ -17,11 +17,12 @@ trait LoadAppHelpersTrait
     {
         $this->loadHelper('ActiveUser');
         $this->loadHelper('Breadcrumbs', ['className' => 'BootstrapUI.Breadcrumbs']);
-        $this->loadHelper('Html');
         $this->loadHelper('Flash', ['className' => 'BootstrapUI.Flash']);
         $this->loadHelper('Form', [
             'templates' => 'app_form',
         ]);
+        $this->loadHelper('Gravatar');
+        $this->loadHelper('Html');
         $this->loadHelper('Authentication.Identity');
         $this->loadHelper('Paginator', ['className' => 'BootstrapUI.Paginator']);
         $this->addHelper('Template');

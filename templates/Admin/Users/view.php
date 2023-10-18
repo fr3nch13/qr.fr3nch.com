@@ -15,19 +15,21 @@ $this->assign('page_title', $user->name);
         <div class="row">
             <div class="col-md-4">
                 <div class="d-flex justify-content-center  position-relative">
-                    <?= $this->Html->avatar('lg') ?>
-
-                <div class="
-                    position-absolute
-                    top-80
-                    start-80
-                    translate-middle
-                    pt-5
-                    ps-0
-                    ps-md-5
-                    ">
-                    <i class="bi bi-camera"></i>
-                </div>
+                    <?= $this->Html->avatar('lg', $user) ?>
+                    <a
+                        href="https://gravatar.com"
+                        target="gravatar"
+                        class="
+                            position-absolute
+                            top-80
+                            start-80
+                            translate-middle
+                            pt-5
+                            ps-0
+                            ps-md-5
+                            ">
+                        <i class="bi bi-camera"></i>
+                    </a>
                 </div>
             </div>
             <div class="col-md-8">
@@ -39,7 +41,7 @@ $this->assign('page_title', $user->name);
                     <dd class="col-8 col-md-9"><?= h($user->email) ?> </dd>
 
                     <dt class="col-4 col-md-3"><?= __('Created') ?></dt>
-                    <dd class="col-8 col-md-9"><?= h($user->created) ?> </dd>
+                    <dd class="col-8 col-md-9"><?= h($user->created ? $user->created->format('M d, Y') : null) ?> </dd>
                 </dl>
             </div>
         </div>
@@ -64,52 +66,4 @@ $this->assign('page_title', $user->name);
         </div>
     </div>
 </div>
-
-
-<!--
-<div class="row">
-    <aside class="column">
-        <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Html->link(__('Edit User'), ['action' => 'edit', $user->id], ['class' => 'side-nav-item']) ?>
-            <?= $this->Form->postLink(__('Delete User'), [
-                'action' => 'delete',
-                $user->id,
-            ], [
-                'confirm' => __('Are you sure you want to delete # {0}?', $user->id),
-                'class' => 'side-nav-item',
-            ]) ?>
-            <?= $this->Html->link(__('List Users'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-            <?= $this->Html->link(__('New User'), ['action' => 'add'], ['class' => 'side-nav-item']) ?>
-        </div>
-    </aside>
-    <div class="column column-80">
-        <div class="users view content">
-            <h3><?= h($user->name) ?></h3>
-            <table>
-                <tr>
-                    <th><?= __('Name') ?></th>
-                    <td><?= h($user->name) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Email') ?></th>
-                    <td><?= h($user->email) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Id') ?></th>
-                    <td><?= $this->Number->format($user->id) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Created') ?></th>
-                    <td><?= h($user->created) ?></td>
-                </tr>
-                <tr>
-                    <th><?= __('Modified') ?></th>
-                    <td><?= h($user->modified) ?></td>
-                </tr>
-            </table>
-        </div>
-    </div>
-</div>
--->
 <?= $this->Template->templateComment(false, __FILE__); ?>

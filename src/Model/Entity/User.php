@@ -22,6 +22,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\DateTime|null $modified
  * @property bool $is_admin
  * @property bool $is_active
+ * @property string|null $gravatar_email The email registered with Gravatar
  *
  * @property string|null $path (Virtual field) Path to the generated QR Code file.
  *
@@ -50,6 +51,7 @@ class User extends Entity implements AuthorizationIdentity, AuthenticationIdenti
         'modified' => true,
         'is_admin' => true,
         'is_active' => true,
+        'gravatar_email' => true,
     ];
 
     /**

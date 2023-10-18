@@ -164,10 +164,10 @@ if (!$this->getRequest()->is('ajax')) {
                             '' ?> </dd>
 
                             <dt class="col-4 col-md-3"><?= __('Last Hit') ?></dt>
-                            <dd class="col-8 col-md-9"><?= h($qrCode->last_hit->format('M d, Y')) ?> </dd>
+                            <dd class="col-8 col-md-9"><?= h($qrCode->last_hit ? $qrCode->last_hit->format('M d, Y') : null) ?> </dd>
 
                             <dt class="col-4 col-md-3"><?= __('Created') ?></dt>
-                            <dd class="col-8 col-md-9"><?= h($qrCode->created->format('M d, Y')) ?> </dd>
+                            <dd class="col-8 col-md-9"><?= h($qrCode->created ? $qrCode->created->format('M d, Y') : null) ?> </dd>
                         </dl>
                     </div>
                 </div>
