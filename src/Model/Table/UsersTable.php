@@ -92,11 +92,13 @@ class UsersTable extends Table
             ->notEmptyString(
                 'password',
                 __('The Password is required, and can not be empty.'),
-                Validator::WHEN_CREATE)
+                Validator::WHEN_CREATE
+            )
             ->allowEmptyString(
                 'password',
                 __('The Password is required, and can not be empty.'),
-                Validator::WHEN_UPDATE)
+                Validator::WHEN_UPDATE
+            )
             ->requirePresence('password', Validator::WHEN_CREATE);
 
         $validator
