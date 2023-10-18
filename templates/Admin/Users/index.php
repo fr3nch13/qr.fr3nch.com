@@ -55,19 +55,24 @@ $this->assign('page_title', __('Users'));
                                     ?></dd>
 
                                     <dt class="col-4"><?= __('Created') ?></dt>
-                                    <dd class="col-8"><?= h($user->created ? $user->created->format('M d, Y') : null) ?> </dd>
+                                    <dd class="col-8"><?php
+                                    if ($user->created) {
+                                        echo $user->created->format('M d, Y');
+                                    }
+                                    ?></dd>
                                 </dl>
                             </div>
                         </div>
                     </div>
 
                     <div class="card-footer text-muted p-0 btn-group">
+
                         <?= $this->Html->link(__('View'), [
                             'action' => 'view',
                             $user->id,
-                        ], [
-                        'class' => 'btn btn-sm btn-light',
-                        ]) ?>
+                                    ], [
+                                    'class' => 'btn btn-sm btn-light',
+                                    ]) ?>
 
                         <?= $this->Html->link(__('Edit'), [
                             'action' => 'edit',
