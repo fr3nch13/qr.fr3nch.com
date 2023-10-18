@@ -58,8 +58,7 @@ if (!$this->getRequest()->is('ajax')) {
                         $qrCode->id,
                         '?' => ['thumb' => 'md'],
                     ]);
-                    if (!empty($qrCode->qr_images))
-                    {
+                    if (!empty($qrCode->qr_images)) {
                         $bgUrl = $this->Url->build([
                             'controller' => 'QrImages',
                             'action' => 'show',
@@ -68,7 +67,9 @@ if (!$this->getRequest()->is('ajax')) {
                         ]);
                     }
                     ?>
-                    <figure class="background background-overlay" style="background-image: url('<?= $bgUrl ?>')"></figure>
+                    <figure
+                        class="background background-overlay"
+                        style="background-image: url('<?= $bgUrl ?>')"></figure>
 
                     <div class="card-title text-center text-white pt-5"><?= $qrCode->name ?></div>
 

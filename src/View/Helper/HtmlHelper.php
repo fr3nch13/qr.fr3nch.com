@@ -6,6 +6,7 @@ declare(strict_types=1);
  */
 namespace App\View\Helper;
 
+use App\Model\Entity\User;
 use BootstrapUI\View\Helper\HtmlHelper as BootstrapUiHtmlHelper;
 
 /**
@@ -32,17 +33,16 @@ class HtmlHelper extends BootstrapUiHtmlHelper
      * Creates the avatar html
      *
      * @param string $size The one of three sizes [sm, md, lg]
-     * @param null|\App\Model\Entity\User $user The user to make the avatar for, if none, the logged in user is used.
+     * @param \App\Model\Entity\User|null $user The user to make the avatar for, if none, the logged in user is used.
      * @param string $wrapperClasses Classes you want to add to the div wrapper
      * @param string $iconClasses Classes you want to add to the icon
      */
     public function avatar(
         string $size = 'md',
-        ?\App\Model\Entity\User $user = null,
+        ?User $user = null,
         string $wrapperClasses = '',
         string $iconClasses = ''
-    ): string
-    {
+    ): string {
         $wrapper = '<div class="avatar-{0} d-flex align-items-center justify-content-center {1}">{2}</div>';
         $wrapperClass = 'bg-light';
         $icon = '<i class="bi bi-person {0}"></i>';
@@ -53,7 +53,7 @@ class HtmlHelper extends BootstrapUiHtmlHelper
                 return __($wrapper, [
                     $size,
                     $wrapperClass . ' ' . $wrapperClasses,
-                    __($icon, [$iconClass. ' ' . $iconClasses])
+                    __($icon, [$iconClass . ' ' . $iconClasses]),
                 ]);
             }
             $user = $this->ActiveUser->getUser();

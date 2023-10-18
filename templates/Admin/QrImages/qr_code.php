@@ -42,12 +42,14 @@ if (!$this->getRequest()->is('ajax')) {
                     href="#"
                     data-bs-toggle="modal"
                     data-bs-target="#modal-<?= $qrImage->id ?>">
-                        <figure class="background background-overlay" style="background-image: url('<?= $this->Url->build([
-                            'prefix' => false,
-                            'action' => 'show',
-                            $qrImage->id,
-                            '?' => ['thumb' => 'md'],
-                        ]) ?>')"></figure>
+                        <figure
+                            class="background background-overlay"
+                            style="background-image: url('<?= $this->Url->build([
+                                'prefix' => false,
+                                'action' => 'show',
+                                $qrImage->id,
+                                '?' => ['thumb' => 'md'],
+                            ]) ?>')"></figure>
                     <div class="card-title text-white"><?= $qrImage->name ?></div>
                 </a>
                 </div>

@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace App\View\Helper;
 
+use App\Model\Entity\User;
 use Cake\View\Helper;
 
 /**
@@ -31,7 +32,6 @@ class GravatarHelper extends Helper
     ];
 
     /**
-     *
      * Creates an avatar link for a User Entity
      *
      * @param \App\Model\Entity\User $user The User entity.
@@ -41,7 +41,7 @@ class GravatarHelper extends Helper
      * - class: The css class of the image tag (gravatar default)
      * @return string The HTML IMG tag for the gravatar
      */
-    public function avatar(\App\Model\Entity\User $user, array $options = []): string
+    public function avatar(User $user, array $options = []): string
     {
         if (!isset($options['class'])) {
             $options['class'] = 'gravatar img-fluid';

@@ -6,6 +6,7 @@ declare(strict_types=1);
  */
 namespace App\View\Helper;
 
+use App\Model\Entity\User;
 use Cake\View\Helper;
 
 /**
@@ -39,7 +40,7 @@ class ActiveUserHelper extends Helper
      * @param \App\Model\Entity\User $user
      * @return bool
      */
-    public function isMe(\App\Model\Entity\User $user): bool
+    public function isMe(User $user): bool
     {
         return $user->id === $this->Identity->get('id');
     }
