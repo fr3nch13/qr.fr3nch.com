@@ -174,7 +174,7 @@ if (!$this->getRequest()->is('ajax')) {
                             <dt class="col-4 col-md-3"><?= __('Created') ?></dt>
                             <dd class="col-8 col-md-9"><?php
                             if ($qrCode->hasValue('created')) {
-                                echo $$qrCode->created->format('M d, Y');
+                                echo $qrCode->created->format('M d, Y');
                             } ?> </dd>
                         </dl>
                     </div>
