@@ -78,11 +78,11 @@ if (!$this->getRequest()->is('ajax')) {
                     <figure
                         class="background background-overlay"
                         style="background-image: url('<?= $bgUrl ?>')"></figure>
+                    <div class="card-content level-2">
+                        <div class="card-title text-center text-white pt-5"><?= $qrCode->name ?></div>
+                        <div class="card-body text-white d-block py-5 py-md-10">
 
-                    <div class="card-title text-center text-white pt-5"><?= $qrCode->name ?></div>
-
-                    <div class="card-body text-white d-block level-2 py-5 py-md-10">
-
+                        </div>
                     </div>
 
                     <div class="card-footer text-muted p-0 btn-group">

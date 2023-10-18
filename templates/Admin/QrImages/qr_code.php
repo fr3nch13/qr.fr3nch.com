@@ -37,21 +37,21 @@ if (!$this->getRequest()->is('ajax')) {
                     <?= $this->Template->objectComment('QrImages/entity/active'); ?>
                 <?php endif; ?>
 
-                <div class="card-body py-5 py-md-10">
-                <a
-                    href="#"
-                    data-bs-toggle="modal"
-                    data-bs-target="#modal-<?= $qrImage->id ?>">
-                        <figure
-                            class="background background-overlay"
-                            style="background-image: url('<?= $this->Url->build([
-                                'prefix' => false,
-                                'action' => 'show',
-                                $qrImage->id,
-                                '?' => ['thumb' => 'md'],
-                            ]) ?>')"></figure>
-                    <div class="card-title text-white"><?= $qrImage->name ?></div>
-                </a>
+                <figure
+                    class="background background-overlay"
+                    style="background-image: url('<?= $this->Url->build([
+                        'prefix' => false,
+                        'action' => 'show',
+                        $qrImage->id,
+                        '?' => ['thumb' => 'md'],
+                    ]) ?>')"></figure>
+                <div class="card-content level-2">
+                    <a
+                        href="#"
+                        data-bs-toggle="modal"
+                        data-bs-target="#modal-<?= $qrImage->id ?>">
+                        <div class="card-title text-white d-block py-5 py-md-10"><?= $qrImage->name ?></div>
+                    </a>
                 </div>
                 <div class="card-footer text-muted p-0 btn-group">
                     <?= $this->Html->link(__('Edit'), [

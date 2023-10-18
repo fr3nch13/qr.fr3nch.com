@@ -34,29 +34,8 @@ footer img.logo-bottom {
         font-size: 7rem;
     }
 
-/**
- * Product listing page
- */
-.products .product .product-title {
-    font-size: 130%;
-}
-.products .product.inactive .product-title {
-    color: #f70505;
-}
-
-.products .product .product-image img.product-qrimage {
-    overflow: auto;
-    max-height: 400px;
-}
-/**
- * Product details page.
- */
-.product-view .product {
-    position: relative;
-}
-
 /** Hover for main page **/
-.card .background-overlay:hover::after {
+.card .background-overlay:has(+ .card-content:hover)::after {
     background: transparent !important;
     transition: background-color 1s ease-out;
 }
