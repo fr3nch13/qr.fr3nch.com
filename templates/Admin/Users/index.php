@@ -87,6 +87,18 @@ $this->assign('page_title', __('Users'));
     </div>
 </div>
 
+<div class="container py-2">
+    <nav aria-label="Pagination" class="text-center">
+        <ul class="pagination">
+            <?= $this->Paginator->first('&laquo;', ['label' => 'First']) ?>
+            <?= $this->Paginator->prev('<', ['label' => 'Previous']) ?>
+            <?= $this->Paginator->numbers() ?>
+            <?= $this->Paginator->next('>', ['label' => 'Next']) ?>
+            <?= $this->Paginator->last('&laquo;', ['label' => 'Last']) ?>
+        </ul>
+    </nav>
+</div>
+
 <?php $this->start('page_options'); ?>
 <ul class="list-inline">
     <li class="list-inline-item ms-2">
