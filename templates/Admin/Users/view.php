@@ -8,6 +8,7 @@ if (!$this->getRequest()->is('ajax')) {
 }
 
 $this->assign('page_title', $user->name);
+$this->assign('title', $this->fetch('page_title'));
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <div class="card bg-opaque-white">

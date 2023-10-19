@@ -55,8 +55,6 @@ class QrCodesTable extends Table
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
-        $this->addBehavior('Timestamp');
-
         $this->belongsTo('Users')
             ->setClassName('Users')
             ->setForeignKey('user_id');
@@ -74,6 +72,8 @@ class QrCodesTable extends Table
             ->setForeignKey('qr_code_id')
             ->setTargetForeignKey('tag_id')
             ->setThrough('QrCodesTags');
+
+        $this->addBehavior('Timestamp');
 
         // Friendsofcake/search
         $this->addBehavior('Search.Search');

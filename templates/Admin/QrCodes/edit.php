@@ -10,6 +10,9 @@
 if (!$this->getRequest()->is('ajax')) {
     $this->extend('/Admin/QrCodes/details');
 }
+
+$this->assign('page_title', __('Edit QR Code: {0}', [$qrCode->name]));
+$this->assign('title', $this->fetch('page_title'));
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <?= $this->Form->create($qrCode) ?>

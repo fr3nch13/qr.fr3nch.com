@@ -6,6 +6,7 @@
 if (!$this->getRequest()->is('ajax')) {
     $this->setLayout('pages/view');
 }
+$this->assign('title', $qrCode->name);
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 

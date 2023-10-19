@@ -11,6 +11,7 @@ if (!$this->getRequest()->is('ajax')) {
 // labels: User Management, CakeDC
 
 $this->assign('page_title', __('Settings'));
+$this->assign('title', $this->fetch('page_title'));
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <?= $this->Form->create($user) ?>

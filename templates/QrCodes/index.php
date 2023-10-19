@@ -7,6 +7,7 @@
 if (!$this->getRequest()->is('ajax')) {
     $this->setLayout('pages/index');
 }
+$this->assign('title', __('QR Codes'));
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
     <div class="container mt-5">

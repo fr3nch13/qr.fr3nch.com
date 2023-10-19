@@ -10,6 +10,8 @@ if (!$this->getRequest()->is('ajax')) {
     $this->setLayout('login');
 }
 
+$this->assign('title', __('Sign In'));
+
 $this->assign('card_title', __('Sign In'));
 $this->start('card_body');
 ?>

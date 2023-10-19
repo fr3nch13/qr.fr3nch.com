@@ -7,6 +7,9 @@
 if (!$this->getRequest()->is('ajax')) {
     $this->setLayout('dashboard/form');
 }
+
+$this->assign('page_title', __('Add a Tag'));
+$this->assign('title', $this->fetch('page_title'));
 ?><del></del>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <?= $this->Form->create($tag) ?>

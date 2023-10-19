@@ -7,6 +7,9 @@
 if (!$this->getRequest()->is('ajax')) {
     $this->setLayout('dashboard/form');
 }
+
+$this->assign('page_title', __('Edit Source: {0}', [$source->name]));
+$this->assign('title', $this->fetch('page_title'));
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <?= $this->Form->create($source) ?>

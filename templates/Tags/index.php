@@ -6,6 +6,7 @@
 if (!$this->getRequest()->is('ajax')) {
     $this->setLayout('pages/index');
 }
+$this->assign('title', __('Tags'));
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 
