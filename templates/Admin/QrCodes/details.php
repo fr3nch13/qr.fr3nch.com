@@ -8,6 +8,7 @@ if (!$this->getRequest()->is('ajax')) {
 }
 
 $this->assign('page_title', $qrCode->name);
+$this->assign('title', $this->fetch('page_title'));
 
 if ($qrCode->id) {
     $this->start('page_options');

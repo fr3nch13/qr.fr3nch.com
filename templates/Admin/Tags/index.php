@@ -9,6 +9,7 @@ if (!$this->getRequest()->is('ajax')) {
 }
 
 $this->assign('page_title', __('Tags'));
+$this->assign('title', $this->fetch('page_title'));
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <div class="container bg-white">
