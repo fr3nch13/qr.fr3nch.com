@@ -16,9 +16,9 @@ jobs:
     - name: executing remote ssh commands
       uses: appleboy/ssh-action@v1.0.0
       env:
-        DEPLOY_SSH_PATH: ${{ secrets.DEPLOY_SSH_PATH }}
+        DEPLOY_SSH_PATH: ${{ env.DEPLOY_SSH_PATH }}
       with:
-        host: ${{ secrets.DEPLOY_SSH_HOST }}
+        host: ${{ env.DEPLOY_SSH_HOST }}
         username: ${{ secrets.DEPLOY_SSH_USERNAME }}
         key: ${{ secrets.DEPLOY_SSH_KEY }}
         port: ${{ secrets.DEPLOY_SSH_PORT }}
