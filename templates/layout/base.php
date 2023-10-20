@@ -19,6 +19,16 @@
     <link rel="manifest" href="/img/site.webmanifest">
     <title><?= __('QR Fr3nch') ?> : <?= $this->fetch('title') ?></title>
 
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8R77CBX3C8"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-8R77CBX3C8');
+    </script>
+
     <?= $this->Html->css([
         'libs.bundle',
         'index.bundle',
