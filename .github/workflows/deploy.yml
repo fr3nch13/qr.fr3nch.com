@@ -1,0 +1,30 @@
+name: Deploy to Server via SSH
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      # This branch is also mentioned in the ssh comand below.
+      # So, if you change the production branch name, update the ssh command as well.
+      - production
+
+jobs:
+  deploy:
+    name: Deploy to production
+    runs-on: ubuntu-latest
+    steps:
+    - name: executing remote ssh commands using password
+      uses: appleboy/ssh-action@v1
+      with:
+        host: ${{ secrets.DEPLOY_SSH_HOST }}
+        username: ${{ secrets.DEPLOY_SSH_USERNAME }}
+        key: ${{ secrets.DEPLOY_SSH_KEY }}
+        port: ${{ secrets.DEPLOY_SSH_PORT }}
+        script: |
+          cd ${{ secrets.DEPLOY_SSH_PATH }}
+          git fetch origin
+          git checkout production
+          git pull
+          composer install --no-interaction
+          composer migrate
+
