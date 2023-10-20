@@ -47,7 +47,7 @@ $this->assign('title', __('QR Codes'));
     </div>
 
     <div class="container">
-        <div class="row g-3 g-lg-5 justify-content-between">
+        <div class="row g-3 g-lg-5">
 
         <?php foreach ($qrCodes as $qrCode) : ?>
             <?php
