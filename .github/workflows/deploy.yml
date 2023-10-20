@@ -30,6 +30,6 @@ jobs:
           git fetch origin
           git checkout production
           git pull
-          composer install --no-interaction
-          composer migrate
+          ./composer.phar install --no-interaction
+          ./composer.phar migrate
 

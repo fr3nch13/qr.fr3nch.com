@@ -118,6 +118,7 @@ class Installer
      */
     public static function setFolderPermissions(string $dir, IOInterface $io): void
     {
+        $setFolderPermissions = 'N';
         // ask if the permissions should be changed
         if ($io->isInteractive()) {
             $validator = function (string $arg): string {
@@ -132,10 +133,10 @@ class Installer
                 10,
                 'N'
             );
+        }
 
-            if (in_array($setFolderPermissions, ['n', 'N'])) {
-                return;
-            }
+        if (in_array($setFolderPermissions, ['n', 'N'])) {
+            return;
         }
 
         // Change the permissions on a path and output the results.
