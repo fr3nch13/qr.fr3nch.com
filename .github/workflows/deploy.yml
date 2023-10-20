@@ -18,7 +18,7 @@ jobs:
       env:
         DEPLOY_SSH_PATH: ${{ env.DEPLOY_SSH_PATH }}
       with:
-        host: ${{ env.DEPLOY_SSH_HOST }}
+        host: ${{ secrets.DEPLOY_SSH_HOST }}
         username: ${{ secrets.DEPLOY_SSH_USERNAME }}
         key: ${{ secrets.DEPLOY_SSH_KEY }}
         port: ${{ secrets.DEPLOY_SSH_PORT }}
