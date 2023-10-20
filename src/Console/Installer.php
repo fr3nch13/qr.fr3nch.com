@@ -118,6 +118,7 @@ class Installer
      */
     public static function setFolderPermissions(string $dir, IOInterface $io): void
     {
+        $setFolderPermissions = 'N';
         // ask if the permissions should be changed
         if ($io->isInteractive()) {
             $validator = function (string $arg): string {
@@ -127,15 +128,15 @@ class Installer
                 throw new Exception('This is not a valid answer. Please choose Y or n.');
             };
             $setFolderPermissions = $io->askAndValidate(
-                '<info>Set Folder Permissions ? (Default to Y)</info> [<comment>Y,n</comment>]? ',
+                '<info>Set Folder Permissions ? (Default to N)</info> [<comment>y,N</comment>]? ',
                 $validator,
                 10,
-                'Y'
+                'N'
             );
+        }
 
-            if (in_array($setFolderPermissions, ['n', 'N'])) {
-                return;
-            }
+        if (in_array($setFolderPermissions, ['n', 'N'])) {
+            return;
         }
 
         // Change the permissions on a path and output the results.
