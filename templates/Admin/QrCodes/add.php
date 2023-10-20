@@ -44,6 +44,7 @@ $this->assign('title', $this->fetch('page_title'));
                     'spacing' => 'mb-2',
                     'placeholder' => 'https://',
                     'label' => __('URL'),
+                    'class' => 'lowercase',
                 ]); ?>
             </div>
         </div>

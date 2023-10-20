@@ -22,6 +22,7 @@ $this->assign('title', $this->fetch('page_title'));
             'readonly' => true,
             'spacing' => 'mb-2',
             'label' => __('Unique Key'),
+            'disabled' => true,
         ]); ?>
     </div>
     <div class="col-8">
@@ -40,6 +41,7 @@ $this->assign('title', $this->fetch('page_title'));
             'spacing' => 'mb-2',
             'placeholder' => 'https://',
             'label' => __('URL'),
+            'class' => 'lowercase',
         ]); ?>
     </div>
 </div>
