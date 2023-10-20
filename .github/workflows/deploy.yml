@@ -25,7 +25,7 @@ jobs:
         script_stop: true
         envs: DEPLOY_SSH_PATH
         script: |
-          echo "$DEPLOY_SSH_PATH"
+          realpath $DEPLOY_SSH_PATH
           cd $DEPLOY_SSH_PATH
           git fetch origin
           git checkout production
