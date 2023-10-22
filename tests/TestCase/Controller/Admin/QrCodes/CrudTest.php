@@ -123,7 +123,7 @@ class CrudTest extends BaseControllerTest
             'url' => 'https://amazon.com/path/to/details/page/newqrcode',
             'source_id' => 1,
             'user_id' => 1,
-            'tags' => ['_ids' => ['new code', 'Notebook', 'Journal']]
+            'tags' => ['_ids' => ['new code', 'Notebook', 'Journal']],
         ]);
         $this->assertRedirectEquals('https://localhost/admin/qr-codes/view/6');
         $this->assertFlashMessage('The qr code has been saved.', 'flash');
@@ -189,7 +189,7 @@ class CrudTest extends BaseControllerTest
         // put
         $this->put('https://localhost/admin/qr-codes/edit/1', [
             'name' => 'Edited QrCode',
-            'tags' => ['_ids' => ['new code', 'Notebook', 'Journal']]
+            'tags' => ['_ids' => ['new code', 'Notebook', 'Journal']],
         ]);
         $this->assertRedirectEquals('https://localhost/admin/qr-codes/view/1');
         $this->assertFlashMessage('The qr code has been saved.', 'flash');
