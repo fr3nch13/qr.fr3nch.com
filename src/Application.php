@@ -372,6 +372,7 @@ class Application extends BaseApplication implements
         $eventManager = $this->getEventManager();
         // make sure they're only getting registered globally, once.
         // TODO: Hacky as we're tracking the event key, not if the listener itself is already registered.
+        // Maybe use listeners('QrCode.onHit')
         if (empty($eventManager->prioritisedListeners('QrCode.onHit'))) {
             $eventManager->on(new QrCodeListener());
         }
