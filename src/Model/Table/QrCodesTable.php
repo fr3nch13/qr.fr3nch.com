@@ -215,11 +215,16 @@ class QrCodesTable extends Table
         if (isset($data['tags']['_ids']) && is_array($data['tags']['_ids'])) {
             $user_id = 0;
             // make the user of the QrCode the user of the new tags.
-            if (isset($data['qrkey'])) {
-                $qrCode = $this->find('key', key: $data['qrkey'])->first();
+            // existing code.
+            if (isset($data['id'])) {
+                $qrCode = $this->get((int)$data['id']);
                 if ($qrCode) {
                     $user_id = $qrCode->user_id;
                 }
+            }
+            // new code
+            if (!$user_id && isset($data['user_id'])) {
+                $user_id = $data['user_id'];
             }
 
             foreach ($data['tags']['_ids'] as $pos => $value) {
