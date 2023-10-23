@@ -77,7 +77,7 @@ $this->assign('title', __('QR Codes'));
                     }
                     ?>
                     <figure
-                        class="background background-overlay"
+                        class="background background-overlay bg-light"
                         style="background-image: url('<?= $bgUrl ?>')"></figure>
                     <div class="card-content level-2">
                         <div class="card-title text-center text-white pt-5"><?= $qrCode->name ?></div>
