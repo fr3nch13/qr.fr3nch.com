@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Lib;
 
+use chillerlan\QRCode\Data\QRMatrix;
 use chillerlan\QRCode\Output\QRMarkupSVG;
 
 /**
@@ -33,8 +34,21 @@ class QRSvgWithLogo extends QRMarkupSVG
      */
     protected function path(string $path, int $M_TYPE): string
     {
-        // omit the "fill" and "opacity" attributes on the path element
-        return sprintf('<path class="%s" d="%s"/>', $this->getCssClass($M_TYPE), $path);
+        $this->options->svgOpacity = '1';
+        if (in_array($M_TYPE, [
+            QRMatrix::M_DATA,
+            QRMatrix::M_FINDER,
+            QRMatrix::M_SEPARATOR,
+            QRMatrix::M_ALIGNMENT,
+            QRMatrix::M_TIMING,
+            QRMatrix::M_FORMAT,
+            QRMatrix::M_VERSION,
+            QRMatrix::M_QUIETZONE,
+            QRMatrix::M_LOGO,
+        ])) {
+            $this->options->svgOpacity = '0';
+        }
+        return parent::path($path, $M_TYPE);
     }
 
     /**
@@ -56,10 +70,11 @@ class QRSvgWithLogo extends QRMarkupSVG
 
         // @todo: customize the <g> element to your liking (css class, style...)
         return sprintf(
-            '%5$s<g transform="translate(%1$s %1$s) scale(%2$s)" class="%3$s">%5$s	%4$s%5$s</g>',
+            '%6$s<g transform="translate(%1$s %1$s) scale(%2$s)" fill="%4$s" class="%3$s">%5$s	%5$s%6$s</g>',
             ($this->moduleCount - ($this->moduleCount * $this->options->svgLogoScale)) / 2,
             $this->options->svgLogoScale,
             $this->options->svgLogoCssClass,
+            $this->options->logoColor,
             $logoContent,
             $this->options->eol
         );

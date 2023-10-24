@@ -423,12 +423,15 @@ return [
         'svgLogo' => WWW_ROOT . 'img' . DS . 'qr_logo.svg',
         'darkcolor' => '#0079A9', // darker blue
         'lightcolor' => '#FFFFFF', // white
-        // thumbnail sizes
+        // the sdefault size of the qr_code
+        // not used currently
+        //'viewSize' => 400,
+        // thumbnail sizes for the qr_images
         'thumbs' => [
             // maximum sizes
             'sm' => ['x' => 200, 'y' => 200],
             'md' => ['x' => 400, 'y' => 400],
             'lg' => ['x' => 800, 'y' => 800],
-        ]
+        ],
     ],
 ];
