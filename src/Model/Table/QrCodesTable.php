@@ -359,10 +359,12 @@ class QrCodesTable extends Table
      * If it's not created, try to create it.
      *
      * @param int $id The id of the QR Code Entity
+     * @param bool $light If we should look for the light or dark image.
+     * @param bool $regenerate If we should regenerate the images.
      * @return string The absolute path to the generated QR code Image.
      * @throws \Cake\Http\Exception\NotFoundException If the entity isn't found, or we can't create the image.
      */
-    public function getQrImagePath(int $id, bool $regenerate = false): string
+    public function getQrImagePath(int $id, bool $light = false, bool $regenerate = false): string
     {
         $qrCode = $this->get($id); // throws a NotFoundException if it doesn't exist.
 
@@ -370,12 +372,17 @@ class QrCodesTable extends Table
             $qrCode->regenerate = true;
         }
 
-        if (!$qrCode->path) {
+        $path = $qrCode->path_dark;
+        if ($light === true) {
+            $path = $qrCode->path_light;
+        }
+
+        if (!$path) {
             throw new NotFoundException(__('Unable to find the QR Image for the QR Code `{0}`', [
                 $qrCode->name,
             ]));
         }
 
-        return $qrCode->path;
+        return $path;
     }
 }
