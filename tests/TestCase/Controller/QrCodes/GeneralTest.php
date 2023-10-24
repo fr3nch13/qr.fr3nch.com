@@ -328,7 +328,7 @@ class GeneralTest extends BaseControllerTest
         $this->assertFalse(isset($headers['Cache-Control']));
         $this->assertSame('image/svg+xml', $headers['Content-Type'][0]);
         $this->assertGreaterThan(0, $headers['Content-Length'][0]);
-        $this->assertSame('attachment; filename="QR-sownscribe-light.svg"', $headers['Content-Disposition'][0]);
+        $this->assertSame('attachment; filename="QR-sownscribe-dark.svg"', $headers['Content-Disposition'][0]);
         $this->assertSame('binary', $headers['Content-Transfer-Encoding'][0]);
 
         // light
