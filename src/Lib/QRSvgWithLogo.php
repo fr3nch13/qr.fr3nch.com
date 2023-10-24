@@ -34,7 +34,7 @@ class QRSvgWithLogo extends QRMarkupSVG
      */
     protected function path(string $path, int $M_TYPE): string
     {
-        $this->options->svgOpacity = '1';
+        $this->options->svgOpacity = 1;
         if (
             in_array($M_TYPE, [
             QRMatrix::M_DATA,
@@ -47,9 +47,10 @@ class QRSvgWithLogo extends QRMarkupSVG
             QRMatrix::M_QUIETZONE,
             QRMatrix::M_LOGO,
             ]) &&
+            is_array($this->options->moduleValues) &&
             !$this->options->moduleValues[$M_TYPE]
         ) {
-            $this->options->svgOpacity = '0';
+            $this->options->svgOpacity = 0;
         }
 
         return parent::path($path, $M_TYPE);
