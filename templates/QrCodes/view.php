@@ -56,7 +56,7 @@ $this->assign('title', $qrCode->name);
                     </div>
                     <?php endforeach; ?>
 
-                    <?= $this->Template->objectComment('QrCode/show/dark') ?>
+                    <?= $this->Template->objectComment('QrCode/show/small/dark') ?>
                     <div>
                         <img
                             class="img-thumbnail bg-light"
@@ -68,7 +68,7 @@ $this->assign('title', $qrCode->name);
                             alt="<?= __('The QR Code'); ?>">
                     </div>
 
-                    <?= $this->Template->objectComment('QrCode/show/light') ?>
+                    <?= $this->Template->objectComment('QrCode/show/small/light') ?>
                     <div>
                         <img
                             class="img-thumbnail bg-light"
@@ -116,7 +116,7 @@ $this->assign('title', $qrCode->name);
                     </div>
                     <?php endforeach; ?>
 
-                    <?= $this->Template->objectComment('QrCode/show/dark') ?>
+                    <?= $this->Template->objectComment('QrCode/show/large/dark') ?>
                     <div class="item text-center">
                         <img
                             class="img-thumbnail bg-light"
@@ -128,7 +128,7 @@ $this->assign('title', $qrCode->name);
                             alt="<?= __('The QR Code'); ?>">
                     </div>
 
-                    <?= $this->Template->objectComment('QrCode/show/light') ?>
+                    <?= $this->Template->objectComment('QrCode/show/large/light') ?>
                     <div class="item text-center">
                         <img
                             class="img-thumbnail bg-light"
