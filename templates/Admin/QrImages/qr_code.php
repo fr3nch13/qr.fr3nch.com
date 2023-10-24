@@ -38,7 +38,7 @@ if (!$this->getRequest()->is('ajax')) {
                 <?php endif; ?>
 
                 <figure
-                    class="background background-overlay"
+                    class="background background-overlay bg-light"
                     style="background-image: url('<?= $this->Url->build([
                         'prefix' => false,
                         'action' => 'show',

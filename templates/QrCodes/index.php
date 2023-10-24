@@ -64,7 +64,6 @@ $this->assign('title', __('QR Codes'));
                     $bgUrl = $this->Url->build([
                         'action' => 'show',
                         $qrCode->id,
-                        '?' => ['thumb' => 'md'],
                     ]);
                     if (!empty($qrCode->qr_images)) {
                         echo $this->Template->objectComment('QrImage/active/first');
@@ -77,7 +76,7 @@ $this->assign('title', __('QR Codes'));
                     }
                     ?>
                     <figure
-                        class="background background-overlay"
+                        class="background background-overlay bg-light"
                         style="background-image: url('<?= $bgUrl ?>')"></figure>
                     <div class="card-content level-2">
                         <div class="card-title text-center text-white pt-5"><?= $qrCode->name ?></div>

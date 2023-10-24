@@ -6,8 +6,10 @@ namespace App\Lib;
 use App\Model\Entity\QrCode;
 use Cake\Core\Configure;
 use Cake\Routing\Router;
+use chillerlan\QRCode\Common\EccLevel;
+use chillerlan\QRCode\Data\QRMatrix;
+use chillerlan\QRCode\Output\QROutputInterface;
 use chillerlan\QRCode\QRCode as ChillerlanQRCode;
-use GdImage;
 
 /**
  * Library for generating QR codes with chillerlan/QRCode.
@@ -17,12 +19,12 @@ class PhpQrGenerator
     /**
      * @var array<string, mixed> Config from the config/app_local.php
      */
-    public array $config;
+    public array $config = [];
 
     /**
-     * @var \App\Lib\LogoOptions variables.
+     * @var \App\Lib\SVGWithLogoOptions variables.
      */
-    public LogoOptions $options;
+    public SVGWithLogoOptions $options;
 
     /**
      * @var string The data to urlencode and encode into a QR Code.
@@ -33,11 +35,6 @@ class PhpQrGenerator
      * @var \App\Model\Entity\QrCode The QR Code entity
      */
     public QrCode $qrCode;
-
-    /**
-     * @var string the absolute path to the generated QR code Image
-     */
-    protected string $qrImagePath;
 
     /**
      * @var \chillerlan\QRCode\QRCode The generated QR Code Image
@@ -52,76 +49,31 @@ class PhpQrGenerator
     public function __construct(QrCode $qrCode)
     {
         $this->qrCode = $qrCode;
-        $defaults = [
-            'logoPath' => WWW_ROOT . 'img' . DS . 'qr_logo.png',
-            'positivecolor' => '000000',
-            'negativecolor' => 'FFFFFF',
-            'scale' => 5,
-        ];
 
-        $this->config = Configure::read('QrCode', $defaults);
-
-        // check some of the config options
-        $this->config['scale'] = $this->config['scale'] ?: 5;
-
-        $this->config['positivecolor'] = $this->config['positivecolor'] ?: '000000';
-        $this->config['positivecolor'] = $this->hexToRgb($this->config['positivecolor']);
-
-        $this->config['negativecolor'] = $this->config['negativecolor'] ?: 'FFFFFF';
-        $this->config['negativecolor'] = $this->hexToRgb($this->config['negativecolor']);
-
-        $this->config['logoPath'] = $this->config['logoPath'] ?? WWW_ROOT . 'img' . DS . 'qr_logo.png';
-
-        $this->qrImagePath = Configure::read('App.paths.qr_codes') . DS . $this->qrCode->id . '.png';
-
-        $this->options = new LogoOptions();
-
-        $this->options->returnResource = true;
-        $this->options->outputType = ChillerlanQRCode::OUTPUT_IMAGE_PNG;
-        $this->options->eccLevel = ChillerlanQRCode::ECC_H;
-        $this->options->imageBase64 = false;
-        $this->options->logoSpaceWidth = 13; // this is the max
-        $this->options->logoSpaceHeight = 13; // this is the max
-        $this->options->scale = $this->config['scale'];
-        $this->options->imageTransparent = false;
-        $this->options->moduleValues = [
-            // @link https://github.com/chillerlan/php-qrcode/blob/4.3.4/examples/image.php#L25
-            // positivecolor is normally the black color
-            // negativecolor is normally the white color
-            // 3 outer squares
-            1536 => $this->config['positivecolor'],
-            // light (false), white is the transparency color and is enabled by default
-            6 => $this->config['negativecolor'],
-            // darkmodule
-            512 => $this->config['positivecolor'],
-            // data
-            1024 => $this->config['positivecolor'],
-            4 => $this->config['negativecolor'],
-            // finder dot, dark (true)
-            5632 => $this->config['positivecolor'],
-            // alignment
-            2560 => $this->config['positivecolor'],
-            10 => $this->config['negativecolor'],
-            // format
-            3584 => $this->config['positivecolor'],
-            14 => $this->config['negativecolor'],
-            // version
-            4096 => $this->config['positivecolor'],
-            16 => $this->config['negativecolor'],
-            // timing
-            3072 => $this->config['positivecolor'],
-            12 => $this->config['negativecolor'],
-            // seperator
-            8 => $this->config['negativecolor'],
-            // quietzone
-            18 => $this->config['negativecolor'],
-            // logo (requires a call to QRMatrix::setLogoSpace())
-            20 => $this->config['negativecolor'],
-
-            // these are normally the white part
-            //6    => $this->config['negativecolor'], // light (false), white is the transparency color and is enabled by default
-
-        ];
+        $this->options = new SVGWithLogoOptions([
+            'svgLogo' => $this->getConfig('svgLogo', WWW_ROOT . 'img' . DS . 'qr_logo.svg'),
+            'svgLogoScale' => $this->getConfig('svgLogoScale', 0.25),
+            'svgLogoCssClass' => $this->getConfig('svgLogoCssClass', 'embedded-logo'),
+            // not working at the moment.
+            // 'svgViewBoxSize' => $this->getConfig('svgViewBoxSize', 500),
+            'version' => $this->getConfig('version', 5),
+            'outputType' => $this->getConfig('outputType', QROutputInterface::CUSTOM),
+            'outputInterface' => $this->getConfig('outputInterface', QRSvgWithLogo::class),
+            'outputBase64' => $this->getConfig('outputBase64', false),
+            'imageBase64' => $this->getConfig('imageBase64', false),
+            'eccLevel' => $this->getConfig('eccLevel', EccLevel::H),
+            'addQuietzone' => $this->getConfig('addQuietzone', true),
+            'drawLightModules' => $this->getConfig('drawLightModules', true),
+            'connectPaths' => $this->getConfig('connectPaths', true),
+            'backgroundTransparent' => $this->getConfig('backgroundTransparent', true),
+            'keepAsSquare' => $this->getConfig('keepAsSquare', [
+                QRMatrix::M_FINDER_DARK,
+                QRMatrix::M_FINDER_DOT,
+                QRMatrix::M_ALIGNMENT_DARK,
+            ]),
+            'svgUseFillAttributes' => $this->getConfig('svgUseFillAttributes', true),
+            //'svgDefs'  => $this->getConfig('svgDefs', ''),
+        ]);
 
         $this->data = Router::url([
             '_full' => true,
@@ -140,78 +92,89 @@ class PhpQrGenerator
      */
     public function generate(): void
     {
-        $this->QR = new ChillerlanQRCode($this->options);
+        $qrImagePathLight = Configure::read('App.paths.qr_codes') .
+            DS .
+            $this->qrCode->id .
+            '-light' .
+            '.svg';
+        $color = $this->getConfig('lightcolor', '#FFFFFF');
+        $optionsLight = clone $this->options;
+        $optionsLight->logoColor = $color;
+        $optionsLight->moduleValues = [
+            // normally light color
+            QRMatrix::M_DATA => false,
+            QRMatrix::M_FINDER => false,
+            QRMatrix::M_SEPARATOR => false,
+            QRMatrix::M_ALIGNMENT => false,
+            QRMatrix::M_TIMING => false,
+            QRMatrix::M_FORMAT => false,
+            QRMatrix::M_VERSION => false,
+            QRMatrix::M_QUIETZONE => false,
+            QRMatrix::M_LOGO => false,
 
-        $qrOutputInterface = new QRImageWithLogo($this->options, $this->QR->getMatrix($this->data));
-        $qrOutputInterface->dump(
-            $this->qrImagePath,
-            $this->config['logoPath']
-        );
+            // normally dark color
+            QRMatrix::M_DATA_DARK => $color,
+            QRMatrix::M_FINDER_DARK => $color,
+            QRMatrix::M_ALIGNMENT_DARK => $color,
+            QRMatrix::M_TIMING_DARK => $color,
+            QRMatrix::M_FORMAT_DARK => $color,
+            QRMatrix::M_VERSION_DARK => $color,
+        ];
+        $qrLight = new ChillerlanQRCode($optionsLight);
+        $qrLight->render($this->data, $qrImagePathLight);
 
-        // now that the qr code is generated, see if we want to add a border.
-        if (isset($this->config['use_border']) && $this->config['use_border']) {
-            $this->addBorder();
-        }
+        $qrImagePathDark = Configure::read('App.paths.qr_codes') .
+            DS .
+            $this->qrCode->id .
+            '-dark' .
+            '.svg';
+        $color = $this->getConfig('darkcolor', '#000000');
+        $optionsDark = clone $this->options;
+        $optionsDark->logoColor = $color;
+        $optionsDark->moduleValues = [
+            // normally light color
+            QRMatrix::M_DATA => false,
+            QRMatrix::M_FINDER => false,
+            QRMatrix::M_SEPARATOR => false,
+            QRMatrix::M_ALIGNMENT => false,
+            QRMatrix::M_TIMING => false,
+            QRMatrix::M_FORMAT => false,
+            QRMatrix::M_VERSION => false,
+            QRMatrix::M_QUIETZONE => false,
+            QRMatrix::M_LOGO => false,
+
+            // normally dark color
+            QRMatrix::M_DATA_DARK => $color,
+            QRMatrix::M_FINDER_DARK => $color,
+            QRMatrix::M_ALIGNMENT_DARK => $color,
+            QRMatrix::M_TIMING_DARK => $color,
+            QRMatrix::M_FORMAT_DARK => $color,
+            QRMatrix::M_VERSION_DARK => $color,
+        ];
+        $qrDark = new ChillerlanQRCode($optionsDark);
+        $qrDark->render($this->data, $qrImagePathDark);
+
+        // uncomment this out later if your want to be able to add a border.
+        // $data = $this->QR->render($this->data, $this->qrImagePath);
     }
 
     /**
-     * Add a border around the QR Code
+     * Checks the config, and returns a default, if not found
      *
-     * @return void
+     * @param string $key The key in the config to look for.
+     * @param mixed|null $default The value to return if the key isn't found.
+     * @return mixed The value, or default.
      */
-    public function addBorder(): void
+    public function getConfig(string $key, mixed $default = null): mixed
     {
-        // defaults
-        $this->config['border_width'] = $this->config['border_width'] ?: 5;
-        $this->config['border_color'] = $this->config['border_color'] ?: '000000';
-        $this->config['border_color'] = $this->hexToRgb($this->config['border_color']);
-
-        $img = imagecreatefrompng($this->qrImagePath);
-        if ($img instanceof GdImage) {
-            $border_color = imagecolorallocate(
-                $img,
-                $this->config['border_color'][0],
-                $this->config['border_color'][1],
-                $this->config['border_color'][2]
-            );
-            if (is_int($border_color)) {
-                $x1 = 0;
-                $y1 = 0;
-                $x2 = imagesx($img) - 1;
-                $y2 = imagesy($img) - 1;
-
-                for ($i = 0; $i < $this->config['border_width']; $i++) {
-                    imagerectangle($img, $x1++, $y1++, $x2--, $y2--, $border_color);
-                }
-            }
-
-            imagepng($img, $this->qrImagePath);
-            imagedestroy($img);
-        }
-    }
-
-    /**
-     * Because the Configure class likes to merge, it's making 6 entries into the color arrays.
-     * So, we'll use hexdec values, and this will translate it to the rgb array
-     *
-     * @param string $hexCode The hexedicimal string to translate to an rgb array.
-     * @return array<int, int> The generated array for the QG stuff to understand.
-     */
-    public function hexToRgb(string $hexCode): array
-    {
-        if ($hexCode[0] == '#') {
-            $hexCode = substr($hexCode, 1);
+        if (!$this->config) {
+            $this->config = Configure::read('QrCode');
         }
 
-        // if gived a 3 char code.
-        if (!isset($hexCode[4])) {
-            $hexCode = $hexCode[0] . $hexCode[0] . $hexCode[1] . $hexCode[1] . $hexCode[2] . $hexCode[2];
+        if (isset($this->config[$key])) {
+            return $this->config[$key];
         }
 
-        $r = (int)hexdec($hexCode[0] . $hexCode[1]);
-        $g = (int)hexdec($hexCode[2] . $hexCode[3]);
-        $b = (int)hexdec($hexCode[4] . $hexCode[5]);
-
-        return [$r, $g, $b];
+        return $default;
     }
 }
