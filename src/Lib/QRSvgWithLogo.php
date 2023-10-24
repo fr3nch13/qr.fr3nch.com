@@ -48,11 +48,11 @@ class QRSvgWithLogo extends QRMarkupSVG
         // remove the xml tag from the logo.
         $logoContent = file_get_contents($this->options->svgLogo);
 
-        if($logoContent === false) {
+        if ($logoContent === false) {
             $logoContent = '';
         }
 
-        $logoContent =  str_replace('<?xml version="1.0" encoding="utf-8"?>', '', $logoContent);
+        $logoContent = str_replace('<?xml version="1.0" encoding="utf-8"?>', '', $logoContent);
 
         // @todo: customize the <g> element to your liking (css class, style...)
         return sprintf(

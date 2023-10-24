@@ -5,6 +5,7 @@ namespace App\Lib;
 
 use chillerlan\QRCode\QRCodeException;
 use chillerlan\QRCode\QROptions;
+use const \PHP_EOL;
 
 class SVGWithLogoOptions extends QROptions
 {
@@ -20,7 +21,7 @@ class SVGWithLogoOptions extends QROptions
     // make sure we get the xml returned.
     public bool $outputBase64 = false;
 
-    public string $eol;
+    public string $eol = PHP_EOL;
 
     // the name is specific as it's called within chillerlan's code
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps

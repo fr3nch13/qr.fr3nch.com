@@ -10,7 +10,6 @@ use chillerlan\QRCode\Common\EccLevel;
 use chillerlan\QRCode\Data\QRMatrix;
 use chillerlan\QRCode\Output\QROutputInterface;
 use chillerlan\QRCode\QRCode as ChillerlanQRCode;
-use chillerlan\QRCode\QROptions;
 
 /**
  * Library for generating QR codes with chillerlan/QRCode.

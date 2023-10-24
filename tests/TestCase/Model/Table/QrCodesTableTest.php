@@ -3,10 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Model\Table;
 
-use App\Exception\ThumbException;
-use App\Lib\LogoOptions;
 use App\Lib\PhpQrGenerator;
-use App\Lib\QRImageWithLogo;
 use App\Model\Table\QrCodesTable;
 use App\Model\Table\SourcesTable;
 use App\Model\Table\TagsTable;
@@ -19,8 +16,6 @@ use Cake\ORM\Association\BelongsTo;
 use Cake\ORM\Association\BelongsToMany;
 use Cake\ORM\Behavior\TimestampBehavior;
 use Cake\TestSuite\TestCase;
-use chillerlan\QRCode\Output\QRCodeOutputException;
-use chillerlan\QRCode\QRCode as ChillerlanQRCode;
 
 /**
  * App\Model\Table\QrCodesTable Test Case
@@ -405,7 +400,7 @@ class QrCodesTableTest extends TestCase
 
         // a successful test, code generates and file exists.
         $entity = $this->QrCodes->get(1);
-        $entityPath = $tmpdir . DS . $entity->id . '.png';
+        $entityPath = $tmpdir . DS . $entity->id . '.svg';
         $this->assertSame($entityPath, $entity->path);
         $this->assertTrue(is_file($entityPath));
 
@@ -417,157 +412,6 @@ class QrCodesTableTest extends TestCase
     }
 
     /**
-     * Test the image's file
-     *
-     * @return void
-     */
-    public function testEntityImageThumb(): void
-    {
-        Configure::write('debug', true);
-        $this->loadRoutes();
-
-        $tmpdir = Configure::read('App.paths.qr_codes');
-        // make sure this setting exists.
-        $this->assertNotNull($tmpdir);
-        $this->assertTrue(is_dir($tmpdir));
-
-        $tmpdir = Configure::read('App.paths.qr_images');
-        // make sure this setting exists.
-        $this->assertNotNull($tmpdir);
-
-        // for tests, we use this dir so we don't mess with the actual dir
-        // we also copy over the assets in QrImagesFixture::insert()
-
-        $tmpimgdir = TMP . 'qr_images_test';
-        Configure::write('App.paths.qr_images', $tmpimgdir);
-        if (!is_dir($tmpimgdir) && !mkdir($tmpimgdir)) {
-            $this->assertTrue(false, __('Unable to make the `tmpimgdir` directory: {0}', [
-                $tmpimgdir,
-            ]));
-        }
-        $this->assertTrue(is_dir($tmpdir));
-
-        $tmpdir = TMP . 'qr_codes_test';
-        Configure::write('App.paths.qr_codes', $tmpdir);
-        if (!is_dir($tmpdir) && !mkdir($tmpdir)) {
-            $this->assertTrue(false, __('Unable to make the `tmpdir` directory: {0}', [
-                $tmpdir,
-            ]));
-        }
-        $this->assertTrue(is_dir($tmpdir));
-
-        // a successful test, code exists.
-        $entity = $this->QrCodes->get(1, contain: ['QrImages']);
-        $entityPath = $tmpdir . DS . $entity->id . '.png';
-        $this->assertSame($entityPath, $entity->path);
-        $this->assertTrue(is_file($entityPath));
-
-        // test the 3 different thumbnail sizes.
-        // the small thumbnail
-        $thumbPathSm = $tmpdir . DS . '1-thumb-sm.png';
-        // make sure it doesn't exist
-        if (is_file($thumbPathSm)) {
-            unlink($thumbPathSm);
-        }
-        $this->assertFalse(is_file($thumbPathSm));
-        $this->assertSame($thumbPathSm, $entity->path_sm);
-        $this->assertTrue(is_file($thumbPathSm));
-
-        // the medium thumbnail
-        $thumbPathMd = $tmpdir . DS . '1-thumb-md.png';
-        // make sure it doesn't exist
-        if (is_file($thumbPathMd)) {
-            unlink($thumbPathMd);
-        }
-        $this->assertFalse(is_file($thumbPathMd));
-        $this->assertSame($thumbPathMd, $entity->path_md);
-        $this->assertTrue(is_file($thumbPathMd));
-
-        // the large thumbnail
-        $thumbPathLg = $tmpdir . DS . '1-thumb-lg.png';
-        // make sure it doesn't exist
-        if (is_file($thumbPathLg)) {
-            unlink($thumbPathLg);
-        }
-        $this->assertFalse(is_file($thumbPathLg));
-        $this->assertSame($thumbPathLg, $entity->path_lg);
-        $this->assertTrue(is_file($thumbPathLg));
-
-        $this->assertCount(3, $entity->qr_images);
-
-        // test that each of its images also has a file
-        // and generate the thumbs if they don't exist.
-
-        // used for tracking after delete.
-        $images = [];
-        foreach ($entity->qr_images as $qrImage) {
-            $this->assertNotNull($qrImage->path);
-            $this->assertTrue(is_file($qrImage->path));
-            $this->assertNotNull($qrImage->path_sm);
-            $this->assertTrue(is_file($qrImage->path_sm));
-            $this->assertNotNull($qrImage->path_md);
-            $this->assertTrue(is_file($qrImage->path_md));
-            $this->assertNotNull($qrImage->path_lg);
-            $this->assertTrue(is_file($qrImage->path_lg));
-            $images[$qrImage->id] = [
-                'path' => $qrImage->path,
-                'path_sm' => $qrImage->path_sm,
-                'path_md' => $qrImage->path_md,
-                'path_lg' => $qrImage->path_lg,
-            ];
-        }
-
-        $this->QrCodes->delete($entity);
-
-        $this->assertFalse(is_file($thumbPathSm));
-        $this->assertFalse(is_file($thumbPathMd));
-        $this->assertFalse(is_file($thumbPathLg));
-        $this->assertFalse(is_file($entityPath));
-
-        // maker sure the images and their thumbnails were also deleted.
-        foreach ($entity->qr_images as $qrImage) {
-            $this->assertNull($qrImage->path);
-            $this->assertFalse(is_file($images[$qrImage->id]['path']));
-            $this->assertNull($qrImage->path_sm);
-            $this->assertFalse(is_file($images[$qrImage->id]['path_sm']));
-            $this->assertNull($qrImage->path_md);
-            $this->assertFalse(is_file($images[$qrImage->id]['path_md']));
-            $this->assertNull($qrImage->path_lg);
-            $this->assertFalse(is_file($images[$qrImage->id]['path_lg']));
-        }
-
-        // maker sure the folder for the qr_images is also deleted.
-        $imgPath = Configure::read('App.paths.qr_images', TMP . 'qr_images') . DS . $entity->id;
-        $this->assertFalse(is_dir($imgPath));
-    }
-
-    /**
-     * Test bad thumbnail size.
-     *
-     * @return void
-     * @uses \App\Model\Entity\User
-     */
-    public function testThumbBadSize(): void
-    {
-        Configure::write('debug', true);
-
-        $tmpdir = Configure::read('App.paths.qr_codes');
-        $this->assertNotNull($tmpdir);
-        $this->assertTrue(is_dir($tmpdir));
-
-        $entity = $this->QrCodes->get(1);
-        $entityPath = $tmpdir . DS . $entity->id . '.png';
-        $this->assertSame($entityPath, $entity->path);
-        $this->assertTrue(is_file($entityPath));
-
-        // the thumbnail bad size
-        $this->expectException(ThumbException::class);
-        $this->expectExceptionMessage('Unknown size option');
-        $result = $entity->getPathThumb('bad');
-        debug($result);
-    }
-
-    /**
      * Test Implemented Generator
      *
      * @return void
@@ -575,7 +419,7 @@ class QrCodesTableTest extends TestCase
     public function testImplementedGenerator1(): void
     {
         // existing entity
-        $path = Configure::read('App.paths.qr_codes') . DS . '1.png';
+        $path = Configure::read('App.paths.qr_codes') . DS . '1.svg';
         if (file_exists($path)) {
             unlink($path);
         }
@@ -608,7 +452,7 @@ class QrCodesTableTest extends TestCase
     {
         // test existing qr_code with missing image
         // test that it gets generated.
-        $path = Configure::read('App.paths.qr_codes') . DS . '3.png';
+        $path = Configure::read('App.paths.qr_codes') . DS . '3.svg';
         if (file_exists($path)) {
             unlink($path);
         }
@@ -627,7 +471,7 @@ class QrCodesTableTest extends TestCase
     public function testImplementedGenerator3(): void
     {
         // new entity, check that it gets generated on a new save.
-        $path = Configure::read('App.paths.qr_codes') . DS . '6.png';
+        $path = Configure::read('App.paths.qr_codes') . DS . '6.svg';
         if (file_exists($path)) {
             unlink($path);
         }
@@ -659,7 +503,7 @@ class QrCodesTableTest extends TestCase
     {
         // test nonexistant entity
         $this->expectException(RecordNotFoundException::class);
-        $path = Configure::read('App.paths.qr_codes') . DS . '10.png';
+        $path = Configure::read('App.paths.qr_codes') . DS . '10.svg';
         if (file_exists($path)) {
             unlink($path);
         }
@@ -678,7 +522,7 @@ class QrCodesTableTest extends TestCase
     {
         // test existing qr_code with missing image
         // test that it gets generated.
-        $path = Configure::read('App.paths.qr_codes') . DS . '3.png';
+        $path = Configure::read('App.paths.qr_codes') . DS . '3.svg';
         if (file_exists($path)) {
             unlink($path);
         }
@@ -701,7 +545,7 @@ class QrCodesTableTest extends TestCase
         Configure::write('App.paths.qr_codes', TMP . 'dontexist');
 
         // new entity, success, but can't generate code..
-        $path = Configure::read('App.paths.qr_codes') . DS . '7.png';
+        $path = Configure::read('App.paths.qr_codes') . DS . '7.svg';
         if (file_exists($path)) {
             unlink($path);
         }
@@ -736,7 +580,7 @@ class QrCodesTableTest extends TestCase
     public function testImplementedGenerator7(): void
     {
         // existing entity
-        $path = Configure::read('App.paths.qr_codes') . DS . '1.png';
+        $path = Configure::read('App.paths.qr_codes') . DS . '1.svg';
 
         // test regenerating the image
         $this->assertTrue(is_readable($path));
@@ -753,7 +597,7 @@ class QrCodesTableTest extends TestCase
     public function testImplementedGenerator8(): void
     {
         // existing entity
-        $path = Configure::read('App.paths.qr_codes') . DS . '1.png';
+        $path = Configure::read('App.paths.qr_codes') . DS . '1.svg';
         $this->assertTrue(is_readable($path));
 
         $originalPath = Configure::read('App.paths.qr_codes');
@@ -779,7 +623,7 @@ class QrCodesTableTest extends TestCase
         Configure::write('debug', true);
 
         // test the Generator Directly
-        $path = Configure::read('App.paths.qr_codes') . DS . '2.png';
+        $path = Configure::read('App.paths.qr_codes') . DS . '2.svg';
         if (file_exists($path)) {
             unlink($path);
         }
@@ -788,51 +632,5 @@ class QrCodesTableTest extends TestCase
         $QR = new PhpQrGenerator($entity);
         $QR->generate();
         $this->assertTrue(is_readable($path));
-    }
-
-    /**
-     * Tests the QRImageWithLogo Library.
-     *
-     * @return void
-     */
-    public function testQRImageWithLogoBadPaths(): void
-    {
-        $this->loadRoutes();
-        Configure::write('debug', true);
-
-        // test the QRImageWithLogo itself
-        $this->expectException(QRCodeOutputException::class);
-        $this->expectExceptionMessage('invalid logo');
-
-        $options = new LogoOptions();
-        $QR = new ChillerlanQRCode($options);
-        $qrOutputInterface = new QRImageWithLogo($options, $QR->getMatrix('dataishere'));
-        $qrOutputInterface->dump(
-            '/bad/file/path',
-            '/bar/logo/path'
-        );
-    }
-
-    /**
-     * Tests the QRImageWithLogo Library.
-     *
-     * @return void
-     */
-    public function testQRImageWithLogoNullPaths(): void
-    {
-        $this->loadRoutes();
-        Configure::write('debug', true);
-
-        // test the QRImageWithLogo itself
-        $this->expectException(QRCodeOutputException::class);
-        $this->expectExceptionMessage('logo is not set');
-
-        $options = new LogoOptions();
-        $QR = new ChillerlanQRCode($options);
-        $qrOutputInterface = new QRImageWithLogo($options, $QR->getMatrix('dataishere'));
-        $qrOutputInterface->dump(
-            null,
-            null
-        );
     }
 }
