@@ -56,13 +56,26 @@ $this->assign('title', $qrCode->name);
                     </div>
                     <?php endforeach; ?>
 
-                    <?= $this->Template->objectComment('QrCode/show/thumb/sm') ?>
+                    <?= $this->Template->objectComment('QrCode/show/dark') ?>
                     <div>
                         <img
                             class="img-thumbnail bg-light"
                             src="<?= $this->Url->build([
                                 'action' => 'show',
                                 $qrCode->id,
+                                '?' => ['l' => false],
+                                ]) ?>"
+                            alt="<?= __('The QR Code'); ?>">
+                    </div>
+
+                    <?= $this->Template->objectComment('QrCode/show/light') ?>
+                    <div>
+                        <img
+                            class="img-thumbnail bg-light"
+                            src="<?= $this->Url->build([
+                                'action' => 'show',
+                                $qrCode->id,
+                                '?' => ['l' => true],
                                 ]) ?>"
                             alt="<?= __('The QR Code'); ?>">
                     </div>
@@ -103,13 +116,26 @@ $this->assign('title', $qrCode->name);
                     </div>
                     <?php endforeach; ?>
 
-                    <?= $this->Template->objectComment('QrCode/show/thumb/lg') ?>
+                    <?= $this->Template->objectComment('QrCode/show/dark') ?>
                     <div class="item text-center">
                         <img
                             class="img-thumbnail bg-light"
                             src="<?= $this->Url->build([
                                 'action' => 'show',
                                 $qrCode->id,
+                                '?' => ['l' => false],
+                            ]) ?>"
+                            alt="<?= __('The QR Code'); ?>">
+                    </div>
+
+                    <?= $this->Template->objectComment('QrCode/show/light') ?>
+                    <div class="item text-center">
+                        <img
+                            class="img-thumbnail bg-light"
+                            src="<?= $this->Url->build([
+                                'action' => 'show',
+                                $qrCode->id,
+                                '?' => ['l' => true],
                             ]) ?>"
                             alt="<?= __('The QR Code'); ?>">
                     </div>
