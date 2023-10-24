@@ -27,6 +27,12 @@ class SVGWithLogoOptions extends QROptions
     // color definitions
     public string $svgDefs = '';
 
+	public ?array $moduleValues = null;
+
+    public bool $addLogoSpace = true;
+
+    public string $logoColor = '';
+
     // the name is specific as it's called within chillerlan's code
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
 

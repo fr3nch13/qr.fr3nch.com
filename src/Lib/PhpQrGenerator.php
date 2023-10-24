@@ -53,7 +53,9 @@ class PhpQrGenerator
         $this->options = new SVGWithLogoOptions([
             'svgLogo' => $this->getConfig('svgLogo', WWW_ROOT . 'img' . DS . 'qr_logo.svg'),
             'svgLogoScale' => $this->getConfig('svgLogoScale', 0.25),
-            'svgLogoCssClass' => $this->getConfig('svgLogoCssClass', 'dark'),
+            'svgLogoCssClass' => $this->getConfig('svgLogoCssClass', 'embedded-logo'),
+            // not working at the moment.
+            // 'svgViewBoxSize' => $this->getConfig('svgViewBoxSize', 500),
             'version' => $this->getConfig('version', 5),
             'outputType' => $this->getConfig('outputType', QROutputInterface::CUSTOM),
             'outputInterface' => $this->getConfig('outputInterface', QRSvgWithLogo::class),
@@ -63,24 +65,14 @@ class PhpQrGenerator
             'addQuietzone' => $this->getConfig('addQuietzone', true),
             'drawLightModules' => $this->getConfig('drawLightModules', true),
             'connectPaths' => $this->getConfig('connectPaths', true),
-            'drawCircularModules' => $this->getConfig('drawCircularModules', true),
-            'circleRadius' => $this->getConfig('circleRadius', 0.45),
             'backgroundTransparent' => $this->getConfig('backgroundTransparent', true),
             'keepAsSquare' => $this->getConfig('keepAsSquare', [
                 QRMatrix::M_FINDER_DARK,
                 QRMatrix::M_FINDER_DOT,
                 QRMatrix::M_ALIGNMENT_DARK,
             ]),
-            'svgDefs' => $this->getConfig('svgDefs', '
-                <style><![CDATA[
-                    .dark {
-                        fill: ' . $this->getConfig('darkcolor', '#000000') . ';
-                    }
-                    .light {
-                        fill: ' . $this->getConfig('lightcolor', '#FFFFFF') . ';
-                        fill-opacity: ' . ($this->getConfig('backgroundTransparent', true) ? '0' : '0') . ';
-                    }
-                ]]></style>'),
+            'svgUseFillAttributes'  => $this->getConfig('svgUseFillAttributes', true),
+            //'svgDefs'  => $this->getConfig('svgDefs', ''),
         ]);
 
         $this->data = Router::url([
@@ -105,18 +97,29 @@ class PhpQrGenerator
             $this->qrCode->id .
             '-light' .
             '.svg';
-
+        $color = $this->getConfig('lightcolor', '#FFFFFF');
         $optionsLight = clone $this->options;
-        $optionsLight->svgDefs = $this->getConfig('svgDefsLight', '
-            <style><![CDATA[
-                .dark {
-                    fill: ' . $this->getConfig('lightcolor', '#FFFFFF') . ';
-                }
-                .light {
-                    fill: ' . $this->getConfig('darkcolor', '#000000') . ';
-                    fill-opacity: ' . ($this->getConfig('backgroundTransparent', true) ? '0' : '1') . ';
-                }
-            ]]></style>');
+        $optionsLight->logoColor = $color;
+        $optionsLight->moduleValues = [
+            // normally light color
+            QRMatrix::M_DATA             => false,
+            QRMatrix::M_FINDER           => false,
+            QRMatrix::M_SEPARATOR        => false,
+            QRMatrix::M_ALIGNMENT        => false,
+            QRMatrix::M_TIMING           => false,
+            QRMatrix::M_FORMAT           => false,
+            QRMatrix::M_VERSION          => false,
+            QRMatrix::M_QUIETZONE        => false,
+            QRMatrix::M_LOGO             => false,
+
+            // normally dark color
+            QRMatrix::M_DATA_DARK      => $color,
+            QRMatrix::M_FINDER_DARK      => $color,
+            QRMatrix::M_ALIGNMENT_DARK   => $color,
+            QRMatrix::M_TIMING_DARK      => $color,
+            QRMatrix::M_FORMAT_DARK      => $color,
+            QRMatrix::M_VERSION_DARK     => $color,
+        ];
         $qrLight = new ChillerlanQRCode($optionsLight);
         $qrLight->render($this->data, $qrImagePathLight);
 
@@ -125,18 +128,18 @@ class PhpQrGenerator
             $this->qrCode->id .
             '-dark' .
             '.svg';
-
+        $color = $this->getConfig('darkcolor', '#000000');
         $optionsDark = clone $this->options;
-        $optionsDark->svgDefs = $this->getConfig('svgDefsDark', '
-            <style><![CDATA[
-                .dark {
-                    fill: ' . $this->getConfig('darkcolor', '#000000') . ';
-                }
-                .light {
-                    fill: ' . $this->getConfig('lightcolor', '#FFFFFF') . ';
-                    fill-opacity: ' . ($this->getConfig('backgroundTransparent', true) ? '0' : '1') . ';
-                }
-            ]]></style>');
+        $optionsDark->logoColor = $color;
+        $optionsDark->moduleValues = [
+            // normally dark color
+            QRMatrix::M_DATA_DARK      => $color,
+            QRMatrix::M_FINDER_DARK      => $color,
+            QRMatrix::M_ALIGNMENT_DARK   => $color,
+            QRMatrix::M_TIMING_DARK      => $color,
+            QRMatrix::M_FORMAT_DARK      => $color,
+            QRMatrix::M_VERSION_DARK     => $color,
+        ];
         $qrDark = new ChillerlanQRCode($optionsDark);
         $qrDark->render($this->data, $qrImagePathDark);
 
