@@ -416,17 +416,9 @@ return [
      * Settings to override the defaults in App\Lib\*QrGenerator classes
      */
     'QrCode' => [
-        // both
-        'logoPath' => WWW_ROOT . 'img' . DS . 'qr_logo_3.png',
-        // google qr code generator
-        'size' => '200',
-        // php gode generator
-        'positivecolor' => '0079A9', // darker blue
-        'negativecolor' => 'FFFFFF', // white
-        'scale' => 5,
-        'use_border' => true,
-        'border_width' => 5,
-        'border_color' => '000000', // black
+        'svgLogo' => WWW_ROOT . 'img' . DS . 'qr_logo_3.svg',
+        'positivecolor' => '#0079A9', // darker blue
+        'negativecolor' => '#FFFFFF', // white\
         // thumbnail sizes
         'thumbs' => [
             // maximum sizes

@@ -64,7 +64,6 @@ $this->assign('title', __('QR Codes'));
                     $bgUrl = $this->Url->build([
                         'action' => 'show',
                         $qrCode->id,
-                        '?' => ['thumb' => 'md'],
                     ]);
                     if (!empty($qrCode->qr_images)) {
                         echo $this->Template->objectComment('QrImage/active/first');

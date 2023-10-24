@@ -45,7 +45,7 @@ $this->assign('title', $qrCode->name);
                         <?= $this->Template->objectComment('QrImage/show/thumb/sm') ?>
                     <div>
                         <img
-                            class="img-thumbnail bg-light<?php // use `img-thumbnail`, not `img-fluid` as it's redundant. ?>"
+                            class="img-thumbnail bg-light"
                             src="<?= $this->Url->build([
                                 'controller' => 'QrImages',
                                 'action' => 'show',
@@ -59,11 +59,10 @@ $this->assign('title', $qrCode->name);
                     <?= $this->Template->objectComment('QrCode/show/thumb/sm') ?>
                     <div>
                         <img
-                            class="img-thumbnail bg-light<?php // use `img-thumbnail`, not `img-fluid` as it's redundant. ?>"
+                            class="img-thumbnail bg-light"
                             src="<?= $this->Url->build([
                                 'action' => 'show',
                                 $qrCode->id,
-                                '?' => ['thumb' => 'sm'],
                                 ]) ?>"
                             alt="<?= __('The QR Code'); ?>">
                     </div>
@@ -93,7 +92,7 @@ $this->assign('title', $qrCode->name);
                         <?= $this->Template->objectComment('QrImage/show/thumb/lg') ?>
                     <div class="item text-center">
                         <img
-                            class="img-thumbnail bg-light<?php // use `img-thumbnail`, not `img-fluid` as it's redundant. ?>"
+                            class="img-thumbnail bg-light"
                             src="<?= $this->Url->build([
                                 'controller' => 'QrImages',
                                 'action' => 'show',
@@ -107,11 +106,10 @@ $this->assign('title', $qrCode->name);
                     <?= $this->Template->objectComment('QrCode/show/thumb/lg') ?>
                     <div class="item text-center">
                         <img
-                            class="img-thumbnail bg-light<?php // use `img-thumbnail`, not `img-fluid` as it's redundant. ?>"
+                            class="img-thumbnail bg-light"
                             src="<?= $this->Url->build([
                                 'action' => 'show',
                                 $qrCode->id,
-                                '?' => ['thumb' => 'lg'],
                             ]) ?>"
                             alt="<?= __('The QR Code'); ?>">
                     </div>

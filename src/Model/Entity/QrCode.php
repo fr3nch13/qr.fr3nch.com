@@ -34,8 +34,6 @@ use chillerlan\QRCode\Output\QRCodeOutputException;
  */
 class QrCode extends Entity
 {
-    use ThumbTrait;
-
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
      *
@@ -100,7 +98,6 @@ class QrCode extends Entity
         }
 
         if (!file_exists($path) || $this->regenerate) {
-            $this->regenerateThumb = true;
             try {
                 $QR = new PhpQrGenerator($this);
                 $QR->generate();
@@ -129,6 +126,6 @@ class QrCode extends Entity
      */
     public function getImagePath(): ?string
     {
-        return Configure::read('App.paths.qr_codes', TMP . 'qr_codes') . DS . $this->id . '.png';
+        return Configure::read('App.paths.qr_codes', TMP . 'qr_codes') . DS . $this->id . '.svg';
     }
 }

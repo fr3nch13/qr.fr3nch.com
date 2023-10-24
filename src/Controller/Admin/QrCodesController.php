@@ -125,15 +125,6 @@ class QrCodesController extends AppController
             ]));
         }
 
-        $thumb = $this->request->getQuery('thumb');
-
-        if ($thumb && in_array($thumb, ['sm', 'md', 'lg'])) {
-            $path = $qrCode->getPathThumb($thumb);
-            if (!$path) {
-                throw new NotFoundException('Unable to find the thumbnail file.');
-            }
-        }
-
         $fileOptions = [];
 
         // look for a download request.
@@ -141,7 +132,7 @@ class QrCodesController extends AppController
         if ($this->request->getQuery('download')) {
             $fileOptions = [
                 'download' => true,
-                'name' => 'QR-' . $qrCode->qrkey . '.png',
+                'name' => 'QR-' . $qrCode->qrkey . '.svg',
             ];
         }
 
