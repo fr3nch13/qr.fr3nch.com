@@ -628,7 +628,7 @@ class QrCodesTableTest extends TestCase
 
         // light
         // existing entity
-        $path_light= Configure::read('App.paths.qr_codes') . DS . '1-light.svg';
+        $path_light = Configure::read('App.paths.qr_codes') . DS . '1-light.svg';
         $this->assertTrue(is_readable($path_light));
 
         // test regenerating the image

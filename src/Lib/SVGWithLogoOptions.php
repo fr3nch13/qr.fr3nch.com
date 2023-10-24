@@ -27,7 +27,7 @@ class SVGWithLogoOptions extends QROptions
     // color definitions
     public string $svgDefs = '';
 
-	public ?array $moduleValues = null;
+    public ?array $moduleValues = null;
 
     public bool $addLogoSpace = true;
 

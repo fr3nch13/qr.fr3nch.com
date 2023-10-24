@@ -71,7 +71,7 @@ class PhpQrGenerator
                 QRMatrix::M_FINDER_DOT,
                 QRMatrix::M_ALIGNMENT_DARK,
             ]),
-            'svgUseFillAttributes'  => $this->getConfig('svgUseFillAttributes', true),
+            'svgUseFillAttributes' => $this->getConfig('svgUseFillAttributes', true),
             //'svgDefs'  => $this->getConfig('svgDefs', ''),
         ]);
 
@@ -102,23 +102,23 @@ class PhpQrGenerator
         $optionsLight->logoColor = $color;
         $optionsLight->moduleValues = [
             // normally light color
-            QRMatrix::M_DATA             => false,
-            QRMatrix::M_FINDER           => false,
-            QRMatrix::M_SEPARATOR        => false,
-            QRMatrix::M_ALIGNMENT        => false,
-            QRMatrix::M_TIMING           => false,
-            QRMatrix::M_FORMAT           => false,
-            QRMatrix::M_VERSION          => false,
-            QRMatrix::M_QUIETZONE        => false,
-            QRMatrix::M_LOGO             => false,
+            QRMatrix::M_DATA => false,
+            QRMatrix::M_FINDER => false,
+            QRMatrix::M_SEPARATOR => false,
+            QRMatrix::M_ALIGNMENT => false,
+            QRMatrix::M_TIMING => false,
+            QRMatrix::M_FORMAT => false,
+            QRMatrix::M_VERSION => false,
+            QRMatrix::M_QUIETZONE => false,
+            QRMatrix::M_LOGO => false,
 
             // normally dark color
-            QRMatrix::M_DATA_DARK      => $color,
-            QRMatrix::M_FINDER_DARK      => $color,
-            QRMatrix::M_ALIGNMENT_DARK   => $color,
-            QRMatrix::M_TIMING_DARK      => $color,
-            QRMatrix::M_FORMAT_DARK      => $color,
-            QRMatrix::M_VERSION_DARK     => $color,
+            QRMatrix::M_DATA_DARK => $color,
+            QRMatrix::M_FINDER_DARK => $color,
+            QRMatrix::M_ALIGNMENT_DARK => $color,
+            QRMatrix::M_TIMING_DARK => $color,
+            QRMatrix::M_FORMAT_DARK => $color,
+            QRMatrix::M_VERSION_DARK => $color,
         ];
         $qrLight = new ChillerlanQRCode($optionsLight);
         $qrLight->render($this->data, $qrImagePathLight);
@@ -132,13 +132,24 @@ class PhpQrGenerator
         $optionsDark = clone $this->options;
         $optionsDark->logoColor = $color;
         $optionsDark->moduleValues = [
+            // normally light color
+            QRMatrix::M_DATA => false,
+            QRMatrix::M_FINDER => false,
+            QRMatrix::M_SEPARATOR => false,
+            QRMatrix::M_ALIGNMENT => false,
+            QRMatrix::M_TIMING => false,
+            QRMatrix::M_FORMAT => false,
+            QRMatrix::M_VERSION => false,
+            QRMatrix::M_QUIETZONE => false,
+            QRMatrix::M_LOGO => false,
+
             // normally dark color
-            QRMatrix::M_DATA_DARK      => $color,
-            QRMatrix::M_FINDER_DARK      => $color,
-            QRMatrix::M_ALIGNMENT_DARK   => $color,
-            QRMatrix::M_TIMING_DARK      => $color,
-            QRMatrix::M_FORMAT_DARK      => $color,
-            QRMatrix::M_VERSION_DARK     => $color,
+            QRMatrix::M_DATA_DARK => $color,
+            QRMatrix::M_FINDER_DARK => $color,
+            QRMatrix::M_ALIGNMENT_DARK => $color,
+            QRMatrix::M_TIMING_DARK => $color,
+            QRMatrix::M_FORMAT_DARK => $color,
+            QRMatrix::M_VERSION_DARK => $color,
         ];
         $qrDark = new ChillerlanQRCode($optionsDark);
         $qrDark->render($this->data, $qrImagePathDark);
