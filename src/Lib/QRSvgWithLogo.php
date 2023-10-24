@@ -5,6 +5,11 @@ namespace App\Lib;
 
 use chillerlan\QRCode\Output\QRMarkupSVG;
 
+/**
+ * Handle adding the logo file.
+ *
+ * @property \App\Lib\SVGWithLogoOptions $options
+ */
 class QRSvgWithLogo extends QRMarkupSVG
 {
     /**
@@ -40,13 +45,22 @@ class QRSvgWithLogo extends QRMarkupSVG
      */
     protected function getLogo(): string
     {
+        // remove the xml tag from the logo.
+        $logoContent = file_get_contents($this->options->svgLogo);
+
+        if($logoContent === false) {
+            $logoContent = '';
+        }
+
+        $logoContent =  str_replace('<?xml version="1.0" encoding="utf-8"?>', '', $logoContent);
+
         // @todo: customize the <g> element to your liking (css class, style...)
         return sprintf(
             '%5$s<g transform="translate(%1$s %1$s) scale(%2$s)" class="%3$s">%5$s	%4$s%5$s</g>',
             ($this->moduleCount - ($this->moduleCount * $this->options->svgLogoScale)) / 2,
             $this->options->svgLogoScale,
             $this->options->svgLogoCssClass,
-            str_replace('<?xml version="1.0" encoding="utf-8"?>', '', file_get_contents($this->options->svgLogo)),
+            $logoContent,
             $this->options->eol
         );
     }

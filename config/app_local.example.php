@@ -93,7 +93,11 @@ return [
     ],
 
     /**
-     * Settings to override the defaults in App\Lib\*QrGenerator classes
+     * Settings to override the defaults in App\Lib\PhpQrGenerator class
+     *
+     * These are the basic settings, but you can add many more.
+     * @uses \App\Lib\PhpQrGenerator::_construct()
+     *      See that for other options.
      */
     'QrCode' => [
         'svgLogo' => WWW_ROOT . 'img' . DS . 'qr_logo.svg',

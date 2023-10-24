@@ -413,12 +413,16 @@ return [
     ],
 
     /**
-     * Settings to override the defaults in App\Lib\*QrGenerator classes
+     * Settings to override the defaults in App\Lib\PhpQrGenerator class
+     *
+     * These are the basic settings, but you can add many more.
+     * @uses \App\Lib\PhpQrGenerator::_construct()
+     *      See that for other options.
      */
     'QrCode' => [
-        'svgLogo' => WWW_ROOT . 'img' . DS . 'qr_logo_3.svg',
+        'svgLogo' => WWW_ROOT . 'img' . DS . 'qr_logo.svg',
         'positivecolor' => '#0079A9', // darker blue
-        'negativecolor' => '#FFFFFF', // white\
+        'negativecolor' => '#FFFFFF', // white
         // thumbnail sizes
         'thumbs' => [
             // maximum sizes

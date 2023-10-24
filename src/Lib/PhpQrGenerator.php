@@ -23,9 +23,9 @@ class PhpQrGenerator
     public array $config = [];
 
     /**
-     * @var \App\Lib\LogoOptions variables.
+     * @var \App\Lib\SVGWithLogoOptions variables.
      */
-    public QROptions $options;
+    public SVGWithLogoOptions $options;
 
     /**
      * @var string The data to urlencode and encode into a QR Code.
@@ -128,9 +128,7 @@ class PhpQrGenerator
     public function getConfig(string $key, mixed $default = null): mixed
     {
         if (!$this->config) {
-            $this->config = Configure::read('QrCode', [
-                'logoPath' => WWW_ROOT . 'img' . DS . 'qr_logo.svg',
-            ]);
+            $this->config = Configure::read('QrCode');
         }
 
         if (isset($this->config[$key])) {

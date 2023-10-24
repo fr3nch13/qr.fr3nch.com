@@ -9,16 +9,18 @@ use chillerlan\QRCode\QROptions;
 class SVGWithLogoOptions extends QROptions
 {
     // path to svg logo
-    protected string $svgLogo;
+    public string $svgLogo;
 
     // logo scale in % of QR Code size, clamped to 10%-30%
-    protected float $svgLogoScale = 0.20;
+    public float $svgLogoScale = 0.20;
 
     // css class for the logo (defined in $svgDefs)
-    protected string $svgLogoCssClass = '';
+    public string $svgLogoCssClass = '';
 
     // make sure we get the xml returned.
-    protected bool $outputBase64 = false;
+    public bool $outputBase64 = false;
+
+    public string $eol;
 
     // the name is specific as it's called within chillerlan's code
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
