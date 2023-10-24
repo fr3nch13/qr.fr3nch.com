@@ -135,7 +135,7 @@ trait ThumbTrait
         }
 
         if (!in_array($size, ['sm', 'md', 'lg'])) {
-            throw new ThumbException(__('Must be an instance of `\Cake\ORM\Entity`.'));
+            throw new ThumbException(__('Unknown size option.'));
         }
 
         // path to the original image.
@@ -267,7 +267,7 @@ trait ThumbTrait
         }
 
         if (!in_array($size, ['sm', 'md', 'lg'])) {
-            throw new ThumbException(__('Must be an instance of `\Cake\ORM\Entity`.'));
+            throw new ThumbException(__('Unknown size option.'));
         }
 
         // path to the original image.
