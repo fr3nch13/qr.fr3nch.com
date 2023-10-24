@@ -51,18 +51,19 @@ class PhpQrGenerator
         $this->qrCode = $qrCode;
 
         $this->options = new SVGWithLogoOptions([
+            'eccLevel' => $this->getConfig('eccLevel', EccLevel::H),
+            'addQuietzone' => $this->getConfig('addQuietzone', true),
             'svgLogo' => $this->getConfig('svgLogo', WWW_ROOT . 'img' . DS . 'qr_logo.svg'),
             'svgLogoScale' => $this->getConfig('svgLogoScale', 0.25),
             'svgLogoCssClass' => $this->getConfig('svgLogoCssClass', 'embedded-logo'),
+            'scale' => $this->getConfig('scale', 500),
             // not working at the moment.
-            // 'svgViewBoxSize' => $this->getConfig('svgViewBoxSize', 500),
-            'version' => $this->getConfig('version', 7),
+            //'svgViewBoxSize' => $this->getConfig('svgViewBoxSize', 500),
+            //'version' => $this->getConfig('version', 7),
             'outputType' => $this->getConfig('outputType', QROutputInterface::CUSTOM),
             'outputInterface' => $this->getConfig('outputInterface', QRSvgWithLogo::class),
             'outputBase64' => $this->getConfig('outputBase64', false),
             'imageBase64' => $this->getConfig('imageBase64', false),
-            'eccLevel' => $this->getConfig('eccLevel', EccLevel::H),
-            'addQuietzone' => $this->getConfig('addQuietzone', true),
             'drawLightModules' => $this->getConfig('drawLightModules', true),
             'connectPaths' => $this->getConfig('connectPaths', true),
             'backgroundTransparent' => $this->getConfig('backgroundTransparent', true),
