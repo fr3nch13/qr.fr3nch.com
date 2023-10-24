@@ -13,7 +13,7 @@ if (!$this->getRequest()->is('ajax')) {
     <div class="col-lg-4 order-4 order-lg-1">
         <h5 class="d-block d-lg-none"><?= __('Code') ?></h5>
         <img
-            class="img-fluid"
+            class="img-thumbnail bg-light"
             src="<?= $this->Url->build([
                 'plugin' => false,
                 'prefix' => false,

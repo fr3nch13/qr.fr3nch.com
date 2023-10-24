@@ -55,13 +55,29 @@ if ($qrCode->id) {
                     'class' => 'dropdown-item' .
                         ($here == 'QrCodes.edit' ? ' active' : ''),
                 ]) ?></li>
-                <li><?= $this->Html->link(__('Download'), [
+                <li><?= $this->Html->link(__('Download Dark'), [
                     'plugin' => false,
                     'prefix' => false,
                     'controller' => 'QrCodes',
                     'action' => 'show',
                     $qrCode->id,
-                    '?' => ['download' => true],
+                    '?' => [
+                        'l' => false,
+                        'download' => true,
+                    ],
+                ], [
+                    'class' => 'dropdown-item',
+                ]) ?></li>
+                <li><?= $this->Html->link(__('Download Light'), [
+                    'plugin' => false,
+                    'prefix' => false,
+                    'controller' => 'QrCodes',
+                    'action' => 'show',
+                    $qrCode->id,
+                    '?' => [
+                        'l' => true,
+                        'download' => true,
+                    ],
                 ], [
                     'class' => 'dropdown-item',
                 ]) ?></li>

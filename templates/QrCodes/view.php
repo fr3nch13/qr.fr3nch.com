@@ -45,7 +45,7 @@ $this->assign('title', $qrCode->name);
                         <?= $this->Template->objectComment('QrImage/show/thumb/sm') ?>
                     <div>
                         <img
-                            class="img-thumbnail bg-light<?php // use `img-thumbnail`, not `img-fluid` as it's redundant. ?>"
+                            class="img-thumbnail bg-light"
                             src="<?= $this->Url->build([
                                 'controller' => 'QrImages',
                                 'action' => 'show',
@@ -56,14 +56,26 @@ $this->assign('title', $qrCode->name);
                     </div>
                     <?php endforeach; ?>
 
-                    <?= $this->Template->objectComment('QrCode/show/thumb/sm') ?>
+                    <?= $this->Template->objectComment('QrCode/show/small/dark') ?>
                     <div>
                         <img
-                            class="img-thumbnail bg-light<?php // use `img-thumbnail`, not `img-fluid` as it's redundant. ?>"
+                            class="img-thumbnail bg-light"
                             src="<?= $this->Url->build([
                                 'action' => 'show',
                                 $qrCode->id,
-                                '?' => ['thumb' => 'sm'],
+                                '?' => ['l' => false],
+                                ]) ?>"
+                            alt="<?= __('The QR Code'); ?>">
+                    </div>
+
+                    <?= $this->Template->objectComment('QrCode/show/small/light') ?>
+                    <div>
+                        <img
+                            class="img-thumbnail bg-light"
+                            src="<?= $this->Url->build([
+                                'action' => 'show',
+                                $qrCode->id,
+                                '?' => ['l' => true],
                                 ]) ?>"
                             alt="<?= __('The QR Code'); ?>">
                     </div>
@@ -93,7 +105,7 @@ $this->assign('title', $qrCode->name);
                         <?= $this->Template->objectComment('QrImage/show/thumb/lg') ?>
                     <div class="item text-center">
                         <img
-                            class="img-thumbnail bg-light<?php // use `img-thumbnail`, not `img-fluid` as it's redundant. ?>"
+                            class="img-thumbnail bg-light"
                             src="<?= $this->Url->build([
                                 'controller' => 'QrImages',
                                 'action' => 'show',
@@ -104,14 +116,26 @@ $this->assign('title', $qrCode->name);
                     </div>
                     <?php endforeach; ?>
 
-                    <?= $this->Template->objectComment('QrCode/show/thumb/lg') ?>
+                    <?= $this->Template->objectComment('QrCode/show/large/dark') ?>
                     <div class="item text-center">
                         <img
-                            class="img-thumbnail bg-light<?php // use `img-thumbnail`, not `img-fluid` as it's redundant. ?>"
+                            class="img-thumbnail bg-light"
                             src="<?= $this->Url->build([
                                 'action' => 'show',
                                 $qrCode->id,
-                                '?' => ['thumb' => 'lg'],
+                                '?' => ['l' => false],
+                            ]) ?>"
+                            alt="<?= __('The QR Code'); ?>">
+                    </div>
+
+                    <?= $this->Template->objectComment('QrCode/show/large/light') ?>
+                    <div class="item text-center">
+                        <img
+                            class="img-thumbnail bg-light"
+                            src="<?= $this->Url->build([
+                                'action' => 'show',
+                                $qrCode->id,
+                                '?' => ['l' => true],
                             ]) ?>"
                             alt="<?= __('The QR Code'); ?>">
                     </div>

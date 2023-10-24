@@ -413,26 +413,25 @@ return [
     ],
 
     /**
-     * Settings to override the defaults in App\Lib\*QrGenerator classes
+     * Settings to override the defaults in App\Lib\PhpQrGenerator class
+     *
+     * These are the basic settings, but you can add many more.
+     * @uses \App\Lib\PhpQrGenerator::_construct()
+     *      See that for other options.
      */
     'QrCode' => [
-        // both
-        'logoPath' => WWW_ROOT . 'img' . DS . 'qr_logo_3.png',
-        // google qr code generator
-        'size' => '200',
-        // php gode generator
-        'positivecolor' => '0079A9', // darker blue
-        'negativecolor' => 'FFFFFF', // white
-        'scale' => 5,
-        'use_border' => true,
-        'border_width' => 5,
-        'border_color' => '000000', // black
-        // thumbnail sizes
+        'svgLogo' => WWW_ROOT . 'img' . DS . 'qr_logo.svg',
+        'darkcolor' => '#0079A9', // darker blue
+        'lightcolor' => '#FFFFFF', // white
+        // the sdefault size of the qr_code
+        // not used currently
+        //'viewSize' => 400,
+        // thumbnail sizes for the qr_images
         'thumbs' => [
             // maximum sizes
             'sm' => ['x' => 200, 'y' => 200],
             'md' => ['x' => 400, 'y' => 400],
             'lg' => ['x' => 800, 'y' => 800],
-        ]
+        ],
     ],
 ];
