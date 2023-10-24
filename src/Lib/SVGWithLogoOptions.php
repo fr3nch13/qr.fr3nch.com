@@ -21,7 +21,11 @@ class SVGWithLogoOptions extends QROptions
     // make sure we get the xml returned.
     public bool $outputBase64 = false;
 
+    // end of line
     public string $eol = PHP_EOL;
+
+    // color definitions
+    public string $svgDefs = '';
 
     // the name is specific as it's called within chillerlan's code
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps

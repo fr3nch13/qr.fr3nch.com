@@ -100,7 +100,6 @@ class PhpQrGenerator
      */
     public function generate(): void
     {
-
         $qrImagePathLight = Configure::read('App.paths.qr_codes') .
             DS .
             $this->qrCode->id .
