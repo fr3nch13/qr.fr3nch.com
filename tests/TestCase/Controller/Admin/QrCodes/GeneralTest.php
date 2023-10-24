@@ -122,7 +122,7 @@ class GeneralTest extends BaseControllerTest
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
         $this->assertFalse(isset($headers['Cache-Control']));
-        $this->assertSame('image/png', $headers['Content-Type'][0]);
+        $this->assertSame('image/svg+xml', $headers['Content-Type'][0]);
         $this->assertGreaterThan(0, $headers['Content-Length'][0]);
     }
 
@@ -142,7 +142,7 @@ class GeneralTest extends BaseControllerTest
         $headers = $this->_response->getHeaders();
         $this->assertFalse(isset($headers['Cache-Control']));
         $this->assertFalse(isset($headers['Content-Disposition']));
-        $this->assertSame('image/png', $headers['Content-Type'][0]);
+        $this->assertSame('image/svg+xml', $headers['Content-Type'][0]);
         $this->assertGreaterThan(0, $headers['Content-Length'][0]);
     }
 
@@ -162,7 +162,7 @@ class GeneralTest extends BaseControllerTest
         $headers = $this->_response->getHeaders();
         $this->assertFalse(isset($headers['Cache-Control']));
         $this->assertFalse(isset($headers['Content-Disposition']));
-        $this->assertSame('image/png', $headers['Content-Type'][0]);
+        $this->assertSame('image/svg+xml', $headers['Content-Type'][0]);
         $this->assertGreaterThan(0, $headers['Content-Length'][0]);
     }
 
@@ -182,7 +182,7 @@ class GeneralTest extends BaseControllerTest
         $headers = $this->_response->getHeaders();
         $this->assertFalse(isset($headers['Cache-Control']));
         $this->assertFalse(isset($headers['Content-Disposition']));
-        $this->assertSame('image/png', $headers['Content-Type'][0]);
+        $this->assertSame('image/svg+xml', $headers['Content-Type'][0]);
         $this->assertGreaterThan(0, $headers['Content-Length'][0]);
     }
 
@@ -201,9 +201,9 @@ class GeneralTest extends BaseControllerTest
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
         $this->assertFalse(isset($headers['Cache-Control']));
-        $this->assertSame('image/png', $headers['Content-Type'][0]);
+        $this->assertSame('image/svg+xml', $headers['Content-Type'][0]);
         $this->assertGreaterThan(0, $headers['Content-Length'][0]);
-        $this->assertSame('attachment; filename="QR-sownscribe.png"', $headers['Content-Disposition'][0]);
+        $this->assertSame('attachment; filename="QR-sownscribe.svg"', $headers['Content-Disposition'][0]);
         $this->assertSame('binary', $headers['Content-Transfer-Encoding'][0]);
     }
 
@@ -220,11 +220,11 @@ class GeneralTest extends BaseControllerTest
         $qrCode = $this->QrCodes->get(1);
         $originalPath = Configure::read('App.paths.qr_codes');
 
-        $path = Configure::read('App.paths.qr_codes') . DS . $qrCode->id . '.png';
+        $path = Configure::read('App.paths.qr_codes') . DS . $qrCode->id . '.svg';
         $this->assertTrue(is_readable($path));
 
         Configure::write('App.paths.qr_codes', TMP . 'dontexist');
-        $path = Configure::read('App.paths.qr_codes') . DS . $qrCode->id . '.png';
+        $path = Configure::read('App.paths.qr_codes') . DS . $qrCode->id . '.svg';
 
         $this->assertFalse(is_readable($path));
 
@@ -259,7 +259,7 @@ class GeneralTest extends BaseControllerTest
         $this->assertTrue(isset($headers['Cache-Control']));
         $this->assertSame('public, max-age=3600', $headers['Cache-Control'][0]);
         $this->assertTrue(isset($headers['Last-Modified']));
-        $this->assertSame('image/png', $headers['Content-Type'][0]);
+        $this->assertSame('image/svg+xml', $headers['Content-Type'][0]);
         $this->assertGreaterThan(0, $headers['Content-Length'][0]);
         Configure::write('debug', true);
     }
