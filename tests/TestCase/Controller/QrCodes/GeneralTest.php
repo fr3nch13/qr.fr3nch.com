@@ -121,6 +121,26 @@ class GeneralTest extends BaseControllerTest
         $this->assertFalse(isset($headers['Content-Disposition']));
         $this->assertSame('image/svg+xml', $headers['Content-Type'][0]);
         $this->assertGreaterThan(0, $headers['Content-Length'][0]);
+
+        // dark
+        $this->get('https://localhost/qr-codes/show/1?l=0');
+        $this->assertResponseOk();
+        $this->assertResponseNotEmpty();
+        $headers = $this->_response->getHeaders();
+        $this->assertFalse(isset($headers['Cache-Control']));
+        $this->assertFalse(isset($headers['Content-Disposition']));
+        $this->assertSame('image/svg+xml', $headers['Content-Type'][0]);
+        $this->assertGreaterThan(0, $headers['Content-Length'][0]);
+
+        // light
+        $this->get('https://localhost/qr-codes/show/1?l=1');
+        $this->assertResponseOk();
+        $this->assertResponseNotEmpty();
+        $headers = $this->_response->getHeaders();
+        $this->assertFalse(isset($headers['Cache-Control']));
+        $this->assertFalse(isset($headers['Content-Disposition']));
+        $this->assertSame('image/svg+xml', $headers['Content-Type'][0]);
+        $this->assertGreaterThan(0, $headers['Content-Length'][0]);
     }
 
     /**
@@ -145,6 +165,24 @@ class GeneralTest extends BaseControllerTest
         $this->assertFalse(isset($headers['Cache-Control']));
         $this->assertSame('image/svg+xml', $headers['Content-Type'][0]);
         $this->assertGreaterThan(0, $headers['Content-Length'][0]);
+
+        $this->loginUserRegular();
+        $this->get('https://localhost/qr-codes/show/4?l=0');
+        $this->assertResponseOk();
+        $this->assertResponseNotEmpty();
+        $headers = $this->_response->getHeaders();
+        $this->assertFalse(isset($headers['Cache-Control']));
+        $this->assertSame('image/svg+xml', $headers['Content-Type'][0]);
+        $this->assertGreaterThan(0, $headers['Content-Length'][0]);
+
+        $this->loginUserRegular();
+        $this->get('https://localhost/qr-codes/show/4?l=1');
+        $this->assertResponseOk();
+        $this->assertResponseNotEmpty();
+        $headers = $this->_response->getHeaders();
+        $this->assertFalse(isset($headers['Cache-Control']));
+        $this->assertSame('image/svg+xml', $headers['Content-Type'][0]);
+        $this->assertGreaterThan(0, $headers['Content-Length'][0]);
     }
 
     /**
@@ -158,12 +196,15 @@ class GeneralTest extends BaseControllerTest
         $qrCode = $this->QrCodes->get(1);
         $originalPath = Configure::read('App.paths.qr_codes');
 
-        $path = Configure::read('App.paths.qr_codes') . DS . $qrCode->id . '.svg';
+        $path = Configure::read('App.paths.qr_codes') . DS . $qrCode->id . '-light.svg';
+        $this->assertTrue(is_readable($path));
+        $path = Configure::read('App.paths.qr_codes') . DS . $qrCode->id . '-dark.svg';
         $this->assertTrue(is_readable($path));
 
         Configure::write('App.paths.qr_codes', TMP . 'dontexist');
-        $path = Configure::read('App.paths.qr_codes') . DS . $qrCode->id . '.svg';
-
+        $path = Configure::read('App.paths.qr_codes') . DS . $qrCode->id . '-light.svg';
+        $this->assertFalse(is_readable($path));
+        $path = Configure::read('App.paths.qr_codes') . DS . $qrCode->id . '-darl.svg';
         $this->assertFalse(is_readable($path));
 
         $this->get('https://localhost/qr-codes/show/1');
@@ -188,6 +229,7 @@ class GeneralTest extends BaseControllerTest
     {
         // check cache policy when debug is off.
         Configure::write('debug', false);
+
         $this->get('https://localhost/qr-codes/show/1');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
@@ -198,6 +240,29 @@ class GeneralTest extends BaseControllerTest
         $this->assertTrue(isset($headers['Last-Modified']));
         $this->assertSame('image/svg+xml', $headers['Content-Type'][0]);
         $this->assertGreaterThan(0, $headers['Content-Length'][0]);
+
+        $this->get('https://localhost/qr-codes/show/1?l=0');
+        $this->assertResponseOk();
+        $this->assertResponseNotEmpty();
+        $headers = $this->_response->getHeaders();
+        $this->assertTrue(isset($headers['Cache-Control']));
+        $this->assertFalse(isset($headers['Content-Disposition']));
+        $this->assertSame('public, max-age=3600', $headers['Cache-Control'][0]);
+        $this->assertTrue(isset($headers['Last-Modified']));
+        $this->assertSame('image/svg+xml', $headers['Content-Type'][0]);
+        $this->assertGreaterThan(0, $headers['Content-Length'][0]);
+
+        $this->get('https://localhost/qr-codes/show/1?l=1');
+        $this->assertResponseOk();
+        $this->assertResponseNotEmpty();
+        $headers = $this->_response->getHeaders();
+        $this->assertTrue(isset($headers['Cache-Control']));
+        $this->assertFalse(isset($headers['Content-Disposition']));
+        $this->assertSame('public, max-age=3600', $headers['Cache-Control'][0]);
+        $this->assertTrue(isset($headers['Last-Modified']));
+        $this->assertSame('image/svg+xml', $headers['Content-Type'][0]);
+        $this->assertGreaterThan(0, $headers['Content-Length'][0]);
+
         Configure::write('debug', true);
     }
 
@@ -207,9 +272,9 @@ class GeneralTest extends BaseControllerTest
      * @return void
      * @uses \App\Controller\QrCodesController::show()
      */
-    public function testShowThumbSm(): void
+    public function testShowDark(): void
     {
-        $this->get('https://localhost/qr-codes/show/1?thumb=sm');
+        $this->get('https://localhost/qr-codes/show/1?l=0');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
@@ -225,27 +290,9 @@ class GeneralTest extends BaseControllerTest
      * @return void
      * @uses \App\Controller\QrCodesController::show()
      */
-    public function testShowThumbMd(): void
+    public function testShowLight(): void
     {
-        $this->get('https://localhost/qr-codes/show/1?thumb=md');
-        $this->assertResponseOk();
-        $this->assertResponseNotEmpty();
-        $headers = $this->_response->getHeaders();
-        $this->assertFalse(isset($headers['Cache-Control']));
-        $this->assertFalse(isset($headers['Content-Disposition']));
-        $this->assertSame('image/svg+xml', $headers['Content-Type'][0]);
-        $this->assertGreaterThan(0, $headers['Content-Length'][0]);
-    }
-
-    /**
-     * Test show thumb method
-     *
-     * @return void
-     * @uses \App\Controller\QrCodesController::show()
-     */
-    public function testShowThumbLg(): void
-    {
-        $this->get('https://localhost/qr-codes/show/1?thumb=lg');
+        $this->get('https://localhost/qr-codes/show/1?l=1');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
@@ -270,7 +317,29 @@ class GeneralTest extends BaseControllerTest
         $this->assertFalse(isset($headers['Cache-Control']));
         $this->assertSame('image/svg+xml', $headers['Content-Type'][0]);
         $this->assertGreaterThan(0, $headers['Content-Length'][0]);
-        $this->assertSame('attachment; filename="QR-sownscribe.svg"', $headers['Content-Disposition'][0]);
+        $this->assertSame('attachment; filename="QR-sownscribe-dark.svg"', $headers['Content-Disposition'][0]);
+        $this->assertSame('binary', $headers['Content-Transfer-Encoding'][0]);
+
+        // dark
+        $this->get('https://localhost/qr-codes/show/1?l=0&download=1');
+        $this->assertResponseOk();
+        $this->assertResponseNotEmpty();
+        $headers = $this->_response->getHeaders();
+        $this->assertFalse(isset($headers['Cache-Control']));
+        $this->assertSame('image/svg+xml', $headers['Content-Type'][0]);
+        $this->assertGreaterThan(0, $headers['Content-Length'][0]);
+        $this->assertSame('attachment; filename="QR-sownscribe-light.svg"', $headers['Content-Disposition'][0]);
+        $this->assertSame('binary', $headers['Content-Transfer-Encoding'][0]);
+
+        // light
+        $this->get('https://localhost/qr-codes/show/1?l=1&download=1');
+        $this->assertResponseOk();
+        $this->assertResponseNotEmpty();
+        $headers = $this->_response->getHeaders();
+        $this->assertFalse(isset($headers['Cache-Control']));
+        $this->assertSame('image/svg+xml', $headers['Content-Type'][0]);
+        $this->assertGreaterThan(0, $headers['Content-Length'][0]);
+        $this->assertSame('attachment; filename="QR-sownscribe-light.svg"', $headers['Content-Disposition'][0]);
         $this->assertSame('binary', $headers['Content-Transfer-Encoding'][0]);
     }
 }

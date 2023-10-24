@@ -113,16 +113,14 @@ class QrCodesController extends AppController
             $qrCode->regenerate = true;
         }
 
-        $path = $qrCode->path;
+        $path = $qrCode->path_dark;
+        $type = '-dark';
+        if ($this->request->getQuery('l')) {
+            $path = $qrCode->path_light;
+            $type = '-light';
+        }
         if (!$path) {
             throw new NotFoundException('Unable to find the image file.');
-        }
-
-        if ($this->request->getQuery('regen')) {
-            $this->redirect($this->referer([
-                'action' => 'view',
-                $qrCode->id,
-            ]));
         }
 
         $fileOptions = [];
@@ -132,7 +130,7 @@ class QrCodesController extends AppController
         if ($this->request->getQuery('download')) {
             $fileOptions = [
                 'download' => true,
-                'name' => 'QR-' . $qrCode->qrkey . '.svg',
+                'name' => 'QR-' . $qrCode->qrkey . $type . '.svg',
             ];
         }
 

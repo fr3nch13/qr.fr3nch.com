@@ -305,9 +305,13 @@ class QrCodesTable extends Table
     public function afterDelete(Event $event, QrCode $qrCode, ArrayObject $options): void
     {
         // delete the QR Code Image
-        $path = $qrCode->path;
-        if ($path) {
-            unlink($path);
+        $path_dark = $qrCode->path_dark;
+        $path_light = $qrCode->path_light;
+        if ($path_dark) {
+            unlink($path_dark);
+        }
+        if ($path_light) {
+            unlink($path_light);
         }
     }
 

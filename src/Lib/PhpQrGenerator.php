@@ -37,11 +37,6 @@ class PhpQrGenerator
     public QrCode $qrCode;
 
     /**
-     * @var string the absolute path to the generated QR code Image
-     */
-    protected string $qrImagePath;
-
-    /**
      * @var \chillerlan\QRCode\QRCode The generated QR Code Image
      */
     public ChillerlanQRCode $QR;
@@ -54,10 +49,6 @@ class PhpQrGenerator
     public function __construct(QrCode $qrCode)
     {
         $this->qrCode = $qrCode;
-
-        // check some of the config options
-
-        $this->qrImagePath = Configure::read('App.paths.qr_codes') . DS . $this->qrCode->id . '.svg';
 
         $this->options = new SVGWithLogoOptions([
             'svgLogo' => $this->getConfig('svgLogo', WWW_ROOT . 'img' . DS . 'qr_logo.svg'),
@@ -83,10 +74,10 @@ class PhpQrGenerator
             'svgDefs' => $this->getConfig('svgDefs', '
                 <style><![CDATA[
                     .dark {
-                        fill: ' . $this->getConfig('positivecolor', '#000000') . ';
+                        fill: ' . $this->getConfig('darkcolor', '#000000') . ';
                     }
                     .light {
-                        fill: ' . $this->getConfig('negativecolor', '#FFFFFF') . ';
+                        fill: ' . $this->getConfig('lightcolor', '#FFFFFF') . ';
                         fill-opacity: ' . ($this->getConfig('backgroundTransparent', true) ? '0' : '0') . ';
                     }
                 ]]></style>'),
@@ -109,12 +100,49 @@ class PhpQrGenerator
      */
     public function generate(): void
     {
-        $this->QR = new ChillerlanQRCode($this->options);
+
+        $qrImagePathLight = Configure::read('App.paths.qr_codes') .
+            DS .
+            $this->qrCode->id .
+            '-light' .
+            '.svg';
+
+        $optionsLight = clone $this->options;
+        $optionsLight->svgDefs = $this->getConfig('svgDefsLight', '
+            <style><![CDATA[
+                .dark {
+                    fill: ' . $this->getConfig('lightcolor', '#FFFFFF') . ';
+                }
+                .light {
+                    fill: ' . $this->getConfig('darkcolor', '#000000') . ';
+                    fill-opacity: ' . ($this->getConfig('backgroundTransparent', true) ? '0' : '1') . ';
+                }
+            ]]></style>');
+        $qrLight = new ChillerlanQRCode($optionsLight);
+        $qrLight->render($this->data, $qrImagePathLight);
+
+        $qrImagePathDark = Configure::read('App.paths.qr_codes') .
+            DS .
+            $this->qrCode->id .
+            '-dark' .
+            '.svg';
+
+        $optionsDark = clone $this->options;
+        $optionsDark->svgDefs = $this->getConfig('svgDefsDark', '
+            <style><![CDATA[
+                .dark {
+                    fill: ' . $this->getConfig('darkcolor', '#000000') . ';
+                }
+                .light {
+                    fill: ' . $this->getConfig('lightcolor', '#FFFFFF') . ';
+                    fill-opacity: ' . ($this->getConfig('backgroundTransparent', true) ? '0' : '1') . ';
+                }
+            ]]></style>');
+        $qrDark = new ChillerlanQRCode($optionsDark);
+        $qrDark->render($this->data, $qrImagePathDark);
 
         // uncomment this out later if your want to be able to add a border.
         // $data = $this->QR->render($this->data, $this->qrImagePath);
-
-        $this->QR->render($this->data, $this->qrImagePath);
     }
 
     /**

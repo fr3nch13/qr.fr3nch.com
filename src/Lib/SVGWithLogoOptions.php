@@ -5,7 +5,7 @@ namespace App\Lib;
 
 use chillerlan\QRCode\QRCodeException;
 use chillerlan\QRCode\QROptions;
-use const \PHP_EOL;
+use const PHP_EOL;
 
 class SVGWithLogoOptions extends QROptions
 {

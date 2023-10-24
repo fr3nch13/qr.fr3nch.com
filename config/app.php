@@ -421,8 +421,8 @@ return [
      */
     'QrCode' => [
         'svgLogo' => WWW_ROOT . 'img' . DS . 'qr_logo.svg',
-        'positivecolor' => '#0079A9', // darker blue
-        'negativecolor' => '#FFFFFF', // white
+        'darkcolor' => '#0079A9', // darker blue
+        'lightcolor' => '#FFFFFF', // white
         // thumbnail sizes
         'thumbs' => [
             // maximum sizes

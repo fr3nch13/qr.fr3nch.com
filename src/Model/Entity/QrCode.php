@@ -25,7 +25,9 @@ use chillerlan\QRCode\Output\QRCodeOutputException;
  * @property int|null $user_id see $user below.
  * @property \Cake\I18n\DateTime|null $last_hit The last time the code forwarded a user.
  *
- * @property string|null $path (Virtual field) Path to the generated QR Code file.
+ * @property string|null $path (Virtual field) Path to the generated DARK QR Code file.
+ * @property string|null $path_dark (Virtual field) Path to the generated DARK QR Code file.
+ * @property string|null $path_light (Virtual field) Path to the generated LIGHT QR Code file.
  *
  * @property \App\Model\Entity\Source $source The source, mainly used internally to track where the code is located.
  * @property \App\Model\Entity\User $user The user that created and/or owns the code.
@@ -56,9 +58,8 @@ class QrCode extends Entity
         'user_id' => true,
         'last_hit' => true,
         'path' => true,
-        'path_sm' => true,
-        'path_md' => true,
-        'path_lg' => true,
+        'path_dark' => true,
+        'path_light' => true,
         'source' => true,
         'user' => true,
         'qr_images' => true,
@@ -91,11 +92,46 @@ class QrCode extends Entity
      */
     protected function _getPath(): ?string
     {
+        return $this->_getPathDark();
+    }
+
+    /**
+     * Gets the path to the generated QR Code
+     *
+     * @return string|null The path to the generated QR Code.
+     */
+    protected function _getPathDark(): ?string
+    {
         // set in config/app.php or config/app_local.php
-        $path = $this->getImagePath();
-        if (!$path) {
-            return null;
-        }
+        return $this->getImagePath(false);
+    }
+
+    /**
+     * Gets the path to the generated QR Code
+     *
+     * @return string|null The path to the generated QR Code.
+     */
+    protected function _getPathLight(): ?string
+    {
+        // set in config/app.php or config/app_local.php
+        return $this->getImagePath(true);
+    }
+
+    /**
+     * Checks the path, and tries to make the codes, then returns the path.
+     *
+     * @param bool $light If we should return the light, or dark path.
+     * @return string The path to the file.
+     */
+    public function getImagePath(bool $light = false): ?string
+    {
+        $end = $light ? '-light' : '-dark';
+
+        $path = Configure::read('App.paths.qr_codes', TMP . 'qr_codes') .
+            DS .
+            $this->id .
+            $end .
+            '.svg';
 
         if (!file_exists($path) || $this->regenerate) {
             try {
@@ -116,16 +152,5 @@ class QrCode extends Entity
         }
 
         return null;
-    }
-
-    /**
-     * Return where the path to the image should be.
-     * No checking here
-     *
-     * @return string The path.
-     */
-    public function getImagePath(): ?string
-    {
-        return Configure::read('App.paths.qr_codes', TMP . 'qr_codes') . DS . $this->id . '.svg';
     }
 }
