@@ -144,10 +144,12 @@ class TemplateTest extends BaseControllerTest
         // the images
         // the smaller images in the carousel
         $this->helperTestObjectComment(3, 'QrImage/show/thumb/sm');
-        $this->helperTestObjectComment(1, 'QrCode/show/thumb/sm');
+        $this->helperTestObjectComment(1, 'QrCode/show/small/dark');
+        $this->helperTestObjectComment(1, 'QrCode/show/small/light');
         // the larger images in the carousel
         $this->helperTestObjectComment(3, 'QrImage/show/thumb/lg');
-        $this->helperTestObjectComment(1, 'QrCode/show/thumb/lg');
+        $this->helperTestObjectComment(1, 'QrCode/show/large/dark');
+        $this->helperTestObjectComment(1, 'QrCode/show/large/light');
         // the forward button
         $this->helperTestObjectComment(1, 'QrCode/forward');
 
@@ -188,10 +190,12 @@ class TemplateTest extends BaseControllerTest
         // the images
         // the smaller images in the carousel
         $this->helperTestObjectComment(3, 'QrImage/show/thumb/sm');
-        $this->helperTestObjectComment(1, 'QrCode/show/thumb/sm');
+        $this->helperTestObjectComment(1, 'QrCode/show/small/dark');
+        $this->helperTestObjectComment(1, 'QrCode/show/small/light');
         // the larger images in the carousel
         $this->helperTestObjectComment(3, 'QrImage/show/thumb/lg');
-        $this->helperTestObjectComment(1, 'QrCode/show/thumb/lg');
+        $this->helperTestObjectComment(1, 'QrCode/show/large/dark');
+        $this->helperTestObjectComment(1, 'QrCode/show/large/light');
         // the forward button
         $this->helperTestObjectComment(1, 'QrCode/forward');
     }

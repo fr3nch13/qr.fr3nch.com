@@ -32,7 +32,6 @@ $this->assign('title', $this->fetch('page_title'));
                         'prefix' => false,
                         'action' => 'show',
                         $qrCode->id,
-                        '?' => ['thumb' => 'md'],
                     ]);
                     if (!empty($qrCode->qr_images)) {
                         $bgUrl = $this->Url->build([
@@ -45,7 +44,7 @@ $this->assign('title', $this->fetch('page_title'));
                     }
                     ?>
                     <figure
-                        class="background background-overlay"
+                        class="background background-overlay bg-light"
                         style="background-image: url('<?= $bgUrl ?>')"></figure>
 
                     <div class="card-content level-3">
