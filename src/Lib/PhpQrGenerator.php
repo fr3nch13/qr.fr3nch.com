@@ -56,7 +56,7 @@ class PhpQrGenerator
             'svgLogoCssClass' => $this->getConfig('svgLogoCssClass', 'embedded-logo'),
             // not working at the moment.
             // 'svgViewBoxSize' => $this->getConfig('svgViewBoxSize', 500),
-            'version' => $this->getConfig('version', 5),
+            'version' => $this->getConfig('version', 7),
             'outputType' => $this->getConfig('outputType', QROutputInterface::CUSTOM),
             'outputInterface' => $this->getConfig('outputInterface', QRSvgWithLogo::class),
             'outputBase64' => $this->getConfig('outputBase64', false),
