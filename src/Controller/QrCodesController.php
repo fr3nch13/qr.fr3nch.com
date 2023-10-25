@@ -117,12 +117,25 @@ class QrCodesController extends AppController
         $qrCode = $this->QrCodes->get((int)$id);
         $this->Authorization->authorize($qrCode);
 
-        $path = $qrCode->path_dark;
-        $type = '-dark';
-        if ($this->request->getQuery('l')) {
-            $path = $qrCode->path_light;
-            $type = '-light';
+        // color code from the entity
+        $path = $qrCode->path;
+
+        // light or dark code
+        if ($this->request->getQuery('l') !== null) {
+            if ($this->request->getQuery('l')) {
+                // light code
+                $path = $qrCode->path_light;
+            } else {
+                // dark code
+                $path = $qrCode->path_dark;
+            }
         }
+
+        // color from the query string.
+        if ($this->request->getQuery('c') !== null) {
+            $path = $qrCode->getImagePath($this->request->getQuery('c'));
+        }
+
         if (!$path) {
             throw new NotFoundException('Unable to find the image file.');
         }
@@ -134,7 +147,7 @@ class QrCodesController extends AppController
         if ($this->request->getQuery('download')) {
             $fileOptions = [
                 'download' => true,
-                'name' => 'QR-' . $qrCode->qrkey . $type . '.svg',
+                'name' => 'QR-' . $qrCode->qrkey . '-' . $qrCode->color_active . '.svg',
             ];
         }
 
