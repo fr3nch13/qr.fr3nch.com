@@ -9,11 +9,12 @@ use ArrayObject;
 use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Http\Exception\InternalErrorException;
-use Cake\Http\Exception\NotFoundException;
 use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use FilesystemIterator;
+use GlobIterator;
 use Search\Model\Filter\Base;
 
 /**
@@ -260,9 +261,15 @@ class QrCodesTable extends Table
     {
         // This should trigger creating a QR Code if it doesn't exist,
         // as the Entity's virtual field will try to generate one.
-        // so we just need to trigger that firtual field.
-        if (!$entity->path) {
-            throw new InternalErrorException('Unable to create QR Code.');
+        // so we just need to trigger that virtual field.
+        if ($entity->color && !$entity->path) {
+            throw new InternalErrorException('Unable to create Color QR Code.');
+        }
+        if (!$entity->path_dark) {
+            throw new InternalErrorException('Unable to create Dark QR Code.');
+        }
+        if (!$entity->path_light) {
+            throw new InternalErrorException('Unable to create Light QR Code.');
         }
     }
 
@@ -304,14 +311,16 @@ class QrCodesTable extends Table
      */
     public function afterDelete(Event $event, QrCode $qrCode, ArrayObject $options): void
     {
-        // delete the QR Code Image
-        $path_dark = $qrCode->path_dark;
-        $path_light = $qrCode->path_light;
-        if ($path_dark) {
-            unlink($path_dark);
-        }
-        if ($path_light) {
-            unlink($path_light);
+        $path = Configure::read('App.paths.qr_codes') . DS;
+        $finder = $path . $qrCode->id . '-*';
+        $iterator = new GlobIterator($finder, FilesystemIterator::KEY_AS_FILENAME);
+        if ($iterator->count()) {
+            /** @var \SplFileInfo $item */
+            foreach ($iterator as $item) {
+                if (is_file($item->getRealPath())) {
+                    unlink($item->getRealPath());
+                }
+            }
         }
     }
 
@@ -352,37 +361,5 @@ class QrCodesTable extends Table
     public function findOwnedBy(SelectQuery $query, User $user): SelectQuery
     {
         return $query->where(['QrCodes.user_id' => $user->id]);
-    }
-
-    /**
-     * Gets the Path to the Generated QR Code Image.
-     * If it's not created, try to create it.
-     *
-     * @param int $id The id of the QR Code Entity
-     * @param bool $light If we should look for the light or dark image.
-     * @param bool $regenerate If we should regenerate the images.
-     * @return string The absolute path to the generated QR code Image.
-     * @throws \Cake\Http\Exception\NotFoundException If the entity isn't found, or we can't create the image.
-     */
-    public function getQrImagePath(int $id, bool $light = false, bool $regenerate = false): string
-    {
-        $qrCode = $this->get($id); // throws a NotFoundException if it doesn't exist.
-
-        if ($regenerate === true) {
-            $qrCode->regenerate = true;
-        }
-
-        $path = $qrCode->path_dark;
-        if ($light === true) {
-            $path = $qrCode->path_light;
-        }
-
-        if (!$path) {
-            throw new NotFoundException(__('Unable to find the QR Image for the QR Code `{0}`', [
-                $qrCode->name,
-            ]));
-        }
-
-        return $path;
     }
 }

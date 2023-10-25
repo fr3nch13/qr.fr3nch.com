@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "49a1b9e87ab112a50757f69571801606",
+    "content-hash": "fdef603a3bc987e088d851271a572346",
     "packages": [
         {
             "name": "cakephp/authentication",
@@ -425,24 +425,25 @@
         },
         {
             "name": "chillerlan/php-qrcode",
-            "version": "5.0-beta",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/chillerlan/php-qrcode.git",
-                "reference": "ae0f31241554b509b62b54e7cd14ebd4d384ec16"
+                "reference": "57448af264a4bc0aca85a9ce61769aa6240b9481"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/chillerlan/php-qrcode/zipball/ae0f31241554b509b62b54e7cd14ebd4d384ec16",
-                "reference": "ae0f31241554b509b62b54e7cd14ebd4d384ec16",
+                "url": "https://api.github.com/repos/chillerlan/php-qrcode/zipball/57448af264a4bc0aca85a9ce61769aa6240b9481",
+                "reference": "57448af264a4bc0aca85a9ce61769aa6240b9481",
                 "shasum": ""
             },
             "require": {
-                "chillerlan/php-settings-container": "^2.1.4",
+                "chillerlan/php-settings-container": "^2.1.4 || ^3.1",
                 "ext-mbstring": "*",
                 "php": "^7.4 || ^8.0"
             },
             "require-dev": {
+                "chillerlan/php-authenticator": "^4.0 || ^5.0",
                 "phan/phan": "^5.4",
                 "phpmd/phpmd": "^2.13",
                 "phpunit/phpunit": "^9.6",
@@ -454,6 +455,7 @@
                 "setasign/fpdf": "Required to use the QR FPDF output.",
                 "simple-icons/simple-icons": "SVG icons that you can use to embed as logos in the QR Code"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -500,8 +502,9 @@
                 "qrcode-reader"
             ],
             "support": {
+                "docs": "https://php-qrcode.readthedocs.io",
                 "issues": "https://github.com/chillerlan/php-qrcode/issues",
-                "source": "https://github.com/chillerlan/php-qrcode/tree/5.0-beta"
+                "source": "https://github.com/chillerlan/php-qrcode"
             },
             "funding": [
                 {
@@ -513,29 +516,31 @@
                     "type": "ko_fi"
                 }
             ],
-            "time": "2023-03-22T20:24:54+00:00"
+            "time": "2023-10-24T20:35:49+00:00"
         },
         {
             "name": "chillerlan/php-settings-container",
-            "version": "2.1.4",
+            "version": "3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/chillerlan/php-settings-container.git",
-                "reference": "1beb7df3c14346d4344b0b2e12f6f9a74feabd4a"
+                "reference": "4d02944424fa1f48abca96353257c93cbac856c1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/chillerlan/php-settings-container/zipball/1beb7df3c14346d4344b0b2e12f6f9a74feabd4a",
-                "reference": "1beb7df3c14346d4344b0b2e12f6f9a74feabd4a",
+                "url": "https://api.github.com/repos/chillerlan/php-settings-container/zipball/4d02944424fa1f48abca96353257c93cbac856c1",
+                "reference": "4d02944424fa1f48abca96353257c93cbac856c1",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "php": "^7.4 || ^8.0"
+                "php": "^8.1"
             },
             "require-dev": {
-                "phan/phan": "^5.3",
-                "phpunit/phpunit": "^9.5"
+                "phan/phan": "^5.4",
+                "phpmd/phpmd": "^2.13",
+                "phpunit/phpunit": "^10.2",
+                "squizlabs/php_codesniffer": "^3.7"
             },
             "type": "library",
             "autoload": {
@@ -554,10 +559,9 @@
                     "homepage": "https://github.com/codemasher"
                 }
             ],
-            "description": "A container class for immutable settings objects. Not a DI container. PHP 7.4+",
+            "description": "A container class for immutable settings objects. Not a DI container.",
             "homepage": "https://github.com/chillerlan/php-settings-container",
             "keywords": [
-                "PHP7",
                 "Settings",
                 "configuration",
                 "container",
@@ -577,7 +581,7 @@
                     "type": "ko_fi"
                 }
             ],
-            "time": "2022-07-05T22:32:14+00:00"
+            "time": "2023-07-17T20:46:37+00:00"
         },
         {
             "name": "composer/ca-bundle",
@@ -7046,6 +7050,7 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
+        "chillerlan/php-qrcode": 20,
         "cakephp/cakephp": 20
     },
     "prefer-stable": true,

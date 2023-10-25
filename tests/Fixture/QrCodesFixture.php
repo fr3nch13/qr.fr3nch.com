@@ -38,6 +38,7 @@ class QrCodesFixture extends CoreFixture
                 'is_active' => true,
                 'source_id' => 1, // amazon
                 'user_id' => 1, // admin user
+                'color' => 'CCCCCC',
             ],
             [
                 'id' => 2,
