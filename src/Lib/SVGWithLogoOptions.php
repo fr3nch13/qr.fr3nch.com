@@ -6,6 +6,7 @@ namespace App\Lib;
 use chillerlan\QRCode\Data\QRMatrix;
 use chillerlan\QRCode\QRCodeException;
 use chillerlan\QRCode\QROptions;
+use const PHP_EOL;
 
 class SVGWithLogoOptions extends QROptions
 {
@@ -34,7 +35,7 @@ class SVGWithLogoOptions extends QROptions
 
     public string $svgPreserveAspectRatio = 'xMidYMid';
 
-    public string $eol = \PHP_EOL;
+    public string $eol = PHP_EOL;
 
     public bool $svgAddXmlHeader = true;
 

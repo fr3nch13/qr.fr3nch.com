@@ -60,7 +60,7 @@ $this->assign('title', $this->fetch('page_title'));
                     'type' => 'color',
                     'spacing' => 'mb-2',
                     'label' => __('Code Color'),
-                    'class' => 'w-100'
+                    'class' => 'w-100',
                 ]); ?>
             </div>
             <div class="col-4">
