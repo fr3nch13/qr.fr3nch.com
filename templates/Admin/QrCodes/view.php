@@ -1,4 +1,5 @@
 <?php
+use Cake\Core\Configure;
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\QrCode $qrCode
@@ -6,6 +7,11 @@
 
 if (!$this->getRequest()->is('ajax')) {
     $this->extend('/Admin/QrCodes/details');
+}
+
+$color = $qrCode->color;
+if (!$color) {
+    $color = '#' . Configure::read('QrCode.darkcolor', '000000');
 }
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
@@ -28,6 +34,13 @@ if (!$this->getRequest()->is('ajax')) {
         <dl class="row">
             <dt class="col-4 col-md-3"><?= __('Key') ?></dt>
             <dd class="col-8 col-md-9"><?= h($qrCode->qrkey) ?> </dd>
+
+            <dt class="col-4 col-md-3"><?= __('Color') ?></dt>
+            <dd class="col-8 col-md-9"><span
+                class="badge text-light rounded-pill"
+                style="background-color: <?= $color ?>">
+                <?= $color ?>
+            </span> </dd>
 
             <dt class="col-4 col-md-3"><?= __('Hits') ?></dt>
             <dd class="col-8 col-md-9"><span

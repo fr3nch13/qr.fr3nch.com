@@ -55,7 +55,15 @@ $this->assign('title', $this->fetch('page_title'));
                     'label' => __('Active?'),
                 ]); ?>
             </div>
-            <div class="col-8">
+            <div class="col-4 form-switch">
+                <?= $this->Form->control('color', [
+                    'type' => 'color',
+                    'spacing' => 'mb-2',
+                    'label' => __('Code Color'),
+                    'class' => 'w-100'
+                ]); ?>
+            </div>
+            <div class="col-4">
                 <?= $this->Form->control('source_id', [
                     'required' => true,
                     'spacing' => 'mb-2',

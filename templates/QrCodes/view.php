@@ -56,6 +56,17 @@ $this->assign('title', $qrCode->name);
                     </div>
                     <?php endforeach; ?>
 
+                    <?= $this->Template->objectComment('QrCode/show/small/color') ?>
+                    <div>
+                        <img
+                            class="img-thumbnail bg-light"
+                            src="<?= $this->Url->build([
+                                'action' => 'show',
+                                $qrCode->id,
+                                ]) ?>"
+                            alt="<?= __('The QR Code'); ?>">
+                    </div>
+
                     <?= $this->Template->objectComment('QrCode/show/small/dark') ?>
                     <div>
                         <img
@@ -115,6 +126,17 @@ $this->assign('title', $qrCode->name);
                             alt="<?= $qrImage->name ?>">
                     </div>
                     <?php endforeach; ?>
+
+                    <?= $this->Template->objectComment('QrCode/show/large/color') ?>
+                    <div class="item text-center">
+                        <img
+                            class="img-thumbnail bg-light"
+                            src="<?= $this->Url->build([
+                                'action' => 'show',
+                                $qrCode->id,
+                            ]) ?>"
+                            alt="<?= __('The QR Code'); ?>">
+                    </div>
 
                     <?= $this->Template->objectComment('QrCode/show/large/dark') ?>
                     <div class="item text-center">
