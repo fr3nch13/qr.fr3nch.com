@@ -9,9 +9,7 @@ use App\Model\Table\SourcesTable;
 use App\Model\Table\TagsTable;
 use App\Model\Table\UsersTable;
 use Cake\Core\Configure;
-use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Http\Exception\InternalErrorException;
-use Cake\Http\Exception\NotFoundException;
 use Cake\ORM\Association\BelongsTo;
 use Cake\ORM\Association\BelongsToMany;
 use Cake\ORM\Behavior\TimestampBehavior;
@@ -398,15 +396,20 @@ class QrCodesTableTest extends TestCase
 
         $tmpdir = TMP . 'qr_codes';
 
+        $dark = Configure::read('QrCode.darkcolor');
+        $light = Configure::read('QrCode.lightcolor');
+
         // a successful test, code generates and file exists.
         $entity = $this->QrCodes->get(1);
-        $entityPath = $tmpdir . DS . $entity->id . '-dark.svg';
+        $entityPath = $tmpdir . DS . $entity->id . '-cccccc.svg';
         $this->assertSame($entityPath, $entity->path);
         $this->assertTrue(is_file($entityPath));
-        $entityPath = $tmpdir . DS . $entity->id . '-dark.svg';
+
+        $entityPath = $tmpdir . DS . $entity->id . '-' . $dark . '.svg';
         $this->assertSame($entityPath, $entity->path_dark);
         $this->assertTrue(is_file($entityPath));
-        $entityPath = $tmpdir . DS . $entity->id . '-light.svg';
+
+        $entityPath = $tmpdir . DS . $entity->id . '-' . $light . '.svg';
         $this->assertSame($entityPath, $entity->path_light);
         $this->assertTrue(is_file($entityPath));
 
@@ -422,46 +425,67 @@ class QrCodesTableTest extends TestCase
     /**
      * Test Implemented Generator
      *
+     * test generating with path is called.
+     * entity 1 has color set.
+     *
      * @return void
      */
     public function testImplementedGenerator1(): void
     {
-        // existing entity
-        $path_dark = Configure::read('App.paths.qr_codes') . DS . '1-dark.svg';
+        $dark = Configure::read('QrCode.darkcolor');
+        $light = Configure::read('QrCode.lightcolor');
+
+        // color path
+        $path_color = Configure::read('App.paths.qr_codes') . DS . '1-cccccc.svg';
+        if (file_exists($path_color)) {
+            unlink($path_color);
+        }
+        $this->assertFalse(is_readable($path_color));
+
+        // dark path
+        $path_dark = Configure::read('App.paths.qr_codes') . DS . '1-' . $dark . '.svg';
         if (file_exists($path_dark)) {
             unlink($path_dark);
         }
         $this->assertFalse(is_readable($path_dark));
 
-        $path_light = Configure::read('App.paths.qr_codes') . DS . '1-light.svg';
+        // light path
+        $path_light = Configure::read('App.paths.qr_codes') . DS . '1-' . $light . '.svg';
         if (file_exists($path_light)) {
             unlink($path_light);
         }
         $this->assertFalse(is_readable($path_light));
 
-        // test when trying to get the image path.
-        $qrCodeImagePath = $this->QrCodes->getQrImagePath(1);
-        $this->assertTrue(is_readable($path_dark));
-        $this->assertTrue(is_readable($path_light));
-        $this->assertSame($path_dark, $qrCodeImagePath);
-        $qrCodeImagePath = $this->QrCodes->getQrImagePath(1, true);
-        $this->assertSame($path_light, $qrCodeImagePath);
-
-        // test not regenerating it.
-        $qrCodeImagePath = $this->QrCodes->getQrImagePath(1);
-        $this->assertSame($path_dark, $qrCodeImagePath);
-        $qrCodeImagePath = $this->QrCodes->getQrImagePath(1, true);
-        $this->assertSame($path_light, $qrCodeImagePath);
-
+        // entity 1 has a color set
         $entity = $this->QrCodes->get(1);
 
+        // color created
+        // $entity->path will trigger the creation of the code file
+        $this->assertSame($path_color, $entity->path);
+        $this->assertTrue(is_readable($path_color));
+
+        // dark created
+        $this->assertSame($path_dark, $entity->path_dark);
+        $this->assertTrue(is_readable($path_dark));
+
+        // light created
+        $this->assertSame($path_light, $entity->path_light);
+        $this->assertTrue(is_readable($path_light));
+        $this->assertTrue(is_readable($path_light));
+
         // test the AfterSave and regenerate
+        unlink($path_color);
         unlink($path_dark);
         unlink($path_light);
+
+        $this->assertFalse(is_readable($path_color));
         $this->assertFalse(is_readable($path_dark));
         $this->assertFalse(is_readable($path_light));
+
         $entity->name = 'Updated Name';
         $this->QrCodes->save($entity);
+
+        $this->assertTrue(is_readable($path_color));
         $this->assertTrue(is_readable($path_dark));
         $this->assertTrue(is_readable($path_light));
     }
@@ -469,30 +493,38 @@ class QrCodesTableTest extends TestCase
     /**
      * Test Implemented Generator
      *
+     * entity doesn't have color
+     * test existing qr_code with missing image
+     * test that it gets generated.
+     *
      * @return void
      */
     public function testImplementedGenerator2(): void
     {
-        // test existing qr_code with missing image
-        // test that it gets generated.
-        $path_dark = Configure::read('App.paths.qr_codes') . DS . '3-dark.svg';
+        $dark = Configure::read('QrCode.darkcolor');
+        $light = Configure::read('QrCode.lightcolor');
+
+        $path_dark = Configure::read('App.paths.qr_codes') . DS . '3-' . $dark . '.svg';
         if (file_exists($path_dark)) {
             unlink($path_dark);
         }
         $this->assertFalse(is_readable($path_dark));
-        $path_light = Configure::read('App.paths.qr_codes') . DS . '3-light.svg';
+        $path_light = Configure::read('App.paths.qr_codes') . DS . '3-' . $light . '.svg';
         if (file_exists($path_light)) {
             unlink($path_light);
         }
         $this->assertFalse(is_readable($path_light));
 
         $entity = $this->QrCodes->get(3);
-        $this->assertSame($path_dark, $entity->path_dark);
-        $this->assertTrue(is_readable($path_dark));
-        $this->assertSame($path_light, $entity->path_light);
-        $this->assertTrue(is_readable($path_light));
+
         $this->assertSame($path_dark, $entity->path);
         $this->assertTrue(is_readable($path_dark));
+
+        $this->assertSame($path_dark, $entity->path_dark);
+        $this->assertTrue(is_readable($path_dark));
+
+        $this->assertSame($path_light, $entity->path_light);
+        $this->assertTrue(is_readable($path_light));
     }
 
     /**
@@ -502,13 +534,16 @@ class QrCodesTableTest extends TestCase
      */
     public function testImplementedGenerator3(): void
     {
+        $dark = Configure::read('QrCode.darkcolor');
+        $light = Configure::read('QrCode.lightcolor');
+
         // new entity, check that it gets generated on a new save.
-        $path_dark = Configure::read('App.paths.qr_codes') . DS . '6-dark.svg';
+        $path_dark = Configure::read('App.paths.qr_codes') . DS . '6-' . $dark . '.svg';
         if (file_exists($path_dark)) {
             unlink($path_dark);
         }
         $this->assertFalse(is_readable($path_dark));
-        $path_light = Configure::read('App.paths.qr_codes') . DS . '6-light.svg';
+        $path_light = Configure::read('App.paths.qr_codes') . DS . '6-' . $light . '.svg';
         if (file_exists($path_light)) {
             unlink($path_light);
         }
@@ -536,53 +571,29 @@ class QrCodesTableTest extends TestCase
     /**
      * Test Implemented Generator
      *
-     * @return void
-     */
-    public function testImplementedGenerator4(): void
-    {
-        // test nonexistant entity
-        $this->expectException(RecordNotFoundException::class);
-        $path_dark = Configure::read('App.paths.qr_codes') . DS . '10-dark.svg';
-        if (file_exists($path_dark)) {
-            unlink($path_dark);
-        }
-        $this->assertFalse(is_readable($path_dark));
-        $path_light = Configure::read('App.paths.qr_codes') . DS . '10-light.svg';
-        if (file_exists($path_light)) {
-            unlink($path_light);
-        }
-        $this->assertFalse(is_readable($path_light));
-
-        $qrCodeImagePath = $this->QrCodes->getQrImagePath(10);
-        $this->assertTrue(is_readable($path_dark));
-        $this->assertSame($path_dark, $qrCodeImagePath);
-
-        $qrCodeImagePath = $this->QrCodes->getQrImagePath(10, true);
-        $this->assertTrue(is_readable($path_light));
-        $this->assertSame($path_light, $qrCodeImagePath);
-    }
-
-    /**
-     * Test Implemented Generator
+     * Test creating a new entity with unable to write code.
      *
      * @return void
      */
-    public function testImplementedGenerator6(): void
+    public function testNewEntityBadPathFolderDark(): void
     {
         $originalPath = Configure::read('App.paths.qr_codes');
         Configure::write('App.paths.qr_codes', TMP . 'dontexist');
 
+        $dark = Configure::read('QrCode.darkcolor');
+        $light = Configure::read('QrCode.lightcolor');
+
         // new entity, success, but can't generate code..
-        $path_dark = Configure::read('App.paths.qr_codes') . DS . '7-dark.svg';
+        $path_dark = Configure::read('App.paths.qr_codes') . DS . '6-' . $dark . '.svg';
         if (file_exists($path_dark)) {
             unlink($path_dark);
         }
         $this->assertFalse(is_readable($path_dark));
-        $path_light = Configure::read('App.paths.qr_codes') . DS . '7-light.svg';
+        $path_light = Configure::read('App.paths.qr_codes') . DS . '6-' . $light . '.svg';
         if (file_exists($path_light)) {
             unlink($path_light);
         }
-        $this->assertFalse(is_readable($path_dark));
+        $this->assertFalse(is_readable($path_light));
 
         $entity = $this->QrCodes->newEntity([
             'qrkey' => 'newentity7',
@@ -599,7 +610,7 @@ class QrCodesTableTest extends TestCase
 
         // test with a failed generation when envoking path
         $this->expectException(InternalErrorException::class);
-        $this->expectExceptionMessage('Unable to create QR Code.');
+        $this->expectExceptionMessage('Unable to create Dark QR Code.');
         $this->QrCodes->save($entity);
         $this->assertFalse(is_readable($path_dark));
         $this->assertFalse(is_readable($path_light));
@@ -612,54 +623,42 @@ class QrCodesTableTest extends TestCase
     /**
      * Test Implemented Generator
      *
-     * @return void
-     */
-    public function testImplementedGenerator7(): void
-    {
-        // dark
-        // existing entity
-        $path_dark = Configure::read('App.paths.qr_codes') . DS . '1-dark.svg';
-        $this->assertTrue(is_readable($path_dark));
-
-        // test regenerating the image
-        $qrCodeImagePath = $this->QrCodes->getQrImagePath(1, false, true);
-        $this->assertTrue(is_readable($path_dark));
-        $this->assertSame($path_dark, $qrCodeImagePath);
-
-        // light
-        // existing entity
-        $path_light = Configure::read('App.paths.qr_codes') . DS . '1-light.svg';
-        $this->assertTrue(is_readable($path_light));
-
-        // test regenerating the image
-        $qrCodeImagePath = $this->QrCodes->getQrImagePath(1, true, true);
-        $this->assertTrue(is_readable($path_light));
-        $this->assertSame($path_light, $qrCodeImagePath);
-    }
-
-    /**
-     * Test Implemented Generator
+     * Test creating a new entity with unable to write code.
      *
      * @return void
      */
-    public function testImplementedGenerator8(): void
+    public function testNewEntityBadPathFolderColor(): void
     {
-        // existing entity
-        $path_dark = Configure::read('App.paths.qr_codes') . DS . '1-dark.svg';
-        $this->assertTrue(is_readable($path_dark));
-        $path_light = Configure::read('App.paths.qr_codes') . DS . '1-light.svg';
-        $this->assertTrue(is_readable($path_light));
-
         $originalPath = Configure::read('App.paths.qr_codes');
         Configure::write('App.paths.qr_codes', TMP . 'dontexist');
 
-        // test regenerating the image
-        $this->expectException(NotFoundException::class);
-        $this->expectExceptionMessage('Unable to find the QR Image for the QR Code `Sow & Scribe`');
-        $this->QrCodes->getQrImagePath(1, true);
-        $this->assertFalse(is_readable($path_dark));
-        $this->assertFalse(is_readable($path_light));
+        // new entity, success, but can't generate code..
+        $path_color = Configure::read('App.paths.qr_codes') . DS . '6-eaeaea.svg';
+        if (file_exists($path_color)) {
+            unlink($path_color);
+        }
+        $this->assertFalse(is_readable($path_color));
 
+        $entity = $this->QrCodes->newEntity([
+            'qrkey' => 'newentity7',
+            'name' => 'new name',
+            'description' => 'description',
+            'url' => 'https://www.amazon.com/path/to/product',
+            'source_id' => 1,
+            'user_id' => 1,
+            'color' => 'eaeaea',
+        ]);
+        $result = $this->QrCodes->checkRules($entity);
+        $this->assertTrue($result);
+        $expected = [];
+        $this->assertSame($expected, $entity->getErrors());
+
+        // test with a failed generation when envoking path
+        $this->expectException(InternalErrorException::class);
+        $this->expectExceptionMessage('Unable to create Color QR Code.');
+        $this->QrCodes->save($entity);
+        $this->assertFalse(is_readable($path_color));
+        $this->assertNull($entity->path);
         Configure::write('App.paths.qr_codes', $originalPath);
     }
 
@@ -673,22 +672,95 @@ class QrCodesTableTest extends TestCase
         $this->loadRoutes();
         Configure::write('debug', true);
 
+        $dark = Configure::read('QrCode.darkcolor');
+        $light = Configure::read('QrCode.lightcolor');
+
         // test the Generator Directly
-        $path_dark = Configure::read('App.paths.qr_codes') . DS . '2-dark.svg';
+        $path_dark = Configure::read('App.paths.qr_codes') . DS . '2-' . $dark . '.svg';
         if (file_exists($path_dark)) {
             unlink($path_dark);
         }
         $this->assertFalse(is_readable($path_dark));
-        $path_light = Configure::read('App.paths.qr_codes') . DS . '2-light.svg';
+        $path_light = Configure::read('App.paths.qr_codes') . DS . '2-' . $light . '.svg';
         if (file_exists($path_light)) {
             unlink($path_light);
         }
         $this->assertFalse(is_readable($path_light));
 
+        // no color set in entity, defaults to dark
         $entity = $this->QrCodes->get(2);
         $QR = new PhpQrGenerator($entity);
         $QR->generate();
         $this->assertTrue(is_readable($path_dark));
+        $this->assertFalse(is_readable($path_light));
+
+        // test light
+        $entity = $this->QrCodes->get(2);
+        $QR = new PhpQrGenerator($entity);
+        $QR->setColor(Configure::read('QrCode.lightcolor'));
+        $QR->generate();
         $this->assertTrue(is_readable($path_light));
+    }
+
+    /**
+     * Test deleting a code, to make sure it's code files are deleted as well.
+     *
+     * @return void
+     */
+    public function testDeleteWithFiles(): void
+    {
+        // test valid entity
+        $entity = $this->QrCodes->newEntity([
+            'qrkey' => 'newsource',
+            'name' => 'new name',
+            'description' => 'description',
+            'url' => 'https://www.amazon.com/path/to/product',
+            'source_id' => 1, // int instead of a string, like above.
+            'user_id' => 1, // int instead of a string, like above.
+            'color' => 'cccccc',
+        ]);
+
+        $expected = [];
+
+        $this->assertSame($expected, $entity->getErrors());
+
+        $entity = $this->QrCodes->saveOrFail($entity);
+
+        $this->assertSame('cccccc', $entity->color);
+
+        $entity_color = $entity->color;
+        $dark = Configure::read('QrCode.darkcolor');
+        $light = Configure::read('QrCode.lightcolor');
+
+        $path = Configure::read('App.paths.qr_codes') .
+            DS .
+            $entity->id .
+            '-' .
+            $entity_color .
+            '.svg';
+        $path_dark = Configure::read('App.paths.qr_codes') .
+            DS .
+            $entity->id .
+            '-' .
+            $dark .
+            '.svg';
+        $path_light = Configure::read('App.paths.qr_codes') .
+            DS .
+            $entity->id .
+            '-' .
+            $light .
+            '.svg';
+        $this->assertSame($path, $entity->path);
+        $this->assertTrue(file_exists($path));
+        $this->assertSame($path_dark, $entity->path_dark);
+        $this->assertTrue(file_exists($path_dark));
+        $this->assertSame($path_light, $entity->path_light);
+        $this->assertTrue(file_exists($path_light));
+
+        $this->assertTrue($this->QrCodes->delete($entity));
+
+        $this->assertFalse(file_exists($path));
+        $this->assertFalse(file_exists($path_dark));
+        $this->assertFalse(file_exists($path_light));
     }
 }

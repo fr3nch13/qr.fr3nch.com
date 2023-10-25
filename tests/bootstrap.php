@@ -72,7 +72,7 @@ Configure::write('App.paths.qr_images', TMP . 'qr_images_test');
 
 // To test to make sure we're translating colors correctly.
 // Test the PhpQrCodeGenerator() directly, if needed.
-Configure::write('QrCode.lightcolor', '#FFF');
-Configure::write('QrCode.darkcolor', '#000');
+Configure::write('QrCode.lightcolor', 'ffffff');
+Configure::write('QrCode.darkcolor', '000000');
 
 (new Migrator())->run();

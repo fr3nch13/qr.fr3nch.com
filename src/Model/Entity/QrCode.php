@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use App\Exception\QrCodeException;
 use App\Lib\PhpQrGenerator;
 use Cake\Core\Configure;
 use Cake\Log\Log;
@@ -24,10 +25,12 @@ use chillerlan\QRCode\Output\QRCodeOutputException;
  * @property int|null $source_id See $source below.
  * @property int|null $user_id see $user below.
  * @property \Cake\I18n\DateTime|null $last_hit The last time the code forwarded a user.
+ * @property string $color The default hexidecimal color to use, if null, then the darkcolor in the config/app_local.php will be used.
  *
- * @property string|null $path (Virtual field) Path to the generated DARK QR Code file.
+ * @property string|null $path (Virtual field) Path to the generated COLOR QR Code file with the color of this entity. If falls back to the $path_dark
  * @property string|null $path_dark (Virtual field) Path to the generated DARK QR Code file.
  * @property string|null $path_light (Virtual field) Path to the generated LIGHT QR Code file.
+ * @property string|null $color_active (Virtual field) The actual color being used. Set acter the path is requested.
  *
  * @property \App\Model\Entity\Source $source The source, mainly used internally to track where the code is located.
  * @property \App\Model\Entity\User $user The user that created and/or owns the code.
@@ -57,9 +60,11 @@ class QrCode extends Entity
         'source_id' => true,
         'user_id' => true,
         'last_hit' => true,
+        'color_active' => true,
+        'color' => true,
         'path' => true,
-        'path_dark' => true,
         'path_light' => true,
+        'path_dark' => true,
         'source' => true,
         'user' => true,
         'qr_images' => true,
@@ -85,14 +90,26 @@ class QrCode extends Entity
      */
     public bool $regenerate = false;
 
+    protected ?string $_color_active = null;
+
     /**
-     * Gets the path to the generated QR Code
+     * Gets the active color
      *
      * @return string|null The path to the generated QR Code.
      */
-    protected function _getPath(): ?string
+    protected function _getColorActive(): ?string
     {
-        return $this->_getPathDark();
+        return $this->_color_active;
+    }
+
+    /**
+     * Sets the active color
+     *
+     * @return void
+     */
+    protected function _setColorActive(string $color): void
+    {
+        $this->_color_active = $this->validateColor($color);
     }
 
     /**
@@ -100,10 +117,9 @@ class QrCode extends Entity
      *
      * @return string|null The path to the generated QR Code.
      */
-    protected function _getPathDark(): ?string
+    protected function _getPath(): ?string
     {
-        // set in config/app.php or config/app_local.php
-        return $this->getImagePath(false);
+        return $this->getImagePath();
     }
 
     /**
@@ -113,31 +129,63 @@ class QrCode extends Entity
      */
     protected function _getPathLight(): ?string
     {
-        // set in config/app.php or config/app_local.php
-        return $this->getImagePath(true);
+        $color = Configure::read('QrCode.lightcolor', 'FFFFFF');
+
+        return $this->getImagePath($color);
+    }
+
+    /**
+     * Gets the path to the generated QR Code
+     *
+     * @return string|null The path to the generated QR Code.
+     */
+    protected function _getPathDark(): ?string
+    {
+        $color = Configure::read('QrCode.darkcolor', '000000');
+
+        return $this->getImagePath($color);
     }
 
     /**
      * Checks the path, and tries to make the codes, then returns the path.
      *
-     * @param bool $light If we should return the light, or dark path.
+     * @param ?string $color If we should use a custom color
      * @return string The path to the file.
      */
-    public function getImagePath(bool $light = false): ?string
+    public function getImagePath(?string $color = null): ?string
     {
-        $end = $light ? '-light' : '-dark';
+        // can also be a blank/empty string
+        if ($color === null || !trim($color)) {
+            $color = $this->color;
+        }
+        // color not set for entity
+        if ($color === null || !trim($color)) {
+            $color = Configure::read('QrCode.darkcolor', '000000');
+        }
+
+        $this->_setColorActive($color);
 
         $path = Configure::read('App.paths.qr_codes', TMP . 'qr_codes') .
             DS .
             $this->id .
-            $end .
+            '-' . $this->_getColorActive() .
             '.svg';
 
         if (!file_exists($path) || $this->regenerate) {
             try {
                 $QR = new PhpQrGenerator($this);
+                if ($this->_getColorActive()) {
+                    $QR->setColor($this->_getColorActive());
+                }
                 $QR->generate();
             } catch (QRCodeOutputException $e) {
+                Log::write('error', __('Unable to generate a missing code to: `{0}`.' .
+                    ' Exception: `{1}` Message: `{2}`', [
+                    $path,
+                    get_class($e),
+                    $e->getMessage(),
+                ]));
+            } catch (QrCodeException $e) {
                 Log::write('error', __('Unable to generate a missing code to: `{0}`.' .
                     ' Exception: `{1}` Message: `{2}`', [
                     $path,
@@ -152,5 +200,25 @@ class QrCode extends Entity
         }
 
         return null;
+    }
+
+    /**
+     * Validates the color.
+     *
+     * @param string $color
+     * @return string The validated, and cleaned color.
+     * @throws \App\Exception\QrCodeException If the color isn't present, or is invalid
+     */
+    public function validateColor(string $color): string
+    {
+        $color = strtolower($color);
+        $color = str_replace('#', '', $color);
+        if (strlen($color) !== 6 || !preg_match('!^[a-f0-9]{6}$!', $color)) {
+            throw new QrCodeException(__('Invalid Color: {0}', [
+                $color,
+            ]));
+        }
+
+        return $color;
     }
 }

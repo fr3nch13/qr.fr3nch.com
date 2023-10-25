@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Lib;
 
+use chillerlan\QRCode\Data\QRMatrix;
 use chillerlan\QRCode\QRCodeException;
 use chillerlan\QRCode\QROptions;
 use const PHP_EOL;
@@ -21,22 +22,55 @@ class SVGWithLogoOptions extends QROptions
     // make sure we get the xml returned.
     public bool $outputBase64 = false;
 
-    // end of line
-    public string $eol = PHP_EOL;
-
-    // color definitions
-    public string $svgDefs = '';
-
     /**
      * @var array<int, mixed>
      */
-    public ?array $moduleValues = [];
-
-    public bool $addLogoSpace = true;
+    public array $moduleValues = [];
 
     public string $logoColor = '';
 
     public float $svgOpacity = 1;
+
+    public string $cssClass = '';
+
+    public string $svgPreserveAspectRatio = 'xMidYMid';
+
+    public string $eol = PHP_EOL;
+
+    public bool $svgAddXmlHeader = true;
+
+    /**
+     * Sets the color to use
+     *
+     * @param string $color The color to use
+     * @return void
+     */
+    public function setColor(string $color): void
+    {
+        $this->logoColor = $color;
+        $this->moduleValues = [
+            // normally light color
+            QRMatrix::M_DATA => false,
+            QRMatrix::M_FINDER => false,
+            QRMatrix::M_SEPARATOR => false,
+            QRMatrix::M_ALIGNMENT => false,
+            QRMatrix::M_TIMING => false,
+            QRMatrix::M_FORMAT => false,
+            QRMatrix::M_VERSION => false,
+            QRMatrix::M_QUIETZONE => false,
+            QRMatrix::M_LOGO => false,
+
+            // normally dark color
+            QRMatrix::M_DARKMODULE => $color,
+            QRMatrix::M_DATA_DARK => $color,
+            QRMatrix::M_FINDER_DARK => $color,
+            QRMatrix::M_ALIGNMENT_DARK => $color,
+            QRMatrix::M_TIMING_DARK => $color,
+            QRMatrix::M_FORMAT_DARK => $color,
+            QRMatrix::M_VERSION_DARK => $color,
+            QRMatrix::M_FINDER_DOT => $color,
+        ];
+    }
 
     // the name is specific as it's called within chillerlan's code
     // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
