@@ -75,4 +75,7 @@ Configure::write('App.paths.qr_images', TMP . 'qr_images_test');
 Configure::write('QrCode.lightcolor', 'ffffff');
 Configure::write('QrCode.darkcolor', '000000');
 
-(new Migrator())->run();
+(new Migrator())->runMany([
+    [], // my app
+    ['plugin' => 'Fr3nch13/Stats'],
+]);

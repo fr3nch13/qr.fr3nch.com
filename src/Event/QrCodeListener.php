@@ -6,14 +6,14 @@ namespace App\Event;
 use App\Model\Entity\QrCode;
 use App\Model\Table\QrCodesTable;
 use Cake\Event\Event;
-use Cake\Event\EventListenerInterface;
 use Cake\I18n\DateTime;
 use Cake\ORM\Locator\LocatorAwareTrait;
+use Fr3nch13\Stats\Event\StatsListener;
 
 /**
  * Handles events related to Qr Code Entities.
  */
-class QrCodeListener implements EventListenerInterface
+class QrCodeListener extends StatsListener
 {
     use LocatorAwareTrait;
 
@@ -38,6 +38,12 @@ class QrCodeListener implements EventListenerInterface
      */
     public function registerHit(Event $event, QrCode $qrCode): bool
     {
+        // track if any qr codes are hot
+        parent::recordCount($event, 'QrCode.hits');
+
+        // track the specific qr code
+        parent::recordCount($event, 'QrCode.hits.' . $qrCode->id);
+
         $config = $this->getTableLocator()->exists('QrCodes') ? [] : ['className' => QrCodesTable::class];
         /** @var \App\Model\Table\QrCodesTable $QrCodes */
         $QrCodes = $this->getTableLocator()->get('QrCodes', $config);

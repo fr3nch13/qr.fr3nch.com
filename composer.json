@@ -69,7 +69,10 @@
     "scripts": {
         "post-install-cmd": "App\\Console\\Installer::postInstall",
         "post-create-project-cmd": "App\\Console\\Installer::postInstall",
-        "migrate": "bin/cake migrations migrate",
+        "migrate": [
+            "bin/cake migrations migrate",
+            "bin/cake migrations migrate -p Fr3nch13/Stats"
+        ],
         "seed": "bin/cake migrations seed",
         "ci": [
             "@check",
