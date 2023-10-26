@@ -267,6 +267,8 @@ class QrCodesController extends AppController
     /**
      * Edit method
      *
+     * TODO: delete the old color file when color changes.
+     *
      * @param ?string $id QR Code id.
      * @return ?\Cake\Http\Response Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
