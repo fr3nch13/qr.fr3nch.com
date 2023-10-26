@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fdef603a3bc987e088d851271a572346",
+    "content-hash": "c2df58d7c79d0176681cd3e79950c5d8",
     "packages": [
         {
             "name": "cakephp/authentication",
@@ -146,12 +146,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/cakephp.git",
-                "reference": "3ed29ebe4a6728593a8afcc80e0487094cc18499"
+                "reference": "db1e4b976805d1c843e184c6657464105a1e42d5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/3ed29ebe4a6728593a8afcc80e0487094cc18499",
-                "reference": "3ed29ebe4a6728593a8afcc80e0487094cc18499",
+                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/db1e4b976805d1c843e184c6657464105a1e42d5",
+                "reference": "db1e4b976805d1c843e184c6657464105a1e42d5",
                 "shasum": ""
             },
             "require": {
@@ -257,7 +257,7 @@
                 "issues": "https://github.com/cakephp/cakephp/issues",
                 "source": "https://github.com/cakephp/cakephp"
             },
-            "time": "2023-10-23T00:16:25+00:00"
+            "time": "2023-10-25T14:44:45+00:00"
         },
         {
             "name": "cakephp/chronos",
@@ -429,12 +429,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/chillerlan/php-qrcode.git",
-                "reference": "57448af264a4bc0aca85a9ce61769aa6240b9481"
+                "reference": "f72802c612e6add414fc2ec01134a24c3359f3a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/chillerlan/php-qrcode/zipball/57448af264a4bc0aca85a9ce61769aa6240b9481",
-                "reference": "57448af264a4bc0aca85a9ce61769aa6240b9481",
+                "url": "https://api.github.com/repos/chillerlan/php-qrcode/zipball/f72802c612e6add414fc2ec01134a24c3359f3a9",
+                "reference": "f72802c612e6add414fc2ec01134a24c3359f3a9",
                 "shasum": ""
             },
             "require": {
@@ -516,7 +516,7 @@
                     "type": "ko_fi"
                 }
             ],
-            "time": "2023-10-24T20:35:49+00:00"
+            "time": "2023-10-25T20:42:23+00:00"
         },
         {
             "name": "chillerlan/php-settings-container",
@@ -803,6 +803,64 @@
                 }
             ],
             "time": "2022-08-20T06:45:11+00:00"
+        },
+        {
+            "name": "fr3nch13/cakephp-stats",
+            "version": "0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fr3nch13/cakephp-stats.git",
+                "reference": "2c8bdad233a705b917b5e6e6604c3d73750a8814"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fr3nch13/cakephp-stats/zipball/2c8bdad233a705b917b5e6e6604c3d73750a8814",
+                "reference": "2c8bdad233a705b917b5e6e6604c3d73750a8814",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/cakephp": "~5.0",
+                "cakephp/migrations": "~4.1",
+                "cakephp/plugin-installer": "~2.0"
+            },
+            "require-dev": {
+                "cakephp/cakephp-codesniffer": "~5.1",
+                "phpstan/phpstan": "~1.10",
+                "phpunit/phpunit": "~10.4",
+                "rexxars/html-validator": "^2.3"
+            },
+            "suggest": {
+                "bower-asset/chartjs": "If you want to use the templates/element/chartjs/* elements. See: https://asset-packagist.org"
+            },
+            "type": "cakephp-plugin",
+            "autoload": {
+                "psr-4": {
+                    "Fr3nch13\\Stats\\": "src",
+                    "Fr3nch13\\Stats\\Migrations\\": "config/Migrations"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Brian French",
+                    "homepage": "https://fr3nch.com"
+                }
+            ],
+            "description": "Statistics plugin for CakePHP Projects",
+            "homepage": "https://github.com/fr3nch13/cakephp-stats",
+            "keywords": [
+                "cakephp",
+                "plugin",
+                "stats"
+            ],
+            "support": {
+                "issues": "https://github.com/fr3nch13/cakephp-stats/issues",
+                "source": "https://github.com/fr3nch13/cakephp-stats/tree/0.1"
+            },
+            "time": "2023-10-26T07:02:45+00:00"
         },
         {
             "name": "friendsofcake/bootstrap-ui",
@@ -5011,16 +5069,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "10.4.1",
+            "version": "10.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "62bd7af13d282deeb95650077d28ba3600ca321c"
+                "reference": "cacd8b9dd224efa8eb28beb69004126c7ca1a1a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/62bd7af13d282deeb95650077d28ba3600ca321c",
-                "reference": "62bd7af13d282deeb95650077d28ba3600ca321c",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/cacd8b9dd224efa8eb28beb69004126c7ca1a1a1",
+                "reference": "cacd8b9dd224efa8eb28beb69004126c7ca1a1a1",
                 "shasum": ""
             },
             "require": {
@@ -5092,7 +5150,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/10.4.1"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/10.4.2"
             },
             "funding": [
                 {
@@ -5108,7 +5166,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-10-08T05:01:11+00:00"
+            "time": "2023-10-26T07:21:45+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
