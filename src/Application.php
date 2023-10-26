@@ -117,6 +117,9 @@ class Application extends BaseApplication implements
         // the friendsofcake/bootstrapui plugin.
         $this->addPlugin('Search');
 
+        // my stats plugin
+        $this->addPlugin('Fr3nch13/Stats');
+
         // register the event listeners.
         $this->registerEventListeners();
     }
