@@ -20,6 +20,15 @@ $this->assign('title', $this->fetch('page_title'));
 <div class="row">
     <div class="col">
         <div class="card border bg-info pt-3 inverted card-hover-image-rise text-center">
+            <h4 class="fs-1"><?= $stats['hour'] ?></h4>
+            <div class="card-title">
+                <?= __('Hour') ?>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="card border bg-info pt-3 inverted card-hover-image-rise text-center">
             <h4 class="fs-1"><?= $stats['day'] ?></h4>
             <div class="card-title">
                 <?= __('Day') ?>

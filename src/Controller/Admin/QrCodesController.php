@@ -7,7 +7,6 @@ use Cake\Core\Configure;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
-use Cake\I18n\DateTime;
 
 /**
  * QrCodes Controller
@@ -223,17 +222,7 @@ class QrCodesController extends AppController
 
         /** @var \Fr3nch13\Stats\Model\Table\StatsCountsTable $StatsCounts */
         $StatsCounts = $this->getTableLocator()->get('Fr3nch13/Stats.StatsCounts');
-        $day = $StatsCounts->getObjectCounts('QrCode.hits.' . $id, new DateTime(), 1, 'day');
-        $week = $StatsCounts->getObjectCounts('QrCode.hits.' . $id, new DateTime(), 1, 'week');
-        $month = $StatsCounts->getObjectCounts('QrCode.hits.' . $id, new DateTime(), 1, 'month');
-        $year = $StatsCounts->getObjectCounts('QrCode.hits.' . $id, new DateTime(), 1, 'year');
-
-        $stats = [
-            'day' => end($day['counts'])->time_count,
-            'week' => end($week['counts'])->time_count,
-            'month' => end($month['counts'])->time_count,
-            'year' => end($year['counts'])->time_count,
-        ];
+        $stats = $StatsCounts->getObjectStats('QrCode.hits.' . $id);
 
         $this->set(compact('qrCode', 'stats'));
         $this->viewBuilder()->setOption('serialize', ['qrCode', 'stats']);
