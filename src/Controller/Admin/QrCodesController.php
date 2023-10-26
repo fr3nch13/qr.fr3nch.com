@@ -220,8 +220,12 @@ class QrCodesController extends AppController
         $qrCode = $this->QrCodes->get((int)$id, contain: ['Sources', 'Users', 'Tags', 'QrImages']);
         $this->Authorization->authorize($qrCode);
 
-        $this->set(compact('qrCode'));
-        $this->viewBuilder()->setOption('serialize', ['qrCode']);
+        /** @var \Fr3nch13\Stats\Model\Table\StatsCountsTable $StatsCounts */
+        $StatsCounts = $this->getTableLocator()->get('Fr3nch13/Stats.StatsCounts');
+        $stats = $StatsCounts->getObjectStats('QrCode.hits.' . $id);
+
+        $this->set(compact('qrCode', 'stats'));
+        $this->viewBuilder()->setOption('serialize', ['qrCode', 'stats']);
 
         return null;
     }

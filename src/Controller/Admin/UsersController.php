@@ -45,8 +45,15 @@ class UsersController extends AppController
 
         $activeUser = $this->getActiveUser();
 
-        $this->set(compact('activeUser'));
-        $this->viewBuilder()->setOption('serialize', ['activeUser']);
+        /** @var \Fr3nch13\Stats\Model\Table\StatsCountsTable $StatsCounts */
+        $StatsCounts = $this->getTableLocator()->get('Fr3nch13/Stats.StatsCounts');
+        $stats = $StatsCounts->getObjectStats('QrCode.hits');
+
+        $this->set(compact('activeUser', 'stats'));
+        $this->viewBuilder()->setOption('serialize', [
+            'activeUser',
+            'stats',
+        ]);
 
         return null;
     }
