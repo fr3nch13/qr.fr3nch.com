@@ -48,6 +48,7 @@ class TemplateTest extends BaseControllerTest
         // test with reqular
         $this->loginUserRegular();
         $this->get('https://localhost/admin');
+
         $this->assertResponseOk();
         $this->helperTestLayoutDashboardIndex();
         $this->helperTestTemplate('Admin/Users/dashboard');
