@@ -17,7 +17,21 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
     <link rel="manifest" href="/img/site.webmanifest">
-    <title><?= __('QR Fr3nch') ?> : <?= $this->fetch('title') ?></title>
+    <?php // Build the title
+    $title = [
+        __('QR Fr3nch'),
+    ];
+    if ($this->getRequest()->getParam('plugin')) {
+        $title[] = ucfirst($this->getRequest()->getParam('plugin'));
+    }
+    if ($this->getRequest()->getParam('prefix')) {
+        $title[] = ucfirst($this->getRequest()->getParam('prefix'));
+    }
+    if ($this->fetch('title')) {
+        $title[] = $this->fetch('title');
+    }
+    ?>
+    <title><?= implode(' : ', $title) ?></title>
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-8R77CBX3C8"></script>

@@ -16,7 +16,8 @@ if (!$color) {
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <div class="row">
-    <div class="col-lg-4 order-4 order-lg-1">
+
+    <div class="col-lg-4 order-5 order-lg-1">
         <h5 class="d-block d-lg-none"><?= __('Code') ?></h5>
         <img
             class="img-thumbnail bg-light"
@@ -30,6 +31,7 @@ if (!$color) {
             ]) ?>"
             alt="<?= __('The QR Code'); ?>">
     </div>
+
     <div class="col-lg-8 order-1 order-lg-2">
         <dl class="row">
             <dt class="col-4 col-md-3"><?= __('Key') ?></dt>
@@ -79,11 +81,24 @@ if (!$color) {
                 ><?= $qrCode->url ?></a> </dd>
         </dl>
     </div>
-    <div class="col-lg-12 order-2 order-lg-3 my-2">
+
+    <div class="col-lg-12 order-2 order-lg-2 my-2">
+        <h5><?= __('Stats') ?></h5>
+        <?php foreach ($stats as $key => $stat) : ?>
+            <span
+                class="
+                my-1 my-md-2 mx-1 mx-md-2
+                btn btn-sm btn-light btn-outline-secondary
+                rounded-pill" role="button"><?= ucfirst($key) ?>: <?= $stat ?></span>
+        <?php endforeach; ?>
+    </div>
+
+    <div class="col-lg-12 order-3 order-lg-3 my-2">
         <h5><?= __('Description') ?></h5>
         <div class="text-secondary mb-3"><?= $this->Text->autoParagraph(h($qrCode->description)) ?></div>
     </div>
-    <div class="col-lg-12 order-3 order-lg-4 my-2">
+
+    <div class="col-lg-12 order-4 order-lg-4 my-2">
         <h5><?= __('Tags') ?></h5>
         <?php foreach ($qrCode->tags as $tag) : ?>
             <span
@@ -93,6 +108,7 @@ if (!$color) {
                 rounded-pill" role="button"><?= $tag->name ?></span>
         <?php endforeach; ?>
     </div>
+
 </div>
 
 <?= $this->Template->templateComment(false, __FILE__); ?>

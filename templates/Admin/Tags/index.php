@@ -12,7 +12,7 @@ $this->assign('page_title', __('Tags'));
 $this->assign('title', $this->fetch('page_title'));
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
-<div class="container bg-white">
+<div class="card bg-opaque-white">
     <div class="row py-2">
         <div class="col text-center">
 

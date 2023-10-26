@@ -345,8 +345,7 @@ class QrImagesTableTest extends TestCase
         // the thumbnail bad size
         $this->expectException(ThumbException::class);
         $this->expectExceptionMessage('Unknown size option');
-        $result = $entity->getPathThumb('bad');
-        debug($result);
+        $entity->getPathThumb('bad');
     }
 
     /**
