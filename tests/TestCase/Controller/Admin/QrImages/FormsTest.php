@@ -207,7 +207,42 @@ class FormsTest extends BaseControllerTest
     }
 
     /**
-     * Test add goo big
+     * Test filename is way too long.
+     *
+     * @return void
+     * @uses \App\Controller\Admin\QrImagesController::add()
+     */
+    public function testAddNameTooLong(): void
+    {
+        // test file upload with a really long name.
+        $imagePaths = [
+            TESTS . 'assets' . DS . 'qr_images' . DS . '1' . DS . '1.jpg',
+            TESTS . 'assets' . DS . 'qr_images' . DS . '1' . DS . '2.jpg',
+        ];
+
+        $images = $this->helperTestUploads($imagePaths, 'newimages', UPLOAD_ERR_OK, str_repeat('c', 300) . '.jpg');
+
+        // test success
+        $this->post('https://localhost/admin/qr-images/add/1', [
+            'newimages' => $images,
+        ]);
+        $this->assertResponseOk();
+        $this->helperTestTemplate('Admin/QrImages/add');
+        $this->helperTestFormTag('/admin/qr-images/add/1', 'post', true);
+        $this->helperTestAlert(
+            'The images could not be saved. Please, try again.',
+            'danger'
+        );
+        // test to make sure the fields that are required are actually tagged as so.
+        $this->helperTestString('<p class="text-danger">Error: ccccccccccccccccccccccccccccccccccccccc' .
+            'ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc' .
+            'ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc' .
+            'ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.jpg -' .
+            ' The provided value must be at most `255` characters long</p>');
+    }
+
+    /**
+     * Test add bad file
      *
      * @return void
      * @uses \App\Controller\Admin\QrImagesController::add()

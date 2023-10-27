@@ -45,6 +45,7 @@ class UsersFixture extends CoreFixture
                 'is_admin' => 0,
                 'is_active' => 1,
                 'created' => new DateTime(),
+                'gravatar_email' => 'gravatar@example.com',
             ],
             [
                 'id' => 3,

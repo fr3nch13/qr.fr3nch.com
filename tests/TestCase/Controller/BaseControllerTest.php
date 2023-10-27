@@ -182,7 +182,7 @@ class BaseControllerTest extends TestCase
      * @param int $errCode The error code to use for testing a bad file.
      * @return array<\Laminas\Diactoros\UploadedFile> The prepared files.
      */
-    public function helperTestUploads(array $filePaths, string $key, int $errCode = UPLOAD_ERR_OK): array
+    public function helperTestUploads(array $filePaths, string $key, int $errCode = UPLOAD_ERR_OK, ?string $altFileName = null): array
     {
         $tmpPaths = [];
         foreach ($filePaths as $filePath) {
@@ -203,7 +203,7 @@ class BaseControllerTest extends TestCase
                     // the upload/error status
                     $errCode,
                     // the filename as sent by the client
-                    basename($tmpPath),
+                    ($altFileName ? $altFileName : basename($tmpPath)),
                     // the mimetype as sent by the client
                     mime_content_type($tmpPath) ?: null
                 );
