@@ -89,15 +89,7 @@ $this->assign('title', $this->fetch('page_title'));
 </div>
 
 <div class="container py-2">
-    <nav aria-label="Pagination" class="text-center">
-        <ul class="pagination">
-            <?= $this->Paginator->first('&laquo;', ['label' => 'First']) ?>
-            <?= $this->Paginator->prev('<', ['label' => 'Previous']) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next('>', ['label' => 'Next']) ?>
-            <?= $this->Paginator->last('&laquo;', ['label' => 'Last']) ?>
-        </ul>
-    </nav>
+    <?= $this->element('nav/pagination') ?>
 </div>
 
 <?php $this->start('page_options'); ?>
