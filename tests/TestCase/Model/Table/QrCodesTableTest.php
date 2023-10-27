@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Test\TestCase\Model\Table;
 
+use App\Exception\QrCodeException;
 use App\Lib\PhpQrGenerator;
 use App\Model\Table\QrCodesTable;
 use App\Model\Table\SourcesTable;
@@ -14,6 +15,7 @@ use Cake\ORM\Association\BelongsTo;
 use Cake\ORM\Association\BelongsToMany;
 use Cake\ORM\Behavior\TimestampBehavior;
 use Cake\TestSuite\TestCase;
+use ReflectionClass;
 
 /**
  * App\Model\Table\QrCodesTable Test Case
@@ -610,7 +612,7 @@ class QrCodesTableTest extends TestCase
 
         // test with a failed generation when envoking path
         $this->expectException(InternalErrorException::class);
-        $this->expectExceptionMessage('Unable to create Dark QR Code.');
+        $this->expectExceptionMessage('Unable to create Default QR Codes.');
         $this->QrCodes->save($entity);
         $this->assertFalse(is_readable($path_dark));
         $this->assertFalse(is_readable($path_light));
@@ -728,7 +730,6 @@ class QrCodesTableTest extends TestCase
 
         $this->assertSame('cccccc', $entity->color);
 
-        $entity_color = $entity->color;
         $dark = Configure::read('QrCode.darkcolor');
         $light = Configure::read('QrCode.lightcolor');
 
@@ -736,7 +737,7 @@ class QrCodesTableTest extends TestCase
             DS .
             $entity->id .
             '-' .
-            $entity_color .
+            $entity->color .
             '.svg';
         $path_dark = Configure::read('App.paths.qr_codes') .
             DS .
@@ -762,5 +763,61 @@ class QrCodesTableTest extends TestCase
         $this->assertFalse(file_exists($path));
         $this->assertFalse(file_exists($path_dark));
         $this->assertFalse(file_exists($path_light));
+    }
+
+    /**
+     * Test the PhpQrCodeGenerator directly
+     *
+     * @return void
+     */
+    public function testPhpQrGeneratorColor(): void
+    {
+        $this->loadRoutes();
+        Configure::write('debug', true);
+
+        $entity = $this->QrCodes->get(1);
+
+        $QR = new PhpQrGenerator($entity);
+
+        $this->assertSame('#CCCCCC', $entity->color);
+        $this->assertSame('cccccc', $this->getProperty($QR, 'color'));
+
+        // test setting the color.
+        $QR->setColor();
+        $this->assertSame('cccccc', $this->getProperty($QR, 'color'));
+
+        $QR->setColor('#EAEAEA');
+        $this->assertSame('eaeaea', $this->getProperty($QR, 'color'));
+
+        // fallback to the entity color
+        $QR->setColor(null, '');
+        $this->assertSame('cccccc', $this->getProperty($QR, 'color'));
+
+        // fallback to the config dark color
+        $entity->color = null;
+        $QR = new PhpQrGenerator($entity);
+        $QR->setColor(null, '');
+        $this->assertSame('000000', $this->getProperty($QR, 'color'));
+
+        // test bad color
+        $this->expectException(QrCodeException::class);
+        $this->expectExceptionMessage('Invalid Color: notacolor');
+        $QR->setColor('notacolor');
+    }
+
+    /**
+     * Used to test protected properties
+     *
+     * @param object $object
+     * @param string $property
+     * @return mixed
+     */
+    public static function getProperty(object $object, string $property)
+    {
+        $reflectedClass = new ReflectionClass($object);
+        $reflection = $reflectedClass->getProperty($property);
+        $reflection->setAccessible(true);
+
+        return $reflection->getValue($object);
     }
 }

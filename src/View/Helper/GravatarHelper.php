@@ -44,7 +44,7 @@ class GravatarHelper extends Helper
     public function avatar(User $user, array $options = []): string
     {
         if (!isset($options['class'])) {
-            $options['class'] = 'gravatar img-fluid';
+            $options['class'] = 'gravatar rounded-circle img-responsive';
         }
 
         $email = $user->email;

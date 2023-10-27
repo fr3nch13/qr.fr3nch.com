@@ -512,4 +512,23 @@ class QrImagesTableTest extends TestCase
         $this->assertFalse($regular->can('edit', $admins_image));
         $this->assertFalse($regular->can('edit', $regulars_image));
     }
+
+    /**
+     * Test handleNewImages. Test the parts of the method that aren't covered elsewhere.
+     *
+     * @return void
+     */
+    public function testHandleNewImages(): void
+    {
+        // with no qr code included.
+        $entity = $this->QrImages->get(1);
+
+        $return = $this->QrImages->handleNewImages($entity, new ServerRequest());
+        $expected = [
+            'newimages' => [
+                0 => 'Unable to save the image, unknown code',
+            ],
+        ];
+        $this->assertSame($expected, $return->getErrors());
+    }
 }
