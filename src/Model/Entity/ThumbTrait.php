@@ -23,13 +23,38 @@ trait ThumbTrait
     protected bool $regenerateThumb = false;
 
     /**
-     * Here to make the controllers a little more DRY.
+     * Makes sure I'm being used in an entity.
+     *
+     * @return void
+     * @throws \App\Exception\ThumbException When not used in an entity.
      */
-    public function getPathThumb(string $size = 'md'): ?string
+    protected function validateSelf(): void
+    {
+        if (!$this instanceof Entity) {
+            throw new ThumbException(__('Must be an instance of `\Cake\ORM\Entity`.'));
+        }
+    }
+
+    /**
+     * Validates the allow thumb sizes
+     *
+     * @param string $size
+     * @return void
+     * @throws \App\Exception\ThumbException Unknown size option.
+     */
+    protected function validateSize(string $size = ''): void
     {
         if (!in_array($size, ['sm', 'md', 'lg'])) {
             throw new ThumbException(__('Unknown size option.'));
         }
+    }
+
+    /**
+     * Here to make the controllers a little more DRY.
+     */
+    public function getPathThumb(string $size = 'md'): ?string
+    {
+        $this->validateSize($size);
 
         if ($size === 'sm') {
             return $this->path_sm;
@@ -42,8 +67,6 @@ trait ThumbTrait
         if ($size === 'lg') {
             return $this->path_lg;
         }
-
-        return null;
     }
 
     /**
@@ -55,9 +78,7 @@ trait ThumbTrait
      */
     protected function _getPathSm(): ?string
     {
-        if (!$this instanceof Entity) {
-            throw new ThumbException(__('Must be an instance of `\Cake\ORM\Entity`.'));
-        }
+        $this->validateSelf();
 
         $thumbPath = $this->getThumbPath('sm');
         if (!$thumbPath) {
@@ -80,9 +101,7 @@ trait ThumbTrait
      */
     protected function _getPathMd(): ?string
     {
-        if (!$this instanceof Entity) {
-            throw new ThumbException(__('Must be an instance of `\Cake\ORM\Entity`.'));
-        }
+        $this->validateSelf();
 
         $thumbPath = $this->getThumbPath('md');
         if (!$thumbPath) {
@@ -105,9 +124,7 @@ trait ThumbTrait
      */
     protected function _getPathLg(): ?string
     {
-        if (!$this instanceof Entity) {
-            throw new ThumbException(__('Must be an instance of `\Cake\ORM\Entity`.'));
-        }
+        $this->validateSelf();
 
         $thumbPath = $this->getThumbPath('lg');
         if (!$thumbPath) {
@@ -130,13 +147,9 @@ trait ThumbTrait
      */
     public function generateThumb(string $size = 'sm'): bool
     {
-        if (!$this instanceof Entity) {
-            throw new ThumbException(__('Must be an instance of `\Cake\ORM\Entity`.'));
-        }
+        $this->validateSelf();
 
-        if (!in_array($size, ['sm', 'md', 'lg'])) {
-            throw new ThumbException(__('Unknown size option.'));
-        }
+        $this->validateSize($size);
 
         // path to the original image.
         $originalPath = $this->path;
@@ -232,9 +245,7 @@ trait ThumbTrait
      */
     public function deleteThumbs(bool $includeOriginal = false): void
     {
-        if (!$this instanceof Entity) {
-            throw new ThumbException(__('Must be an instance of `\Cake\ORM\Entity`.'));
-        }
+        $this->validateSelf();
 
         // yes I know they may generate the thumbnails.
         $paths = [
@@ -262,13 +273,9 @@ trait ThumbTrait
      */
     public function getThumbPath(string $size = 'sm'): ?string
     {
-        if (!$this instanceof Entity) {
-            throw new ThumbException(__('Must be an instance of `\Cake\ORM\Entity`.'));
-        }
+        $this->validateSelf();
 
-        if (!in_array($size, ['sm', 'md', 'lg'])) {
-            throw new ThumbException(__('Unknown size option.'));
-        }
+        $this->validateSize($size);
 
         // path to the original image.
         $path = $this->path;

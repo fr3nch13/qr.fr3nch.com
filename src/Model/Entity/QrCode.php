@@ -25,7 +25,7 @@ use chillerlan\QRCode\Output\QRCodeOutputException;
  * @property int|null $source_id See $source below.
  * @property int|null $user_id see $user below.
  * @property \Cake\I18n\DateTime|null $last_hit The last time the code forwarded a user.
- * @property string $color The default hexidecimal color to use, if null, then the darkcolor in the config/app_local.php will be used.
+ * @property string|null $color The default hexidecimal color to use, if null, then the darkcolor in the config/app_local.php will be used.
  *
  * @property string|null $path (Virtual field) Path to the generated COLOR QR Code file with the color of this entity. If falls back to the $path_dark
  * @property string|null $path_dark (Virtual field) Path to the generated DARK QR Code file.

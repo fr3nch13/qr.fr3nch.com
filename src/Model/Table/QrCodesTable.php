@@ -261,15 +261,12 @@ class QrCodesTable extends Table
     {
         // This should trigger creating a QR Code if it doesn't exist,
         // as the Entity's virtual field will try to generate one.
-        // so we just need to trigger that virtual field.
+        // so we just need to trigger those virtual fields.
         if ($entity->color && !$entity->path) {
             throw new InternalErrorException('Unable to create Color QR Code.');
         }
-        if (!$entity->path_dark) {
-            throw new InternalErrorException('Unable to create Dark QR Code.');
-        }
-        if (!$entity->path_light) {
-            throw new InternalErrorException('Unable to create Light QR Code.');
+        if (!$entity->path_dark || !$entity->path_light) {
+            throw new InternalErrorException('Unable to create Default QR Codes.');
         }
     }
 

@@ -208,9 +208,6 @@ class QrImagesTable extends Table
                 continue;
             }
 
-            // Create the entity for this image.
-            $newImage = clone $qrImage;
-
             // file info
             /** @var string $file_name The checks above should cover it enough to have this be a string. */
             $file_name = $image->getClientFilename();
@@ -218,16 +215,23 @@ class QrImagesTable extends Table
             $filename = pathinfo($file_name, PATHINFO_FILENAME);
             $ext = pathinfo($file_name, PATHINFO_EXTENSION);
 
-            // nice file name
-            $newImage->name = Inflector::humanize($filename);
-            $newImage->ext = $ext;
-
-            // make it active.
-            $newImage->is_active = true;
-
             // image order
             $imgCount++;
-            $newImage->imorder = $imgCount;
+
+            $newImage = $this->newEntity([
+                // assign to the proper qr code
+                'qr_code_id' => $qrImage->qr_code_id,
+
+                // make it active
+                'is_active' => true,
+
+                // add it in order
+                'imorder' => $imgCount,
+
+                // nice file name
+                'name' => Inflector::humanize($filename),
+                'ext' => $ext,
+            ]);
 
             if ($newImage->hasErrors()) {
                 foreach ($newImage->getErrors() as $error) {
@@ -240,6 +244,8 @@ class QrImagesTable extends Table
                         continue;
                     }
                 }
+
+                continue;
             }
 
             $newImage = $this->saveOrFail($newImage);

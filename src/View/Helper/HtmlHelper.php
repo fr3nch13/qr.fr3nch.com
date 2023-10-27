@@ -56,7 +56,7 @@ class HtmlHelper extends BootstrapUiHtmlHelper
         return __($wrapper, [
             $size,
             $wrapperClass . ' ' . $wrapperClasses,
-            $this->Gravatar->avatar($user, ['class' => 'rounded-circle img-responsive']),
+            $this->Gravatar->avatar($user),
         ]);
     }
 }
