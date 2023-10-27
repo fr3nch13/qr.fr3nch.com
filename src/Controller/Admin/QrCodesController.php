@@ -16,6 +16,16 @@ use Cake\Http\Response;
 class QrCodesController extends AppController
 {
     /**
+     * Default pagination settings.
+     */
+    protected array $paginate = [
+        'limit' => 10,
+        'order' => [
+            'QrCodes.id' => 'desc',
+        ],
+    ];
+
+    /**
      * Init method
      *
      * Mainly here to add the Search Component.
