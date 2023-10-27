@@ -67,6 +67,9 @@ trait ThumbTrait
         if ($size === 'lg') {
             return $this->path_lg;
         }
+
+        // make phpstan happy since it can't figure out that this will never be reached.
+        return null;
     }
 
     /**
