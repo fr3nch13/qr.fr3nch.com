@@ -45,18 +45,7 @@ $this->assign('title', __('Tags'));
 
             <div class="row mt-6">
                 <div class="col text-center">
-                    <nav aria-label="Pagination">
-                        <ul class="pagination">
-                            <?= $this->Paginator->first('&laquo;', ['label' => 'First']) ?>
-                            <?= $this->Paginator->prev('<', ['label' => 'Previous']) ?>
-                            <?= $this->Paginator->numbers() ?>
-                            <?= $this->Paginator->next('>', ['label' => 'Next']) ?>
-                            <?= $this->Paginator->last('&laquo;', ['label' => 'Last']) ?>
-                        </ul>
-                        <!--
-                            <p><?= $this->Paginator->counter(__('{{page}}/{{pages}}, {{current}} of {{count}}')) ?></p>
-                        -->
-                    </nav>
+                    <?= $this->element('nav/pagination') ?>
                 </div>
             </div>
         </div>

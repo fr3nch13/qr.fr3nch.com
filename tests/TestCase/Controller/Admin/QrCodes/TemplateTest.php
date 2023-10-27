@@ -52,7 +52,6 @@ class TemplateTest extends BaseControllerTest
         $this->get('https://localhost/admin/qr-codes');
         $this->assertResponseOk();
         $this->helperTestLayoutDashboardIndex();
-        // TODO: Also look for sub-layout page.
         $this->helperTestTemplate('Admin/QrCodes/index');
 
         // look for code comments.
