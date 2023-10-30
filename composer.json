@@ -39,7 +39,6 @@
     },
     "require-dev": {
         "cakephp/bake": "~3.0",
-        "cakephp/cakephp": "5.x-dev as 5.0.1",
         "cakephp/cakephp-codesniffer": "~5.1",
         "cakephp/debug_kit": "~5.0",
         "josegonzalez/dotenv": "~4.0",
