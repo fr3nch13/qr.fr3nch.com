@@ -3,7 +3,7 @@
  * @var \App\View\AppView $this
  */
 
-$value ?? "";
+$value ?? '';
 
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
