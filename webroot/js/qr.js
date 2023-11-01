@@ -28,4 +28,15 @@ $( document ).ready(function() {
           removeIcon: "<i class='bi bi-x-circle'></i>",
         }
     });
+
+    $('button.copy-text')
+        .on( "click", async function() {
+            value = $(this).parent().find('input[name=copy_text]').first().val();
+            await navigator.clipboard.writeText(value);
+            text = $(this).text();
+            $(this).text('Copied');
+            setTimeout(() => {
+                $(this).text(text);
+            }, 1000);
+        });
 });
