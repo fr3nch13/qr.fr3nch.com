@@ -74,6 +74,18 @@ if (!$color) {
                 ]
             ) : '' ?> </dd>
 
+            <dt class="col-4 col-md-3"><?= __('Forward URL') ?></dt>
+            <dd class="col-8 col-md-9"><?= $this->element('copy_text', [
+                'value' => $this->Url->build([
+                    '_full' => true,
+                    'plugin' => false,
+                    'prefix' => false,
+                    'controller' => 'QrCodes',
+                    'action' => 'forward',
+                    $qrCode->qrkey,
+                ]),
+            ]) ?> </dd>
+
             <dt class="col-4 col-md-3"><?= __('URL') ?></dt>
             <dd class="col-8 col-md-9"><a
                 href="<?= $qrCode->url ?>"
