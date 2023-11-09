@@ -10,5 +10,4 @@ if (!isset($params['escape']) || $params['escape'] !== false) {
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <div class="message success" onclick="this.classList.add('hidden')"><?= $message ?></div>
-
-<!-- END: App.element/flash/success -->
+<?= $this->Template->templateComment(false, __FILE__); ?>

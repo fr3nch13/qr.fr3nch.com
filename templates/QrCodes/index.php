@@ -90,7 +90,7 @@ $this->assign('title', __('QR Codes'));
                         <?= $this->Html->link(
                             __('Follow Code'),
                             ['action' => 'forward', $qrCode->qrkey],
-                            ['class' => 'btn btn-light']
+                            ['class' => 'btn btn-light', 'rel' => 'nofollow',]
                         ); ?>
                         <?= $this->Template->objectComment('QrCode/view') ?>
                         <?= $this->Html->link(
