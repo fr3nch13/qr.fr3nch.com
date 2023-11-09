@@ -109,19 +109,32 @@ $logoImage = $this->Html->image($logoImage, [
         <!-- primary -->
         <div class="collapse navbar-collapse" id="navbar" data-bs-parent="#mainNav">
             <ul class="navbar-nav">
-            <li class="nav-item"><?= $this->Html->link(__('QR Codes'), [
-                'plugin' => false,
-                'prefix' => false,
-                'controller' => 'QrCodes',
-                'action' => 'index',
-            ], ['class' => 'nav-link']); ?></li>
+                <li class="nav-item">
+                    <?= $this->Html->link(__('Home'), 'https://fr3nch.com', ['class' => 'nav-link']); ?>
+                </li>
+                <li class="nav-item">
+                    <?= $this->Html->link(__('QR Codes'), [
+                        'plugin' => false,
+                        'prefix' => false,
+                        'controller' => 'QrCodes',
+                        'action' => 'index',
+                    ], ['class' => 'nav-link']); ?>
+                </li>
 
-            <li class="nav-item"><?= $this->Html->link(__('Tags'), [
-                'plugin' => false,
-                'prefix' => false,
-                'controller' => 'Tags',
-                'action' => 'index',
-            ], ['class' => 'nav-link']); ?></li>
+                <li class="nav-item">
+                    <?= $this->Html->link(__('Tags'), [
+                        'plugin' => false,
+                        'prefix' => false,
+                        'controller' => 'Tags',
+                        'action' => 'index',
+                    ], ['class' => 'nav-link']); ?>
+                </li>
+                <li class="nav-item">
+                    <?= $this->Html->link(__('Shop'), 'https://shop.fr3nch.com', ['class' => 'nav-link']); ?>
+                </li>
+                <li class="nav-item">
+                    <?= $this->Html->link(__('Etsy'), 'https://fr3nchllc.etsy.com', ['class' => 'nav-link']); ?>
+                </li>
             </ul>
         </div>
 

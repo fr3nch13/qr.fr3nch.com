@@ -21,7 +21,7 @@ class QrCodesController extends AppController
      * Default pagination settings.
      */
     protected array $paginate = [
-        'limit' => 10,
+        'limit' => 12,
         'order' => [
             'QrCodes.id' => 'desc',
         ],

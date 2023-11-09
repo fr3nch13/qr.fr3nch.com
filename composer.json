@@ -35,7 +35,8 @@
         "npm-asset/piexifjs": "^1.0",
         "npm-asset/sortablejs": "^1.15",
         "oomphinc/composer-installers-extender": "^2.0",
-        "paragonie/csp-builder": "~2.9"
+        "paragonie/csp-builder": "~2.9",
+        "robmorgan/phinx": "0.15.2"
     },
     "require-dev": {
         "cakephp/bake": "~3.0",

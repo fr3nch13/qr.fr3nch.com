@@ -282,6 +282,7 @@ $this->assign('title', $qrCode->name);
                         [
                             'class' => 'btn btn-primary btn-block rounded-pill',
                             'role' => 'button',
+                            'rel' => 'nofollow',
                         ]
                     ) ?>
 
