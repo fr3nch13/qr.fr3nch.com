@@ -53,15 +53,39 @@ class SearchTest extends BaseControllerTest
         // make sure only active primary images are listed.
         $this->helperTestObjectComment(1, 'QrImage/active/first');
 
-        $content = (string)$this->_response->getBody();
+        $this->helperTestString('<div class="card-title text-center text-white pt-5">The Witching Hour</div>');
+        $this->helperTestString('<input type="text" name="q" id="q" ' .
+            'placeholder="What are you looking for ?" class="form-control" value="witch">');
 
-        // Should only return The Witching Hour
-            $this->assertSame(1, substr_count($content, '<div ' .
-                'class="card-title text-center text-white pt-5">The Witching Hour</div>'));
+        // searching qrkey
+        $this->get('https://localhost/qr-codes?q=3dmerica');
+        $this->assertResponseOk();
+        $this->helperTestLayoutPagesIndex();
+        $this->helperTestTemplate('QrCodes/index');
+        $this->helperTestFilterElements(true);
+        $this->helperTestObjectComment(1, 'QrCode/active');
+        $this->helperTestObjectComment(1, 'QrCode/view');
+        $this->helperTestString('<div class="card-title text-center text-white pt-5">American Flag Charm</div>');
 
-        // finally look for the input in the offcanvas that has the filter set.
-        $this->assertSame(1, substr_count($content, '<input type="text" name="q" id="q" ' .
-            'placeholder="What are you looking for ?" class="form-control" value="witch">'));
+        // searching url
+        $this->get('https://localhost/qr-codes?q=1539113524');
+        $this->assertResponseOk();
+        $this->helperTestLayoutPagesIndex();
+        $this->helperTestTemplate('QrCodes/index');
+        $this->helperTestFilterElements(true);
+        $this->helperTestObjectComment(1, 'QrCode/active');
+        $this->helperTestObjectComment(1, 'QrCode/view');
+        $this->helperTestString('<div class="card-title text-center text-white pt-5">American Flag Charm</div>');
+
+        // searching description
+        $this->get('https://localhost/qr-codes?q=flying');
+        $this->assertResponseOk();
+        $this->helperTestLayoutPagesIndex();
+        $this->helperTestTemplate('QrCodes/index');
+        $this->helperTestFilterElements(true);
+        $this->helperTestObjectComment(1, 'QrCode/active');
+        $this->helperTestObjectComment(1, 'QrCode/view');
+        $this->helperTestString('<div class="card-title text-center text-white pt-5">The Witching Hour</div>');
     }
 
     /**
