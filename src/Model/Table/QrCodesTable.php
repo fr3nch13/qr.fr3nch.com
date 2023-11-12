@@ -89,7 +89,7 @@ class QrCodesTable extends Table
                 'comparison' => 'LIKE',
                 'wildcardAny' => '*',
                 'wildcardOne' => '?',
-                'fields' => ['name', 'description'],
+                'fields' => ['qrkey', 'name', 'url', 'description'],
             ])
             // add filtering by source name
             ->add('s', 'Search.Like', [
