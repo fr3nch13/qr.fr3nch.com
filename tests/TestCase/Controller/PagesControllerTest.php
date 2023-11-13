@@ -90,8 +90,8 @@ class PagesControllerTest extends BaseControllerTest
         $this->get('https://localhost/pages/index');
 
         $this->assertResponseOk();
-        $this->helperTestLayoutPagesIndex();
-        $this->helperTestTemplate('QrCodes/index');
+        $this->helperTestLayoutPagesGeneric();
+        $this->helperTestTemplate('Pages/index');
     }
 
     /**
