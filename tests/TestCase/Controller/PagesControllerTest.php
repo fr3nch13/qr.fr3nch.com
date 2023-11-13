@@ -1,19 +1,6 @@
 <?php
 declare(strict_types=1);
 
-/**
- * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
- *
- * Licensed under The MIT License
- * For full copyright and license information, please see the LICENSE.txt
- * Redistributions of files must retain the above copyright notice
- *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
- * @link          https://cakephp.org CakePHP(tm) Project
- * @since         1.2.0
- * @license       https://opensource.org/licenses/mit-license.php MIT License
- */
 namespace App\Test\TestCase\Controller;
 
 use Cake\Core\Configure;
@@ -38,8 +25,8 @@ class PagesControllerTest extends BaseControllerTest
         $this->get('https://localhost/pages/about');
 
         $this->assertResponseOk();
-        $this->assertResponseContains('About');
-        $this->assertResponseContains('<html lang="en">');
+        $this->helperTestLayoutPagesView();
+        $this->helperTestTemplate('Pages/about');
     }
 
     /**
@@ -56,8 +43,8 @@ class PagesControllerTest extends BaseControllerTest
         $this->get('https://localhost/');
 
         $this->assertResponseOk();
-        $this->assertResponseContains('QR Codes');
-        $this->assertResponseContains('<html lang="en">');
+        $this->helperTestLayoutPagesIndex();
+        $this->helperTestTemplate('QrCodes/index');
     }
 
     /**
@@ -73,8 +60,7 @@ class PagesControllerTest extends BaseControllerTest
 
         $this->assertResponseOk();
         $this->helperTestLayoutPagesGeneric();
-        $this->assertResponseContains('<!-- START: App.Pages/about/staff -->');
-        $this->assertResponseContains('<!-- END: App.Pages/about/staff -->');
+        $this->helperTestTemplate('Pages/about/staff');
     }
 
     /**
@@ -104,8 +90,8 @@ class PagesControllerTest extends BaseControllerTest
         $this->get('https://localhost/pages/index');
 
         $this->assertResponseOk();
-        $this->assertResponseContains('Index');
-        $this->assertResponseContains('<html lang="en">');
+        $this->helperTestLayoutPagesGeneric();
+        $this->helperTestTemplate('Pages/index');
     }
 
     /**

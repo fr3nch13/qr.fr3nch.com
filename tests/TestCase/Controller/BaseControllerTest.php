@@ -307,7 +307,7 @@ class BaseControllerTest extends TestCase
                 strtoupper($otherMethod) . '">'));
         }
         $formString = '<form ' . $fileString . 'method="' . $method .
-            '" accept-charset="utf-8" role="form" action="' . $action . '">';
+            '" accept-charset="utf-8" action="' . $action . '">';
         $this->assertSame(1, substr_count($content, $formString));
     }
 
