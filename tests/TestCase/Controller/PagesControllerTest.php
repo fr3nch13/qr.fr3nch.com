@@ -25,8 +25,8 @@ class PagesControllerTest extends BaseControllerTest
         $this->get('https://localhost/pages/about');
 
         $this->assertResponseOk();
-        $this->assertResponseContains('About');
-        $this->assertResponseContains('<html lang="en">');
+        $this->helperTestLayoutPagesView();
+        $this->helperTestTemplate('Pages/about');
     }
 
     /**
@@ -43,8 +43,8 @@ class PagesControllerTest extends BaseControllerTest
         $this->get('https://localhost/');
 
         $this->assertResponseOk();
-        $this->assertResponseContains('QR Codes');
-        $this->assertResponseContains('<html lang="en">');
+        $this->helperTestLayoutPagesIndex();
+        $this->helperTestTemplate('QrCodes/index');
     }
 
     /**
@@ -90,8 +90,8 @@ class PagesControllerTest extends BaseControllerTest
         $this->get('https://localhost/pages/index');
 
         $this->assertResponseOk();
-        $this->assertResponseContains('Index');
-        $this->assertResponseContains('<html lang="en">');
+        $this->helperTestLayoutPagesIndex();
+        $this->helperTestTemplate('QrCodes/index');
     }
 
     /**
