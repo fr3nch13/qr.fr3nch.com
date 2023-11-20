@@ -1985,16 +1985,16 @@
         },
         {
             "name": "robmorgan/phinx",
-            "version": "0.15.3",
+            "version": "0.15.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/phinx.git",
-                "reference": "ccbb7f2b4bf1297fec64447d1f4a773f5d9455e0"
+                "reference": "192e7f7112b930fc71679d2128c0983074980a8a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/phinx/zipball/ccbb7f2b4bf1297fec64447d1f4a773f5d9455e0",
-                "reference": "ccbb7f2b4bf1297fec64447d1f4a773f5d9455e0",
+                "url": "https://api.github.com/repos/cakephp/phinx/zipball/192e7f7112b930fc71679d2128c0983074980a8a",
+                "reference": "192e7f7112b930fc71679d2128c0983074980a8a",
                 "shasum": ""
             },
             "require": {
@@ -2065,9 +2065,9 @@
             ],
             "support": {
                 "issues": "https://github.com/cakephp/phinx/issues",
-                "source": "https://github.com/cakephp/phinx/tree/0.15.3"
+                "source": "https://github.com/cakephp/phinx/tree/0.15.4"
             },
-            "time": "2023-11-09T19:51:49+00:00"
+            "time": "2023-11-15T16:10:19+00:00"
         },
         {
             "name": "symfony/config",
@@ -2236,7 +2236,7 @@
         },
         {
             "name": "symfony/deprecation-contracts",
-            "version": "v3.3.0",
+            "version": "v3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/deprecation-contracts.git",
@@ -2283,7 +2283,7 @@
             "description": "A generic function and convention to trigger deprecation notices",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/deprecation-contracts/tree/v3.3.0"
+                "source": "https://github.com/symfony/deprecation-contracts/tree/v3.4.0"
             },
             "funding": [
                 {
@@ -2696,16 +2696,16 @@
         },
         {
             "name": "symfony/service-contracts",
-            "version": "v3.3.0",
+            "version": "v3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/service-contracts.git",
-                "reference": "40da9cc13ec349d9e4966ce18b5fbcd724ab10a4"
+                "reference": "b3313c2dbffaf71c8de2934e2ea56ed2291a3838"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/service-contracts/zipball/40da9cc13ec349d9e4966ce18b5fbcd724ab10a4",
-                "reference": "40da9cc13ec349d9e4966ce18b5fbcd724ab10a4",
+                "url": "https://api.github.com/repos/symfony/service-contracts/zipball/b3313c2dbffaf71c8de2934e2ea56ed2291a3838",
+                "reference": "b3313c2dbffaf71c8de2934e2ea56ed2291a3838",
                 "shasum": ""
             },
             "require": {
@@ -2758,7 +2758,7 @@
                 "standards"
             ],
             "support": {
-                "source": "https://github.com/symfony/service-contracts/tree/v3.3.0"
+                "source": "https://github.com/symfony/service-contracts/tree/v3.4.0"
             },
             "funding": [
                 {
@@ -2774,7 +2774,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-05-23T14:45:45+00:00"
+            "time": "2023-07-30T20:28:31+00:00"
         },
         {
             "name": "symfony/string",
