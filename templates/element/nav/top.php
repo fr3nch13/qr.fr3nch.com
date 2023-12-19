@@ -132,9 +132,6 @@ $logoImage = $this->Html->image($logoImage, [
                 <li class="nav-item">
                     <?= $this->Html->link(__('Shop'), 'https://shop.fr3nch.com', ['class' => 'nav-link']); ?>
                 </li>
-                <li class="nav-item">
-                    <?= $this->Html->link(__('Etsy'), 'https://fr3nchllc.etsy.com', ['class' => 'nav-link']); ?>
-                </li>
             </ul>
         </div>
 
