@@ -141,16 +141,16 @@
         },
         {
             "name": "cakephp/cakephp",
-            "version": "5.0.3",
+            "version": "5.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cakephp/cakephp.git",
-                "reference": "84174915611447d54639d35580d6e208f1a48e21"
+                "reference": "ac9cda35fc15b59fa1e44436de56fd8f08ca8a21"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/84174915611447d54639d35580d6e208f1a48e21",
-                "reference": "84174915611447d54639d35580d6e208f1a48e21",
+                "url": "https://api.github.com/repos/cakephp/cakephp/zipball/ac9cda35fc15b59fa1e44436de56fd8f08ca8a21",
+                "reference": "ac9cda35fc15b59fa1e44436de56fd8f08ca8a21",
                 "shasum": ""
             },
             "require": {
@@ -202,7 +202,7 @@
                 "http-interop/http-factory-tests": "^2.0",
                 "mikey179/vfsstream": "^1.6.10",
                 "mockery/mockery": "^1.6",
-                "paragonie/csp-builder": "^2.3",
+                "paragonie/csp-builder": "^2.3 || ^3.0",
                 "phpunit/phpunit": "^10.1.0"
             },
             "suggest": {
@@ -255,7 +255,7 @@
                 "issues": "https://github.com/cakephp/cakephp/issues",
                 "source": "https://github.com/cakephp/cakephp"
             },
-            "time": "2023-11-28T03:41:40+00:00"
+            "time": "2023-12-28T00:00:09+00:00"
         },
         {
             "name": "cakephp/chronos",
