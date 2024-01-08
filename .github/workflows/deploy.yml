@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: executing remote ssh commands
-      uses: appleboy/ssh-action@v1.0.0
+      uses: appleboy/ssh-action@v1.0.3
       env:
         DEPLOY_SSH_PATH: ${{ secrets.DEPLOY_SSH_PATH }}
       with:
