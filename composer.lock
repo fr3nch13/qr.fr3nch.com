@@ -1363,10 +1363,10 @@
         },
         {
             "name": "npm-asset/sortablejs",
-            "version": "1.15.0",
+            "version": "1.15.1",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/sortablejs/-/sortablejs-1.15.0.tgz"
+                "url": "https://registry.npmjs.org/sortablejs/-/sortablejs-1.15.1.tgz"
             },
             "type": "npm-asset",
             "license": [
