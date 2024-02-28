@@ -186,6 +186,7 @@ class Application extends BaseApplication implements
 
             // Content Security Policy
             // @link https://book.cakephp.org/5/en/security/content-security-policy.html#content-security-policy-middleware
+            // @link https://github.com/paragonie/csp-builder
             ->add(new CspMiddleware([
                 'script-src' => [
                     'self' => true,
