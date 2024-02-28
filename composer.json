@@ -35,7 +35,7 @@
         "npm-asset/piexifjs": "^1.0.6",
         "npm-asset/sortablejs": "^1.15",
         "oomphinc/composer-installers-extender": "^2.0.1",
-        "paragonie/csp-builder": "~2.9",
+        "paragonie/csp-builder": "~3.0",
         "robmorgan/phinx": "~0.15.5"
     },
     "require-dev": {
