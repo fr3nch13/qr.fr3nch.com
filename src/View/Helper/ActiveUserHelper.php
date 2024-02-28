@@ -19,7 +19,7 @@ class ActiveUserHelper extends Helper
     /**
      * helpers
      *
-     * @var array<int, string>
+     * @var array<int|string, string|array<string, string>>
      */
     protected array $helpers = [
         'Identity' => ['className' => 'Authentication.Identity'],
