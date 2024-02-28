@@ -52,6 +52,7 @@ class QrCodesController extends AppController
     {
         // make sure we have an ID where needed.
         $action = $this->request->getParam('action');
+
         // admin actions
         if (in_array($action, ['show', 'view', 'edit', 'delete'])) {
             $pass = $this->request->getParam('pass');
