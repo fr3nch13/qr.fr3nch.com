@@ -26,7 +26,6 @@ class UsersController extends AppController
         if (in_array($action, ['delete'])) {
             $pass = $this->request->getParam('pass');
             if (empty($pass) || !isset($pass['0'])) {
-                $event->stopPropagation();
                 throw new NotFoundException('Unknown ID');
             }
         }

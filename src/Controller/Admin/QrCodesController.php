@@ -52,11 +52,11 @@ class QrCodesController extends AppController
     {
         // make sure we have an ID where needed.
         $action = $this->request->getParam('action');
+
         // admin actions
         if (in_array($action, ['show', 'view', 'edit', 'delete'])) {
             $pass = $this->request->getParam('pass');
             if (empty($pass) || !isset($pass['0'])) {
-                $event->stopPropagation();
                 throw new NotFoundException('Unknown ID');
             }
         }

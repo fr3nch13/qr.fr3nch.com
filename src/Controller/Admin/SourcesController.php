@@ -27,7 +27,6 @@ class SourcesController extends AppController
         if (in_array($action, ['view', 'edit', 'delete'])) {
             $pass = $this->request->getParam('pass');
             if (empty($pass) || !isset($pass['0'])) {
-                $event->stopPropagation();
                 throw new NotFoundException('Unknown ID');
             }
         }
