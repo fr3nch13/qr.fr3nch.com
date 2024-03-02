@@ -102,7 +102,7 @@ class Application extends BaseApplication implements
          * Debug Kit should not be installed on a production system
          */
         if (Configure::read('debug')) {
-            $this->addPlugin('DebugKit');
+            $this->addOptionalPlugin('DebugKit');
         }
 
         // Load more plugins here
