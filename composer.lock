@@ -5306,7 +5306,10 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "10.5-dev"
+                    "dev-
+                  
+                  
+                  ": "10.5-dev"
                 }
             },
             "autoload": {
