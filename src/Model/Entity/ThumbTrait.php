@@ -7,6 +7,8 @@ use App\Exception\ThumbException;
 use Cake\Core\Configure;
 use Cake\ORM\Entity;
 use GdImage;
+use function getimagesize;
+use function imagefill;
 
 /**
  * Managed the thumbnail files
@@ -170,7 +172,7 @@ trait ThumbTrait
             return false;
         }
 
-        $imageDetails = \getimagesize($originalPath);
+        $imageDetails = getimagesize($originalPath);
         // may not be an image?
         if (!$imageDetails) {
             return false;
@@ -197,42 +199,42 @@ trait ThumbTrait
         }
 
         if ($imageDetails[2] == 1) {
-            $originalImage = \imagecreatefromgif($originalPath);
-            $thumbImage = \imagecreatetruecolor($newWidth, $newHeight);
+            $originalImage = imagecreatefromgif($originalPath);
+            $thumbImage = imagecreatetruecolor($newWidth, $newHeight);
 
             if ($originalImage && $thumbImage) {
-                \imagecopyresampled($thumbImage, $originalImage, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+                imagecopyresampled($thumbImage, $originalImage, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 
-                return \imagegif($thumbImage, $thumbPath);
+                return imagegif($thumbImage, $thumbPath);
             }
         }
 
         if ($imageDetails[2] == 2) {
-            $originalImage = \imagecreatefromjpeg($originalPath);
-            $thumbImage = \imagecreatetruecolor($newWidth, $newHeight);
+            $originalImage = imagecreatefromjpeg($originalPath);
+            $thumbImage = imagecreatetruecolor($newWidth, $newHeight);
 
             if ($originalImage && $thumbImage) {
-                \imagecopyresampled($thumbImage, $originalImage, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+                imagecopyresampled($thumbImage, $originalImage, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 
-                return \imagejpeg($thumbImage, $thumbPath);
+                return imagejpeg($thumbImage, $thumbPath);
             }
         }
 
         if ($imageDetails[2] == 3) {
-            $originalImage = \imagecreatefrompng($originalPath);
-            $thumbImage = \imagecreatetruecolor($newWidth, $newHeight);
+            $originalImage = imagecreatefrompng($originalPath);
+            $thumbImage = imagecreatetruecolor($newWidth, $newHeight);
 
             if (
                 $originalImage instanceof GdImage &&
                 $thumbImage instanceof GdImage
             ) {
-                \imagesavealpha($thumbImage, true);
+                imagesavealpha($thumbImage, true);
                 /** @var int $color The color ints below are hard-coded so how would this return a false? */
-                $color = \imagecolorallocatealpha($thumbImage, 0, 0, 0, 127);
-                \imagefill($thumbImage, 0, 0, $color);
-                \imagecopyresampled($thumbImage, $originalImage, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+                $color = imagecolorallocatealpha($thumbImage, 0, 0, 0, 127);
+                imagefill($thumbImage, 0, 0, $color);
+                imagecopyresampled($thumbImage, $originalImage, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 
-                return \imagepng($thumbImage, $thumbPath);
+                return imagepng($thumbImage, $thumbPath);
             }
         }
 
