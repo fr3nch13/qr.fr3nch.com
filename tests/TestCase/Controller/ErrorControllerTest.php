@@ -31,6 +31,7 @@ class ErrorControllerTest extends BaseControllerTest
         $this->assertResponseContains('Cake\Http\Exception\MissingControllerException');
         $this->assertResponseContains('<em>DontexistController</em> could not be found.');
     }
+
     /**
      * test error method
      *

@@ -5,7 +5,6 @@ namespace App\Test\TestCase\View;
 
 use App\Controller\QrCodesController;
 use App\View\AppView;
-use Cake\Core\Configure;
 use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
 

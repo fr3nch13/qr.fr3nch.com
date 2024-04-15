@@ -47,7 +47,6 @@ class CrudTest extends BaseControllerTest
         $this->post('https://localhost/admin/qr-codes');
         $this->assertRedirectEquals('https://localhost/admin/qr-codes');
 
-
         // patch
         $this->patch('https://localhost/admin/qr-codes');
         $this->assertResponseCode(405);

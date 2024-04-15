@@ -92,6 +92,7 @@ class PagesControllerTest extends BaseControllerTest
      */
     public function testMissingTemplate()
     {
+        Configure::write('debug', false);
         $this->get('https://localhost/pages/not_existing');
         $this->assertResponseCode(404);
         $this->helperTestError400('/pages/not_existing');
