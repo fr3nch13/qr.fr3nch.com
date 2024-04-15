@@ -154,7 +154,6 @@ class PolicyTest extends BaseControllerTest
      */
     public function testIndexDebugOff(): void
     {
-
         // test with reqular, debug off
         Configure::write('debug', false);
         $this->loginUserRegular();

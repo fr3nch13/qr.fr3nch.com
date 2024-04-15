@@ -165,7 +165,6 @@ class PolicyTest extends BaseControllerTest
      */
     public function testShowDebugOff(): void
     {
-
         // not logged in, missing image, debug off
         Configure::write('debug', false);
         $this->loginGuest();

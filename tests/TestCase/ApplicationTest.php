@@ -74,6 +74,8 @@ class ApplicationTest extends TestCase
         $app->bootstrap();
         $plugins = $app->getPlugins();
 
+        $this->assertTrue(Configure::read('debug'), 'debug is true?');
+
         $this->assertTrue($plugins->has('DebugKit'), 'plugins has DebugKit?');
     }
 

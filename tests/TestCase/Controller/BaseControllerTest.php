@@ -45,7 +45,6 @@ class BaseControllerTest extends TestCase
      */
     public function tearDown(): void
     {
-
         Configure::write('debug', false);
 
         parent::tearDown();
