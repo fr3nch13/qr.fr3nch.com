@@ -50,6 +50,8 @@ class ApplicationTest extends TestCase
         $app->bootstrap();
         $plugins = $app->getPlugins();
 
+        $this->assertFalse(Configure::read('debug'), 'debug is true?');
+
         $this->assertTrue($plugins->has('Bake'), 'plugins has Bake?');
         $this->assertFalse($plugins->has('DebugKit'), 'plugins has DebugKit?');
         $this->assertTrue($plugins->has('Migrations'), 'plugins has Migrations?');
