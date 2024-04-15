@@ -23,19 +23,19 @@ class PolicyTest extends BaseControllerTest
     protected function setUp(): void
     {
         parent::setUp();
-        Configure::write('debug', true);
         $this->enableRetainFlashMessages();
         $this->enableCsrfToken();
     }
 
     /**
-     * Test missing action
+     * Test missing action - debug on
      *
      * @alert Keep the https://localhost/ as the HttpsEnforcerMiddleware will try to redirect.
      * @return void
      */
-    public function testDontexist(): void
+    public function testDontexistDebugOn(): void
     {
+        Configure::write('debug', true);
         // not logged in
         $this->get('https://localhost/users/dontexist');
         $this->assertResponseCode(404);
@@ -52,14 +52,20 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/users/dontexist');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Error: Missing Action `App\Controller\UsersController::dontexist()`');
+    }
 
-        // test with debug off
-        Configure::write('debug', false);
+    /**
+     * Test missing action - debug off
+     *
+     * @alert Keep the https://localhost/ as the HttpsEnforcerMiddleware will try to redirect.
+     * @return void
+     */
+    public function testDontexistDebugOff(): void
+    {
         $this->loginUserAdmin();
         $this->get('https://localhost/users/dontexist');
         $this->assertResponseCode(404);
         $this->helperTestError400('/users/dontexist');
-        Configure::write('debug', true);
     }
 
     /**
@@ -70,6 +76,7 @@ class PolicyTest extends BaseControllerTest
      */
     public function testLogin(): void
     {
+        Configure::write('debug', true);
         $this->enableSecurityToken();
 
         // not logged in
@@ -105,6 +112,7 @@ class PolicyTest extends BaseControllerTest
      */
     public function testLogout(): void
     {
+        Configure::write('debug', true);
         // not logged in
         $this->get('https://localhost/users/logout');
         $this->assertRedirectEquals('https://localhost/users/login');
@@ -139,8 +147,9 @@ class PolicyTest extends BaseControllerTest
      * @return void
      * @uses \App\Controller\UsersController::profile()
      */
-    public function testProfile(): void
+    public function testProfileDebugOn(): void
     {
+        Configure::write('debug', true);
         // not logged in
         $this->get('https://localhost/users/profile/3');
         $this->assertResponseOk();
@@ -163,12 +172,20 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/users/profile');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
+    }
 
+    /**
+     * Test public profile method
+     *
+     * @return void
+     * @uses \App\Controller\UsersController::profile()
+     */
+    public function testProfileDebugOff(): void
+    {
         // test with missing id, no debug
         Configure::write('debug', false);
         $this->get('https://localhost/users/profile');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
-        Configure::write('debug', true); // turn it back on
     }
 }

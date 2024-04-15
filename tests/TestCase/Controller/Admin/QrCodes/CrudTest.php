@@ -46,10 +46,6 @@ class CrudTest extends BaseControllerTest
         // post
         $this->post('https://localhost/admin/qr-codes');
         $this->assertRedirectEquals('https://localhost/admin/qr-codes');
-        // changed because we added friendsofcake/search
-        // which does a Post-Redirect-Get
-        // $this->assertResponseCode(405);
-        // $this->assertResponseContains('Method Not Allowed');
 
 
         // patch
