@@ -38,6 +38,7 @@ class ErrorControllerTest extends BaseControllerTest
      */
     public function testError404DebugOff()
     {
+        Configure::write('debug', false);
         $this->get('https://localhost/dontexist');
         $this->assertResponseCode(404);
         $this->helperTestError400('/dontexist');

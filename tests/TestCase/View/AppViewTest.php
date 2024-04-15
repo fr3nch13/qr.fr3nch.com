@@ -32,7 +32,6 @@ class AppViewTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        Configure::write('debug', true);
 
         $Request = new ServerRequest();
         $this->QrCodesController = new QrCodesController($Request);
