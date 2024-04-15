@@ -113,7 +113,7 @@ class PolicyTest extends BaseControllerTest
     public function testLoginDebugOff(): void
     {
         $this->enableSecurityToken();
-        Configure::write('debug', true);
+        Configure::write('debug', false);
 
         // not logged in
         $this->get('https://localhost/users/login');
