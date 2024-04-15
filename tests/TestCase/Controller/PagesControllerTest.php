@@ -20,8 +20,6 @@ class PagesControllerTest extends BaseControllerTest
      */
     public function testDisplay()
     {
-        Configure::write('debug', true);
-
         $this->get('https://localhost/pages/about');
 
         $this->assertResponseOk();
@@ -38,8 +36,6 @@ class PagesControllerTest extends BaseControllerTest
      */
     public function testDisplayRootRoute()
     {
-        Configure::write('debug', true);
-
         $this->get('https://localhost/');
 
         $this->assertResponseOk();
@@ -54,8 +50,6 @@ class PagesControllerTest extends BaseControllerTest
      */
     public function testDisplaySubPage()
     {
-        Configure::write('debug', true);
-
         $this->get('https://localhost/pages/about/staff');
 
         $this->assertResponseOk();
@@ -70,8 +64,6 @@ class PagesControllerTest extends BaseControllerTest
      */
     public function testDisplayDirectly()
     {
-        Configure::write('debug', true);
-
         $this->get('https://localhost/pages');
 
         $this->assertRedirectEquals('https://localhost/');
@@ -84,7 +76,6 @@ class PagesControllerTest extends BaseControllerTest
      */
     public function testDisplayLoggedIn()
     {
-        Configure::write('debug', true);
         $this->loginUserAdmin();
 
         $this->get('https://localhost/pages/index');
@@ -102,7 +93,6 @@ class PagesControllerTest extends BaseControllerTest
     public function testMissingTemplate()
     {
         Configure::write('debug', false);
-
         $this->get('https://localhost/pages/not_existing');
         $this->assertResponseCode(404);
         $this->helperTestError400('/pages/not_existing');
@@ -158,8 +148,8 @@ class PagesControllerTest extends BaseControllerTest
      */
     public function testCsrfAppliedOk()
     {
-        Configure::write('debug', true);
         $this->enableCsrfToken();
+        Configure::write('debug', true);
 
         $this->post('https://localhost/pages/home', ['hello' => 'world']);
 

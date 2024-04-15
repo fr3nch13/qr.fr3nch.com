@@ -34,7 +34,7 @@ class PolicyTest extends BaseControllerTest
      * @alert Keep the https://localhost/ as the HttpsEnforcerMiddleware will try to redirect.
      * @return void
      */
-    public function testDontexist(): void
+    public function testDontexistDebugOn(): void
     {
         // not logged in
         $this->get('https://localhost/qr-codes/dontexist');
@@ -52,14 +52,22 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/qr-codes/dontexist');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Error: Missing Action `App\Controller\QrCodesController::dontexist()`');
+    }
 
+    /**
+     * Test missing action
+     *
+     * @alert Keep the https://localhost/ as the HttpsEnforcerMiddleware will try to redirect.
+     * @return void
+     */
+    public function testDontexistDebugOff(): void
+    {
         // test with debug off
         Configure::write('debug', false);
         $this->loginUserAdmin();
         $this->get('https://localhost/qr-codes/dontexist');
         $this->assertResponseCode(404);
         $this->helperTestError400('/qr-codes/dontexist');
-        Configure::write('debug', true);
     }
 
     /**
@@ -68,7 +76,7 @@ class PolicyTest extends BaseControllerTest
      * @return void
      * @uses \App\Controller\QrCodesController::index()
      */
-    public function testIndex(): void
+    public function testIndexDebugOn(): void
     {
         // not logged in
         $this->loginGuest();
@@ -111,14 +119,22 @@ class PolicyTest extends BaseControllerTest
         $this->helperTestObjectComment(3, 'QrCode/forward');
         // make sure only active primary images are listed.
         $this->helperTestObjectComment(3, 'QrImage/active/first');
+    }
 
+    /**
+     * Test index method
+     *
+     * @return void
+     * @uses \App\Controller\QrCodesController::index()
+     */
+    public function testIndexDebugOff(): void
+    {
         // test with debug off
         Configure::write('debug', false);
         $this->loginUserAdmin();
         $this->get('https://localhost/qr-codes');
         $this->assertResponseOk();
         $this->helperTestTemplate('QrCodes/index');
-        Configure::write('debug', true);
     }
 
     /**
@@ -127,7 +143,7 @@ class PolicyTest extends BaseControllerTest
      * @return void
      * @uses \App\Controller\QrCodesController::view()
      */
-    public function testView(): void
+    public function testViewDebugOn(): void
     {
         // not logged in
         $this->loginGuest();
@@ -183,13 +199,21 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/qr-codes/view');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
+    }
 
+    /**
+     * Test view method
+     *
+     * @return void
+     * @uses \App\Controller\QrCodesController::view()
+     */
+    public function testViewDebugOff(): void
+    {
         // debug off
         Configure::write('debug', false);
         $this->loginUserAdmin();
         $this->get('https://localhost/qr-codes/view');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
-        Configure::write('debug', true);
     }
 }

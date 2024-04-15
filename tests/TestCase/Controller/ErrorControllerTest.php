@@ -16,11 +16,11 @@ use Cake\Core\Configure;
 class ErrorControllerTest extends BaseControllerTest
 {
     /**
-     * testDisplay method
+     * test error method
      *
      * @return void
      */
-    public function testError404()
+    public function testError404DebugOn()
     {
         // With Debug On
         Configure::write('debug', true);
@@ -30,8 +30,15 @@ class ErrorControllerTest extends BaseControllerTest
         $this->assertResponseContains('<span>Missing Controller</span>');
         $this->assertResponseContains('Cake\Http\Exception\MissingControllerException');
         $this->assertResponseContains('<em>DontexistController</em> could not be found.');
+    }
 
-        // With Debug Off
+    /**
+     * test error method
+     *
+     * @return void
+     */
+    public function testError404DebugOff()
+    {
         Configure::write('debug', false);
         $this->get('https://localhost/dontexist');
         $this->assertResponseCode(404);

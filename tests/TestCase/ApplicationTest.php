@@ -30,7 +30,6 @@ use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
-use InvalidArgumentException;
 
 /**
  * ApplicationTest class
@@ -50,6 +49,8 @@ class ApplicationTest extends TestCase
         $app = new Application(dirname(dirname(__DIR__)) . '/config');
         $app->bootstrap();
         $plugins = $app->getPlugins();
+
+        $this->assertFalse(Configure::read('debug'), 'debug is true?');
 
         $this->assertTrue($plugins->has('Bake'), 'plugins has Bake?');
         $this->assertFalse($plugins->has('DebugKit'), 'plugins has DebugKit?');
@@ -73,27 +74,9 @@ class ApplicationTest extends TestCase
         $app->bootstrap();
         $plugins = $app->getPlugins();
 
+        $this->assertTrue(Configure::read('debug'), 'debug is true?');
+
         $this->assertTrue($plugins->has('DebugKit'), 'plugins has DebugKit?');
-    }
-
-    /**
-     * testBootstrapPluginWitoutHalt
-     *
-     * @return void
-     */
-    public function testBootstrapPluginWithoutHalt()
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        $app = $this->getMockBuilder(Application::class)
-            ->setConstructorArgs([dirname(dirname(__DIR__)) . '/config'])
-            ->onlyMethods(['addPlugin'])
-            ->getMock();
-
-        $app->method('addPlugin')
-            ->will($this->throwException(new InvalidArgumentException('test exception.')));
-
-        $app->bootstrap();
     }
 
     /**

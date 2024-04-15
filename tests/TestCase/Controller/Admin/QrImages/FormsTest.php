@@ -111,7 +111,6 @@ class FormsTest extends BaseControllerTest
      */
     public function testAddPostMissingCode(): void
     {
-        Configure::write('debug', true);
         $imagePaths = [
             TESTS . 'assets' . DS . 'qr_images' . DS . '1' . DS . '1.jpg',
             TESTS . 'assets' . DS . 'qr_images' . DS . '1' . DS . '2.jpg',

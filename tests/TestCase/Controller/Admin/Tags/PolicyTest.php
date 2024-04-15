@@ -34,7 +34,7 @@ class PolicyTest extends BaseControllerTest
      * @alert Keep the https://localhost/ as the HttpsEnforcerMiddleware will try to redirect.
      * @return void
      */
-    public function testDontexist(): void
+    public function testDontexistDebugOn(): void
     {
         // not logged in
         $this->loginGuest();
@@ -53,14 +53,22 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/admin/tags/dontexist');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Error: Missing Action `App\Controller\Admin\TagsController::dontexist()`');
+    }
 
+    /**
+     * Test missing action
+     *
+     * @alert Keep the https://localhost/ as the HttpsEnforcerMiddleware will try to redirect.
+     * @return void
+     */
+    public function testDontexistDebugOff(): void
+    {
         // test with debug off
         Configure::write('debug', false);
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/tags/dontexist');
         $this->assertResponseCode(404);
         $this->helperTestError400('/admin/tags/dontexist');
-        Configure::write('debug', true);
     }
 
     /**
@@ -71,7 +79,7 @@ class PolicyTest extends BaseControllerTest
      * @return void
      * @uses \App\Controller\Admin\TagsController::index()
      */
-    public function testIndex(): void
+    public function testIndexDebugOn(): void
     {
         // not logged in
         $this->loginGuest();
@@ -92,14 +100,24 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/admin/tags');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/Tags/index');
+    }
 
+    /**
+     * Test index method
+     *
+     * Anyone can view the list of Tags.
+     *
+     * @return void
+     * @uses \App\Controller\Admin\TagsController::index()
+     */
+    public function testIndexDebugOff(): void
+    {
         // test with debug off
         Configure::write('debug', false);
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/tags');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/Tags/index');
-        Configure::write('debug', true);
     }
 
     /**
@@ -108,7 +126,7 @@ class PolicyTest extends BaseControllerTest
      * @return void
      * @uses \App\Controller\Admin\TagsController::add()
      */
-    public function testAdd(): void
+    public function testAddDebugOn(): void
     {
         $this->enableSecurityToken();
 
@@ -133,6 +151,17 @@ class PolicyTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/Tags/add');
         $this->helperTestFormTag('/admin/tags/add', 'post');
+    }
+
+    /**
+     * Test add method
+     *
+     * @return void
+     * @uses \App\Controller\Admin\TagsController::add()
+     */
+    public function testAddDebugOff(): void
+    {
+        $this->enableSecurityToken();
 
         // Debug Off
         Configure::write('debug', false);
@@ -141,7 +170,6 @@ class PolicyTest extends BaseControllerTest
         $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fadmin%2Ftags%2Fadd');
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
-        Configure::write('debug', true);
     }
 
     /**
@@ -150,7 +178,7 @@ class PolicyTest extends BaseControllerTest
      * @return void
      * @uses \App\Controller\Admin\TagsController::edit()
      */
-    public function testEdit(): void
+    public function testEditDebugOn(): void
     {
         $this->enableSecurityToken();
 
@@ -210,6 +238,17 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/admin/tags/edit');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
+    }
+
+    /**
+     * Test edit method
+     *
+     * @return void
+     * @uses \App\Controller\Admin\TagsController::edit()
+     */
+    public function testEditDebugOff(): void
+    {
+        $this->enableSecurityToken();
 
         // debug off
         Configure::write('debug', false);
@@ -217,7 +256,6 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/admin/tags/edit');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
-        Configure::write('debug', true);
     }
 
     /**
@@ -229,7 +267,7 @@ class PolicyTest extends BaseControllerTest
      * @return void
      * @uses \App\Controller\Admin\TagsController::delete()
      */
-    public function testDelete(): void
+    public function testDeleteDebugOn(): void
     {
         $this->enableSecurityToken();
 
@@ -292,6 +330,20 @@ class PolicyTest extends BaseControllerTest
         $this->delete('https://localhost/admin/tags/delete');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
+    }
+
+    /**
+     * Test delete method
+     *
+     * The redirects here should not inlcude the query string.
+     * Sonce a delete() http method is also treated similar to a post.
+     *
+     * @return void
+     * @uses \App\Controller\Admin\TagsController::delete()
+     */
+    public function testDeleteOff(): void
+    {
+        $this->enableSecurityToken();
 
         // debug off
         Configure::write('debug', false);
@@ -299,7 +351,6 @@ class PolicyTest extends BaseControllerTest
         $this->delete('https://localhost/admin/tags/delete');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
-        Configure::write('debug', true);
 
         // not logged in, debug off
         Configure::write('debug', false);
@@ -307,6 +358,5 @@ class PolicyTest extends BaseControllerTest
         $this->delete('https://localhost/admin/tags/delete');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
-        Configure::write('debug', true);
     }
 }

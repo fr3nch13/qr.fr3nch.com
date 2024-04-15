@@ -34,7 +34,7 @@ class PolicyTest extends BaseControllerTest
      * @alert Keep the https://localhost/admin/ as the HttpsEnforcerMiddleware will try to redirect.
      * @return void
      */
-    public function testDontexist(): void
+    public function testDontexistDebugOn(): void
     {
         // not logged in
         $this->get('https://localhost/admin/sources/dontexist');
@@ -52,14 +52,22 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/admin/sources/dontexist');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Error: Missing Action `App\Controller\Admin\SourcesController::dontexist()`');
+    }
 
+    /**
+     * Test missing action
+     *
+     * @alert Keep the https://localhost/admin/ as the HttpsEnforcerMiddleware will try to redirect.
+     * @return void
+     */
+    public function testDontexistOff(): void
+    {
         // test with debug off
         Configure::write('debug', false);
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/sources/dontexist');
         $this->assertResponseCode(404);
         $this->helperTestError400('/admin/sources/dontexist');
-        Configure::write('debug', true);
     }
 
     /**
@@ -68,7 +76,7 @@ class PolicyTest extends BaseControllerTest
      * @return void
      * @uses \App\Controller\Admin\SourcesController::index()
      */
-    public function testIndex(): void
+    public function testIndexDebugOn(): void
     {
         // not logged in
         $this->loginGuest();
@@ -89,14 +97,22 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/admin/sources');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/Sources/index');
+    }
 
+    /**
+     * Test index method
+     *
+     * @return void
+     * @uses \App\Controller\Admin\SourcesController::index()
+     */
+    public function testIndexDebugOff(): void
+    {
         // test with debug off
         Configure::write('debug', false);
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/sources');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/Sources/index');
-        Configure::write('debug', true);
     }
 
     /**
@@ -105,7 +121,7 @@ class PolicyTest extends BaseControllerTest
      * @return void
      * @uses \App\Controller\Admin\SourcesController::add()
      */
-    public function testAdd(): void
+    public function testAddDebugOn(): void
     {
         $this->enableSecurityToken();
 
@@ -131,6 +147,17 @@ class PolicyTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/Sources/add');
         $this->helperTestFormTag('/admin/sources/add', 'post');
+    }
+
+    /**
+     * Test add method
+     *
+     * @return void
+     * @uses \App\Controller\Admin\SourcesController::add()
+     */
+    public function testAddDebugOff(): void
+    {
+        $this->enableSecurityToken();
 
         // Debug Off
         Configure::write('debug', false);
@@ -139,7 +166,6 @@ class PolicyTest extends BaseControllerTest
         $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fadmin%2Fsources%2Fadd');
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
-        Configure::write('debug', true);
     }
 
     /**
@@ -148,7 +174,7 @@ class PolicyTest extends BaseControllerTest
      * @return void
      * @uses \App\Controller\Admin\SourcesController::edit()
      */
-    public function testEdit(): void
+    public function testEditDebugOn(): void
     {
         $this->enableSecurityToken();
 
@@ -194,6 +220,17 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/admin/sources/edit');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
+    }
+
+    /**
+     * Test edit method
+     *
+     * @return void
+     * @uses \App\Controller\Admin\SourcesController::edit()
+     */
+    public function testEditDebugOff(): void
+    {
+        $this->enableSecurityToken();
 
         // debug off
         Configure::write('debug', false);
@@ -201,7 +238,6 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/admin/sources/edit');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
-        Configure::write('debug', true);
     }
 
     /**
@@ -213,7 +249,7 @@ class PolicyTest extends BaseControllerTest
      * @return void
      * @uses \App\Controller\Admin\SourcesController::delete()
      */
-    public function testDelete(): void
+    public function testDeleteDebugOn(): void
     {
         $this->enableSecurityToken();
 
@@ -268,6 +304,20 @@ class PolicyTest extends BaseControllerTest
         $this->delete('https://localhost/admin/sources/delete');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
+    }
+
+    /**
+     * Test delete method
+     *
+     * The redirects here should not inlcude the query string.
+     * Sonce a delete() http method is also treated similar to a post.
+     *
+     * @return void
+     * @uses \App\Controller\Admin\SourcesController::delete()
+     */
+    public function testDeleteDebugOff(): void
+    {
+        $this->enableSecurityToken();
 
         // debug off
         Configure::write('debug', false);
@@ -275,6 +325,5 @@ class PolicyTest extends BaseControllerTest
         $this->delete('https://localhost/admin/sources/delete');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
-        Configure::write('debug', true);
     }
 }
