@@ -23,6 +23,7 @@ class PolicyTest extends BaseControllerTest
     protected function setUp(): void
     {
         parent::setUp();
+        Configure::write('debug', true);
         $this->enableRetainFlashMessages();
         $this->enableCsrfToken();
     }
@@ -35,7 +36,6 @@ class PolicyTest extends BaseControllerTest
      */
     public function testDontexistDebugOn(): void
     {
-        Configure::write('debug', true);
         // not logged in
         $this->get('https://localhost/users/dontexist');
         $this->assertResponseCode(404);
@@ -62,6 +62,7 @@ class PolicyTest extends BaseControllerTest
      */
     public function testDontexistDebugOff(): void
     {
+        Configure::write('debug', false);
         $this->loginUserAdmin();
         $this->get('https://localhost/users/dontexist');
         $this->assertResponseCode(404);
@@ -74,10 +75,45 @@ class PolicyTest extends BaseControllerTest
      * @return void
      * @uses \App\Controller\UsersController::login()
      */
-    public function testLogin(): void
+    public function testLoginDebugOn(): void
     {
-        Configure::write('debug', true);
         $this->enableSecurityToken();
+
+        // not logged in
+        $this->get('https://localhost/users/login');
+        $this->assertResponseOk();
+        $this->helperTestTemplate('Users/login');
+
+        // test with admin
+        $this->loginUserAdmin();
+        $this->get('https://localhost/users/login');
+        $this->assertRedirectEquals('https://localhost/admin');
+        $this->assertFlashMessage('Welcome back Admin', 'flash');
+        $this->assertFlashElement('flash/success');
+
+        // test with reqular
+        $this->loginUserRegular();
+        $this->get('https://localhost/users/login');
+        $this->assertRedirectEquals('https://localhost/admin');
+        $this->assertFlashMessage('Welcome back Regular', 'flash');
+        $this->assertFlashElement('flash/success');
+
+        // just test redirect
+        $this->loginUserRegular();
+        $this->get('https://localhost/users/login?redirect=%2Fsources');
+        $this->assertRedirectEquals('https://localhost/sources');
+    }
+
+    /**
+     * Test login method
+     *
+     * @return void
+     * @uses \App\Controller\UsersController::login()
+     */
+    public function testLoginDebugOff(): void
+    {
+        $this->enableSecurityToken();
+        Configure::write('debug', true);
 
         // not logged in
         $this->get('https://localhost/users/login');
@@ -110,9 +146,46 @@ class PolicyTest extends BaseControllerTest
      * @return void
      * @uses \App\Controller\UsersController::logout()
      */
-    public function testLogout(): void
+    public function testLogoutDebugOn(): void
     {
-        Configure::write('debug', true);
+        // not logged in
+        $this->get('https://localhost/users/logout');
+        $this->assertRedirectEquals('https://localhost/users/login');
+        $this->assertFlashMessage('You have been logged out', 'flash');
+        $this->assertFlashElement('flash/success');
+
+        // test with admin
+        $this->loginUserAdmin();
+        $this->get('https://localhost/users/logout');
+        $this->assertRedirectEquals('https://localhost/users/login');
+        $this->assertFlashMessage('You have been logged out', 'flash');
+        $this->assertFlashElement('flash/success');
+
+        // test with reqular
+        $this->loginUserRegular();
+        $this->get('https://localhost/users/logout');
+        $this->assertRedirectEquals('https://localhost/users/login');
+        $this->assertFlashMessage('You have been logged out', 'flash');
+        $this->assertFlashElement('flash/success');
+
+        // just test redirect
+        $this->loginUserRegular();
+        $this->get('https://localhost/users/logout?redirect=%2Fsources');
+        $this->assertRedirectEquals('https://localhost/users/login');
+        $this->assertFlashMessage('You have been logged out', 'flash');
+        $this->assertFlashElement('flash/success');
+    }
+
+    /**
+     * Test logout method
+     *
+     * @return void
+     * @uses \App\Controller\UsersController::logout()
+     */
+    public function testLogoutDebugOff(): void
+    {
+        Configure::write('debug', false);
+
         // not logged in
         $this->get('https://localhost/users/logout');
         $this->assertRedirectEquals('https://localhost/users/login');
@@ -149,7 +222,6 @@ class PolicyTest extends BaseControllerTest
      */
     public function testProfileDebugOn(): void
     {
-        Configure::write('debug', true);
         // not logged in
         $this->get('https://localhost/users/profile/3');
         $this->assertResponseOk();
