@@ -51,7 +51,6 @@ class BaseControllerTest extends TestCase
         parent::tearDown();
     }
 
-
     /**
      * Just a dumb test so I can keep the name.
      *
