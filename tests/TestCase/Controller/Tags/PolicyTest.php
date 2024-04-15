@@ -34,7 +34,7 @@ class PolicyTest extends BaseControllerTest
      * @alert Keep the https://localhost/ as the HttpsEnforcerMiddleware will try to redirect.
      * @return void
      */
-    public function testDontexist(): void
+    public function testDontexistDebugOn(): void
     {
         // not logged in
         $this->loginGuest();
@@ -53,14 +53,22 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/tags/dontexist');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Error: Missing Action `App\Controller\TagsController::dontexist()`');
+    }
 
+    /**
+     * Test missing action
+     *
+     * @alert Keep the https://localhost/ as the HttpsEnforcerMiddleware will try to redirect.
+     * @return void
+     */
+    public function testDontexistDebugOff(): void
+    {
         // test with debug off
         Configure::write('debug', false);
         $this->loginUserAdmin();
         $this->get('https://localhost/tags/dontexist');
         $this->assertResponseCode(404);
         $this->helperTestError400('/tags/dontexist');
-        Configure::write('debug', true);
     }
 
     /**
@@ -71,7 +79,7 @@ class PolicyTest extends BaseControllerTest
      * @return void
      * @uses \App\Controller\TagsController::index()
      */
-    public function testIndex(): void
+    public function testIndexDebugOn(): void
     {
         // not logged in
         $this->loginGuest();
@@ -90,13 +98,23 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/tags');
         $this->assertResponseOk();
         $this->helperTestTemplate('Tags/index');
+    }
 
+    /**
+     * Test index method
+     *
+     * Anyone can view the list of Tags.
+     *
+     * @return void
+     * @uses \App\Controller\TagsController::index()
+     */
+    public function testIndexDebugOff(): void
+    {
         // test with debug off
         Configure::write('debug', false);
         $this->loginUserAdmin();
         $this->get('https://localhost/tags');
         $this->assertResponseOk();
         $this->helperTestTemplate('Tags/index');
-        Configure::write('debug', true);
     }
 }
