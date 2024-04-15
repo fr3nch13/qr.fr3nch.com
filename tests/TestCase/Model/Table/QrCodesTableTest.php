@@ -62,18 +62,6 @@ class QrCodesTableTest extends TestCase
     }
 
     /**
-     * tearDown method
-     *
-     * @return void
-     */
-    protected function tearDown(): void
-    {
-        unset($this->QrCodes);
-
-        parent::tearDown();
-    }
-
-    /**
      * Tests the class name of the Table
      *
      * @return void
@@ -393,9 +381,6 @@ class QrCodesTableTest extends TestCase
      */
     public function testEntityImagePath(): void
     {
-        Configure::write('debug', true);
-        $this->loadRoutes();
-
         $tmpdir = TMP . 'qr_codes';
 
         $dark = Configure::read('QrCode.darkcolor');
@@ -671,9 +656,6 @@ class QrCodesTableTest extends TestCase
      */
     public function testPhpQrGenerator(): void
     {
-        $this->loadRoutes();
-        Configure::write('debug', true);
-
         $dark = Configure::read('QrCode.darkcolor');
         $light = Configure::read('QrCode.lightcolor');
 
@@ -772,9 +754,6 @@ class QrCodesTableTest extends TestCase
      */
     public function testPhpQrGeneratorColor(): void
     {
-        $this->loadRoutes();
-        Configure::write('debug', true);
-
         $entity = $this->QrCodes->get(1);
 
         $QR = new PhpQrGenerator($entity);
