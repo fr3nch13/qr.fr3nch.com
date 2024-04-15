@@ -45,6 +45,7 @@ class ApplicationTest extends TestCase
      */
     public function testBootstrap()
     {
+        Configure::write('debug', false);
         $app = new Application(dirname(dirname(__DIR__)) . '/config');
         $app->bootstrap();
         $plugins = $app->getPlugins();
