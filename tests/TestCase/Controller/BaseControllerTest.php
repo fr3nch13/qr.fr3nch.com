@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Test\TestCase\Controller;
 
 use App\Model\Table\UsersTable;
+use Cake\Core\Configure;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
 use HtmlValidator\Exception\ServerException as ValidatorServerException;
@@ -38,6 +39,17 @@ class BaseControllerTest extends TestCase
      * @var \App\Model\Table\UsersTable
      */
     public $Users;
+
+    /**
+     * Use the teardown to explicitly turn off debug.
+     */
+    public function tearDown(): void
+    {
+
+        Configure::write('debug', false);
+
+        parent::tearDown();
+    }
 
     /**
      * Just a dumb test so I can keep the name.
