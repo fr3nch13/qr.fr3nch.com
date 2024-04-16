@@ -120,7 +120,7 @@ class Application extends BaseApplication implements
             $this->addPlugin('BootstrapUI');
         }
 
-        // the friendsofcake/bootstrapui plugin.
+        // the friendsofcake/search plugin.
         if (!$this->getPlugins()->has('Search')) {
             $this->addPlugin('Search');
         }

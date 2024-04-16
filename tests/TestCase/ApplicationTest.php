@@ -60,6 +60,7 @@ class ApplicationTest extends TestCase
         $this->assertTrue($plugins->has('Authorization'), 'plugins has Authorization?');
         $this->assertTrue($plugins->has('BootstrapUI'), 'plugins has BootstrapUI?');
         $this->assertTrue($plugins->has('Search'), 'plugins has Search?');
+        $this->assertTrue($plugins->has('Fr3nch13/Stats'), 'plugins has Fr3nch13/Stats?');
     }
 
     /**
@@ -76,7 +77,15 @@ class ApplicationTest extends TestCase
 
         $this->assertTrue(Configure::read('debug'), 'debug is true?');
 
+        $this->assertTrue($plugins->has('Bake'), 'plugins has Bake?');
         $this->assertTrue($plugins->has('DebugKit'), 'plugins has DebugKit?');
+        $this->assertTrue($plugins->has('Migrations'), 'plugins has Migrations?');
+
+        $this->assertTrue($plugins->has('Authentication'), 'plugins has Authentication?');
+        $this->assertTrue($plugins->has('Authorization'), 'plugins has Authorization?');
+        $this->assertTrue($plugins->has('BootstrapUI'), 'plugins has BootstrapUI?');
+        $this->assertTrue($plugins->has('Search'), 'plugins has Search?');
+        $this->assertTrue($plugins->has('Fr3nch13/Stats'), 'plugins has Fr3nch13/Stats?');
     }
 
     /**
