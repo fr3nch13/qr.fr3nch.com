@@ -49,7 +49,7 @@ endif;
 
 <h1 class="display-2"><?= h($message) ?></h1>
 <p>
-    <strong><?= __d('cake', 'Error') ?>: </strong>
+    <strong><?= __d('cake', 'Error') ?>: <?=$code ?></strong>
     <?= h($message) ?>
 </p>
 

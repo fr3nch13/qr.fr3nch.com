@@ -19,9 +19,11 @@ class ActiveUserHelper extends Helper
     /**
      * helpers
      *
-     * @var array<int, string>
+     * @var array<int|string, string|array<string, string>>
      */
-    protected array $helpers = ['Identity'];
+    protected array $helpers = [
+        'Identity' => ['className' => 'Authentication.Identity'],
+    ];
 
     /**
      * Gets the User element from the response/view

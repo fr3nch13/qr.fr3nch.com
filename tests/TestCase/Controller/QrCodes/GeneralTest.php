@@ -211,7 +211,7 @@ class GeneralTest extends BaseControllerTest
      * @return void
      * @uses \App\Controller\QrImagesController::show()
      */
-    public function testShowMissingImage(): void
+    public function testShowMissingImageDebugOn(): void
     {
         $qrCode = $this->QrCodes->get(1);
         $originalPath = Configure::read('App.paths.qr_codes');
@@ -234,11 +234,39 @@ class GeneralTest extends BaseControllerTest
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unable to find the image file.');
 
+        Configure::write('App.paths.qr_codes', $originalPath);
+    }
+
+    /**
+     * Test show method
+     *
+     * @return void
+     * @uses \App\Controller\QrImagesController::show()
+     */
+    public function testShowMissingImageDebugOff(): void
+    {
+        $qrCode = $this->QrCodes->get(1);
+        $originalPath = Configure::read('App.paths.qr_codes');
+
+        $dark = Configure::read('QrCode.darkcolor');
+        $light = Configure::read('QrCode.lightcolor');
+
+        $path = Configure::read('App.paths.qr_codes') . DS . $qrCode->id . '-' . $light . '.svg';
+        $this->assertTrue(is_readable($path));
+        $path = Configure::read('App.paths.qr_codes') . DS . $qrCode->id . '-' . $dark . '.svg';
+        $this->assertTrue(is_readable($path));
+
+        Configure::write('App.paths.qr_codes', TMP . 'dontexist');
+        $path = Configure::read('App.paths.qr_codes') . DS . $qrCode->id . '-' . $light . '.svg';
+        $this->assertFalse(is_readable($path));
+        $path = Configure::read('App.paths.qr_codes') . DS . $qrCode->id . '-' . $dark . '.svg';
+        $this->assertFalse(is_readable($path));
+
         Configure::write('debug', false);
         $this->get('https://localhost/qr-codes/show/1');
         $this->assertResponseCode(404);
         $this->helperTestError400('/qr-codes/show/1');
-        Configure::write('debug', true);
+
         Configure::write('App.paths.qr_codes', $originalPath);
     }
 
@@ -248,7 +276,7 @@ class GeneralTest extends BaseControllerTest
      * @return void
      * @uses \App\Controller\QrCodesController::show()
      */
-    public function testShowHeadersNoDebug(): void
+    public function testShowHeadersDebugOff(): void
     {
         // check cache policy when debug is off.
         Configure::write('debug', false);
@@ -305,8 +333,6 @@ class GeneralTest extends BaseControllerTest
         $this->get('https://localhost/qr-codes/show/1?c=notacolor');
         $this->assertResponseCode(500);
         $this->assertResponseNotEmpty();
-
-        Configure::write('debug', true);
     }
 
     /**

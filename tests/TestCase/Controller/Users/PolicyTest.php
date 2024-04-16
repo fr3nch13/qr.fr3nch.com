@@ -29,12 +29,12 @@ class PolicyTest extends BaseControllerTest
     }
 
     /**
-     * Test missing action
+     * Test missing action - debug on
      *
      * @alert Keep the https://localhost/ as the HttpsEnforcerMiddleware will try to redirect.
      * @return void
      */
-    public function testDontexist(): void
+    public function testDontexistDebugOn(): void
     {
         // not logged in
         $this->get('https://localhost/users/dontexist');
@@ -52,14 +52,21 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/users/dontexist');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Error: Missing Action `App\Controller\UsersController::dontexist()`');
+    }
 
-        // test with debug off
+    /**
+     * Test missing action - debug off
+     *
+     * @alert Keep the https://localhost/ as the HttpsEnforcerMiddleware will try to redirect.
+     * @return void
+     */
+    public function testDontexistDebugOff(): void
+    {
         Configure::write('debug', false);
         $this->loginUserAdmin();
         $this->get('https://localhost/users/dontexist');
         $this->assertResponseCode(404);
         $this->helperTestError400('/users/dontexist');
-        Configure::write('debug', true);
     }
 
     /**
@@ -68,7 +75,7 @@ class PolicyTest extends BaseControllerTest
      * @return void
      * @uses \App\Controller\UsersController::login()
      */
-    public function testLogin(): void
+    public function testLoginDebugOn(): void
     {
         $this->enableSecurityToken();
 
@@ -98,13 +105,110 @@ class PolicyTest extends BaseControllerTest
     }
 
     /**
+     * Test login method
+     *
+     * @return void
+     * @uses \App\Controller\UsersController::login()
+     */
+    public function testLoginDebugOff(): void
+    {
+        $this->enableSecurityToken();
+        Configure::write('debug', false);
+
+        // not logged in
+        $this->get('https://localhost/users/login');
+        $this->assertResponseCode(400);
+        $this->helperTestError400('/users/login');
+        $this->helperTestLayoutError();
+        $this->helperTestString('Form tampering protection token validation failed.');
+
+        // test with admin
+        $this->loginUserAdmin();
+        $this->assertResponseCode(400);
+        $this->helperTestError400('/users/login');
+        $this->helperTestLayoutError();
+        $this->helperTestString('Form tampering protection token validation failed.');
+        /*
+        // maybe the test suite should allow security token mocking with debug off?
+        $this->get('https://localhost/users/login');
+        $this->assertRedirectEquals('https://localhost/admin');
+        $this->assertFlashMessage('Welcome back Admin', 'flash');
+        $this->assertFlashElement('flash/success');
+        */
+
+        // test with reqular
+        $this->loginUserRegular();
+        $this->assertResponseCode(400);
+        $this->helperTestError400('/users/login');
+        $this->helperTestLayoutError();
+        $this->helperTestString('Form tampering protection token validation failed.');
+        /*
+        // maybe the test suite should allow security token mocking with debug off?
+        $this->get('https://localhost/users/login');
+        $this->assertRedirectEquals('https://localhost/admin');
+        $this->assertFlashMessage('Welcome back Regular', 'flash');
+        $this->assertFlashElement('flash/success');
+        */
+
+        // just test redirect
+        $this->loginUserRegular();
+        $this->assertResponseCode(400);
+        $this->helperTestError400('/users/login');
+        $this->helperTestLayoutError();
+        $this->helperTestString('Form tampering protection token validation failed.');
+        /*
+        // maybe the test suite should allow security token mocking with debug off?
+        $this->get('https://localhost/users/login?redirect=%2Fsources');
+        $this->assertRedirectEquals('https://localhost/sources');
+        */
+    }
+
+    /**
      * Test logout method
      *
      * @return void
      * @uses \App\Controller\UsersController::logout()
      */
-    public function testLogout(): void
+    public function testLogoutDebugOn(): void
     {
+        // not logged in
+        $this->get('https://localhost/users/logout');
+        $this->assertRedirectEquals('https://localhost/users/login');
+        $this->assertFlashMessage('You have been logged out', 'flash');
+        $this->assertFlashElement('flash/success');
+
+        // test with admin
+        $this->loginUserAdmin();
+        $this->get('https://localhost/users/logout');
+        $this->assertRedirectEquals('https://localhost/users/login');
+        $this->assertFlashMessage('You have been logged out', 'flash');
+        $this->assertFlashElement('flash/success');
+
+        // test with reqular
+        $this->loginUserRegular();
+        $this->get('https://localhost/users/logout');
+        $this->assertRedirectEquals('https://localhost/users/login');
+        $this->assertFlashMessage('You have been logged out', 'flash');
+        $this->assertFlashElement('flash/success');
+
+        // just test redirect
+        $this->loginUserRegular();
+        $this->get('https://localhost/users/logout?redirect=%2Fsources');
+        $this->assertRedirectEquals('https://localhost/users/login');
+        $this->assertFlashMessage('You have been logged out', 'flash');
+        $this->assertFlashElement('flash/success');
+    }
+
+    /**
+     * Test logout method
+     *
+     * @return void
+     * @uses \App\Controller\UsersController::logout()
+     */
+    public function testLogoutDebugOff(): void
+    {
+        Configure::write('debug', false);
+
         // not logged in
         $this->get('https://localhost/users/logout');
         $this->assertRedirectEquals('https://localhost/users/login');
@@ -139,7 +243,7 @@ class PolicyTest extends BaseControllerTest
      * @return void
      * @uses \App\Controller\UsersController::profile()
      */
-    public function testProfile(): void
+    public function testProfileDebugOn(): void
     {
         // not logged in
         $this->get('https://localhost/users/profile/3');
@@ -163,12 +267,20 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/users/profile');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
+    }
 
+    /**
+     * Test public profile method
+     *
+     * @return void
+     * @uses \App\Controller\UsersController::profile()
+     */
+    public function testProfileDebugOff(): void
+    {
         // test with missing id, no debug
         Configure::write('debug', false);
         $this->get('https://localhost/users/profile');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
-        Configure::write('debug', true); // turn it back on
     }
 }

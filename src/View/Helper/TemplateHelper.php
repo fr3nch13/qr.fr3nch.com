@@ -32,12 +32,6 @@ class TemplateHelper extends Helper
      */
     public function templateComment(bool $start, string $path, string $prefix = 'App'): string
     {
-        /*
-        if (!Configure::read('debug')) {
-            return '';
-        }
-        */
-
         $comment = "\n\n" . '<!-- ' . ($start ? 'START' : 'END') . ': ' . $prefix . '.';
 
         $path = str_replace(ROOT . DS . 'templates' . DS, '', $path);
@@ -57,12 +51,6 @@ class TemplateHelper extends Helper
      */
     public function objectComment(string $string, string $prefix = 'App'): string
     {
-        /*
-        if (!Configure::read('debug')) {
-            return '';
-        }
-        */
-
         return "\n\n" . '<!-- OBJECT_COMMENT: ' . $prefix . '.' . $string . ' -->' . "\n\n";
     }
 }

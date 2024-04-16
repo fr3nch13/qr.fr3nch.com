@@ -101,24 +101,34 @@ class Application extends BaseApplication implements
          * Only try to load DebugKit in development mode
          * Debug Kit should not be installed on a production system
          */
-        if (Configure::read('debug')) {
-            $this->addPlugin('DebugKit');
+        if (Configure::read('debug') === true && !$this->getPlugins()->has('DebugKit')) {
+            $this->addOptionalPlugin('DebugKit');
         }
 
         // Load more plugins here
-        $this->addPlugin('Authentication');
+        if (!$this->getPlugins()->has('Authentication')) {
+            $this->addPlugin('Authentication');
+        }
 
         // CakePHP's Authorization Plugin.
-        $this->addPlugin('Authorization');
+        if (!$this->getPlugins()->has('Authorization')) {
+            $this->addPlugin('Authorization');
+        }
 
         // the friendsofcake/bootstrapui plugin.
-        $this->addPlugin('BootstrapUI');
+        if (!$this->getPlugins()->has('BootstrapUI')) {
+            $this->addPlugin('BootstrapUI');
+        }
 
-        // the friendsofcake/bootstrapui plugin.
-        $this->addPlugin('Search');
+        // the friendsofcake/search plugin.
+        if (!$this->getPlugins()->has('Search')) {
+            $this->addPlugin('Search');
+        }
 
         // my stats plugin
-        $this->addPlugin('Fr3nch13/Stats');
+        if (!$this->getPlugins()->has('Fr3nch13/Stats')) {
+            $this->addPlugin('Fr3nch13/Stats');
+        }
 
         // register the event listeners.
         $this->registerEventListeners();
@@ -186,6 +196,7 @@ class Application extends BaseApplication implements
 
             // Content Security Policy
             // @link https://book.cakephp.org/5/en/security/content-security-policy.html#content-security-policy-middleware
+            // @link https://github.com/paragonie/csp-builder
             ->add(new CspMiddleware([
                 'script-src' => [
                     'self' => true,
@@ -390,9 +401,13 @@ class Application extends BaseApplication implements
      */
     protected function bootstrapCli(): void
     {
-        $this->addOptionalPlugin('Bake');
+        if (!$this->getPlugins()->has('Bake')) {
+            $this->addOptionalPlugin('Bake');
+        }
 
-        $this->addPlugin('Migrations');
+        if (!$this->getPlugins()->has('Migrations')) {
+            $this->addPlugin('Migrations');
+        }
 
         // Load more plugins here
     }

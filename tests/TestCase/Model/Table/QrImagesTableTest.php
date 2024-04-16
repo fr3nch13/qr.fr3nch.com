@@ -45,6 +45,8 @@ class QrImagesTableTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $this->loadRoutes();
+
         $config = $this->getTableLocator()->exists('QrImages') ? [] : ['className' => QrImagesTable::class];
         /** @var \App\Model\Table\QrImagesTable $QrImages */
         $QrImages = $this->getTableLocator()->get('QrImages', $config);
@@ -181,8 +183,6 @@ class QrImagesTableTest extends TestCase
      */
     public function testEntityImagePath(): void
     {
-        Configure::write('debug', true);
-
         $tmpdir = Configure::read('App.paths.qr_images');
         // make sure this setting exists.
         $this->assertNotNull($tmpdir);
@@ -236,9 +236,6 @@ class QrImagesTableTest extends TestCase
      */
     public function helperThumbTester(int $id)
     {
-        Configure::write('debug', true);
-        $this->loadRoutes();
-
         $tmpdir = Configure::read('App.paths.qr_images');
         // make sure this setting exists.
         $this->assertNotNull($tmpdir);
@@ -332,8 +329,6 @@ class QrImagesTableTest extends TestCase
      */
     public function testThumbBadSize(): void
     {
-        Configure::write('debug', true);
-
         $tmpdir = TMP . 'qr_images_test';
         Configure::write('App.paths.qr_images', $tmpdir);
 

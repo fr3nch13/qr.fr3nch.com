@@ -23,7 +23,7 @@ trait LoadAppHelpersTrait
         ]);
         $this->loadHelper('Gravatar');
         $this->loadHelper('Html');
-        $this->loadHelper('Authentication.Identity');
+        $this->loadHelper('Identity', ['className' => 'Authentication.Identity']);
         $this->loadHelper('Paginator', ['className' => 'BootstrapUI.Paginator']);
         $this->addHelper('Template');
         $this->addHelper('Url');
