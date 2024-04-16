@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version: ['8.2', 'latest']
+        php-version: ['8.2', '8.3', 'latest']
         composer-options: ['']
 
     steps:
