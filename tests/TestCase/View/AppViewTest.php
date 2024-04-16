@@ -5,7 +5,6 @@ namespace App\Test\TestCase\View;
 
 use App\Controller\QrCodesController;
 use App\View\AppView;
-use Cake\Core\Configure;
 use Cake\Http\ServerRequest;
 use Cake\TestSuite\TestCase;
 
@@ -32,7 +31,6 @@ class AppViewTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        Configure::write('debug', true);
 
         $Request = new ServerRequest();
         $this->QrCodesController = new QrCodesController($Request);

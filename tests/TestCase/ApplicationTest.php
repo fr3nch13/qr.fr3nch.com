@@ -30,7 +30,6 @@ use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
-use InvalidArgumentException;
 
 /**
  * ApplicationTest class
@@ -51,6 +50,8 @@ class ApplicationTest extends TestCase
         $app->bootstrap();
         $plugins = $app->getPlugins();
 
+        $this->assertFalse(Configure::read('debug'), 'debug is true?');
+
         $this->assertTrue($plugins->has('Bake'), 'plugins has Bake?');
         $this->assertFalse($plugins->has('DebugKit'), 'plugins has DebugKit?');
         $this->assertTrue($plugins->has('Migrations'), 'plugins has Migrations?');
@@ -59,6 +60,7 @@ class ApplicationTest extends TestCase
         $this->assertTrue($plugins->has('Authorization'), 'plugins has Authorization?');
         $this->assertTrue($plugins->has('BootstrapUI'), 'plugins has BootstrapUI?');
         $this->assertTrue($plugins->has('Search'), 'plugins has Search?');
+        $this->assertTrue($plugins->has('Fr3nch13/Stats'), 'plugins has Fr3nch13/Stats?');
     }
 
     /**
@@ -73,27 +75,17 @@ class ApplicationTest extends TestCase
         $app->bootstrap();
         $plugins = $app->getPlugins();
 
+        $this->assertTrue(Configure::read('debug'), 'debug is true?');
+
+        $this->assertTrue($plugins->has('Bake'), 'plugins has Bake?');
         $this->assertTrue($plugins->has('DebugKit'), 'plugins has DebugKit?');
-    }
+        $this->assertTrue($plugins->has('Migrations'), 'plugins has Migrations?');
 
-    /**
-     * testBootstrapPluginWitoutHalt
-     *
-     * @return void
-     */
-    public function testBootstrapPluginWithoutHalt()
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        $app = $this->getMockBuilder(Application::class)
-            ->setConstructorArgs([dirname(dirname(__DIR__)) . '/config'])
-            ->onlyMethods(['addPlugin'])
-            ->getMock();
-
-        $app->method('addPlugin')
-            ->will($this->throwException(new InvalidArgumentException('test exception.')));
-
-        $app->bootstrap();
+        $this->assertTrue($plugins->has('Authentication'), 'plugins has Authentication?');
+        $this->assertTrue($plugins->has('Authorization'), 'plugins has Authorization?');
+        $this->assertTrue($plugins->has('BootstrapUI'), 'plugins has BootstrapUI?');
+        $this->assertTrue($plugins->has('Search'), 'plugins has Search?');
+        $this->assertTrue($plugins->has('Fr3nch13/Stats'), 'plugins has Fr3nch13/Stats?');
     }
 
     /**

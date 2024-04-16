@@ -169,7 +169,7 @@ class GeneralTest extends BaseControllerTest
      * @return void
      * @uses \App\Controller\QrImagesController::show()
      */
-    public function testShowMissingImage(): void
+    public function testShowMissingImageDebugOn(): void
     {
         $qrImage = $this->QrImages->get(1, contain: ['QrCodes']);
         $path = Configure::read('App.paths.qr_images') . DS . $qrImage->qr_code_id . DS . $qrImage->id . '.' . $qrImage->ext;
@@ -182,21 +182,9 @@ class GeneralTest extends BaseControllerTest
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unable to find the image file.');
 
-        Configure::write('debug', false);
-        $this->get('https://localhost/qr-images/show/1');
-        $this->assertResponseCode(404);
-        $this->helperTestError400('/qr-images/show/1');
-        Configure::write('debug', true);
-
         $this->get('https://localhost/qr-images/show/1?thumb=sm');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unable to find the image file.');
-
-        Configure::write('debug', false);
-        $this->get('https://localhost/qr-images/show/1?thumb=sm');
-        $this->assertResponseCode(404);
-        $this->helperTestError400('/qr-images/show/1?thumb=sm');
-        Configure::write('debug', true);
     }
 
     /**
@@ -205,7 +193,33 @@ class GeneralTest extends BaseControllerTest
      * @return void
      * @uses \App\Controller\QrImagesController::show()
      */
-    public function testShowHeadersNoDebug(): void
+    public function testShowMissingImageDebugOff(): void
+    {
+        $qrImage = $this->QrImages->get(1, contain: ['QrCodes']);
+        $path = Configure::read('App.paths.qr_images') . DS . $qrImage->qr_code_id . DS . $qrImage->id . '.' . $qrImage->ext;
+        $this->assertTrue(is_readable($path));
+
+        unlink($path);
+        $this->assertFalse(is_readable($path));
+
+        Configure::write('debug', false);
+        $this->get('https://localhost/qr-images/show/1');
+        $this->assertResponseCode(404);
+        $this->helperTestError400('/qr-images/show/1');
+
+        Configure::write('debug', false);
+        $this->get('https://localhost/qr-images/show/1?thumb=sm');
+        $this->assertResponseCode(404);
+        $this->helperTestError400('/qr-images/show/1?thumb=sm');
+    }
+
+    /**
+     * Test show method
+     *
+     * @return void
+     * @uses \App\Controller\QrImagesController::show()
+     */
+    public function testShowHeadersDebugOff(): void
     {
         // check cache policy when debug is off.
         Configure::write('debug', false);
@@ -219,6 +233,5 @@ class GeneralTest extends BaseControllerTest
         $this->assertNotNull($headers['Last-Modified'][0]);
         $this->assertSame('image/jpeg', $headers['Content-Type'][0]);
         $this->assertGreaterThan(0, $headers['Content-Length'][0]);
-        Configure::write('debug', true);
     }
 }

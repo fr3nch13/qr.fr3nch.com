@@ -34,7 +34,7 @@ class PolicyTest extends BaseControllerTest
      * @alert Keep the https://localhost/admin/ as the HttpsEnforcerMiddleware will try to redirect.
      * @return void
      */
-    public function testDontexist(): void
+    public function testDontexistDebugOn(): void
     {
         // not logged in
         $this->loginGuest();
@@ -53,14 +53,22 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/admin/qr-images/dontexist');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Error: Missing Action `App\Controller\Admin\QrImagesController::dontexist()`');
+    }
 
+    /**
+     * Test missing action
+     *
+     * @alert Keep the https://localhost/admin/ as the HttpsEnforcerMiddleware will try to redirect.
+     * @return void
+     */
+    public function testDontexistDebugOff(): void
+    {
         // test with debug off
         Configure::write('debug', false);
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/qr-images/dontexist');
         $this->assertResponseCode(404);
         $this->helperTestError400('/admin/qr-images/dontexist');
-        Configure::write('debug', true);
     }
 
     /**
@@ -68,7 +76,7 @@ class PolicyTest extends BaseControllerTest
      *
      * @return void
      */
-    public function testIndex(): void
+    public function testIndexDebugOn(): void
     {
         // not logged in
         $this->loginGuest();
@@ -87,14 +95,21 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/admin/qr-images');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Error: Missing Action `App\Controller\Admin\QrImagesController::index()`');
+    }
 
+    /**
+     * Test index method
+     *
+     * @return void
+     */
+    public function testIndexDebugOff(): void
+    {
         // test with debug off
         Configure::write('debug', false);
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/qr-images');
         $this->assertResponseCode(404);
         $this->helperTestError400('/admin/qr-images');
-        Configure::write('debug', true);
     }
 
     /**
@@ -103,7 +118,7 @@ class PolicyTest extends BaseControllerTest
      * @return void
      * @uses \App\Controller\Admin\QrImagesController::qrCode()
      */
-    public function testQrCode(): void
+    public function testQrCodeDebugOn(): void
     {
         // not logged in
         $this->loginGuest();
@@ -147,14 +162,22 @@ class PolicyTest extends BaseControllerTest
         $this->helperTestObjectComment(3, 'QrImages/entity');
         $this->helperTestObjectComment(3, 'QrImages/entity/active');
         $this->helperTestObjectComment(0, 'QrImages/entity/inactive');
+    }
 
+    /**
+     * Test index method
+     *
+     * @return void
+     * @uses \App\Controller\Admin\QrImagesController::qrCode()
+     */
+    public function testQrCodeDebugOff(): void
+    {
         // test with debug off
         Configure::write('debug', false);
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/qr-images/qr-code/1');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/QrImages/qr_code');
-        Configure::write('debug', true);
     }
 
     /**
@@ -163,7 +186,7 @@ class PolicyTest extends BaseControllerTest
      * @return void
      * @uses \App\Controller\Admin\QrImagesController::show()
      */
-    public function testShow(): void
+    public function testShowDebugOn(): void
     {
         // not logged in, active image
         $this->loginGuest();
@@ -187,16 +210,6 @@ class PolicyTest extends BaseControllerTest
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
-
-        // not logged in, missing image, debug off
-        Configure::write('debug', false);
-        $this->loginGuest();
-        $this->get('https://localhost/admin/qr-images/show/999');
-        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fadmin%2Fqr-images%2Fshow%2F999');
-        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
-        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
-        $this->assertFlashElement('flash/error');
-        Configure::write('debug', true);
 
         // test with admin, active image
         $this->loginUserAdmin();
@@ -253,6 +266,24 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/admin/qr-images/show');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
+    }
+
+    /**
+     * Test view method
+     *
+     * @return void
+     * @uses \App\Controller\Admin\QrImagesController::show()
+     */
+    public function testShowDebugOff(): void
+    {
+        // not logged in, missing image, debug off
+        Configure::write('debug', false);
+        $this->loginGuest();
+        $this->get('https://localhost/admin/qr-images/show/999');
+        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fadmin%2Fqr-images%2Fshow%2F999');
+        // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
+        $this->assertFlashMessage('You are not authorized to access that location', 'flash');
+        $this->assertFlashElement('flash/error');
 
         // test with missing id, no debug
         Configure::write('debug', false);
@@ -260,7 +291,6 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/admin/qr-images/show');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
-        Configure::write('debug', true); // turn it back on
     }
 
     /**
@@ -269,7 +299,7 @@ class PolicyTest extends BaseControllerTest
      * @return void
      * @uses \App\Controller\Admin\QrImagesController::add()
      */
-    public function testAdd(): void
+    public function testAddDebugOn(): void
     {
         $this->enableSecurityToken();
 
@@ -329,14 +359,23 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/admin/qr-images/add');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
+    }
 
+    /**
+     * Test add method
+     *
+     * @return void
+     * @uses \App\Controller\Admin\QrImagesController::add()
+     */
+    public function testAddOff(): void
+    {
+        $this->enableSecurityToken();
         // debug off
         Configure::write('debug', false);
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/qr-images/add');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
-        Configure::write('debug', true);
     }
 
     /**
@@ -345,7 +384,7 @@ class PolicyTest extends BaseControllerTest
      * @return void
      * @uses \App\Controller\Admin\QrImagesController::edit()
      */
-    public function testEdit(): void
+    public function testEditDebugOn(): void
     {
         $this->enableSecurityToken();
 
@@ -405,6 +444,17 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/admin/qr-images/edit');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
+    }
+
+    /**
+     * Test edit method
+     *
+     * @return void
+     * @uses \App\Controller\Admin\QrImagesController::edit()
+     */
+    public function testEditDebugOff(): void
+    {
+        $this->enableSecurityToken();
 
         // debug off
         Configure::write('debug', false);
@@ -412,7 +462,6 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/admin/qr-images/edit');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
-        Configure::write('debug', true);
     }
 
     /**
@@ -421,7 +470,7 @@ class PolicyTest extends BaseControllerTest
      * @return void
      * @uses \App\Controller\Admin\QrImagesController::delete()
      */
-    public function testDelete(): void
+    public function testDeleteDebugOn(): void
     {
         $this->enableSecurityToken();
 
@@ -487,6 +536,17 @@ class PolicyTest extends BaseControllerTest
         $this->delete('https://localhost/admin/qr-images/delete');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
+    }
+
+    /**
+     * Test delete method
+     *
+     * @return void
+     * @uses \App\Controller\Admin\QrImagesController::delete()
+     */
+    public function testDeleteDebugOff(): void
+    {
+        $this->enableSecurityToken();
 
         // test with admin, debug off
         Configure::write('debug', false);
@@ -494,7 +554,6 @@ class PolicyTest extends BaseControllerTest
         $this->delete('https://localhost/admin/qr-images/delete');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
-        Configure::write('debug', true);
 
         // not logged in, debug off
         Configure::write('debug', false);
@@ -502,6 +561,5 @@ class PolicyTest extends BaseControllerTest
         $this->delete('https://localhost/admin/qr-images/delete');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
-        Configure::write('debug', true);
     }
 }

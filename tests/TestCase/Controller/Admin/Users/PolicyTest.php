@@ -34,7 +34,7 @@ class PolicyTest extends BaseControllerTest
      * @alert Keep the https://localhost/admin/ as the HttpsEnforcerMiddleware will try to redirect.
      * @return void
      */
-    public function testDontexist(): void
+    public function testDontexistDebugOn(): void
     {
         // not logged in
         $this->get('https://localhost/admin/users/dontexist');
@@ -52,14 +52,22 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/admin/users/dontexist');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Error: Missing Action `App\Controller\Admin\UsersController::dontexist()`');
+    }
 
+    /**
+     * Test missing action
+     *
+     * @alert Keep the https://localhost/admin/ as the HttpsEnforcerMiddleware will try to redirect.
+     * @return void
+     */
+    public function testDontexistDebugOff(): void
+    {
         // test with debug off
         Configure::write('debug', false);
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/users/dontexist');
         $this->assertResponseCode(404);
         $this->helperTestError400('/admin/users/dontexist');
-        Configure::write('debug', true);
     }
 
     /**
@@ -68,7 +76,7 @@ class PolicyTest extends BaseControllerTest
      * @return void
      * @uses \App\Controller\Admin\UsersController::index()
      */
-    public function testDashboard(): void
+    public function testDashboardDebugOn(): void
     {
         // not logged in
         $this->get('https://localhost/admin');
@@ -89,14 +97,6 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/admin');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/Users/dashboard');
-
-        // test with admin, debug off
-        Configure::write('debug', false);
-        $this->loginUserAdmin();
-        $this->get('https://localhost/admin');
-        $this->assertResponseOk();
-        $this->helperTestTemplate('Admin/Users/dashboard');
-        Configure::write('debug', true);
     }
 
     /**
@@ -105,7 +105,23 @@ class PolicyTest extends BaseControllerTest
      * @return void
      * @uses \App\Controller\Admin\UsersController::index()
      */
-    public function testIndex(): void
+    public function testDashboardDebugOff(): void
+    {
+        // test with admin, debug off
+        Configure::write('debug', false);
+        $this->loginUserAdmin();
+        $this->get('https://localhost/admin');
+        $this->assertResponseOk();
+        $this->helperTestTemplate('Admin/Users/dashboard');
+    }
+
+    /**
+     * Test index method
+     *
+     * @return void
+     * @uses \App\Controller\Admin\UsersController::index()
+     */
+    public function testIndexDebugOn(): void
     {
         // not logged in
         $this->get('https://localhost/admin/users');
@@ -123,6 +139,21 @@ class PolicyTest extends BaseControllerTest
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
+        // test with admin
+        $this->loginUserAdmin();
+        $this->get('https://localhost/admin/users');
+        $this->assertResponseOk();
+        $this->helperTestTemplate('Admin/Users/index');
+    }
+
+    /**
+     * Test index method
+     *
+     * @return void
+     * @uses \App\Controller\Admin\UsersController::index()
+     */
+    public function testIndexDebugOff(): void
+    {
         // test with reqular, debug off
         Configure::write('debug', false);
         $this->loginUserRegular();
@@ -131,13 +162,6 @@ class PolicyTest extends BaseControllerTest
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
-        Configure::write('debug', true);
-
-        // test with admin
-        $this->loginUserAdmin();
-        $this->get('https://localhost/admin/users');
-        $this->assertResponseOk();
-        $this->helperTestTemplate('Admin/Users/index');
 
         // test with admin, debug off
         Configure::write('debug', false);
@@ -145,7 +169,6 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/admin/users');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/Users/index');
-        Configure::write('debug', true);
     }
 
     /**
@@ -154,7 +177,7 @@ class PolicyTest extends BaseControllerTest
      * @return void
      * @uses \App\Controller\Admin\UsersController::view()
      */
-    public function testView(): void
+    public function testViewDebugOn(): void
     {
         // not logged in
         $this->get('https://localhost/admin/users/view/3');
@@ -201,14 +224,22 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/admin/users/view');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/Users/view');
+    }
 
+    /**
+     * Test private profile method
+     *
+     * @return void
+     * @uses \App\Controller\Admin\UsersController::view()
+     */
+    public function testViewDebugOff(): void
+    {
         // debug off
         Configure::write('debug', false);
         $this->loginUserAdmin();
         $this->get('https://localhost/admin/users/view');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/Users/view');
-        Configure::write('debug', true);
     }
 
     /**
@@ -217,7 +248,7 @@ class PolicyTest extends BaseControllerTest
      * @return void
      * @uses \App\Controller\Admin\UsersController::add()
      */
-    public function testAdd(): void
+    public function testAddDebugOn(): void
     {
         $this->enableSecurityToken();
 
@@ -243,6 +274,17 @@ class PolicyTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/Users/add');
         $this->helperTestFormTag('/admin/users/add', 'post');
+    }
+
+    /**
+     * Test add method
+     *
+     * @return void
+     * @uses \App\Controller\Admin\UsersController::add()
+     */
+    public function testAddDebugOff(): void
+    {
+        $this->enableSecurityToken();
 
         // Debug Off
         Configure::write('debug', false);
@@ -251,9 +293,6 @@ class PolicyTest extends BaseControllerTest
         $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fadmin%2Fusers%2Fadd');
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
-        Configure::write('debug', true);
-
-        // can't test success with debug off as it messes with the test env setup.
     }
 
     /**
@@ -262,7 +301,7 @@ class PolicyTest extends BaseControllerTest
      * @return void
      * @uses \App\Controller\Admin\UsersController::edit()
      */
-    public function testEdit(): void
+    public function testEditDebugOn(): void
     {
         $this->enableSecurityToken();
 
@@ -319,7 +358,17 @@ class PolicyTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/Users/edit');
         $this->helperTestFormTag('/admin/users/edit', 'put');
+    }
 
+    /**
+     * Test edit method
+     *
+     * @return void
+     * @uses \App\Controller\Admin\UsersController::edit()
+     */
+    public function testEditDebugOff(): void
+    {
+        $this->enableSecurityToken();
         // Debug Off
         Configure::write('debug', false);
         $this->loginGuest();
@@ -327,9 +376,6 @@ class PolicyTest extends BaseControllerTest
         $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fadmin%2Fusers%2Fedit');
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
-        Configure::write('debug', true);
-
-        // can't test success with debug off as it messes with the test env setup. and triggers a form tempering error.
     }
 
     /**
@@ -341,7 +387,7 @@ class PolicyTest extends BaseControllerTest
      * @return void
      * @uses \App\Controller\Admin\UsersController::delete()
      */
-    public function testDelete(): void
+    public function testDeleteDebugOn(): void
     {
         $this->enableSecurityToken();
 
@@ -397,6 +443,20 @@ class PolicyTest extends BaseControllerTest
         $this->delete('https://localhost/admin/users/delete');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
+    }
+
+    /**
+     * Test delete method
+     *
+     * The redirects here should not inlcude the query string.
+     * Sonce a delete() http method is also treated similar to a post.
+     *
+     * @return void
+     * @uses \App\Controller\Admin\UsersController::delete()
+     */
+    public function testDeleteDebugOff(): void
+    {
+        $this->enableSecurityToken();
 
         // admin, debug off
         Configure::write('debug', false);
@@ -404,7 +464,6 @@ class PolicyTest extends BaseControllerTest
         $this->delete('https://localhost/admin/users/delete');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
-        Configure::write('debug', true);
 
         // not logged in, debug off
         Configure::write('debug', false);
@@ -412,6 +471,5 @@ class PolicyTest extends BaseControllerTest
         $this->delete('https://localhost/admin/users/delete');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
-        Configure::write('debug', true);
     }
 }

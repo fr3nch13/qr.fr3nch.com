@@ -34,7 +34,7 @@ class PolicyTest extends BaseControllerTest
      * @alert Keep the https://localhost/ as the HttpsEnforcerMiddleware will try to redirect.
      * @return void
      */
-    public function testDontexist(): void
+    public function testDontexistDebugOn(): void
     {
         // not logged in
         $this->loginGuest();
@@ -53,14 +53,22 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/qr-images/dontexist');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Error: Missing Action `App\Controller\QrImagesController::dontexist()`');
+    }
 
+    /**
+     * Test missing action
+     *
+     * @alert Keep the https://localhost/ as the HttpsEnforcerMiddleware will try to redirect.
+     * @return void
+     */
+    public function testDontexistOff(): void
+    {
         // test with debug off
         Configure::write('debug', false);
         $this->loginUserAdmin();
         $this->get('https://localhost/qr-images/dontexist');
         $this->assertResponseCode(404);
         $this->helperTestError400('/qr-images/dontexist');
-        Configure::write('debug', true);
     }
 
     /**
@@ -69,7 +77,7 @@ class PolicyTest extends BaseControllerTest
      * @return void
      * @uses \App\Controller\Admin\QrImagesController::show()
      */
-    public function testShow(): void
+    public function testShowDebugOn(): void
     {
         // not logged in, active image
         $this->loginGuest();
@@ -92,14 +100,6 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/qr-images/show/999');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Record not found in table `qr_images`.');
-
-        // not logged in, missing image, debug off
-        Configure::write('debug', false);
-        $this->loginGuest();
-        $this->get('https://localhost/qr-images/show/999');
-        $this->assertResponseCode(404);
-        $this->helperTestError400('/qr-images/show/999');
-        Configure::write('debug', true);
 
         // test with admin, active image
         $this->loginUserAdmin();
@@ -155,6 +155,22 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/qr-images/show');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
+    }
+
+    /**
+     * Test view method
+     *
+     * @return void
+     * @uses \App\Controller\Admin\QrImagesController::show()
+     */
+    public function testShowDebugOff(): void
+    {
+        // not logged in, missing image, debug off
+        Configure::write('debug', false);
+        $this->loginGuest();
+        $this->get('https://localhost/qr-images/show/999');
+        $this->assertResponseCode(404);
+        $this->helperTestError400('/qr-images/show/999');
 
         // test with missing id, no debug
         Configure::write('debug', false);
@@ -162,6 +178,5 @@ class PolicyTest extends BaseControllerTest
         $this->get('https://localhost/qr-images/show');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
-        Configure::write('debug', true); // turn it back on
     }
 }

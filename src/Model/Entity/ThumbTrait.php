@@ -7,6 +7,8 @@ use App\Exception\ThumbException;
 use Cake\Core\Configure;
 use Cake\ORM\Entity;
 use GdImage;
+use function getimagesize;
+use function imagefill;
 
 /**
  * Managed the thumbnail files
