@@ -108,8 +108,8 @@ class PagesControllerTest extends BaseControllerTest
         Configure::write('debug', true);
 
         $this->get('https://localhost/pages/not_existing');
+        $this->assertResponseCode(500);
 
-        $this->assertResponseFailure();
         $this->assertResponseContains('Missing Template');
         $this->assertResponseContains('stack-frames');
         $this->assertResponseContains('not_existing.php');
