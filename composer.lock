@@ -1286,10 +1286,10 @@
         },
         {
             "name": "npm-asset/bootstrap-fileinput",
-            "version": "5.5.3",
+            "version": "5.5.4",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/bootstrap-fileinput/-/bootstrap-fileinput-5.5.3.tgz"
+                "url": "https://registry.npmjs.org/bootstrap-fileinput/-/bootstrap-fileinput-5.5.4.tgz"
             },
             "require": {
                 "npm-asset/bootstrap": ">=3.4.1",
