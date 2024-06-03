@@ -1315,10 +1315,10 @@
         },
         {
             "name": "npm-asset/bootstrap5-tags",
-            "version": "1.7.1",
+            "version": "1.7.2",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/bootstrap5-tags/-/bootstrap5-tags-1.7.1.tgz"
+                "url": "https://registry.npmjs.org/bootstrap5-tags/-/bootstrap5-tags-1.7.2.tgz"
             },
             "type": "npm-asset",
             "license": [
