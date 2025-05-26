@@ -1306,10 +1306,10 @@
         },
         {
             "name": "npm-asset/bootstrap-icons",
-            "version": "1.11.3",
+            "version": "1.13.1",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/bootstrap-icons/-/bootstrap-icons-1.11.3.tgz"
+                "url": "https://registry.npmjs.org/bootstrap-icons/-/bootstrap-icons-1.13.1.tgz"
             },
             "type": "npm-asset",
             "license": [
@@ -7371,5 +7371,5 @@
         "php": ">=8.1"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
