@@ -1318,10 +1318,10 @@
         },
         {
             "name": "npm-asset/bootstrap5-tags",
-            "version": "1.7.5",
+            "version": "1.7.16",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/bootstrap5-tags/-/bootstrap5-tags-1.7.5.tgz"
+                "url": "https://registry.npmjs.org/bootstrap5-tags/-/bootstrap5-tags-1.7.16.tgz"
             },
             "type": "npm-asset",
             "license": [
@@ -7364,12 +7364,12 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": ">=8.1"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "plugin-api-version": "2.6.0"
 }
