@@ -43,7 +43,7 @@
         "cakephp/cakephp-codesniffer": "^5.1.1",
         "cakephp/debug_kit": "^5.0.4",
         "josegonzalez/dotenv": "~4.0",
-        "phpstan/phpstan": "^1.10.50",
+        "phpstan/phpstan": "^2.1.33",
         "phpunit/phpunit": "^10.5.3",
         "rexxars/html-validator": "^2.3"
     },
