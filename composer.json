@@ -31,7 +31,7 @@
         "npm-asset/bootstrap-fileinput": "^5.5.2",
         "npm-asset/bootstrap-icons": "^1.11.2",
         "npm-asset/bootstrap5-tags": "^1.6.11",
-        "npm-asset/jquery": "^3.7.1",
+        "npm-asset/jquery": "^4.0.0",
         "npm-asset/piexifjs": "^1.0.6",
         "npm-asset/sortablejs": "^1.15",
         "oomphinc/composer-installers-extender": "^2.0.1",

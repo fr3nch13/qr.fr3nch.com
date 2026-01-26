@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7cb926c799f8e8508be524eaff25d968",
+    "content-hash": "7421eeb7f22d4dd6981d5c401a275630",
     "packages": [
         {
             "name": "cakephp/authentication",
@@ -1330,10 +1330,10 @@
         },
         {
             "name": "npm-asset/jquery",
-            "version": "3.7.1",
+            "version": "4.0.0",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/jquery/-/jquery-3.7.1.tgz"
+                "url": "https://registry.npmjs.org/jquery/-/jquery-4.0.0.tgz"
             },
             "type": "npm-asset",
             "license": [
@@ -7364,12 +7364,12 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": ">=8.1"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "plugin-api-version": "2.6.0"
 }
