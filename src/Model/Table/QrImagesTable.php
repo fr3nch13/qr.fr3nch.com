@@ -304,7 +304,7 @@ class QrImagesTable extends Table
      */
     public function findOrderFirst(SelectQuery $query): SelectQuery
     {
-        return $query->order(['QrImages.imorder' => 'asc']);
+          return $query->orderBy(['QrImages.imorder' => 'asc']);
     }
 
     /**
