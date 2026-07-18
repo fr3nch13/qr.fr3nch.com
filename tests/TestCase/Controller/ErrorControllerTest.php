@@ -26,10 +26,9 @@ class ErrorControllerTest extends BaseControllerTest
         Configure::write('debug', true);
         $this->get('https://localhost/dontexist');
         $this->assertResponseCode(404);
-        $this->assertResponseContains('Error: Missing Controller');
-        $this->assertResponseContains('<span>Missing Controller</span>');
+        $this->assertResponseContains('Controller class');
+        $this->assertResponseContains('DontexistController');
         $this->assertResponseContains('Cake\Http\Exception\MissingControllerException');
-        $this->assertResponseContains('<em>DontexistController</em> could not be found.');
     }
 
     /**

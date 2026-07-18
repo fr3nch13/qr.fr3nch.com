@@ -110,7 +110,7 @@ class PagesControllerTest extends BaseControllerTest
         $this->get('https://localhost/pages/not_existing');
         $this->assertResponseCode(500);
 
-        $this->assertResponseContains('Missing Template');
+        $this->assertResponseContains('Template file');
         $this->assertResponseContains('stack-frames');
         $this->assertResponseContains('not_existing.php');
     }
