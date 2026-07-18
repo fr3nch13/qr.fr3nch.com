@@ -80,7 +80,7 @@ class QrCodesTable extends Table
         $this->addBehavior('Search.Search');
 
         // Setup search filter using search manager
-        $this->searchManager()
+        $this->getBehavior('Search')->searchManager()
             // add filtering by just the qrcode
             ->add('q', 'Search.Like', [
                 'before' => true,

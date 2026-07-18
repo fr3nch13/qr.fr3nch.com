@@ -61,7 +61,7 @@ class TagsTable extends Table
         $this->addBehavior('Search.Search');
 
         // Setup search filter using search manager
-        $this->searchManager()
+        $this->getBehavior('Search')->searchManager()
             ->add('q', 'Search.Like', [
                 'before' => true,
                 'after' => true,
