@@ -275,21 +275,25 @@ class Application extends BaseApplication implements
             'queryParam' => 'redirect',
         ]);
 
-        // Load identifiers, ensure we check email and password fields
-        $authenticationService->loadIdentifier('Authentication.Password', [
-            'fields' => $fields,
-            'resolver' => [
-                'className' => 'Authentication.Orm',
-                'userModel' => 'Users',
-                'finder' => 'active',
+        $identifier = [
+            'Authentication.Password' => [
+                'fields' => $fields,
+                'resolver' => [
+                    'className' => 'Authentication.Orm',
+                    'userModel' => 'Users',
+                    'finder' => 'active',
+                ],
             ],
-        ]);
+        ];
 
         // Load the authenticators, you want session first
-        $authenticationService->loadAuthenticator('Authentication.Session');
+        $authenticationService->loadAuthenticator('Authentication.Session', [
+            'identifier' => $identifier,
+        ]);
 
         // Configure form data check to pick email and password
         $authenticationService->loadAuthenticator('Authentication.Form', [
+            'identifier' => $identifier,
             'fields' => $fields,
             'loginUrl' => [
                 Router::url([
@@ -311,6 +315,7 @@ class Application extends BaseApplication implements
 
         // Used for Remember me
         $authenticationService->loadAuthenticator('Authentication.Cookie', [
+            'identifier' => $identifier,
             'fields' => $fields,
             'loginUrl' => [
                 Router::url([
