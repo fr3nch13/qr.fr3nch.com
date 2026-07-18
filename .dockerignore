@@ -1,0 +1,21 @@
+# Only included files needed to run in production
+**/vendor/*
+**/tmp/*
+**/logs/*
+**/.git
+**/.DS_Store
+**/.dockerignore
+**/.gitignore
+**/.editorconfig
+**/.gitattributes
+**/.github
+**/.phpunit.cache
+**/Dockerfile
+**/README.md
+**/composer.phar
+**/phpcs.xml
+**/phpstan.neon
+**/phpunit.xml
+**/phpunit.xml.dist
+**/psalm.xml
+!*.gitkeep
