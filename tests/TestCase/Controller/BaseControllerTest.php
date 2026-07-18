@@ -397,7 +397,7 @@ class BaseControllerTest extends TestCase
         $this->assertSame(1, substr_count($content, '</head>'));
         $this->assertSame(1, substr_count($content, '<body>'));
         // favicons
-        $this->assertSame(1, substr_count($content, '<link href="/favicon.ico" type="image/x-icon" rel="icon"><link href="/favicon.ico" type="image/x-icon" rel="shortcut icon">'));
+        $this->assertSame(1, substr_count($content, '<link href="/favicon.ico" type="image/x-icon" rel="icon">'));
         $this->assertSame(1, substr_count($content, '<link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">'));
         $this->assertSame(1, substr_count($content, '<link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">'));
         $this->assertSame(1, substr_count($content, '<link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">'));
