@@ -108,7 +108,7 @@ class QrCodesTable extends Table
                         ->innerJoinWith('Tags', function (SelectQuery $query) use ($args) {
                             return $query->where(['Tags.name LIKE' => $args['t']]);
                         })
-                        ->group('QrCodes.id');
+                        ->groupBy('QrCodes.id');
 
                     return true;
                 },
