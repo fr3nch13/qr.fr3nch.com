@@ -1,36 +1,65 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
-// README at: https://github.com/devcontainers/templates/tree/main/src/docker-existing-dockerfile
+// README at: https://github.com/devcontainers/templates/tree/main/src/php-mariadb
 {
-	"name": "qr.fr3nch.com dev",
-	"build": {
-		// Sets the run context to one level up instead of the .devcontainer folder.
-		"context": "..",
-		// Update the 'dockerFile' property if you aren't using the standard 'Dockerfile' filename.
-		"dockerfile": "../Dockerfile"
-	},
+    "name": "qr.fr3nch.com",
+    "build": {
+        "dockerfile": "../Dockerfile",
+        "target": "devcontainer"
+    },
+    "runArgs": [
+        "--env-file",
+        "${localWorkspaceFolder}/config/.env",
+        "-p",
+        "8081:8080"
+    ],
+    "mounts": [
+        "source=qr-root-config,target=/root/.config,type=volume",
+        "source=qr-root-aws,target=/root/.aws,type=volume",
+        "source=qr-codex,target=/root/.codex,type=volume",
+        "source=qr-hermes,target=/root/.hermes,type=volume"
+    ],
+    "overrideCommand": false,
+    "workspaceMount": "source=${localWorkspaceFolder},target=/var/www/html,type=bind,consistency=cached",
+    "workspaceFolder": "/var/www/html",
 
-	// Features to add to the dev container. More info: https://containers.dev/features.
-	// "features": {},
+    // Features to add to the dev container. More info: https://containers.dev/features.
+    "features": {
+        "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+            "moby": false
+        }
+    },
 
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
-	"portsAttributes": {
-		"80": {
-			"label": "HTTP App",
-			"onAutoForward": "notify"
-		},
-		"443": {
-			"label": "HTTPS App",
-			"onAutoForward": "notify"
-		}
-	}
+    // Apache listens on port 8080 in the container.
+    "forwardPorts": [8080],
+    "portsAttributes": {
+        "8080": {
+            "label": "Apache",
+            "requireLocalPort": true
+        }
+    },
 
-	// Uncomment the next line to run commands after the container is created.
-	// "postCreateCommand": "cat /etc/os-release",
+    // Configure Apache to serve CakePHP's public webroot after the workspace mounts.
 
-	// Configure tool-specific properties.
-	// "customizations": {},
+    // Configure tool-specific properties.
+    // "customizations": {},
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "xdebug.php-debug",
+                "bmewburn.vscode-intelephense-client",
+                "junstyle.php-cs-fixer",
+                "neilbrayfield.php-docblocker",
+                "MehediDracula.php-namespace-resolver",
+                "joaompfp.hermes-ai-agent",
+                "openai.chatgpt"
+            ]
+        }
+    },
+    "waitFor": "postCreateCommand",
+    "postCreateCommand": "bash .devcontainer/post_create.sh",
+    "postStartCommand": "bash .devcontainer/post_start.sh"
 
-	// Uncomment to connect as an existing user other than the container default. More info: https://aka.ms/dev-containers-non-root.
-	// "remoteUser": "devcontainer"
+
+    // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+    // "remoteUser": "root"
 }

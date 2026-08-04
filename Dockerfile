@@ -1,57 +1,66 @@
-# Stage 1 get the base image
-FROM php:8.2-apache as php-8.2
+FROM php:8.5-apache-trixie AS php-extensions
+
+# Build PHP extensions with their compile-time dependencies.
+RUN apt-get update \
+    && export DEBIAN_FRONTEND=noninteractive \
+    && apt-get install -y --no-install-recommends libicu-dev libsqlite3-dev libzip-dev \
+    && apt-get clean -y && rm -rf /var/lib/apt/lists/*
+
+RUN docker-php-ext-configure intl && \
+    docker-php-ext-install -j"$(nproc)" intl mysqli pdo_mysql pdo_sqlite zip
+
+FROM php:8.5-apache-trixie AS base
+
+# Install runtime libraries and the app's database client.
+RUN apt-get update \
+    && export DEBIAN_FRONTEND=noninteractive \
+    && apt-get install -y --no-install-recommends mariadb-client libicu76 libzip5 \
+    && apt-get clean -y && rm -rf /var/lib/apt/lists/*
+
+COPY --from=php-extensions /usr/local/lib/php/extensions/ /usr/local/lib/php/extensions/
+COPY --from=php-extensions /usr/local/etc/php/conf.d/ /usr/local/etc/php/conf.d/
+
+# Enable Apache modules commonly needed by CakePHP apps.
+RUN a2enmod rewrite headers \
+    && sed -i 's/^Listen 80$/Listen 8080/' /etc/apache2/ports.conf \
+    && sed -i 's/<VirtualHost \*:80>/<VirtualHost *:8080>/' /etc/apache2/sites-available/000-default.conf
 
 WORKDIR /var/www/html
+RUN mkdir -p /var/www/html/tmp/uploads /var/www/html/logs \
+    && chown -R www-data:www-data /var/www/html/tmp /var/www/html/logs
+EXPOSE 8080
 
-# get rid of apache's warning
-RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+# This is the target stage specifically for development builds. It is not used in production.
+FROM base AS development
 
-# make sure we're connecting to the apt repos via https
-#RUN sed -i 's|http://|https://|g' /etc/apt/sources.list
+# Support VS Code sandboxed tool execution and frontend asset builds in the development container.
+RUN apt-get update \
+    && export DEBIAN_FRONTEND=noninteractive \
+    && apt-get install -y --no-install-recommends awscli bubblewrap gh git git-lfs jq nodejs npm openssh-client ripgrep socat \
+    && apt-get clean -y && rm -rf /var/lib/apt/lists/*
+RUN pecl install xdebug \
+    && docker-php-ext-enable xdebug
 
-# update all of repo info and all of the installed packages from the php image
-RUN apt-get -y --fix-missing update \
-    && apt-get -y upgrade
+COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
+CMD ["apache2-foreground"]
 
-# Install the required packages
-RUN apt-get -y --no-install-recommends install \
-    git \
-    curl \
-    libcurl4-openssl-dev \
-    libicu-dev \
-    libonig-dev \
-    libpng-dev \
-    libzip-dev
+# This is the target stage specifically for devcontainer builds. It is not used in production.
+FROM development AS devcontainer
 
-# clear the apt cache
-RUN rm -rf /var/lib/apt/lists/*
+# Install devcontainer-only tooling.
+RUN curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash -s -- --non-interactive
 
-# Install the needed php extensions
-RUN docker-php-ext-configure gd \
-    && docker-php-ext-install -j$(nproc) gd
-RUN docker-php-ext-install -j$(nproc) intl
-RUN docker-php-ext-install -j$(nproc) zip
-RUN docker-php-ext-install -j$(nproc) curl
-RUN docker-php-ext-install -j$(nproc) mbstring
-RUN docker-php-ext-install -j$(nproc) mysqli
+FROM development AS application-build
 
-# Install/enable apache modules
-RUN a2enmod rewrite ssl headers
-
-# copy over the application
-ADD docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod +x /docker-entrypoint.sh
 COPY . /var/www/html
-RUN rm /var/www/html/docker-entrypoint.sh
+RUN composer install --no-dev --no-interaction --no-scripts --prefer-dist --optimize-autoloader \
+    && npm ci \
+    && npm run build \
+    && rm -rf node_modules
 
-# Install composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-RUN git config --global --add safe.directory '*'
+# This is the target stage for production builds. It is not used in development.
+FROM base AS production
 
-# Install the application
-RUN composer install --no-dev --no-interaction --no-progress --optimize-autoloader
+COPY --from=application-build --chown=www-data:www-data /var/www/html /var/www/html
 
-# Run startup script
-EXPOSE 80
-EXPOSE 443
-ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD ["sh", "-c", "bin/cake migrations migrate && apache2-foreground"]
