@@ -101,7 +101,7 @@ class Application extends BaseApplication implements
          * Only try to load DebugKit in development mode
          * Debug Kit should not be installed on a production system
          */
-        if (Configure::read('debug') === true && !$this->getPlugins()->has('DebugKit')) {
+        if (Configure::read('debug')) {
             $this->addOptionalPlugin('DebugKit');
         }
 
@@ -124,14 +124,6 @@ class Application extends BaseApplication implements
         if (!$this->getPlugins()->has('Search')) {
             $this->addPlugin('Search');
         }
-
-        // my stats plugin
-        if (!$this->getPlugins()->has('Fr3nch13/Stats')) {
-            $this->addPlugin('Fr3nch13/Stats');
-        }
-
-        // register the event listeners.
-        $this->registerEventListeners();
     }
 
     /**
@@ -379,22 +371,11 @@ class Application extends BaseApplication implements
     }
 
     /**
-     * Register event listeners globally.
-     *
-     * Called in self::bootstrap()
-     *
-     * @return void
+     * @inheritDoc
      */
-    protected function registerEventListeners(): void
+    public function eventListeners(): array
     {
-        /** @var \Cake\Event\EventManager $eventManager */
-        $eventManager = $this->getEventManager();
-        // make sure they're only getting registered globally, once.
-        // TODO: Hacky as we're tracking the event key, not if the listener itself is already registered.
-        // Maybe use listeners('QrCode.onHit')
-        if (empty($eventManager->prioritisedListeners('QrCode.onHit'))) {
-            $eventManager->on(new QrCodeListener());
-        }
+        return [QrCodeListener::class];
     }
 
     /**

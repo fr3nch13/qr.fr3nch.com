@@ -1,10 +1,45 @@
 <?php
 
+use App\Cache\Engine\S3CacheEngine;
 use Cake\Cache\Engine\FileEngine;
 use Cake\Database\Connection;
 use Cake\Database\Driver\Mysql;
 use Cake\Log\Engine\FileLog;
 use Cake\Mailer\Transport\MailTransport;
+
+$useS3Cache =
+    (bool)env('AWS_S3_BUCKET') &&
+    (bool)env('AWS_S3_REGION') &&
+    (bool)env('AWS_S3_ACCESS_KEY_ID') &&
+    (bool)env('AWS_S3_SECRET_ACCESS_KEY');
+$cacheClassName = $useS3Cache ? S3CacheEngine::class : FileEngine::class;
+
+$s3Environment = trim((string)env('AWS_S3_ENV', 'development'));
+$s3Environment = strtolower($s3Environment);
+$s3Environment = preg_replace('/[^a-z0-9._-]+/', '-', $s3Environment) ?: 'development';
+
+$s3PrefixRoot = trim((string)env('AWS_S3_PREFIX', 'fr3nch.com'), '/');
+if ($s3PrefixRoot === '') {
+    $s3PrefixRoot = 'fr3nch.com';
+}
+
+$defaultCachePrefix = 'cache/';
+$cakeCoreCachePrefix = 'cake_core/';
+$cakeModelCachePrefix = 'cake_model/';
+$cakeTranslationsCachePrefix = 'cake_translations/';
+
+if ($useS3Cache) {
+    $s3ScopedPrefix = $s3PrefixRoot . '/' . $s3Environment;
+    $defaultCachePrefix = $s3ScopedPrefix . '/cache/';
+    $cakeCoreCachePrefix = $s3ScopedPrefix . '/cake_core/';
+    $cakeModelCachePrefix = $s3ScopedPrefix . '/cake_model/';
+    $cakeTranslationsCachePrefix = $s3ScopedPrefix . '/cake_translations/';
+}
+
+$filesystemPrefix = trim((string)env(
+    'FILESYSTEM_PREFIX',
+    $s3PrefixRoot . '/' . $s3Environment . '/uploads',
+), '/');
 
 return [
     /*
@@ -56,7 +91,7 @@ return [
         'webroot' => 'webroot',
         'wwwRoot' => WWW_ROOT,
         //'baseUrl' => env('SCRIPT_NAME'),
-        'fullBaseUrl' => false,
+        'fullBaseUrl' => env('APP_FULL_BASE_URL', false),
         'imageBaseUrl' => 'img/',
         'cssBaseUrl' => 'css/',
         'jsBaseUrl' => 'js/',
@@ -95,28 +130,46 @@ return [
         // 'cacheTime' => '+1 year'
     ],
 
+    'Filesystem' => [
+        'driver' => env('FILESYSTEM_DRIVER', 'local'),
+        'localPath' => env('FILESYSTEM_LOCAL_PATH', TMP . 'uploads'),
+        'key' => env('AWS_S3_ACCESS_KEY_ID'),
+        'secret' => env('AWS_S3_SECRET_ACCESS_KEY'),
+        'region' => env('AWS_S3_REGION'),
+        'bucket' => env('AWS_S3_BUCKET'),
+        'prefix' => $filesystemPrefix,
+    ],
+
     /*
      * Configure the cache adapters.
      */
     'Cache' => [
         'default' => [
-            'className' => FileEngine::class,
-            'path' => CACHE,
+            'className' => $cacheClassName,
+            'key' => env('AWS_S3_ACCESS_KEY_ID'),
+            'secret' => env('AWS_S3_SECRET_ACCESS_KEY'),
+            'region' => env('AWS_S3_REGION'),
+            'bucket' => env('AWS_S3_BUCKET'),
+            'prefix' => $defaultCachePrefix,
             'url' => env('CACHE_DEFAULT_URL', null),
         ],
 
         /*
-         * Configure the cache used for translations.
+         * Configure the cache used for general framework caching.
+         * Translation cache files are stored with this configuration.
          * Duration will be set to '+2 minutes' in bootstrap.php when debug = true
-         * If you set 'className' => 'Null' translation cache will be disabled.
+         * If you set 'className' => 'Null' core cache will be disabled.
          */
-        '_cake_translations_' => [
-            'className' => FileEngine::class,
-            'prefix' => 'myapp_cake_translations_',
-            'path' => CACHE . 'persistent' . DS,
+        '_cake_core_' => [
+            'className' => $cacheClassName,
+            'key' => env('AWS_S3_ACCESS_KEY_ID'),
+            'secret' => env('AWS_S3_SECRET_ACCESS_KEY'),
+            'region' => env('AWS_S3_REGION'),
+            'bucket' => env('AWS_S3_BUCKET'),
+            'prefix' => $cakeCoreCachePrefix,
             'serialize' => true,
             'duration' => '+1 years',
-            'url' => env('CACHE_CAKE_TRANSLATIONS_URL', env('CACHE_CAKECORE_URL', null)),
+            'url' => env('CACHE_CAKECORE_URL', null),
         ],
 
         /*
@@ -126,12 +179,32 @@ return [
          * Duration will be set to '+2 minutes' in bootstrap.php when debug = true
          */
         '_cake_model_' => [
-            'className' => FileEngine::class,
-            'prefix' => 'myapp_cake_model_',
-            'path' => CACHE . 'models' . DS,
+            'className' => $cacheClassName,
+            'key' => env('AWS_S3_ACCESS_KEY_ID'),
+            'secret' => env('AWS_S3_SECRET_ACCESS_KEY'),
+            'region' => env('AWS_S3_REGION'),
+            'bucket' => env('AWS_S3_BUCKET'),
+            'prefix' => $cakeModelCachePrefix,
             'serialize' => true,
             'duration' => '+1 years',
             'url' => env('CACHE_CAKEMODEL_URL', null),
+        ],
+
+        /*
+         * Configure the cache for translation files. This cache configuration is used to store
+         * compiled translation files.
+         * Duration will be set to '+2 minutes' in bootstrap.php when debug = true
+         */
+        '_cake_translations_' => [
+            'className' => $cacheClassName,
+            'key' => env('AWS_S3_ACCESS_KEY_ID'),
+            'secret' => env('AWS_S3_SECRET_ACCESS_KEY'),
+            'region' => env('AWS_S3_REGION'),
+            'bucket' => env('AWS_S3_BUCKET'),
+            'prefix' => $cakeTranslationsCachePrefix,
+            'serialize' => true,
+            'duration' => '+1 years',
+            'url' => env('CACHE_CAKETRANSLATION_URL', null),
         ],
     ],
 
@@ -149,11 +222,11 @@ return [
      * Options:
      *
      * - `errorLevel` - int - The level of errors you are interested in capturing.
-     * - `trace` - boolean - Whether or not backtraces should be included in
+     * - `trace` - boolean - Whether backtraces should be included in
      *   logged errors/exceptions.
-     * - `log` - boolean - Whether or not you want exceptions logged.
+     * - `log` - boolean - Whether you want exceptions logged.
      * - `exceptionRenderer` - string - The class responsible for rendering uncaught exceptions.
-     *   The chosen class will be used for for both CLI and web environments. If you want different
+     *   The chosen class will be used for both CLI and web environments. If you want different
      *   classes used in CLI and web environments you'll need to write that conditional logic as well.
      *   The conventional location for custom renderers is in `src/Error`. Your exception renderer needs to
      *   implement the `render()` method and return either a string or Http\Response.
@@ -286,6 +359,7 @@ return [
             'driver' => Mysql::class,
             'persistent' => false,
             'timezone' => 'UTC',
+            'url' => env('DATABASE_URL', null),
 
             /*
              * For MariaDB/MySQL the internal default changed from utf8 to utf8mb4, aka full utf-8 support, in CakePHP 3.6
@@ -329,6 +403,7 @@ return [
             'driver' => Mysql::class,
             'persistent' => false,
             'timezone' => 'UTC',
+            'url' => env('DATABASE_TEST_URL', null),
             //'encoding' => 'utf8mb4',
             'flags' => [],
             'cacheMetadata' => true,

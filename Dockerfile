@@ -9,6 +9,10 @@ RUN apt-get update \
 RUN docker-php-ext-configure intl && \
     docker-php-ext-install -j"$(nproc)" intl mysqli pdo_mysql pdo_sqlite zip
 
+FROM golang:latest AS actionlint-build
+
+RUN GOBIN=/out go install github.com/rhysd/actionlint/cmd/actionlint@latest
+
 FROM php:8.5-apache-trixie AS base
 
 # Install runtime libraries and the app's database client.
@@ -41,6 +45,7 @@ RUN apt-get update \
 RUN pecl install xdebug \
     && docker-php-ext-enable xdebug
 
+COPY --from=actionlint-build /out/actionlint /usr/local/bin/actionlint
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 CMD ["apache2-foreground"]
 
