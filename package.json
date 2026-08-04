@@ -1,5 +1,23 @@
 {
+  "name": "fr3nch-com",
+  "private": true,
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "node scripts/build-assets.mjs"
+  },
   "dependencies": {
-    "n": "^9.2.1"
+    "aos": "^2.3.4",
+    "bootstrap-icons": "^1.13.1",
+    "bootstrap5-tags": "^1.7.17",
+    "bootstrap-fileinput": "^5.5.4",
+    "jquery": "^4.0.0",
+    "nouislider": "^15.8.1",
+    "plyr": "^3.8.4",
+    "piexifjs": "^1.0.6",
+    "prismjs": "^1.30.0",
+    "tiny-slider": "^2.9.4",
+    "sortablejs": "^1.15.7"
   }
 }
