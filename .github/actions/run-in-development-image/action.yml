@@ -1,0 +1,51 @@
+name: Run in development image
+description: Load the branch development image and run a command inside it.
+
+inputs:
+  image-tag:
+    description: Development image tag produced by the build job.
+    required: true
+  command:
+    description: Command to run inside the development image.
+    required: true
+  install-composer-dependencies:
+    description: Install Composer dependencies before running the command.
+    required: false
+    default: 'true'
+  database-test-url:
+    description: Test database URL exposed to the container.
+    required: false
+    default: sqlite://./testdb.sqlite
+
+runs:
+  using: composite
+  steps:
+  - name: Download development image artifact
+    uses: actions/download-artifact@v8
+    with:
+      name: development-image-${{ inputs.image-tag }}
+      path: /tmp
+
+  - name: Load development image
+    shell: bash
+    run: docker load --input /tmp/development-image.tar
+
+  - name: Run command in development image
+    shell: bash
+    env:
+      COMMAND: ${{ inputs.command }}
+      DATABASE_TEST_URL: ${{ inputs.database-test-url }}
+      INSTALL_COMPOSER_DEPENDENCIES: ${{ inputs.install-composer-dependencies }}
+      SECURITY_SALT: ${{ env.SECURITY_SALT }}
+    run: |
+      if [[ "${INSTALL_COMPOSER_DEPENDENCIES}" == "true" ]]; then
+        COMMAND="git config --global --add safe.directory /var/www/html && composer install --no-interaction --no-scripts --prefer-dist && ${COMMAND}"
+      fi
+
+      docker run --rm \
+        -e DATABASE_TEST_URL="${DATABASE_TEST_URL}" \
+        -e SECURITY_SALT="${SECURITY_SALT}" \
+        -v "${{ github.workspace }}:/var/www/html" \
+        -w /var/www/html \
+        "${IMAGE_NAME}:${{ inputs.image-tag }}" \
+        bash -lc "${COMMAND}"

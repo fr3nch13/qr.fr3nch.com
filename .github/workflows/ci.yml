@@ -1,102 +1,451 @@
 name: CI
 
 on:
+  pull_request:
   push:
     branches:
       - main
-  pull_request:
-    branches:
+    tags:
       - '*'
   workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
 
+env:
+  DATABASE_TEST_URL: sqlite://./testdb.sqlite
+  SECURITY_SALT: github-actions-test-salt-not-for-production
+  IMAGE_NAME: fr3nch.com
+  DOCKERHUB_IMAGE: fr3nch13702/fr3nch-www
+  AWS_LIGHTSAIL_REGION: us-east-1
+  AWS_LIGHTSAIL_SERVICE_NAME: ${{ secrets.AWS_LIGHTSAIL_SERVICE_NAME }}
+
 jobs:
-  testsuite:
-    runs-on: ubuntu-22.04
-    strategy:
-      fail-fast: false
-      matrix:
-        php-version: ['8.2', '8.3', 'latest']
-        composer-options: ['']
+  build-development-image:
+    name: Build Development Image
+    runs-on: &default-runner ubuntu-24.04
+    outputs:
+      image-tag: ${{ steps.meta.outputs.image_tag }}
 
     steps:
     - name: Git checkout
-      uses: actions/checkout@v4
-
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
+      uses: actions/checkout@v7
       with:
-        php-version: ${{ matrix.php-version }}
-        extensions: mbstring, intl, pdo_sqlite, xdebug
-        ini-values: zend.assertions=1
-        coverage: none
+        fetch-depth: 0
 
-    - name: Composer install
-      uses: ramsey/composer-install@v3
+    - name: Validate release tag
+      if: startsWith(github.ref, 'refs/tags/')
+      shell: bash
+      run: |
+        if [[ ! "${GITHUB_REF_NAME}" =~ ^[0-9]{2}(0[1-9]|1[0-2])\.(0[1-9]|[12][0-9]|3[01])\.[1-9][0-9]*$ ]]; then
+          echo "Release tag must match yymm.dd.<patch>, for example 2608.04.1." >&2
+          exit 1
+        fi
+
+    - name: Verify release commit is on main
+      if: startsWith(github.ref, 'refs/tags/')
+      shell: bash
+      run: |
+        git fetch origin main
+        if ! git merge-base --is-ancestor "${GITHUB_SHA}" origin/main; then
+          echo "Release tags must point to a commit on main." >&2
+          exit 1
+        fi
+
+    - name: Compute image tag
+      id: meta
+      shell: bash
+      run: |
+        MY_REF_NAME="${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}"
+        MY_SAFE_REF="$(echo "${MY_REF_NAME}" | tr '[:upper:]' '[:lower:]' | sed 's#[^a-z0-9._-]#-#g')"
+        MY_SAFE_CACHE_SCOPE="$(echo "${GITHUB_REF_NAME}" | tr '[:upper:]' '[:lower:]' | sed 's#[^a-z0-9._-]#-#g')"
+        echo "image_tag=development-${MY_SAFE_REF}" >> "$GITHUB_OUTPUT"
+        echo "cache_scope=development-${MY_SAFE_CACHE_SCOPE}" >> "$GITHUB_OUTPUT"
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v4
+
+    - name: Build development image
+      uses: docker/build-push-action@v7
       with:
-        composer-options: ${{ matrix.composer-options }}
+        context: .
+        target: development
+        load: true
+        tags: ${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.image_tag }}
+        cache-from: type=gha,scope=${{ steps.meta.outputs.cache_scope }}
+        cache-to: type=gha,mode=max,scope=${{ steps.meta.outputs.cache_scope }}
 
-    - name: Composer post install
-      run: composer run-script post-install-cmd --no-interaction
+    - name: Export development image
+      run: |
+        docker save "${IMAGE_NAME}:${{ steps.meta.outputs.image_tag }}" \
+          --output /tmp/development-image.tar
+
+    - name: Upload development image artifact
+      uses: actions/upload-artifact@v7
+      with:
+        name: development-image-${{ steps.meta.outputs.image_tag }}
+        path: /tmp/development-image.tar
+        retention-days: 1
+
+  quality:
+    name: Code Standards and Static Analysis
+    runs-on: *default-runner
+    needs: build-development-image
+
+    steps:
+    - name: Git checkout
+      uses: actions/checkout@v7
+
+    - name: Run checks
+      uses: ./.github/actions/run-in-development-image
+      with:
+        image-tag: ${{ needs.build-development-image.outputs.image-tag }}
+        command: >-
+          composer validate --strict &&
+          composer run-script actionlint &&
+          composer run-script cs-check &&
+          composer run-script phpstan
+
+  testsuite:
+    name: PHPUnit
+    runs-on: *default-runner
+    needs: build-development-image
+
+    steps:
+    - name: Git checkout
+      uses: actions/checkout@v7
 
     - name: Run PHPUnit
-      run: composer test
-      env:
-        DATABASE_TEST_URL: sqlite://./testdb.sqlite
-
-  coding-standard:
-    name: Coding Standard & Static Analysis
-    runs-on: ubuntu-22.04
-
-    steps:
-    - name: Git checkout
-      uses: actions/checkout@v4
-
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
+      uses: ./.github/actions/run-in-development-image
       with:
-        php-version: '8.2'
-        extensions: mbstring, intl
-        coverage: none
-        tools: cs2pr, phpstan:1.10
-
-    - name: Composer install
-      uses: ramsey/composer-install@v3
-
-    - name: Run PHP CodeSniffer
-      run: vendor/bin/phpcs --report=checkstyle | cs2pr
-
-    - name: Run phpstan
-      if: always()
-      run: phpstan
+        image-tag: ${{ needs.build-development-image.outputs.image-tag }}
+        command: composer run-script test
 
   coverage-php:
     name: Code Coverage
-    runs-on: ubuntu-22.04
+    runs-on: *default-runner
+    needs: build-development-image
 
     steps:
     - name: Git checkout
-      uses: actions/checkout@v4
-
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.2'
-        extensions: mbstring, intl
-        coverage: pcov
-
-    - name: Composer install
-      uses: ramsey/composer-install@v3
+      uses: actions/checkout@v7
 
     - name: Run PHPUnit
-      run:  composer run-script coverage-clover
+      uses: ./.github/actions/run-in-development-image
+      with:
+        image-tag: ${{ needs.build-development-image.outputs.image-tag }}
+        command: composer run-script coverage-clover
 
     - name: Upload to Codecov
-      uses: codecov/codecov-action@v4
+      uses: codecov/codecov-action@v7
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       with:
         files: ./tmp/coverage.xml
         verbose: true
+
+  assets:
+    name: Asset Build
+    runs-on: *default-runner
+    needs: build-development-image
+
+    steps:
+    - name: Git checkout
+      uses: actions/checkout@v7
+
+    - name: Build assets
+      uses: ./.github/actions/run-in-development-image
+      with:
+        image-tag: ${{ needs.build-development-image.outputs.image-tag }}
+        command: composer run-script assets:install
+        install-composer-dependencies: 'false'
+
+  publish-production-image:
+    name: Build and Publish Production Image
+    if: >-
+      success() &&
+      ((github.event_name == 'pull_request' &&
+      github.event.pull_request.head.repo.full_name == github.repository) ||
+      (github.event_name == 'push' &&
+      (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/'))))
+    runs-on: *default-runner
+    needs:
+      - quality
+      - testsuite
+      - coverage-php
+      - assets
+
+    steps:
+    - name: Git checkout
+      uses: actions/checkout@v7
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v4
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v4
+
+    - name: Compute image tags and labels
+      id: image-meta
+      shell: bash
+      run: |
+        MY_REF_NAME="${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}"
+        MY_SAFE_REF="$(echo "${MY_REF_NAME}" | tr '[:upper:]' '[:lower:]' | sed 's#[^a-z0-9._-]#-#g')"
+
+        if [[ "${GITHUB_REF_TYPE}" == "tag" ]]; then
+          AWS_LIGHTSAIL_IMAGE_LABEL="$(echo "${GITHUB_REF_NAME}" | tr '[:upper:]' '[:lower:]' | sed 's#[^a-z0-9-]#-#g' | cut -c1-63)"
+          {
+            echo 'docker_tags<<EOF'
+            echo "${DOCKERHUB_IMAGE}:latest"
+            echo "${DOCKERHUB_IMAGE}:${GITHUB_REF_NAME}"
+            echo 'EOF'
+          } >> "${GITHUB_OUTPUT}"
+          echo "lightsail_label=${AWS_LIGHTSAIL_IMAGE_LABEL}" >> "${GITHUB_OUTPUT}"
+        else
+          echo "docker_tags=${DOCKERHUB_IMAGE}:${MY_SAFE_REF}" >> "${GITHUB_OUTPUT}"
+        fi
+
+    - name: Docker - Build and push production image
+      id: publish-image
+      uses: docker/build-push-action@v7
+      with:
+        context: .
+        target: production
+        push: true
+        tags: ${{ steps.image-meta.outputs.docker_tags }}
+
+    - name: Lightsail - Configure AWS credentials
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: aws-actions/configure-aws-credentials@v6
+      with:
+        aws-access-key-id: ${{ secrets.AWS_LIGHTSAIL_PUSH_ACCESS_KEY }}
+        aws-secret-access-key: ${{ secrets.AWS_LIGHTSAIL_PUSH_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_LIGHTSAIL_REGION }}
+
+    - name: Lightsail - Install lightsailctl
+      if: startsWith(github.ref, 'refs/tags/')
+      shell: bash
+      run: |
+        curl -fsSL "https://s3.us-west-2.amazonaws.com/lightsailctl/latest/linux-amd64/lightsailctl" -o /usr/local/bin/lightsailctl
+        chmod +x /usr/local/bin/lightsailctl
+        lightsailctl --version
+
+    - name: Lightsail - Pull production image from Docker Hub and tag for Lightsail
+      if: startsWith(github.ref, 'refs/tags/')
+      shell: bash
+      run: |
+        IMAGE_TAG="lightsail-${GITHUB_SHA}"
+        SOURCE_IMAGE="${DOCKERHUB_IMAGE}@${{ steps.publish-image.outputs.digest }}"
+        echo "Pulling ${SOURCE_IMAGE}"
+        docker pull "${SOURCE_IMAGE}"
+        echo "Tagging local image ${IMAGE_NAME}:${IMAGE_TAG}"
+        docker tag "${SOURCE_IMAGE}" "${IMAGE_NAME}:${IMAGE_TAG}"
+
+    - name: Lightsail - Push local production image to Lightsail
+      if: startsWith(github.ref, 'refs/tags/')
+      shell: bash
+      run: |
+        set -euo pipefail
+        IMAGE_TAG="lightsail-${GITHUB_SHA}"
+        AWS_LIGHTSAIL_IMAGE_LABEL="${{ steps.image-meta.outputs.lightsail_label }}"
+
+        echo "Pushing ${IMAGE_NAME}:${IMAGE_TAG} to Lightsail with label ${AWS_LIGHTSAIL_IMAGE_LABEL}"
+        aws lightsail push-container-image \
+          --region "${AWS_LIGHTSAIL_REGION}" \
+          --service-name "${AWS_LIGHTSAIL_SERVICE_NAME}" \
+          --label "${AWS_LIGHTSAIL_IMAGE_LABEL}" \
+          --image "${IMAGE_NAME}:${IMAGE_TAG}"
+
+  deploy-lightsail-service:
+    name: Deploy Lightsail Service
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: *default-runner
+    needs: publish-production-image
+
+    steps:
+    - name: Lightsail - Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v6
+      with:
+        aws-access-key-id: ${{ secrets.AWS_LIGHTSAIL_PUSH_ACCESS_KEY }}
+        aws-secret-access-key: ${{ secrets.AWS_LIGHTSAIL_PUSH_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_LIGHTSAIL_REGION }}
+
+    - name: Lightsail - Resolve pushed release image
+      id: lightsail-image
+      shell: bash
+      run: |
+        set -euo pipefail
+        AWS_LIGHTSAIL_IMAGE_LABEL="$(echo "${GITHUB_REF_NAME}" | tr '[:upper:]' '[:lower:]' | sed 's#[^a-z0-9-]#-#g' | cut -c1-63)"
+        IMAGE_PREFIX=":${AWS_LIGHTSAIL_SERVICE_NAME}.${AWS_LIGHTSAIL_IMAGE_LABEL}."
+        IMAGE_NAME_IN_LIGHTSAIL=""
+
+        # Lightsail image registration can lag briefly after push; retry resolution.
+        for ATTEMPT in $(seq 1 24); do
+          IMAGES_JSON="$({
+            aws lightsail get-container-images \
+              --region "${AWS_LIGHTSAIL_REGION}" \
+              --service-name "${AWS_LIGHTSAIL_SERVICE_NAME}" \
+              --output json
+          })"
+
+          IMAGE_NAME_IN_LIGHTSAIL="$(jq -r --arg prefix "${IMAGE_PREFIX}" '
+            .containerImages
+            | map(select((.image // "") | startswith($prefix)))
+            | sort_by(.createdAt)
+            | last
+            | .image // empty
+          ' <<< "${IMAGES_JSON}")"
+
+          if [[ -n "${IMAGE_NAME_IN_LIGHTSAIL}" ]]; then
+            break
+          fi
+
+          if [[ "${ATTEMPT}" -lt 24 ]]; then
+            echo "Waiting for Lightsail image registration (${ATTEMPT}/24)..."
+            sleep 5
+          fi
+        done
+
+        if [[ -z "${IMAGE_NAME_IN_LIGHTSAIL}" ]]; then
+          echo "Could not resolve the pushed Lightsail image for label ${AWS_LIGHTSAIL_IMAGE_LABEL}." >&2
+          echo "Expected image prefix: ${IMAGE_PREFIX}" >&2
+          exit 1
+        fi
+
+        echo "image=${IMAGE_NAME_IN_LIGHTSAIL}" >> "${GITHUB_OUTPUT}"
+
+    - name: Lightsail - Deploy updated service image
+      shell: bash
+      run: |
+        set -euo pipefail
+
+        SERVICE_JSON="$({
+          aws lightsail get-container-services \
+            --region "${AWS_LIGHTSAIL_REGION}" \
+            --service-name "${AWS_LIGHTSAIL_SERVICE_NAME}" \
+            --query 'containerServices[0]' \
+            --output json
+        })"
+
+        if [[ "$(jq -r '.currentDeployment // empty' <<< "${SERVICE_JSON}")" == "" ]]; then
+          echo "The Lightsail service does not have a current deployment to clone." >&2
+          exit 1
+        fi
+
+        PUBLIC_CONTAINER_NAME="$(jq -r '.currentDeployment.publicEndpoint.containerName' <<< "${SERVICE_JSON}")"
+        CONTAINER_ENV_JSON="$(jq -c --arg container_name "${PUBLIC_CONTAINER_NAME}" '.currentDeployment.containers[$container_name].environment // {}' <<< "${SERVICE_JSON}")"
+        ALWAYS_REQUIRED_ENV_VARS=(
+          DATABASE_URL
+          SECURITY_SALT
+        )
+        S3_REQUIRED_ENV_VARS=(
+          AWS_S3_ACCESS_KEY_ID
+          AWS_S3_SECRET_ACCESS_KEY
+          AWS_S3_REGION
+          AWS_S3_BUCKET
+        )
+
+        MISSING_ENV_VARS=()
+        for VAR_NAME in "${ALWAYS_REQUIRED_ENV_VARS[@]}"; do
+          VAR_VALUE="$(jq -r --arg key "${VAR_NAME}" '.[$key] // empty' <<< "${CONTAINER_ENV_JSON}")"
+          if [[ -z "${VAR_VALUE}" ]]; then
+            MISSING_ENV_VARS+=("${VAR_NAME}")
+          fi
+        done
+
+        HAS_ANY_S3_ENV=false
+        for VAR_NAME in "${S3_REQUIRED_ENV_VARS[@]}"; do
+          VAR_VALUE="$(jq -r --arg key "${VAR_NAME}" '.[$key] // empty' <<< "${CONTAINER_ENV_JSON}")"
+          if [[ -n "${VAR_VALUE}" ]]; then
+            HAS_ANY_S3_ENV=true
+            break
+          fi
+        done
+
+        if [[ "${HAS_ANY_S3_ENV}" == "true" ]]; then
+          for VAR_NAME in "${S3_REQUIRED_ENV_VARS[@]}"; do
+            VAR_VALUE="$(jq -r --arg key "${VAR_NAME}" '.[$key] // empty' <<< "${CONTAINER_ENV_JSON}")"
+            if [[ -z "${VAR_VALUE}" ]]; then
+              MISSING_ENV_VARS+=("${VAR_NAME}")
+            fi
+          done
+        fi
+
+        if [[ "${#MISSING_ENV_VARS[@]}" -gt 0 ]]; then
+          echo "Required environment variables are missing or empty for Lightsail container ${PUBLIC_CONTAINER_NAME}: ${MISSING_ENV_VARS[*]}" >&2
+          echo "Set these values on the Lightsail service before deployment; the production image runs migrations at startup." >&2
+          exit 1
+        fi
+
+        CONTAINERS_JSON="$(jq -c --arg container_name "${PUBLIC_CONTAINER_NAME}" --arg image "${{ steps.lightsail-image.outputs.image }}" '
+          .currentDeployment.containers
+          | with_entries(
+              if .key == $container_name then
+                .value.image = $image | .
+              else
+                .
+              end
+            )
+        ' <<< "${SERVICE_JSON}")"
+        PUBLIC_ENDPOINT_JSON="$(jq -c '.currentDeployment.publicEndpoint' <<< "${SERVICE_JSON}")"
+
+        aws lightsail create-container-service-deployment \
+          --region "${AWS_LIGHTSAIL_REGION}" \
+          --service-name "${AWS_LIGHTSAIL_SERVICE_NAME}" \
+          --containers "${CONTAINERS_JSON}" \
+          --public-endpoint "${PUBLIC_ENDPOINT_JSON}"
+
+    - name: Lightsail - Wait for deployment to become active
+      shell: bash
+      run: |
+        set -euo pipefail
+
+        TARGET_IMAGE="${{ steps.lightsail-image.outputs.image }}"
+        MAX_ATTEMPTS=60
+        SLEEP_SECONDS=15
+
+        for ATTEMPT in $(seq 1 "${MAX_ATTEMPTS}"); do
+          SERVICE_JSON="$({
+            aws lightsail get-container-services \
+              --region "${AWS_LIGHTSAIL_REGION}" \
+              --service-name "${AWS_LIGHTSAIL_SERVICE_NAME}" \
+              --query 'containerServices[0]' \
+              --output json
+          })"
+
+          SERVICE_STATE="$(jq -r '.state' <<< "${SERVICE_JSON}")"
+          CURRENT_STATE="$(jq -r '.currentDeployment.state // empty' <<< "${SERVICE_JSON}")"
+          CURRENT_IMAGE="$(jq -r '.currentDeployment.containers[.currentDeployment.publicEndpoint.containerName].image // empty' <<< "${SERVICE_JSON}")"
+          NEXT_STATE="$(jq -r '.nextDeployment.state // empty' <<< "${SERVICE_JSON}")"
+          STATE_CODE="$(jq -r '.stateDetail.code // empty' <<< "${SERVICE_JSON}")"
+          STATE_MESSAGE="$(jq -r '.stateDetail.message // empty' <<< "${SERVICE_JSON}")"
+
+          echo "Attempt ${ATTEMPT}/${MAX_ATTEMPTS}: service=${SERVICE_STATE} current=${CURRENT_STATE} next=${NEXT_STATE:-none} image=${CURRENT_IMAGE}"
+          if [[ -n "${STATE_CODE}" || -n "${STATE_MESSAGE}" ]]; then
+            echo "State detail: ${STATE_CODE} ${STATE_MESSAGE}"
+          fi
+
+          if [[ "${NEXT_STATE}" == "FAILED" || ( "${CURRENT_IMAGE}" == "${TARGET_IMAGE}" && "${CURRENT_STATE}" == "FAILED" ) ]]; then
+            echo "Lightsail deployment failed for image ${TARGET_IMAGE}." >&2
+            exit 1
+          fi
+
+          if [[ "${SERVICE_STATE}" == "RUNNING" && "${CURRENT_STATE}" == "ACTIVE" && "${CURRENT_IMAGE}" == "${TARGET_IMAGE}" && -z "${NEXT_STATE}" ]]; then
+            echo "Lightsail deployment is active for image ${TARGET_IMAGE}."
+            exit 0
+          fi
+
+          if [[ "${ATTEMPT}" -lt "${MAX_ATTEMPTS}" ]]; then
+            sleep "${SLEEP_SECONDS}"
+          fi
+        done
+
+        echo "Timed out waiting for Lightsail to activate image ${TARGET_IMAGE}." >&2
+        exit 1
