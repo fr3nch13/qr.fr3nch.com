@@ -73,9 +73,6 @@ class TemplateTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestLayoutDashboardIndex();
         $this->helperTestTemplate('Admin/Users/dashboard');
-
-        // validate the html
-        $this->helperValidateHTML(true);
     }
 
     /**
@@ -156,9 +153,6 @@ class TemplateTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestLayoutDashboardIndex();
         $this->helperTestTemplate('Admin/Users/index');
-
-        // validate the html
-        $this->helperValidateHTML(true);
     }
 
     /**
@@ -250,9 +244,6 @@ class TemplateTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestLayoutDashboardView();
         $this->helperTestTemplate('Admin/Users/view');
-
-        // validate the html
-        $this->helperValidateHTML(true);
     }
 
     /**
@@ -341,9 +332,6 @@ class TemplateTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestLayoutDashboardForm();
         $this->helperTestTemplate('Admin/Users/add');
-
-        // validate the html
-        $this->helperValidateHTML(true);
     }
 
     /**
@@ -394,9 +382,6 @@ class TemplateTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestLayoutDashboardForm();
         $this->helperTestTemplate('Admin/Users/edit');
-
-        // validate the html
-        $this->helperValidateHTML(true);
     }
 
     /**

@@ -12,6 +12,7 @@ use Cake\View\Helper;
  * Template helper library.
  *
  * @property \BootstrapUI\View\Helper\HtmlHelper $Html
+ * @extends \Cake\View\Helper<\App\View\AppView>
  */
 class TemplateHelper extends Helper
 {

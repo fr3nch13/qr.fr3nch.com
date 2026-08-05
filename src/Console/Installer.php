@@ -20,7 +20,6 @@ if (!defined('STDIN')) {
     define('STDIN', fopen('php://stdin', 'r'));
 }
 
-use Cake\Codeception\Console\Installer as CodeceptionInstaller;
 use Cake\Utility\Security;
 use Composer\IO\IOInterface;
 use Composer\Script\Event;
@@ -66,10 +65,6 @@ class Installer
 
         static::setFolderPermissions($rootDir, $io);
         static::setSecuritySalt($rootDir, $io);
-
-        if (class_exists(CodeceptionInstaller::class)) {
-            CodeceptionInstaller::customizeCodeceptionBinary($event);
-        }
     }
 
     /**
@@ -131,7 +126,7 @@ class Installer
                 '<info>Set Folder Permissions ? (Default to N)</info> [<comment>y,N</comment>]? ',
                 $validator,
                 10,
-                'N'
+                'N',
             );
         }
 
@@ -156,7 +151,6 @@ class Installer
         };
 
         $walker = function (string $dir) use (&$walker, $changePerms): void {
-            /** @phpstan-ignore-next-line */
             $files = array_diff(scandir($dir), ['.', '..']);
             foreach ($files as $file) {
                 $path = $dir . '/' . $file;

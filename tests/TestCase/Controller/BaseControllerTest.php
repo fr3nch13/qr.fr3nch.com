@@ -7,8 +7,6 @@ use App\Model\Table\UsersTable;
 use Cake\Core\Configure;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
-use HtmlValidator\Exception\ServerException as ValidatorServerException;
-use HtmlValidator\Validator as HtmlValidator;
 use Laminas\Diactoros\UploadedFile;
 use const UPLOAD_ERR_OK;
 
@@ -152,40 +150,6 @@ class BaseControllerTest extends TestCase
     }
 
     /**
-     * Uses an HTML validator to validate the compiled html.
-     *
-     * @param bool $showContent If we should print out the html in debug on an issue
-     * @return void
-     */
-    public function helperValidateHTML(bool $showContent = false): void
-    {
-        $content = (string)$this->_response->getBody();
-
-        try {
-            // TODO: add more html validation, but do it locally.
-            // Maybe with github actions?
-            // @link https://github.com/marketplace/actions/html5-validator
-            // labels: testing, frontend, html validation
-
-            $validator = new HtmlValidator();
-            $result = $validator->validateDocument($content);
-            if ($showContent && ($result->hasErrors() || $result->hasWarnings())) {
-                debug($content);
-            }
-            $this->assertFalse($result->hasErrors(), (string)$result);
-            $this->assertFalse($result->hasWarnings(), (string)$result);
-
-            // TODO: enable below once the PR I submitted to friendsofcake/bootstrap-ui is approved
-            // labels: testing, frontend, html validation, bootstrap-ui
-            //$this->assertFalse($result->hasMessages(), (string)$result);
-
-            // Incase validator.nu throws an error.
-        } catch (ValidatorServerException $e) {
-            $this->assertTrue(true);
-        }
-    }
-
-    /**
      * Sets up the file upload mocking
      *
      * @param array<string> $filePaths Files to use as uploaded files
@@ -205,7 +169,7 @@ class BaseControllerTest extends TestCase
         }
         $files = [];
         foreach ($tmpPaths as $tmpPath) {
-            if (file_exists($filePath)) {
+            if (file_exists($tmpPath)) {
                 $files[] = new UploadedFile(
                     // stream or path to file representing the temp file
                     $tmpPath,
@@ -214,9 +178,9 @@ class BaseControllerTest extends TestCase
                     // the upload/error status
                     $errCode,
                     // the filename as sent by the client
-                    ($altFileName ? $altFileName : basename($tmpPath)),
+                    ($altFileName ?: basename($tmpPath)),
                     // the mimetype as sent by the client
-                    mime_content_type($tmpPath) ?: null
+                    mime_content_type($tmpPath) ?: null,
                 );
             } else {
                 $files[] = new UploadedFile(
@@ -229,7 +193,7 @@ class BaseControllerTest extends TestCase
                     // the filename as sent by the client
                     basename($tmpPath),
                     // the mimetype as sent by the client
-                    ''
+                    '',
                 );
             }
         }
@@ -287,7 +251,7 @@ class BaseControllerTest extends TestCase
         $content = (string)$this->_response->getBody();
 
         // message
-        $needle = '<div id="' . $id . '" class="ms-0 invalid-feedback">' . $message . '</div>';
+        $needle = '<div id="' . $id . '" class="invalid-feedback">' . $message . '</div>';
         $this->assertSame(1, substr_count($content, $needle));
     }
 

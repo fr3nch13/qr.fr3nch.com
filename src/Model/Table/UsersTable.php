@@ -11,22 +11,12 @@ use Cake\Validation\Validator;
 /**
  * Users Model
  *
- * @property \App\Model\Table\QrCodesTable&\Cake\ORM\Association\HasMany $QrCodes
- * @property \App\Model\Table\SourcesTable&\Cake\ORM\Association\HasMany $Sources
- * @property \App\Model\Table\TagsTable&\Cake\ORM\Association\HasMany $Tags
- * @method \App\Model\Entity\User newEmptyEntity()
- * @method \App\Model\Entity\User newEntity(array $data, array $options = [])
- * @method \App\Model\Entity\User[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\User get(int $primaryKey, $contain = [])
- * @method \App\Model\Entity\User findOrCreate($search, ?callable $callback = null, $options = [])
- * @method \App\Model\Entity\User patchEntity(\App\Model\Entity\User  $entity, array $data, array $options = [])
- * @method \App\Model\Entity\User[] patchEntities(iterable $entities, array $data, array $options = [])
- * @method \App\Model\Entity\User|false save(\App\Model\Entity\User $entity, $options = [])
- * @method \App\Model\Entity\User saveOrFail(\App\Model\Entity\User $entity, $options = [])
- * @method \App\Model\Entity\User[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\User[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
- * @method \App\Model\Entity\User[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\User[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
+ * @property \App\Model\Table\QrCodesTable $QrCodes
+ * @property \App\Model\Table\SourcesTable $Sources
+ * @property \App\Model\Table\TagsTable $Tags
+ * @extends \Cake\ORM\Table<array{
+ *   Timestamp: \Cake\ORM\Behavior\TimestampBehavior
+ * }, \App\Model\Entity\User>
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class UsersTable extends Table
@@ -92,12 +82,12 @@ class UsersTable extends Table
             ->notEmptyString(
                 'password',
                 __('The Password is required, and can not be empty.'),
-                Validator::WHEN_CREATE
+                Validator::WHEN_CREATE,
             )
             ->allowEmptyString(
                 'password',
                 __('The Password is required, and can not be empty.'),
-                Validator::WHEN_UPDATE
+                Validator::WHEN_UPDATE,
             )
             ->requirePresence('password', Validator::WHEN_CREATE);
 
@@ -132,8 +122,8 @@ class UsersTable extends Table
     /**
      * Find Active Users
      *
-     * @param \Cake\ORM\Query\SelectQuery $query The initial query
-     * @return \Cake\ORM\Query\SelectQuery The updated query
+     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\User> $query The initial query
+     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\User> The updated query
      */
     public function findActive(SelectQuery $query): SelectQuery
     {

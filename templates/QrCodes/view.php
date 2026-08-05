@@ -259,7 +259,7 @@ $this->assign('title', $qrCode->name);
                                             'class' => 'mr-1 mb-1 rounded-pill ' .
                                                 'btn btn-sm btn-light btn-outline-secondary',
                                             'role' => 'button',
-                                        ]
+                                        ],
                                     ) ?>
 
                                 <?php endforeach; ?>
@@ -283,7 +283,7 @@ $this->assign('title', $qrCode->name);
                             'class' => 'btn btn-primary btn-block rounded-pill',
                             'role' => 'button',
                             'rel' => 'nofollow',
-                        ]
+                        ],
                     ) ?>
 
                 </div>

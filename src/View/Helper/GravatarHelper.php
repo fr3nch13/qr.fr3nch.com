@@ -18,6 +18,8 @@ use Cake\View\Helper;
  * A helper that provides gravatar images for profile use in CakePHP.
  *
  * Based on: Gravatar Helper (https://github.com/PotatoPowered/gravatar-helper)
+ *
+ * @extends \Cake\View\Helper<\App\View\AppView>
  */
 class GravatarHelper extends Helper
 {

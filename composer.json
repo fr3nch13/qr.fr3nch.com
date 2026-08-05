@@ -76,7 +76,7 @@
             "bin/cake migration_ids",
             "bin/cake migrations migrate"
         ],
-        "seed": "bin/cake migrations seed",
+        "seed": "bin/cake seeds run",
         "ci": [
             "@check",
             "@coverage-text"

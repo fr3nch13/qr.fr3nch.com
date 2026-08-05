@@ -230,7 +230,7 @@ class FormsTest extends BaseControllerTest
         $this->helperTestFormTag('/admin/qr-images/add/1', 'post', true);
         $this->helperTestAlert(
             'The images could not be saved. Please, try again.',
-            'danger'
+            'danger',
         );
         // test to make sure the fields that are required are actually tagged as so.
         $this->helperTestString('<p class="text-danger">Error: ccccccccccccccccccccccccccccccccccccccc' .

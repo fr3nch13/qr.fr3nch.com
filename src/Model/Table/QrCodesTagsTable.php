@@ -10,21 +10,9 @@ use Cake\Validation\Validator;
 /**
  * QrCodesTags Model
  *
- * @property \App\Model\Table\QrCodesTable&\Cake\ORM\Association\BelongsTo $QrCodes
- * @property \App\Model\Table\TagsTable&\Cake\ORM\Association\BelongsTo $Tags
- * @method \App\Model\Entity\QrCodesTag newEmptyEntity()
- * @method \App\Model\Entity\QrCodesTag newEntity(array $data, array $options = [])
- * @method \App\Model\Entity\QrCodesTag[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\QrCodesTag get(int $primaryKey, $contain = [])
- * @method \App\Model\Entity\QrCodesTag findOrCreate($search, ?callable $callback = null, $options = [])
- * @method \App\Model\Entity\QrCodesTag patchEntity(\App\Model\Entity\QrCodesTag  $entity, array $data, array $options = [])
- * @method \App\Model\Entity\QrCodesTag[] patchEntities(iterable $entities, array $data, array $options = [])
- * @method \App\Model\Entity\QrCodesTag|false save(\App\Model\Entity\QrCodesTag $entity, $options = [])
- * @method \App\Model\Entity\QrCodesTag saveOrFail(\App\Model\Entity\QrCodesTag $entity, $options = [])
- * @method \App\Model\Entity\QrCodesTag[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\QrCodesTag[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
- * @method \App\Model\Entity\QrCodesTag[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\QrCodesTag[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
+ * @property \App\Model\Table\QrCodesTable $QrCodes
+ * @property \App\Model\Table\TagsTable $Tags
+ * @extends \Cake\ORM\Table<array{}, \App\Model\Entity\QrCodesTag>
  */
 class QrCodesTagsTable extends Table
 {

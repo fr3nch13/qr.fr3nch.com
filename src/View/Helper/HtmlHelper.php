@@ -41,7 +41,7 @@ class HtmlHelper extends BootstrapUiHtmlHelper
         string $size = 'md',
         ?User $user = null,
         string $wrapperClasses = '',
-        string $iconClasses = ''
+        string $iconClasses = '',
     ): string {
         $wrapper = '<span class="avatar avatar-{0} {1}">{2}</span>';
         $wrapperClass = '';

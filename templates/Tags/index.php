@@ -37,7 +37,7 @@ $this->assign('title', __('Tags'));
                         [
                             'class' => 'my-2 mx-2 btn btn-light btn-outline-secondary rounded-pill',
                             'role' => 'button',
-                        ]
+                        ],
                     ); ?>
                 <?php endforeach; ?>
                 </div>

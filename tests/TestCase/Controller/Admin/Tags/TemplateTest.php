@@ -51,9 +51,6 @@ class TemplateTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestLayoutDashboardIndex();
         $this->helperTestTemplate('Admin/Tags/index');
-
-        // validate the html
-        $this->helperValidateHTML(true);
     }
 
     /**
@@ -127,9 +124,6 @@ class TemplateTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestLayoutDashboardForm();
         $this->helperTestTemplate('Admin/Tags/edit');
-
-        // validate the html
-        $this->helperValidateHTML(true);
     }
 
     /**

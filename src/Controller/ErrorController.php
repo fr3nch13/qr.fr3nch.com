@@ -16,6 +16,7 @@ declare(strict_types=1);
  */
 namespace App\Controller;
 
+use App\View\AppView;
 use Cake\Event\EventInterface;
 
 /**
@@ -25,6 +26,26 @@ use Cake\Event\EventInterface;
  */
 class ErrorController extends AppController
 {
+    /**
+     * Configure error rendering without loading request-only components.
+     *
+     * @return void
+     */
+    public function initialize(): void
+    {
+        $this->viewBuilder()->setClassName(AppView::class);
+    }
+
+    /**
+     * Skip application authorization while rendering an existing exception.
+     *
+     * @param \Cake\Event\EventInterface<\Cake\Controller\Controller> $event Event.
+     * @return void
+     */
+    public function beforeFilter(EventInterface $event): void
+    {
+    }
+
     /**
      * beforeRender callback.
      *

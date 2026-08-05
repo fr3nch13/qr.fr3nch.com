@@ -15,28 +15,21 @@ use Cake\ORM\Table;
 use Cake\Validation\Validator;
 use FilesystemIterator;
 use GlobIterator;
+use LogicException;
+use Search\Model\Behavior\SearchBehavior;
 use Search\Model\Filter\Base;
 
 /**
  * QrCodes Model
  *
- * @property \App\Model\Table\QrImagesTable&\Cake\ORM\Association\HasMany $QrImages
- * @property \App\Model\Table\SourcesTable&\Cake\ORM\Association\BelongsTo $Sources
- * @property \App\Model\Table\TagsTable&\Cake\ORM\Association\BelongsToMany $Tags
- * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
- * @method \App\Model\Entity\QrCode newEmptyEntity()
- * @method \App\Model\Entity\QrCode newEntity(array $data, array $options = [])
- * @method \App\Model\Entity\QrCode[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\QrCode get(int $primaryKey, $contain = [])
- * @method \App\Model\Entity\QrCode findOrCreate($search, ?callable $callback = null, $options = [])
- * @method \App\Model\Entity\QrCode patchEntity(\App\Model\Entity\QrCode  $entity, array $data, array $options = [])
- * @method \App\Model\Entity\QrCode[] patchEntities(iterable $entities, array $data, array $options = [])
- * @method \App\Model\Entity\QrCode|false save(\App\Model\Entity\QrCode $entity, $options = [])
- * @method \App\Model\Entity\QrCode saveOrFail(\App\Model\Entity\QrCode $entity, $options = [])
- * @method \App\Model\Entity\QrCode[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\QrCode[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
- * @method \App\Model\Entity\QrCode[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\QrCode[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
+ * @property \App\Model\Table\QrImagesTable $QrImages
+ * @property \App\Model\Table\SourcesTable $Sources
+ * @property \App\Model\Table\TagsTable $Tags
+ * @property \App\Model\Table\UsersTable $Users
+ * @extends \Cake\ORM\Table<array{
+ *   Timestamp: \Cake\ORM\Behavior\TimestampBehavior,
+ *   Search: \Search\Model\Behavior\SearchBehavior
+ * }, \App\Model\Entity\QrCode>
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  * @mixin \Search\Model\Behavior\SearchBehavior
  */
@@ -80,7 +73,11 @@ class QrCodesTable extends Table
         $this->addBehavior('Search.Search');
 
         // Setup search filter using search manager
-        $this->getBehavior('Search')->searchManager()
+        $search = $this->getBehavior('Search');
+        if (!$search instanceof SearchBehavior) {
+            throw new LogicException('Search behavior is not configured correctly.');
+        }
+        $search->searchManager()
             // add filtering by just the qrcode
             ->add('q', 'Search.Like', [
                 'before' => true,
@@ -208,6 +205,9 @@ class QrCodesTable extends Table
     /**
      * Before marshal which runs before patching an entity.
      *
+     * @param \Cake\Event\Event<\App\Model\Table\QrCodesTable> $event Event object.
+     * @param \ArrayObject<string, mixed> $data Data being marshalled.
+     * @param \ArrayObject<string, mixed> $options Marshal options.
      * @return void
      */
     public function beforeMarshal(Event $event, ArrayObject $data, ArrayObject $options): void
@@ -219,9 +219,7 @@ class QrCodesTable extends Table
             // existing code.
             if (isset($data['id'])) {
                 $qrCode = $this->get((int)$data['id']);
-                if ($qrCode) {
-                    $user_id = $qrCode->user_id;
-                }
+                $user_id = $qrCode->user_id;
             }
             // new code
             if (!$user_id && isset($data['user_id'])) {
@@ -255,6 +253,9 @@ class QrCodesTable extends Table
     /**
      * AfterSave callback
      *
+     * @param \Cake\Event\Event<\App\Model\Table\QrCodesTable> $event Event object.
+     * @param \App\Model\Entity\QrCode $entity Saved QR code.
+     * @param \ArrayObject<string, mixed> $options Save options.
      * @return void
      */
     public function afterSave(Event $event, QrCode $entity, ArrayObject $options): void
@@ -273,9 +274,9 @@ class QrCodesTable extends Table
     /**
      * Make sure it's Qr Images are deleted first.
      *
-     * @param \Cake\Event\Event $event
-     * @param \App\Model\Entity\QrCode $qrCode
-     * @param \ArrayObject $options
+     * @param \Cake\Event\Event<\App\Model\Table\QrCodesTable> $event Event object.
+     * @param \App\Model\Entity\QrCode $qrCode QR code being deleted.
+     * @param \ArrayObject<string, mixed> $options Delete options.
      * @return void
      */
     public function beforeDelete(Event $event, QrCode $qrCode, ArrayObject $options): void
@@ -301,9 +302,9 @@ class QrCodesTable extends Table
     /**
      * Make sure it's image and thumbnails are deleted.
      *
-     * @param \Cake\Event\Event $event
-     * @param \App\Model\Entity\QrCode $qrCode
-     * @param \ArrayObject $options
+     * @param \Cake\Event\Event<\App\Model\Table\QrCodesTable> $event Event object.
+     * @param \App\Model\Entity\QrCode $qrCode Deleted QR code.
+     * @param \ArrayObject<string, mixed> $options Delete options.
      * @return void
      */
     public function afterDelete(Event $event, QrCode $qrCode, ArrayObject $options): void
@@ -328,8 +329,8 @@ class QrCodesTable extends Table
     /**
      * Find Active QR Codes
      *
-     * @param \Cake\ORM\Query\SelectQuery $query The initial query
-     * @return \Cake\ORM\Query\SelectQuery The updated query
+     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\QrCode> $query The initial query
+     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\QrCode> The updated query
      */
     public function findActive(SelectQuery $query): SelectQuery
     {
@@ -339,9 +340,9 @@ class QrCodesTable extends Table
     /**
      * Find a QR code by its key
      *
-     * @param \Cake\ORM\Query\SelectQuery $query The initial query
+     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\QrCode> $query The initial query
      * @param string $key The key to look for.
-     * @return \Cake\ORM\Query\SelectQuery The updated query
+     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\QrCode> The updated query
      */
     public function findKey(SelectQuery $query, string $key): SelectQuery
     {
@@ -351,9 +352,9 @@ class QrCodesTable extends Table
     /**
      * Find Qr Codes owned by a user
      *
-     * @param \Cake\ORM\Query\SelectQuery $query The initial query
+     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\QrCode> $query The initial query
      * @param \App\Model\Entity\User $user The user to scope the query to.
-     * @return \Cake\ORM\Query\SelectQuery The updated query
+     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\QrCode> The updated query
      */
     public function findOwnedBy(SelectQuery $query, User $user): SelectQuery
     {

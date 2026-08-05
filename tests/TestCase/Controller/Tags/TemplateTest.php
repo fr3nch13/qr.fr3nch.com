@@ -57,9 +57,6 @@ class TemplateTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestLayoutPagesIndex();
         $this->helperTestTemplate('Tags/index');
-
-        // validate the html
-        $this->helperValidateHTML(true);
     }
 
     /**

@@ -3,11 +3,12 @@ FROM php:8.5-apache-trixie AS php-extensions
 # Build PHP extensions with their compile-time dependencies.
 RUN apt-get update \
     && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get install -y --no-install-recommends libicu-dev libsqlite3-dev libzip-dev \
+    && apt-get install -y --no-install-recommends libfreetype6-dev libicu-dev libjpeg62-turbo-dev libpng-dev libsqlite3-dev libzip-dev \
     && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
-RUN docker-php-ext-configure intl && \
-    docker-php-ext-install -j"$(nproc)" intl mysqli pdo_mysql pdo_sqlite zip
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-configure intl \
+    && docker-php-ext-install -j"$(nproc)" gd intl mysqli pdo_mysql pdo_sqlite zip
 
 FROM golang:latest AS actionlint-build
 
@@ -18,7 +19,7 @@ FROM php:8.5-apache-trixie AS base
 # Install runtime libraries and the app's database client.
 RUN apt-get update \
     && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get install -y --no-install-recommends mariadb-client libicu76 libzip5 \
+    && apt-get install -y --no-install-recommends libfreetype6 libjpeg62-turbo libpng16-16t64 mariadb-client libicu76 libzip5 \
     && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
 COPY --from=php-extensions /usr/local/lib/php/extensions/ /usr/local/lib/php/extensions/
@@ -68,5 +69,7 @@ FROM base AS production
 
 COPY --from=application-build --chown=www-data:www-data /var/www/html /var/www/html
 RUN chmod 755 /var/www/html/docker-entrypoint.sh
+RUN chmod 755 /var/www/html/scripts/docker-healthcheck.sh
+HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 CMD ["/var/www/html/scripts/docker-healthcheck.sh"]
 
 CMD ["./docker-entrypoint.sh"]

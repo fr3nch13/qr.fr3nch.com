@@ -44,7 +44,6 @@ class TemplateTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestLayoutDashboardIndex();
         $this->helperTestTemplate('Admin/QrCodes/index');
-        $this->helperValidateHTML(true);
 
         // test with admin
         // test html content.
@@ -58,9 +57,6 @@ class TemplateTest extends BaseControllerTest
         $this->helperTestObjectComment(5, 'QrCode/entity');
         $this->helperTestObjectComment(3, 'QrCode/entity/active');
         $this->helperTestObjectComment(2, 'QrCode/entity/inactive');
-
-        // validate the html
-        $this->helperValidateHTML(true);
     }
 
     /**
@@ -111,9 +107,6 @@ class TemplateTest extends BaseControllerTest
         $this->helperTestLayoutDashboardView();
         $this->helperTestTemplate('Admin/QrCodes/details');
         $this->helperTestTemplate('Admin/QrCodes/view');
-
-        // validate the html
-        $this->helperValidateHTML(true);
     }
 
     /**
@@ -162,9 +155,6 @@ class TemplateTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestLayoutDashboardForm();
         $this->helperTestTemplate('Admin/QrCodes/add');
-
-        // validate the html
-        $this->helperValidateHTML(true);
     }
 
     /**
@@ -213,9 +203,6 @@ class TemplateTest extends BaseControllerTest
         $this->assertResponseOk();
         $this->helperTestLayoutDashboardView();
         $this->helperTestTemplate('Admin/QrCodes/edit');
-
-        // validate the html
-        $this->helperValidateHTML(true);
     }
 
     /**

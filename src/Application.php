@@ -72,8 +72,6 @@ use Psr\Http\Message\ServerRequestInterface;
  *
  * This defines the bootstrapping logic and middleware layers you
  * want to use in your application.
- *
- * @extends \Cake\Http\BaseApplication<\App\Application>
  */
 class Application extends BaseApplication implements
     AuthenticationServiceProviderInterface,
@@ -94,7 +92,7 @@ class Application extends BaseApplication implements
         }
         FactoryLocator::add(
             'Table',
-            (new TableLocator())->allowFallbackClass(false)
+            (new TableLocator())->allowFallbackClass(false),
         );
 
         /*
@@ -123,6 +121,10 @@ class Application extends BaseApplication implements
         // the friendsofcake/search plugin.
         if (!$this->getPlugins()->has('Search')) {
             $this->addPlugin('Search');
+        }
+
+        if (!$this->getPlugins()->has('Fr3nch13/Stats')) {
+            $this->addPlugin('Fr3nch13/Stats');
         }
     }
 

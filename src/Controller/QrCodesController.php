@@ -211,7 +211,7 @@ class QrCodesController extends AppController
                 'list',
                 keyField: 'name',
                 valueField: 'name',
-                limit: 200
+                limit: 200,
             )
             ->orderBy(['name' => 'asc'])
             ->all();
@@ -221,7 +221,7 @@ class QrCodesController extends AppController
                 'list',
                 keyField: 'name',
                 valueField: 'name',
-                limit: 200
+                limit: 200,
             )
             ->orderBy(['name' => 'asc'])
             ->all();

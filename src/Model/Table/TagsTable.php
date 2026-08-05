@@ -7,25 +7,18 @@ use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use LogicException;
+use Search\Model\Behavior\SearchBehavior;
 
 /**
  * Tags Model
  *
- * @property \App\Model\Table\QrCodesTable&\Cake\ORM\Association\BelongsToMany $QrCodes
- * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
- * @method \App\Model\Entity\Tag newEmptyEntity()
- * @method \App\Model\Entity\Tag newEntity(array $data, array $options = [])
- * @method \App\Model\Entity\Tag[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\Tag get(int $primaryKey, $contain = [])
- * @method \App\Model\Entity\Tag findOrCreate($search, ?callable $callback = null, $options = [])
- * @method \App\Model\Entity\Tag patchEntity(\App\Model\Entity\Tag  $entity, array $data, array $options = [])
- * @method \App\Model\Entity\Tag[] patchEntities(iterable $entities, array $data, array $options = [])
- * @method \App\Model\Entity\Tag|false save(\App\Model\Entity\Tag $entity, $options = [])
- * @method \App\Model\Entity\Tag saveOrFail(\App\Model\Entity\Tag $entity, $options = [])
- * @method \App\Model\Entity\Tag[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\Tag[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
- * @method \App\Model\Entity\Tag[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\Tag[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
+ * @property \App\Model\Table\QrCodesTable $QrCodes
+ * @property \App\Model\Table\UsersTable $Users
+ * @extends \Cake\ORM\Table<array{
+ *   Timestamp: \Cake\ORM\Behavior\TimestampBehavior,
+ *   Search: \Search\Model\Behavior\SearchBehavior
+ * }, \App\Model\Entity\Tag>
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  * @mixin \Search\Model\Behavior\SearchBehavior
  */
@@ -61,7 +54,11 @@ class TagsTable extends Table
         $this->addBehavior('Search.Search');
 
         // Setup search filter using search manager
-        $this->getBehavior('Search')->searchManager()
+        $search = $this->getBehavior('Search');
+        if (!$search instanceof SearchBehavior) {
+            throw new LogicException('Search behavior is not configured correctly.');
+        }
+        $search->searchManager()
             ->add('q', 'Search.Like', [
                 'before' => true,
                 'after' => true,
@@ -128,8 +125,8 @@ class TagsTable extends Table
      *
      * Here should be need to impliment it later.
      *
-     * @param \Cake\ORM\Query\SelectQuery $query The initial query
-     * @return \Cake\ORM\Query\SelectQuery The updated query
+     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Tag> $query The initial query
+     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Tag> The updated query
      */
     public function findActive(SelectQuery $query): SelectQuery
     {

@@ -795,7 +795,6 @@ class QrCodesTableTest extends TestCase
     {
         $reflectedClass = new ReflectionClass($object);
         $reflection = $reflectedClass->getProperty($property);
-        $reflection->setAccessible(true);
 
         return $reflection->getValue($object);
     }

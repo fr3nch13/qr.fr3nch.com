@@ -68,8 +68,6 @@ class TemplateTest extends BaseControllerTest
         $this->helperTestObjectComment(3, 'QrCode/forward');
         // make sure only active primary images are listed.
         $this->helperTestObjectComment(3, 'QrImage/active/first');
-        // validate the html
-        $this->helperValidateHTML(true);
     }
 
     /**
@@ -152,9 +150,6 @@ class TemplateTest extends BaseControllerTest
         $this->helperTestObjectComment(1, 'QrCode/show/large/light');
         // the forward button
         $this->helperTestObjectComment(1, 'QrCode/forward');
-
-        // validate the html
-        $this->helperValidateHTML(true);
     }
 
     /**

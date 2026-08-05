@@ -61,7 +61,7 @@ if (!$color) {
                     'controller' => 'Sources',
                     'action' => 'view',
                     $qrCode->source->id,
-                ]
+                ],
             ) : '' ?> </dd>
 
             <dt class="col-4 col-md-3"><?= __('Owner') ?></dt>
@@ -71,7 +71,7 @@ if (!$color) {
                     'controller' => 'Users',
                     'action' => 'view',
                     $qrCode->user->id,
-                ]
+                ],
             ) : '' ?> </dd>
 
             <dt class="col-4 col-md-3"><?= __('Forward URL') ?></dt>
