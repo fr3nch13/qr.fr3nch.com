@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
-class AddLastHitToQrCodes extends AbstractMigration
+class AddLastHitToQrCodes extends BaseMigration
 {
     use \App\Migrations\QrMigrationTrait;
 
@@ -19,12 +19,12 @@ class AddLastHitToQrCodes extends AbstractMigration
         $this->beforeChange();
 
         $table = $this->table('qr_codes');
-        $this->io->out(__('Adding column `{0}` to table: `{1}`', [
+        $this->migrationIo()->out(__('Adding column `{0}` to table: `{1}`', [
             'last_hit',
             'qr_codes',
         ]));
 
-        $table->addColumn('last_hit', 'datetime');
+        $table->addColumn('last_hit', 'datetime', ['null' => true]);
         $table->update();
 
         $this->afterChange();

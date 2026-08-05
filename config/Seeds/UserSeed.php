@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-use Migrations\AbstractSeed;
+use Migrations\BaseSeed;
 
 use Authentication\PasswordHasher\DefaultPasswordHasher;
 
 /**
  * User seed.
  */
-class UserSeed extends AbstractSeed
+class UserSeed extends BaseSeed
 {
     use \App\Migrations\QrSeedTrait;
 
@@ -24,7 +24,9 @@ class UserSeed extends AbstractSeed
      */
     public function run(): void
     {
-        $this->checkTable('users');
+        if (!$this->checkTable('users')) {
+            return;
+        }
         $table = $this->table('users');
 
         $data = [

@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-use Migrations\AbstractSeed;
+use Migrations\BaseSeed;
 
 /**
  * QrCodeTag seed.
  */
-class QrCodeTagSeed extends AbstractSeed
+class QrCodeTagSeed extends BaseSeed
 {
     use \App\Migrations\QrSeedTrait;
 
@@ -35,7 +35,9 @@ class QrCodeTagSeed extends AbstractSeed
      */
     public function run(): void
     {
-        $this->checkTable('qr_codes_tags');
+        if (!$this->checkTable('qr_codes_tags')) {
+            return;
+        }
         $table = $this->table('qr_codes_tags');
 
         $data = [

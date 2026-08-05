@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a195ea53ff31bc45b54d2bbfc21e8571",
+    "content-hash": "bf917922870518f1309085698d611d4f",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -817,6 +817,65 @@
                 }
             ],
             "time": "2026-07-18T12:35:13+00:00"
+        },
+        {
+            "name": "fr3nch13/cakephp-stats",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fr3nch13/cakephp-stats.git",
+                "reference": "08ee79cbbd39d9a67b51fbe9db9e37a8f9fe645f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fr3nch13/cakephp-stats/zipball/08ee79cbbd39d9a67b51fbe9db9e37a8f9fe645f",
+                "reference": "08ee79cbbd39d9a67b51fbe9db9e37a8f9fe645f",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/cakephp": "^5.4.1",
+                "cakephp/migrations": "^5.2.6",
+                "cakephp/plugin-installer": "^2.0.2",
+                "php": ">=8.5"
+            },
+            "require-dev": {
+                "cakephp/cakephp-codesniffer": "^5.3.1",
+                "phpstan/phpstan": "^2.2.8",
+                "phpunit/phpunit": "^13.2.6",
+                "rexxars/html-validator": "^2.3"
+            },
+            "suggest": {
+                "bower-asset/chartjs": "If you want to use the templates/element/chartjs/* elements. See: https://asset-packagist.org"
+            },
+            "type": "cakephp-plugin",
+            "autoload": {
+                "psr-4": {
+                    "Fr3nch13\\Stats\\": "src",
+                    "Fr3nch13\\Stats\\Migrations\\": "config/Migrations"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Brian French",
+                    "homepage": "https://fr3nch.com"
+                }
+            ],
+            "description": "Statistics plugin for CakePHP Projects",
+            "homepage": "https://github.com/fr3nch13/cakephp-stats",
+            "keywords": [
+                "cakephp",
+                "plugin",
+                "stats"
+            ],
+            "support": {
+                "issues": "https://github.com/fr3nch13/cakephp-stats/issues",
+                "source": "https://github.com/fr3nch13/cakephp-stats/tree/1.0.0"
+            },
+            "time": "2026-08-05T01:33:14+00:00"
         },
         {
             "name": "friendsofcake/bootstrap-ui",
@@ -5536,11 +5595,11 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.2.7",
+            "version": "2.2.8",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/692db47b9dddb0487934e5236e77d48594aef921",
-                "reference": "692db47b9dddb0487934e5236e77d48594aef921",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/e285254e60f33c21902efef4a926ca0987c06804",
+                "reference": "e285254e60f33c21902efef4a926ca0987c06804",
                 "shasum": ""
             },
             "require": {
@@ -5596,7 +5655,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-07-29T17:39:32+00:00"
+            "time": "2026-08-04T22:21:45+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",

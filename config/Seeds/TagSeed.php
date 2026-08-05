@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-use Migrations\AbstractSeed;
+use Migrations\BaseSeed;
 
 /**
  * Tag seed.
  */
-class TagSeed extends AbstractSeed
+class TagSeed extends BaseSeed
 {
     use \App\Migrations\QrSeedTrait;
 
@@ -34,7 +34,9 @@ class TagSeed extends AbstractSeed
      */
     public function run(): void
     {
-        $this->checkTable('tags');
+        if (!$this->checkTable('tags')) {
+            return;
+        }
         $table = $this->table('tags');
 
         $data = [

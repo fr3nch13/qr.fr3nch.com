@@ -67,5 +67,6 @@ RUN composer install --no-dev --no-interaction --no-scripts --prefer-dist --opti
 FROM base AS production
 
 COPY --from=application-build --chown=www-data:www-data /var/www/html /var/www/html
+RUN chmod 755 /var/www/html/docker-entrypoint.sh
 
-CMD ["sh", "-c", "bin/cake migrations migrate && apache2-foreground"]
+CMD ["./docker-entrypoint.sh"]

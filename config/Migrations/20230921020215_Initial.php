@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
-class Initial extends AbstractMigration
+class Initial extends BaseMigration
 {
     use \App\Migrations\QrMigrationTrait;
 
@@ -18,28 +18,28 @@ class Initial extends AbstractMigration
     {
         $this->beforeChange();
 
-        $this->io->out(__('Creating table: {0}', ['users']));
+        $this->migrationIo()->out(__('Creating table: {0}', ['users']));
         $table = $this->table('users', $this->tableOptions());
         $table->addColumn('id', 'integer', $this->primaryKeyOptions());
         $table->addColumn('name', 'string');
         $table->addColumn('email', 'string');
         $table->addColumn('password', 'string');
-        $table->addColumn('created', 'datetime');
-        $table->addColumn('modified', 'datetime');
+        $table->addColumn('created', 'datetime', ['null' => true]);
+        $table->addColumn('modified', 'datetime', ['null' => true]);
         $table->addColumn('is_admin', 'boolean', ['default' => false, 'null' => false])
             ->addIndex(['is_admin']);
         $table->addColumn('is_active', 'boolean', ['default' => false, 'null' => false])
             ->addIndex(['is_active']);
         $table->create();
 
-        $this->io->out(__('Creating table: {0}', ['sources']));
+        $this->migrationIo()->out(__('Creating table: {0}', ['sources']));
         $table = $this->table('sources', $this->tableOptions());
         $table->addColumn('id', 'integer', $this->primaryKeyOptions());
         $table->addColumn('name', 'string')->addIndex(['name']);
         $table->addColumn('description', 'text');
-        $table->addColumn('created', 'datetime');
-        $table->addColumn('modified', 'datetime');
-        $table->addColumn('user_id', 'integer')
+        $table->addColumn('created', 'datetime', ['null' => true]);
+        $table->addColumn('modified', 'datetime', ['null' => true]);
+        $table->addColumn('user_id', 'integer', ['null' => true])
             ->addIndex(['user_id']);
         $table->addForeignKey('user_id', 'users', 'id', [
                 'update' => 'NO_ACTION',
@@ -48,21 +48,21 @@ class Initial extends AbstractMigration
             ]);
         $table->create();
 
-        $this->io->out(__('Creating table: {0}', ['qr_codes']));
+        $this->migrationIo()->out(__('Creating table: {0}', ['qr_codes']));
         $table = $this->table('qr_codes', $this->tableOptions());
         $table->addColumn('id', 'integer', $this->primaryKeyOptions());
         $table->addColumn('qrkey', 'string')
             ->addIndex(['qrkey'], ['unique' => true]);
         $table->addColumn('name', 'string');
         $table->addColumn('description', 'text');
-        $table->addColumn('created', 'datetime');
-        $table->addColumn('modified', 'datetime');
+        $table->addColumn('created', 'datetime', ['null' => true]);
+        $table->addColumn('modified', 'datetime', ['null' => true]);
         $table->addColumn('url', 'text', ['null' => false]);
         $table->addColumn('hits', 'integer', ['default' => 0, 'null' => false]);
         $table->addColumn('is_active', 'boolean', ['default' => true, 'null' => false])
             ->addIndex(['is_active']);
-        $table->addColumn('source_id', 'integer')->addIndex(['source_id']);
-        $table->addColumn('user_id', 'integer')->addIndex(['user_id']);
+        $table->addColumn('source_id', 'integer', ['null' => true])->addIndex(['source_id']);
+        $table->addColumn('user_id', 'integer', ['null' => true])->addIndex(['user_id']);
         $table->addForeignKey('source_id', 'sources', 'id', [
                 'update' => 'NO_ACTION',
                 'delete' => 'SET_NULL',
@@ -75,13 +75,13 @@ class Initial extends AbstractMigration
             ]);
         $table->create();
 
-        $this->io->out(__('Creating table: {0}', ['qr_images']));
+        $this->migrationIo()->out(__('Creating table: {0}', ['qr_images']));
         $table = $this->table('qr_images', $this->tableOptions());
         $table->addColumn('id', 'integer', $this->primaryKeyOptions());
         $table->addColumn('name', 'string', ['null' => false]);
         $table->addColumn('ext', 'string', ['null' => false]);
-        $table->addColumn('created', 'datetime');
-        $table->addColumn('modified', 'datetime');
+        $table->addColumn('created', 'datetime', ['null' => true]);
+        $table->addColumn('modified', 'datetime', ['null' => true]);
         $table->addColumn('is_active', 'boolean', ['default' => true, 'null' => false])
             ->addIndex(['is_active']);
         $table->addColumn('imorder', 'integer', ['default' => 0, 'null' => false])
@@ -95,13 +95,13 @@ class Initial extends AbstractMigration
             ]);
         $table->create();
 
-        $this->io->out(__('Creating table: {0}', ['tags']));
+        $this->migrationIo()->out(__('Creating table: {0}', ['tags']));
         $table = $this->table('tags', $this->tableOptions());
         $table->addColumn('id', 'integer', $this->primaryKeyOptions());
         $table->addColumn('name', 'string', ['null' => false]);
-        $table->addColumn('created', 'datetime');
-        $table->addColumn('modified', 'datetime');
-        $table->addColumn('user_id', 'integer')->addIndex(['user_id']);
+        $table->addColumn('created', 'datetime', ['null' => true]);
+        $table->addColumn('modified', 'datetime', ['null' => true]);
+        $table->addColumn('user_id', 'integer', ['null' => true])->addIndex(['user_id']);
         $table->addForeignKey('user_id', 'users', 'id', [
                 'update' => 'NO_ACTION',
                 'delete' => 'SET_NULL',
@@ -109,7 +109,7 @@ class Initial extends AbstractMigration
             ]);
         $table->create();
 
-        $this->io->out(__('Creating table: {0}', ['qr_codes_tags']));
+        $this->migrationIo()->out(__('Creating table: {0}', ['qr_codes_tags']));
         $table = $this->table('qr_codes_tags', $this->tableOptions());
         $table->addColumn('id', 'integer', $this->primaryKeyOptions());
         $table->addColumn('tag_id', 'integer', ['null' => false])

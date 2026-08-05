@@ -4,31 +4,39 @@ declare(strict_types=1);
 namespace App\Migrations;
 
 use Cake\Console\ConsoleIo;
-use Phinx\Db\Adapter\MysqlAdapter;
+use Migrations\Db\Adapter\MysqlAdapter;
 
+/** @mixin \Migrations\BaseMigration */
 trait QrMigrationTrait
 {
     /**
-     * @var \Cake\Console\ConsoleIo console object
-     */
-    public $io;
-
-    /**
-     * Makes the I/O object
+     * Gets the migration I/O object.
      *
-     * @return void
+     * @return \Cake\Console\ConsoleIo
      */
-    public function makeIo(): void
+    public function migrationIo(): ConsoleIo
     {
-        if (!$this->io) {
-            $this->io = new ConsoleIo();
+        $io = $this->getIo();
+        if (!$io) {
+            $io = new ConsoleIo();
+            $this->setIo($io);
         }
+
+        return $io;
     }
 
     /**
      * The default table options
      *
-     * @return array The array of options
+    * @return array{
+    *   id: false,
+    *   primary_key: list<string>,
+    *   engine: string,
+    *   encoding: string,
+    *   collation: string,
+    *   comment: string,
+    *   row_format: string
+    * } The array of options
      */
     public function tableOptions(): array
     {
@@ -46,7 +54,7 @@ trait QrMigrationTrait
     /**
      * The default options for the primary key
      *
-     * @return array
+    * @return array{null: false, limit: int, precision: int, identity: true}
      */
     public function primaryKeyOptions(): array
     {
@@ -65,8 +73,7 @@ trait QrMigrationTrait
      */
     public function beforeChange(): void
     {
-        $this->makeIo();
-        $this->io->out(__('--- Running Migration: {0}:beforeChange ---', [self::class]));
+        $this->migrationIo()->out(__('--- Running Migration: {0}:beforeChange ---', [self::class]));
         if ($this->getAdapter()->getAdapterType() == 'mysql') {
             $this->execute('SET UNIQUE_CHECKS = 0;');
             $this->execute('SET FOREIGN_KEY_CHECKS = 0;');
@@ -82,8 +89,7 @@ trait QrMigrationTrait
      */
     public function afterChange(): void
     {
-        $this->makeIo();
-        $this->io->out(__('--- Running Migration: {0}:afterChange ---', [self::class]));
+        $this->migrationIo()->out(__('--- Running Migration: {0}:afterChange ---', [self::class]));
         if ($this->getAdapter()->getAdapterType() == 'mysql') {
             $this->execute('SET FOREIGN_KEY_CHECKS = 1;');
             $this->execute('SET UNIQUE_CHECKS = 1;');

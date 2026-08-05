@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-use Migrations\AbstractSeed;
+use Migrations\BaseSeed;
 
 /**
  * Source seed.
  */
-class SourceSeed extends AbstractSeed
+class SourceSeed extends BaseSeed
 {
     use \App\Migrations\QrSeedTrait;
 
@@ -34,7 +34,9 @@ class SourceSeed extends AbstractSeed
      */
     public function run(): void
     {
-        $this->checkTable('sources');
+        if (!$this->checkTable('sources')) {
+            return;
+        }
         $table = $this->table('sources');
 
         $data = [
