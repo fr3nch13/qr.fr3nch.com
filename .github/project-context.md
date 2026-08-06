@@ -42,6 +42,11 @@ The full image test surface requires PHP's GD extension. Without GD, QR image th
 
 The production Docker stage copies the built application as `www-data`, marks `docker-entrypoint.sh` executable, and starts through that script. Build from the repository root with the existing production target and arguments in the Dockerfile; do not embed environment-specific credentials in the image.
 
+The application container serves plain HTTP on port `8080`. Host Nginx owns
+HTTP-to-HTTPS redirects, TLS termination, and certificates. `App.fullBaseUrl`
+remains disabled so normal application links stay relative rather than exposing
+the internal container address.
+
 ## Release and deployment
 
 The CI workflow owns release publishing and Lightsail deployment. A release-tag push runs the full development-image quality, test, coverage, and asset pipeline before publishing `fr3nch13702/qr.fr3nch.com:latest` and the matching application-version tag, then deploys that application-version tag.

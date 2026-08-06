@@ -1,45 +1,15 @@
 <?php
 
-use App\Cache\Engine\S3CacheEngine;
 use Cake\Cache\Engine\FileEngine;
 use Cake\Database\Connection;
 use Cake\Database\Driver\Mysql;
 use Cake\Log\Engine\FileLog;
 use Cake\Mailer\Transport\MailTransport;
 
-$useS3Cache =
-    (bool)env('AWS_S3_BUCKET') &&
-    (bool)env('AWS_S3_REGION') &&
-    (bool)env('AWS_S3_ACCESS_KEY_ID') &&
-    (bool)env('AWS_S3_SECRET_ACCESS_KEY');
-$cacheClassName = $useS3Cache ? S3CacheEngine::class : FileEngine::class;
-
-$s3Environment = trim((string)env('AWS_S3_ENV', 'development'));
-$s3Environment = strtolower($s3Environment);
-$s3Environment = preg_replace('/[^a-z0-9._-]+/', '-', $s3Environment) ?: 'development';
-
-$s3PrefixRoot = trim((string)env('AWS_S3_PREFIX', 'fr3nch.com'), '/');
-if ($s3PrefixRoot === '') {
-    $s3PrefixRoot = 'fr3nch.com';
-}
-
 $defaultCachePrefix = 'cache/';
 $cakeCoreCachePrefix = 'cake_core/';
 $cakeModelCachePrefix = 'cake_model/';
 $cakeTranslationsCachePrefix = 'cake_translations/';
-
-if ($useS3Cache) {
-    $s3ScopedPrefix = $s3PrefixRoot . '/' . $s3Environment;
-    $defaultCachePrefix = $s3ScopedPrefix . '/cache/';
-    $cakeCoreCachePrefix = $s3ScopedPrefix . '/cake_core/';
-    $cakeModelCachePrefix = $s3ScopedPrefix . '/cake_model/';
-    $cakeTranslationsCachePrefix = $s3ScopedPrefix . '/cake_translations/';
-}
-
-$filesystemPrefix = trim((string)env(
-    'FILESYSTEM_PREFIX',
-    $s3PrefixRoot . '/' . $s3Environment . '/uploads',
-), '/');
 
 return [
     /*
@@ -130,26 +100,12 @@ return [
         // 'cacheTime' => '+1 year'
     ],
 
-    'Filesystem' => [
-        'driver' => env('FILESYSTEM_DRIVER', 'local'),
-        'localPath' => env('FILESYSTEM_LOCAL_PATH', TMP . 'uploads'),
-        'key' => env('AWS_S3_ACCESS_KEY_ID'),
-        'secret' => env('AWS_S3_SECRET_ACCESS_KEY'),
-        'region' => env('AWS_S3_REGION'),
-        'bucket' => env('AWS_S3_BUCKET'),
-        'prefix' => $filesystemPrefix,
-    ],
-
     /*
      * Configure the cache adapters.
      */
     'Cache' => [
         'default' => [
-            'className' => $cacheClassName,
-            'key' => env('AWS_S3_ACCESS_KEY_ID'),
-            'secret' => env('AWS_S3_SECRET_ACCESS_KEY'),
-            'region' => env('AWS_S3_REGION'),
-            'bucket' => env('AWS_S3_BUCKET'),
+            'className' => FileEngine::class,
             'prefix' => $defaultCachePrefix,
             'url' => env('CACHE_DEFAULT_URL', null),
         ],
@@ -161,11 +117,7 @@ return [
          * If you set 'className' => 'Null' core cache will be disabled.
          */
         '_cake_core_' => [
-            'className' => $cacheClassName,
-            'key' => env('AWS_S3_ACCESS_KEY_ID'),
-            'secret' => env('AWS_S3_SECRET_ACCESS_KEY'),
-            'region' => env('AWS_S3_REGION'),
-            'bucket' => env('AWS_S3_BUCKET'),
+            'className' => FileEngine::class,
             'prefix' => $cakeCoreCachePrefix,
             'serialize' => true,
             'duration' => '+1 years',
@@ -179,11 +131,7 @@ return [
          * Duration will be set to '+2 minutes' in bootstrap.php when debug = true
          */
         '_cake_model_' => [
-            'className' => $cacheClassName,
-            'key' => env('AWS_S3_ACCESS_KEY_ID'),
-            'secret' => env('AWS_S3_SECRET_ACCESS_KEY'),
-            'region' => env('AWS_S3_REGION'),
-            'bucket' => env('AWS_S3_BUCKET'),
+            'className' => FileEngine::class,
             'prefix' => $cakeModelCachePrefix,
             'serialize' => true,
             'duration' => '+1 years',
@@ -196,11 +144,7 @@ return [
          * Duration will be set to '+2 minutes' in bootstrap.php when debug = true
          */
         '_cake_translations_' => [
-            'className' => $cacheClassName,
-            'key' => env('AWS_S3_ACCESS_KEY_ID'),
-            'secret' => env('AWS_S3_SECRET_ACCESS_KEY'),
-            'region' => env('AWS_S3_REGION'),
-            'bucket' => env('AWS_S3_BUCKET'),
+            'className' => FileEngine::class,
             'prefix' => $cakeTranslationsCachePrefix,
             'serialize' => true,
             'duration' => '+1 years',

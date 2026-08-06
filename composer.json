@@ -12,7 +12,6 @@
     ],
     "require": {
         "php": ">=8.5",
-        "aws/aws-sdk-php": "^3.390.4",
         "cakephp/authentication": "^3.3.7",
         "cakephp/authorization": "^3.5.3",
         "cakephp/cakephp": "^5.4.1",
@@ -22,8 +21,6 @@
         "fr3nch13/cakephp-stats": "^1.0.0",
         "friendsofcake/bootstrap-ui": "^5.2.0",
         "friendsofcake/search": "^7.9",
-        "league/flysystem": "^3.35.2",
-        "league/flysystem-aws-s3-v3": "^3.35.2",
         "mobiledetect/mobiledetectlib": "^4.11.0",
         "paragonie/csp-builder": "^3.0.2",
         "robmorgan/phinx": "^0.16.12"
