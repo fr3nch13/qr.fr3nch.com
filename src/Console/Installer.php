@@ -20,7 +20,6 @@ if (!defined('STDIN')) {
     define('STDIN', fopen('php://stdin', 'r'));
 }
 
-use Cake\Utility\Security;
 use Composer\IO\IOInterface;
 use Composer\Script\Event;
 use Exception;
