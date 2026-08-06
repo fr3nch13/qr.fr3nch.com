@@ -25,6 +25,7 @@ use Cake\Http\Middleware\BodyParserMiddleware;
 use Cake\Http\Middleware\CsrfProtectionMiddleware;
 use Cake\Http\Middleware\SecurityHeadersMiddleware;
 use Cake\Http\MiddlewareQueue;
+use Cake\Http\ServerRequestFactory;
 use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
 use Cake\TestSuite\IntegrationTestTrait;
@@ -86,6 +87,22 @@ class ApplicationTest extends TestCase
         $this->assertTrue($plugins->has('BootstrapUI'), 'plugins has BootstrapUI?');
         $this->assertTrue($plugins->has('Search'), 'plugins has Search?');
         $this->assertTrue($plugins->has('Fr3nch13/Stats'), 'plugins has Fr3nch13/Stats?');
+    }
+
+    /**
+     * Test Apache's normalized HTTPS environment generates a secure request URI.
+     */
+    public function testServerRequestUsesNormalizedHttpsEnvironment(): void
+    {
+        $request = ServerRequestFactory::fromGlobals([
+            'HTTP_HOST' => 'qr.fr3nch.com',
+            'HTTPS' => 'on',
+            'REQUEST_METHOD' => 'GET',
+            'REQUEST_URI' => '/',
+            'SCRIPT_NAME' => '/index.php',
+        ]);
+
+        $this->assertSame('https', $request->getUri()->getScheme());
     }
 
     /**

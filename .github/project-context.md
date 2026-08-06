@@ -43,9 +43,11 @@ The full image test surface requires PHP's GD extension. Without GD, QR image th
 The production Docker stage copies the built application as `www-data`, marks `docker-entrypoint.sh` executable, and starts through that script. Build from the repository root with the existing production target and arguments in the Dockerfile; do not embed environment-specific credentials in the image.
 
 The application container serves plain HTTP on port `8080`. Host Nginx owns
-HTTP-to-HTTPS redirects, TLS termination, and certificates. `App.fullBaseUrl`
+HTTP-to-HTTPS redirects, TLS termination, HSTS, and certificates. `App.fullBaseUrl`
 remains disabled so normal application links stay relative rather than exposing
-the internal container address.
+the internal container address. Apache translates Nginx's trusted
+`X-Forwarded-Proto: https` header to `HTTPS=on`, preserving HTTPS for absolute
+URLs generated from a proxied request.
 
 ## Release and deployment
 

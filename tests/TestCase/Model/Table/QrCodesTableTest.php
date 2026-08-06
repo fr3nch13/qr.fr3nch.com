@@ -11,9 +11,11 @@ use App\Model\Table\TagsTable;
 use App\Model\Table\UsersTable;
 use Cake\Core\Configure;
 use Cake\Http\Exception\InternalErrorException;
+use Cake\Http\ServerRequestFactory;
 use Cake\ORM\Association\BelongsTo;
 use Cake\ORM\Association\BelongsToMany;
 use Cake\ORM\Behavior\TimestampBehavior;
+use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use ReflectionClass;
 
@@ -671,6 +673,24 @@ class QrCodesTableTest extends TestCase
 
         // no color set in entity, defaults to dark
         $entity = $this->QrCodes->get(2);
+        $originalRequest = Router::getRequest();
+        try {
+            Router::setRequest(ServerRequestFactory::fromGlobals([
+                'HTTP_HOST' => 'qr.fr3nch.com',
+                'HTTPS' => 'on',
+                'REQUEST_METHOD' => 'GET',
+                'REQUEST_URI' => '/',
+                'SCRIPT_NAME' => '/index.php',
+            ]));
+
+            $QR = new PhpQrGenerator($entity);
+            $this->assertSame('https://qr.fr3nch.com/f/' . $entity->qrkey, static::getProperty($QR, 'data'));
+        } finally {
+            if ($originalRequest !== null) {
+                Router::setRequest($originalRequest);
+            }
+        }
+
         $QR = new PhpQrGenerator($entity);
         $QR->generate();
         $this->assertTrue(is_readable($path_dark));

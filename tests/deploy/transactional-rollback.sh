@@ -11,6 +11,7 @@ state_dir="$test_root/state"
 certbot_root="$test_root/opt/certbot"
 certbot_live_dir="$test_root/etc/letsencrypt/live"
 systemd_unit_dir="$test_root/etc/systemd/system"
+render_dir="$test_root/rendered"
 
 cleanup() {
     rm -rf "$test_root"
@@ -26,6 +27,22 @@ mkdir -p \
     "$certbot_root/bin" \
     "$certbot_live_dir/qr.fr3nch.com" \
     "$systemd_unit_dir"
+
+env \
+    DOMAIN=qr.fr3nch.com \
+    PROJECT_NAME=qr-fr3nch-com \
+    DOCKER_HUB_REPO=example/qr.fr3nch.com \
+    IMAGE_TAG=2608.06.1 \
+    APP_HOST_PORT=8081 \
+    APP_CONTAINER_PORT=8080 \
+    LOCK_PATH="$test_root/var/lock/fr3nch-deploy.lock" \
+    DEBUG=false \
+    DATABASE_URL=sqlite:////var/www/html/tmp/prod.sqlite \
+    SECURITY_SALT=test-salt \
+    CERTBOT_EMAIL=admin@example.com \
+    sh "$repo_root/deploy/render-artifacts.sh" "$render_dir"
+
+grep -F 'add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;' "$render_dir/nginx-server.conf" >/dev/null
 
 printf '%s\n' old-compose > "$app_root/compose.yaml"
 printf '%s\n' old-env > "$app_root/.env"

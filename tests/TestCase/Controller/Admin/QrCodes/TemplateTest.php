@@ -110,6 +110,18 @@ class TemplateTest extends BaseControllerTest
     }
 
     /**
+     * Test the copied forwarding URL uses the full HTTPS request origin.
+     */
+    public function testViewUsesFullHttpsForwardUrl(): void
+    {
+        $this->loginUserAdmin();
+        $this->get('https://qr.fr3nch.com/admin/qr-codes/view/1');
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('https://qr.fr3nch.com/f/sownscribe');
+    }
+
+    /**
      * Test view method
      *
      * @return void

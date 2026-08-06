@@ -95,6 +95,7 @@ server {
 
     ssl_certificate ${TLS_CERTIFICATE_FILE};
     ssl_certificate_key ${TLS_CERTIFICATE_KEY_FILE};
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;
 
     location / {
         proxy_pass http://127.0.0.1:${APP_HOST_PORT};

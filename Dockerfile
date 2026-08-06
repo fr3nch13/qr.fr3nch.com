@@ -26,7 +26,9 @@ COPY --from=php-extensions /usr/local/lib/php/extensions/ /usr/local/lib/php/ext
 COPY --from=php-extensions /usr/local/etc/php/conf.d/ /usr/local/etc/php/conf.d/
 
 # Enable Apache modules commonly needed by CakePHP apps.
-RUN a2enmod rewrite headers \
+COPY docker/apache-proxy-scheme.conf /etc/apache2/conf-available/proxy-scheme.conf
+RUN a2enmod rewrite headers setenvif \
+    && a2enconf proxy-scheme \
     && sed -i 's/^Listen 80$/Listen 8080/' /etc/apache2/ports.conf \
     && sed -i 's/<VirtualHost \*:80>/<VirtualHost *:8080>/' /etc/apache2/sites-available/000-default.conf
 
