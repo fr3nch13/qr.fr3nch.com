@@ -54,18 +54,6 @@ class QrImagesTableTest extends TestCase
     }
 
     /**
-     * tearDown method
-     *
-     * @return void
-     */
-    protected function tearDown(): void
-    {
-        unset($this->QrImages);
-
-        parent::tearDown();
-    }
-
-    /**
      * Tests the class name of the Table
      *
      * @return void
@@ -101,10 +89,9 @@ class QrImagesTableTest extends TestCase
         $Associations = $this->QrImages->associations();
 
         // make sure the association exists
-        $this->assertNotNull($Associations->get('QrCodes'));
-        $this->assertInstanceOf(BelongsTo::class, $Associations->get('QrCodes'));
-        $this->assertInstanceOf(QrCodesTable::class, $Associations->get('QrCodes')->getTarget());
-        $Association = $this->QrImages->QrCodes;
+        $Association = $Associations->get('QrCodes');
+        $this->assertInstanceOf(BelongsTo::class, $Association);
+        $this->assertInstanceOf(QrCodesTable::class, $Association->getTarget());
         $this->assertSame('QrCodes', $Association->getName());
         $this->assertSame('qr_code_id', $Association->getForeignKey());
     }

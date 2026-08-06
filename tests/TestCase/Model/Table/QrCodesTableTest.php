@@ -119,26 +119,23 @@ class QrCodesTableTest extends TestCase
 
         ////// foreach association.
         // make sure the association exists
-        $this->assertNotNull($Associations->get('Users'));
-        $this->assertInstanceOf(BelongsTo::class, $Associations->get('Users'));
-        $this->assertInstanceOf(UsersTable::class, $Associations->get('Users')->getTarget());
-        $Association = $this->QrCodes->Users;
+        $Association = $Associations->get('Users');
+        $this->assertInstanceOf(BelongsTo::class, $Association);
+        $this->assertInstanceOf(UsersTable::class, $Association->getTarget());
         $this->assertSame('Users', $Association->getName());
         $this->assertSame('user_id', $Association->getForeignKey());
 
         // make sure the association exists
-        $this->assertNotNull($Associations->get('Sources'));
-        $this->assertInstanceOf(BelongsTo::class, $Associations->get('Sources'));
-        $this->assertInstanceOf(SourcesTable::class, $Associations->get('Sources')->getTarget());
-        $Association = $this->QrCodes->Sources;
+        $Association = $Associations->get('Sources');
+        $this->assertInstanceOf(BelongsTo::class, $Association);
+        $this->assertInstanceOf(SourcesTable::class, $Association->getTarget());
         $this->assertSame('Sources', $Association->getName());
         $this->assertSame('source_id', $Association->getForeignKey());
 
         // make sure the association exists
-        $this->assertNotNull($Associations->get('Tags'));
-        $this->assertInstanceOf(BelongsToMany::class, $Associations->get('Tags'));
-        $this->assertInstanceOf(TagsTable::class, $Associations->get('Tags')->getTarget());
-        $Association = $this->QrCodes->Tags;
+        $Association = $Associations->get('Tags');
+        $this->assertInstanceOf(BelongsToMany::class, $Association);
+        $this->assertInstanceOf(TagsTable::class, $Association->getTarget());
         $this->assertSame('Tags', $Association->getName());
         $this->assertSame('QrCodesTags', $Association->getThrough());
         $this->assertSame('qr_code_id', $Association->getForeignKey());
@@ -344,6 +341,7 @@ class QrCodesTableTest extends TestCase
     {
         // test getting an existing record
         $qrCode = $this->QrCodes->find('key', key: 'sownscribe')->first();
+        $this->assertNotNull($qrCode);
         $this->assertSame(1, $qrCode->id);
 
         // test getting a non-existant record

@@ -52,18 +52,6 @@ class UsersTableTest extends TestCase
     }
 
     /**
-     * tearDown method
-     *
-     * @return void
-     */
-    protected function tearDown(): void
-    {
-        unset($this->Users);
-
-        parent::tearDown();
-    }
-
-    /**
      * Tests the class name of the Table
      *
      * @return void
@@ -121,26 +109,23 @@ class UsersTableTest extends TestCase
 
         ////// foreach association.
         // make sure the association exists
-        $this->assertNotNull($Associations->get('QrCodes'));
-        $this->assertInstanceOf(HasMany::class, $Associations->get('QrCodes'));
-        $this->assertInstanceOf(QrCodesTable::class, $Associations->get('QrCodes')->getTarget());
-        $Association = $this->Users->QrCodes;
+        $Association = $Associations->get('QrCodes');
+        $this->assertInstanceOf(HasMany::class, $Association);
+        $this->assertInstanceOf(QrCodesTable::class, $Association->getTarget());
         $this->assertSame('QrCodes', $Association->getName());
         $this->assertSame('user_id', $Association->getForeignKey());
 
         // make sure the association exists
-        $this->assertNotNull($Associations->get('Sources'));
-        $this->assertInstanceOf(HasMany::class, $Associations->get('Sources'));
-        $this->assertInstanceOf(SourcesTable::class, $Associations->get('Sources')->getTarget());
-        $Association = $this->Users->Sources;
+        $Association = $Associations->get('Sources');
+        $this->assertInstanceOf(HasMany::class, $Association);
+        $this->assertInstanceOf(SourcesTable::class, $Association->getTarget());
         $this->assertSame('Sources', $Association->getName());
         $this->assertSame('user_id', $Association->getForeignKey());
 
         // make sure the association exists
-        $this->assertNotNull($Associations->get('Tags'));
-        $this->assertInstanceOf(HasMany::class, $Associations->get('Tags'));
-        $this->assertInstanceOf(TagsTable::class, $Associations->get('Tags')->getTarget());
-        $Association = $this->Users->Tags;
+        $Association = $Associations->get('Tags');
+        $this->assertInstanceOf(HasMany::class, $Association);
+        $this->assertInstanceOf(TagsTable::class, $Association->getTarget());
         $this->assertSame('Tags', $Association->getName());
         $this->assertSame('user_id', $Association->getForeignKey());
     }
