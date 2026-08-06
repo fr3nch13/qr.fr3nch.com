@@ -39,21 +39,21 @@ class TemplateTest extends BaseControllerTest
     public function testIndexNormal(): void
     {
         // not logged in
-        $this->get('https://localhost/tags');
+        $this->get('http://localhost:8080/tags');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesIndex();
         $this->helperTestTemplate('Tags/index');
 
         // test with reqular
         $this->loginUserRegular();
-        $this->get('https://localhost/tags');
+        $this->get('http://localhost:8080/tags');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesIndex();
         $this->helperTestTemplate('Tags/index');
 
         // test with admin
         $this->loginUserAdmin();
-        $this->get('https://localhost/tags');
+        $this->get('http://localhost:8080/tags');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesIndex();
         $this->helperTestTemplate('Tags/index');
@@ -69,7 +69,7 @@ class TemplateTest extends BaseControllerTest
     {
         // not logged in
         $this->requestAsAjax();
-        $this->get('https://localhost/tags');
+        $this->get('http://localhost:8080/tags');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
         $this->helperTestTemplate('Tags/index');
@@ -77,7 +77,7 @@ class TemplateTest extends BaseControllerTest
         // test with reqular
         $this->requestAsAjax();
         $this->loginUserRegular();
-        $this->get('https://localhost/tags');
+        $this->get('http://localhost:8080/tags');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
         $this->helperTestTemplate('Tags/index');
@@ -85,7 +85,7 @@ class TemplateTest extends BaseControllerTest
         // test with admin
         $this->requestAsAjax();
         $this->loginUserAdmin();
-        $this->get('https://localhost/tags');
+        $this->get('http://localhost:8080/tags');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
         $this->helperTestTemplate('Tags/index');

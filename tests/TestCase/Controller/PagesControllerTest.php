@@ -20,7 +20,7 @@ class PagesControllerTest extends BaseControllerTest
      */
     public function testDisplay()
     {
-        $this->get('https://localhost/pages/about');
+        $this->get('http://localhost:8080/pages/about');
 
         $this->assertResponseOk();
         $this->helperTestLayoutPagesView();
@@ -36,7 +36,7 @@ class PagesControllerTest extends BaseControllerTest
      */
     public function testDisplayRootRoute()
     {
-        $this->get('https://localhost/');
+        $this->get('http://localhost:8080/');
 
         $this->assertResponseOk();
         $this->helperTestLayoutPagesIndex();
@@ -50,7 +50,7 @@ class PagesControllerTest extends BaseControllerTest
      */
     public function testDisplaySubPage()
     {
-        $this->get('https://localhost/pages/about/staff');
+        $this->get('http://localhost:8080/pages/about/staff');
 
         $this->assertResponseOk();
         $this->helperTestLayoutPagesGeneric();
@@ -64,9 +64,9 @@ class PagesControllerTest extends BaseControllerTest
      */
     public function testDisplayDirectly()
     {
-        $this->get('https://localhost/pages');
+        $this->get('http://localhost:8080/pages');
 
-        $this->assertRedirectEquals('https://localhost/');
+        $this->assertRedirectEquals('/');
     }
 
     /**
@@ -78,7 +78,7 @@ class PagesControllerTest extends BaseControllerTest
     {
         $this->loginUserAdmin();
 
-        $this->get('https://localhost/pages/index');
+        $this->get('http://localhost:8080/pages/index');
 
         $this->assertResponseOk();
         $this->helperTestLayoutPagesGeneric();
@@ -93,7 +93,7 @@ class PagesControllerTest extends BaseControllerTest
     public function testMissingTemplate()
     {
         Configure::write('debug', false);
-        $this->get('https://localhost/pages/not_existing');
+        $this->get('http://localhost:8080/pages/not_existing');
         $this->assertResponseCode(404);
         $this->helperTestError400('/pages/not_existing');
     }
@@ -107,7 +107,7 @@ class PagesControllerTest extends BaseControllerTest
     {
         Configure::write('debug', true);
 
-        $this->get('https://localhost/pages/not_existing');
+        $this->get('http://localhost:8080/pages/not_existing');
         $this->assertResponseCode(500);
 
         $this->assertResponseContains('Template file');
@@ -122,7 +122,7 @@ class PagesControllerTest extends BaseControllerTest
      */
     public function testDirectoryTraversalProtection()
     {
-        $this->get('https://localhost/pages/../Layout/ajax');
+        $this->get('http://localhost:8080/pages/../Layout/ajax');
 
         $this->assertResponseCode(403);
         $this->assertResponseContains('Forbidden');
@@ -135,7 +135,7 @@ class PagesControllerTest extends BaseControllerTest
      */
     public function testCsrfAppliedError()
     {
-        $this->post('https://localhost/pages/home', ['hello' => 'world']);
+        $this->post('http://localhost:8080/pages/home', ['hello' => 'world']);
 
         $this->assertResponseCode(403);
         $this->assertResponseContains('CSRF');
@@ -151,7 +151,7 @@ class PagesControllerTest extends BaseControllerTest
         $this->enableCsrfToken();
         Configure::write('debug', true);
 
-        $this->post('https://localhost/pages/home', ['hello' => 'world']);
+        $this->post('http://localhost:8080/pages/home', ['hello' => 'world']);
 
         $this->assertThat(403, $this->logicalNot(new StatusCode($this->_response)));
         $this->assertResponseContains('`_Token` was not found in request data.');

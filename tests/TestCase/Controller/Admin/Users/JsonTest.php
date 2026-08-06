@@ -41,7 +41,7 @@ class JsonTest extends BaseControllerTest
     public function testDashboard(): void
     {
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin.json');
+        $this->get('http://localhost:8080/admin.json');
         $this->assertResponseOk();
 
         $content = (string)$this->_response->getBody();
@@ -52,11 +52,11 @@ class JsonTest extends BaseControllerTest
         $this->assertFalse(isset($content['activeUser']['password']));
 
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/dashboard.json');
+        $this->get('http://localhost:8080/admin/dashboard.json');
         $this->assertResponseOk();
 
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/users/dashboard.json');
+        $this->get('http://localhost:8080/admin/users/dashboard.json');
         $this->assertResponseOk();
     }
 
@@ -69,7 +69,7 @@ class JsonTest extends BaseControllerTest
     public function testIndex(): void
     {
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/users.json');
+        $this->get('http://localhost:8080/admin/users.json');
         $this->assertResponseOk();
 
         $content = (string)$this->_response->getBody();
@@ -92,7 +92,7 @@ class JsonTest extends BaseControllerTest
     public function testView(): void
     {
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/users/view/2.json');
+        $this->get('http://localhost:8080/admin/users/view/2.json');
         $this->assertResponseOk();
 
         $content = (string)$this->_response->getBody();
@@ -113,7 +113,7 @@ class JsonTest extends BaseControllerTest
     {
         $this->loginUserAdmin();
         // a get
-        $this->get('https://localhost/admin/users/add.json');
+        $this->get('http://localhost:8080/admin/users/add.json');
         $this->assertResponseOk();
 
         $content = (string)$this->_response->getBody();
@@ -126,7 +126,7 @@ class JsonTest extends BaseControllerTest
         $this->assertTrue(empty($content['errors']));
 
         // a post fail
-        $this->post('https://localhost/admin/users/add.json', []);
+        $this->post('http://localhost:8080/admin/users/add.json', []);
         $this->assertResponseOk();
         $content = (string)$this->_response->getBody();
         $content = json_decode($content, true);
@@ -151,12 +151,12 @@ class JsonTest extends BaseControllerTest
         $this->assertSame($expected, $content['errors']);
 
         // a post success
-        $this->post('https://localhost/admin/users/add.json', [
+        $this->post('http://localhost:8080/admin/users/add.json', [
             'name' => 'New JSON User',
             'email' => 'newjsonuser@example.com',
             'password' => 'password',
         ]);
-        $this->assertRedirectEquals('https://localhost/admin/users/view/5.json');
+        $this->assertRedirectEquals('/admin/users/view/5.json');
         $this->assertFlashMessage('The user has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -172,7 +172,7 @@ class JsonTest extends BaseControllerTest
         $this->loginUserAdmin();
         // test with admin, get
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/users/edit/1.json');
+        $this->get('http://localhost:8080/admin/users/edit/1.json');
         $this->assertResponseOk();
         $content = (string)$this->_response->getBody();
         $content = json_decode($content, true);
@@ -184,10 +184,10 @@ class JsonTest extends BaseControllerTest
         $this->assertTrue(empty($content['errors']));
 
         // a put success
-        $this->put('https://localhost/admin/users/edit/1.json', [
+        $this->put('http://localhost:8080/admin/users/edit/1.json', [
             'name' => 'Updated JSON User',
         ]);
-        $this->assertRedirectEquals('https://localhost/admin/users/view/1.json');
+        $this->assertRedirectEquals('/admin/users/view/1.json');
         $this->assertFlashMessage('The user has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }

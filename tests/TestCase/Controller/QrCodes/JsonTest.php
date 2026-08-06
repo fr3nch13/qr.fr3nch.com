@@ -41,7 +41,7 @@ class JsonTest extends BaseControllerTest
      */
     public function testIndex(): void
     {
-        $this->get('https://localhost/qr-codes.json');
+        $this->get('http://localhost:8080/qr-codes.json');
         $this->assertResponseOk();
 
         $content = (string)$this->_response->getBody();
@@ -66,7 +66,7 @@ class JsonTest extends BaseControllerTest
      */
     public function testView(): void
     {
-        $this->get('https://localhost/qr-codes/view/1.json');
+        $this->get('http://localhost:8080/qr-codes/view/1.json');
         $this->assertResponseOk();
 
         $content = (string)$this->_response->getBody();

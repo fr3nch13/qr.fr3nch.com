@@ -38,26 +38,26 @@ class CrudTest extends BaseControllerTest
     public function testShow(): void
     {
         // get
-        $this->get('https://localhost/qr-images/show/1');
+        $this->get('http://localhost:8080/qr-images/show/1');
         $this->assertResponseOk();
 
         // post
-        $this->post('https://localhost/qr-images/show/1');
+        $this->post('http://localhost:8080/qr-images/show/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // patch
-        $this->patch('https://localhost/qr-images/show/1');
+        $this->patch('http://localhost:8080/qr-images/show/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('https://localhost/qr-images/show/1');
+        $this->put('http://localhost:8080/qr-images/show/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('https://localhost/qr-images/show/1');
+        $this->delete('http://localhost:8080/qr-images/show/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
     }

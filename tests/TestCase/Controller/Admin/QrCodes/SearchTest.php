@@ -39,25 +39,25 @@ class SearchTest extends BaseControllerTest
     public function testIndexSearchGetQ(): void
     {
         // searching name
-        $this->get('https://localhost/admin/qr-codes?q=witch');
+        $this->get('http://localhost:8080/admin/qr-codes?q=witch');
         $this->assertResponseOk();
         $this->helperTestLayoutDashboardIndex();
         $this->helperTestTemplate('Admin/QrCodes/index');
 
         // searching qrkey
-        $this->get('https://localhost/admin/qr-codes?s=3dmerica');
+        $this->get('http://localhost:8080/admin/qr-codes?s=3dmerica');
         $this->assertResponseOk();
         $this->helperTestLayoutDashboardIndex();
         $this->helperTestTemplate('Admin/QrCodes/index');
 
         // searching url
-        $this->get('https://localhost/admin/qr-codes?s=1539113524');
+        $this->get('http://localhost:8080/admin/qr-codes?s=1539113524');
         $this->assertResponseOk();
         $this->helperTestLayoutDashboardIndex();
         $this->helperTestTemplate('Admin/QrCodes/index');
 
         // searching description
-        $this->get('https://localhost/admin/qr-codes?s=flying');
+        $this->get('http://localhost:8080/admin/qr-codes?s=flying');
         $this->assertResponseOk();
         $this->helperTestLayoutDashboardIndex();
         $this->helperTestTemplate('Admin/QrCodes/index');
@@ -71,7 +71,7 @@ class SearchTest extends BaseControllerTest
      */
     public function testIndexSearchGetT(): void
     {
-        $this->get('https://localhost/admin/qr-codes?t=Pig');
+        $this->get('http://localhost:8080/admin/qr-codes?t=Pig');
         $this->assertResponseOk();
         $this->helperTestLayoutDashboardIndex();
         $this->helperTestTemplate('Admin/QrCodes/index');
@@ -86,7 +86,7 @@ class SearchTest extends BaseControllerTest
     public function testIndexSearchGetS(): void
     {
         // searching name
-        $this->get('https://localhost/admin/qr-codes?s=Etsy');
+        $this->get('http://localhost:8080/admin/qr-codes?s=Etsy');
         $this->assertResponseOk();
         $this->helperTestLayoutDashboardIndex();
         $this->helperTestTemplate('Admin/QrCodes/index');

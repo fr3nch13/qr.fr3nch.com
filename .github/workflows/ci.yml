@@ -311,7 +311,6 @@ jobs:
       IMAGE_TAG: ${{ needs.publish-production-image.outputs.image-tag }}
       APP_CONTAINER_PORT: "8080"
       LOCK_PATH: /var/lock/fr3nch-deploy.lock
-      FULL_BASE_URL: ${{ vars.FULL_BASE_URL }}
       DEBUG: "false"
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
       SECURITY_SALT: ${{ secrets.SECURITY_SALT }}
@@ -377,6 +376,7 @@ jobs:
           "$STAGE_DIR/bootstrap-host.sh" \
           "$STAGE_DIR/compose.yaml" \
           "$STAGE_DIR/deploy-container.sh" \
+          "$STAGE_DIR/nginx-bootstrap.conf" \
           "$STAGE_DIR/nginx-server.conf" \
           "$STAGE_DIR/runtime.env" \
           "$DEPLOY_USER@$DEPLOY_HOST:$REMOTE_STAGE_DIR/"

@@ -31,25 +31,24 @@ class PolicyTest extends BaseControllerTest
     /**
      * Test missing action
      *
-     * @alert Keep the https://localhost/admin/ as the HttpsEnforcerMiddleware will try to redirect.
      * @return void
      */
     public function testDontexistDebugOn(): void
     {
         // not logged in
-        $this->get('https://localhost/admin/sources/dontexist');
+        $this->get('http://localhost:8080/admin/sources/dontexist');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Error: Missing Action `App\Controller\Admin\SourcesController::dontexist()`');
 
         // test with reqular
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/sources/dontexist');
+        $this->get('http://localhost:8080/admin/sources/dontexist');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Error: Missing Action `App\Controller\Admin\SourcesController::dontexist()`');
 
         // test with admin
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/sources/dontexist');
+        $this->get('http://localhost:8080/admin/sources/dontexist');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Error: Missing Action `App\Controller\Admin\SourcesController::dontexist()`');
     }
@@ -57,7 +56,6 @@ class PolicyTest extends BaseControllerTest
     /**
      * Test missing action
      *
-     * @alert Keep the https://localhost/admin/ as the HttpsEnforcerMiddleware will try to redirect.
      * @return void
      */
     public function testDontexistOff(): void
@@ -65,7 +63,7 @@ class PolicyTest extends BaseControllerTest
         // test with debug off
         Configure::write('debug', false);
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/sources/dontexist');
+        $this->get('http://localhost:8080/admin/sources/dontexist');
         $this->assertResponseCode(404);
         $this->helperTestError400('/admin/sources/dontexist');
     }
@@ -80,21 +78,21 @@ class PolicyTest extends BaseControllerTest
     {
         // not logged in
         $this->loginGuest();
-        $this->get('https://localhost/admin/sources');
-        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fadmin%2Fsources');
+        $this->get('http://localhost:8080/admin/sources');
+        $this->assertRedirectEquals('/users/login?redirect=%2Fadmin%2Fsources');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
         // test with reqular
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/sources');
+        $this->get('http://localhost:8080/admin/sources');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/Sources/index');
 
         // test with admin
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/sources');
+        $this->get('http://localhost:8080/admin/sources');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/Sources/index');
     }
@@ -110,7 +108,7 @@ class PolicyTest extends BaseControllerTest
         // test with debug off
         Configure::write('debug', false);
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/sources');
+        $this->get('http://localhost:8080/admin/sources');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/Sources/index');
     }
@@ -127,23 +125,23 @@ class PolicyTest extends BaseControllerTest
 
         // not logged in
         $this->loginGuest();
-        $this->get('https://localhost/admin/sources/add');
-        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fadmin%2Fsources%2Fadd');
+        $this->get('http://localhost:8080/admin/sources/add');
+        $this->assertRedirectEquals('/users/login?redirect=%2Fadmin%2Fsources%2Fadd');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
         // test with reqular
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/sources/add');
-        $this->assertRedirectEquals('https://localhost/admin?redirect=%2Fadmin%2Fsources%2Fadd');
+        $this->get('http://localhost:8080/admin/sources/add');
+        $this->assertRedirectEquals('/admin?redirect=%2Fadmin%2Fsources%2Fadd');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
         // test with admin
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/sources/add');
+        $this->get('http://localhost:8080/admin/sources/add');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/Sources/add');
         $this->helperTestFormTag('/admin/sources/add', 'post');
@@ -162,8 +160,8 @@ class PolicyTest extends BaseControllerTest
         // Debug Off
         Configure::write('debug', false);
         $this->loginGuest();
-        $this->get('https://localhost/admin/sources/add');
-        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fadmin%2Fsources%2Fadd');
+        $this->get('http://localhost:8080/admin/sources/add');
+        $this->assertRedirectEquals('/users/login?redirect=%2Fadmin%2Fsources%2Fadd');
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
     }
@@ -180,23 +178,23 @@ class PolicyTest extends BaseControllerTest
 
         // not logged
         $this->loginGuest();
-        $this->get('https://localhost/admin/sources/edit/3');
-        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fadmin%2Fsources%2Fedit%2F3');
+        $this->get('http://localhost:8080/admin/sources/edit/3');
+        $this->assertRedirectEquals('/users/login?redirect=%2Fadmin%2Fsources%2Fedit%2F3');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
         // test with reqular
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/sources/edit/3');
-        $this->assertRedirectEquals('https://localhost/admin?redirect=%2Fadmin%2Fsources%2Fedit%2F3');
+        $this->get('http://localhost:8080/admin/sources/edit/3');
+        $this->assertRedirectEquals('/admin?redirect=%2Fadmin%2Fsources%2Fedit%2F3');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
         // test with admin
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/sources/edit/3');
+        $this->get('http://localhost:8080/admin/sources/edit/3');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/Sources/edit');
         $this->helperTestFormTag('/admin/sources/edit/3', 'put');
@@ -205,19 +203,19 @@ class PolicyTest extends BaseControllerTest
 
         // not logged in
         $this->loginGuest();
-        $this->get('https://localhost/admin/sources/edit');
+        $this->get('http://localhost:8080/admin/sources/edit');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
 
         // test with reqular
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/sources/edit');
+        $this->get('http://localhost:8080/admin/sources/edit');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
 
         // test with admin
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/sources/edit');
+        $this->get('http://localhost:8080/admin/sources/edit');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
     }
@@ -235,7 +233,7 @@ class PolicyTest extends BaseControllerTest
         // debug off
         Configure::write('debug', false);
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/sources/edit');
+        $this->get('http://localhost:8080/admin/sources/edit');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
     }
@@ -255,32 +253,32 @@ class PolicyTest extends BaseControllerTest
 
         // not logged
         $this->loginGuest();
-        $this->delete('https://localhost/admin/sources/delete/3');
-        $this->assertRedirectEquals('https://localhost/users/login');
+        $this->delete('http://localhost:8080/admin/sources/delete/3');
+        $this->assertRedirectEquals('/users/login');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
         // test with reqular
         $this->loginUserRegular();
-        $this->delete('https://localhost/admin/sources/delete/3');
-        $this->assertRedirectEquals('https://localhost/admin');
+        $this->delete('http://localhost:8080/admin/sources/delete/3');
+        $this->assertRedirectEquals('/admin');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
         // test with admin
         $this->loginUserAdmin();
-        $this->delete('https://localhost/admin/sources/delete/3');
-        $this->assertRedirectEquals('https://localhost/admin/sources');
+        $this->delete('http://localhost:8080/admin/sources/delete/3');
+        $this->assertRedirectEquals('/admin/sources');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('The source `Delete Me` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
 
         // test admin with another source
         $this->loginUserAdmin();
-        $this->delete('https://localhost/admin/sources/delete/2');
-        $this->assertRedirectEquals('https://localhost/admin/sources');
+        $this->delete('http://localhost:8080/admin/sources/delete/2');
+        $this->assertRedirectEquals('/admin/sources');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('The source `Etsy` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
@@ -289,19 +287,19 @@ class PolicyTest extends BaseControllerTest
 
         // not logged in
         $this->loginGuest();
-        $this->delete('https://localhost/admin/sources/delete');
+        $this->delete('http://localhost:8080/admin/sources/delete');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
 
         // test with reqular
         $this->loginUserRegular();
-        $this->delete('https://localhost/admin/sources/delete');
+        $this->delete('http://localhost:8080/admin/sources/delete');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
 
         // test with admin
         $this->loginUserAdmin();
-        $this->delete('https://localhost/admin/sources/delete');
+        $this->delete('http://localhost:8080/admin/sources/delete');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
     }
@@ -322,7 +320,7 @@ class PolicyTest extends BaseControllerTest
         // debug off
         Configure::write('debug', false);
         $this->loginUserAdmin();
-        $this->delete('https://localhost/admin/sources/delete');
+        $this->delete('http://localhost:8080/admin/sources/delete');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
     }

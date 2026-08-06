@@ -24,7 +24,7 @@ class ErrorControllerTest extends BaseControllerTest
     {
         // With Debug On
         Configure::write('debug', true);
-        $this->get('https://localhost/dontexist');
+        $this->get('http://localhost:8080/dontexist');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Controller class');
         $this->assertResponseContains('DontexistController');
@@ -39,7 +39,7 @@ class ErrorControllerTest extends BaseControllerTest
     public function testError404DebugOff()
     {
         Configure::write('debug', false);
-        $this->get('https://localhost/dontexist');
+        $this->get('http://localhost:8080/dontexist');
         $this->assertResponseCode(404);
         $this->helperTestError400('/dontexist');
     }

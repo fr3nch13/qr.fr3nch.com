@@ -40,37 +40,37 @@ class CrudTest extends BaseControllerTest
         $this->loginUserAdmin();
 
         // get
-        $this->get('https://localhost/admin');
+        $this->get('http://localhost:8080/admin');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/Users/dashboard');
 
         // get
-        $this->get('https://localhost/admin/dashboard');
+        $this->get('http://localhost:8080/admin/dashboard');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/Users/dashboard');
 
         // get
-        $this->get('https://localhost/admin/users/dashboard');
+        $this->get('http://localhost:8080/admin/users/dashboard');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/Users/dashboard');
 
         // post
-        $this->post('https://localhost/admin');
+        $this->post('http://localhost:8080/admin');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // patch
-        $this->patch('https://localhost/admin');
+        $this->patch('http://localhost:8080/admin');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('https://localhost/admin');
+        $this->put('http://localhost:8080/admin');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('https://localhost/admin');
+        $this->delete('http://localhost:8080/admin');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
     }
@@ -86,27 +86,27 @@ class CrudTest extends BaseControllerTest
         $this->loginUserAdmin();
 
         // get
-        $this->get('https://localhost/admin/users');
+        $this->get('http://localhost:8080/admin/users');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/Users/index');
 
         // post
-        $this->post('https://localhost/admin/users');
+        $this->post('http://localhost:8080/admin/users');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // patch
-        $this->patch('https://localhost/admin/users');
+        $this->patch('http://localhost:8080/admin/users');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('https://localhost/admin/users');
+        $this->put('http://localhost:8080/admin/users');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('https://localhost/admin/users');
+        $this->delete('http://localhost:8080/admin/users');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
     }
@@ -122,27 +122,27 @@ class CrudTest extends BaseControllerTest
         $this->loginUserAdmin();
 
         // test get
-        $this->get('https://localhost/admin/users/view/3');
+        $this->get('http://localhost:8080/admin/users/view/3');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/Users/view');
 
         // post
-        $this->post('https://localhost/admin/users/view/3');
+        $this->post('http://localhost:8080/admin/users/view/3');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // patch
-        $this->patch('https://localhost/admin/users/view/3');
+        $this->patch('http://localhost:8080/admin/users/view/3');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('https://localhost/admin/users/view/3');
+        $this->put('http://localhost:8080/admin/users/view/3');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('https://localhost/admin/users/view/3');
+        $this->delete('http://localhost:8080/admin/users/view/3');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
     }
@@ -158,22 +158,22 @@ class CrudTest extends BaseControllerTest
         $this->loginUserAdmin();
 
         // test get
-        $this->get('https://localhost/admin/users/add');
+        $this->get('http://localhost:8080/admin/users/add');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/Users/add');
 
         // post
-        $this->post('https://localhost/admin/users/add', [
+        $this->post('http://localhost:8080/admin/users/add', [
             'name' => 'New User',
             'email' => 'newuser@example.com',
             'password' => 'password',
         ]);
-        $this->assertRedirectEquals('https://localhost/admin/users/view/5');
+        $this->assertRedirectEquals('/admin/users/view/5');
         $this->assertFlashMessage('The user has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
         // patch
-        $this->patch('https://localhost/admin/users/add', [
+        $this->patch('http://localhost:8080/admin/users/add', [
             'name' => 'New User',
             'email' => 'newuser@example.com',
             'password' => 'password',
@@ -182,7 +182,7 @@ class CrudTest extends BaseControllerTest
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('https://localhost/admin/users/add', [
+        $this->put('http://localhost:8080/admin/users/add', [
             'name' => 'New User',
             'email' => 'newuser@example.com',
             'password' => 'password',
@@ -191,7 +191,7 @@ class CrudTest extends BaseControllerTest
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('https://localhost/admin/users/add');
+        $this->delete('http://localhost:8080/admin/users/add');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
     }
@@ -207,34 +207,34 @@ class CrudTest extends BaseControllerTest
         $this->loginUserAdmin();
 
         // test get
-        $this->get('https://localhost/admin/users/edit/3');
+        $this->get('http://localhost:8080/admin/users/edit/3');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/Users/edit');
 
         // post
-        $this->post('https://localhost/admin/users/edit/3', [
+        $this->post('http://localhost:8080/admin/users/edit/3', [
             'name' => 'Updated User',
         ]);
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // patch
-        $this->patch('https://localhost/admin/users/edit/3', [
+        $this->patch('http://localhost:8080/admin/users/edit/3', [
             'name' => 'Updated User',
         ]);
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('https://localhost/admin/users/edit/3', [
+        $this->put('http://localhost:8080/admin/users/edit/3', [
             'name' => 'Updated User',
         ]);
-        $this->assertRedirectEquals('https://localhost/admin/users/view/3');
+        $this->assertRedirectEquals('/admin/users/view/3');
         $this->assertFlashMessage('The user has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
         // delete
-        $this->delete('https://localhost/admin/users/edit/3');
+        $this->delete('http://localhost:8080/admin/users/edit/3');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
     }
@@ -250,29 +250,29 @@ class CrudTest extends BaseControllerTest
         $this->loginUserAdmin();
 
         // test get
-        $this->get('https://localhost/admin/users/delete/3');
+        $this->get('http://localhost:8080/admin/users/delete/3');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // post
-        $this->post('https://localhost/admin/users/delete/3');
-        $this->assertRedirectEquals('https://localhost/admin/users');
+        $this->post('http://localhost:8080/admin/users/delete/3');
+        $this->assertRedirectEquals('/admin/users');
         $this->assertFlashMessage('The user `Delete Me` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
 
         // patch
-        $this->patch('https://localhost/admin/users/delete/3');
+        $this->patch('http://localhost:8080/admin/users/delete/3');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('https://localhost/admin/users/delete/3');
+        $this->put('http://localhost:8080/admin/users/delete/3');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('https://localhost/admin/users/delete/2');
-        $this->assertRedirectEquals('https://localhost/admin/users');
+        $this->delete('http://localhost:8080/admin/users/delete/2');
+        $this->assertRedirectEquals('/admin/users');
         $this->assertFlashMessage('The user `Regular` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
     }

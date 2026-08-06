@@ -31,26 +31,25 @@ class PolicyTest extends BaseControllerTest
     /**
      * Test missing action
      *
-     * @alert Keep the https://localhost/ as the HttpsEnforcerMiddleware will try to redirect.
      * @return void
      */
     public function testDontexistDebugOn(): void
     {
         // not logged in
         $this->loginGuest();
-        $this->get('https://localhost/admin/tags/dontexist');
+        $this->get('http://localhost:8080/admin/tags/dontexist');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Error: Missing Action `App\Controller\Admin\TagsController::dontexist()`');
 
         // test with reqular
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/tags/dontexist');
+        $this->get('http://localhost:8080/admin/tags/dontexist');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Error: Missing Action `App\Controller\Admin\TagsController::dontexist()`');
 
         // test with admin
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/tags/dontexist');
+        $this->get('http://localhost:8080/admin/tags/dontexist');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Error: Missing Action `App\Controller\Admin\TagsController::dontexist()`');
     }
@@ -58,7 +57,6 @@ class PolicyTest extends BaseControllerTest
     /**
      * Test missing action
      *
-     * @alert Keep the https://localhost/ as the HttpsEnforcerMiddleware will try to redirect.
      * @return void
      */
     public function testDontexistDebugOff(): void
@@ -66,7 +64,7 @@ class PolicyTest extends BaseControllerTest
         // test with debug off
         Configure::write('debug', false);
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/tags/dontexist');
+        $this->get('http://localhost:8080/admin/tags/dontexist');
         $this->assertResponseCode(404);
         $this->helperTestError400('/admin/tags/dontexist');
     }
@@ -83,21 +81,21 @@ class PolicyTest extends BaseControllerTest
     {
         // not logged in
         $this->loginGuest();
-        $this->get('https://localhost/admin/tags');
-        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fadmin%2Ftags');
+        $this->get('http://localhost:8080/admin/tags');
+        $this->assertRedirectEquals('/users/login?redirect=%2Fadmin%2Ftags');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
         // test with reqular
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/tags');
+        $this->get('http://localhost:8080/admin/tags');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/Tags/index');
 
         // test with admin
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/tags');
+        $this->get('http://localhost:8080/admin/tags');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/Tags/index');
     }
@@ -115,7 +113,7 @@ class PolicyTest extends BaseControllerTest
         // test with debug off
         Configure::write('debug', false);
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/tags');
+        $this->get('http://localhost:8080/admin/tags');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/Tags/index');
     }
@@ -132,22 +130,22 @@ class PolicyTest extends BaseControllerTest
 
         // not logged in
         $this->loginGuest();
-        $this->get('https://localhost/admin/tags/add');
-        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fadmin%2Ftags%2Fadd');
+        $this->get('http://localhost:8080/admin/tags/add');
+        $this->assertRedirectEquals('/users/login?redirect=%2Fadmin%2Ftags%2Fadd');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
         // test with reqular
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/tags/add');
+        $this->get('http://localhost:8080/admin/tags/add');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/Tags/add');
         $this->helperTestFormTag('/admin/tags/add', 'post');
 
         // test with admin
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/tags/add');
+        $this->get('http://localhost:8080/admin/tags/add');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/Tags/add');
         $this->helperTestFormTag('/admin/tags/add', 'post');
@@ -166,8 +164,8 @@ class PolicyTest extends BaseControllerTest
         // Debug Off
         Configure::write('debug', false);
         $this->loginGuest();
-        $this->get('https://localhost/admin/tags/add');
-        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fadmin%2Ftags%2Fadd');
+        $this->get('http://localhost:8080/admin/tags/add');
+        $this->assertRedirectEquals('/users/login?redirect=%2Fadmin%2Ftags%2Fadd');
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
     }
@@ -184,37 +182,37 @@ class PolicyTest extends BaseControllerTest
 
         // not logged
         $this->loginGuest();
-        $this->get('https://localhost/admin/tags/edit/1');
-        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fadmin%2Ftags%2Fedit%2F1');
+        $this->get('http://localhost:8080/admin/tags/edit/1');
+        $this->assertRedirectEquals('/users/login?redirect=%2Fadmin%2Ftags%2Fedit%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
         // test with reqular, owner
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/tags/edit/4');
+        $this->get('http://localhost:8080/admin/tags/edit/4');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/Tags/edit');
         $this->helperTestFormTag('/admin/tags/edit/4', 'put');
 
         // test with reqular, not owner
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/tags/edit/1');
-        $this->assertRedirectEquals('https://localhost/admin?redirect=%2Fadmin%2Ftags%2Fedit%2F1');
+        $this->get('http://localhost:8080/admin/tags/edit/1');
+        $this->assertRedirectEquals('/admin?redirect=%2Fadmin%2Ftags%2Fedit%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
         // test with admin, not owner
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/tags/edit/4');
+        $this->get('http://localhost:8080/admin/tags/edit/4');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/Tags/edit');
         $this->helperTestFormTag('/admin/tags/edit/4', 'put');
 
         // test with admin, owner
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/tags/edit/1');
+        $this->get('http://localhost:8080/admin/tags/edit/1');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/Tags/edit');
         $this->helperTestFormTag('/admin/tags/edit/1', 'put');
@@ -223,19 +221,19 @@ class PolicyTest extends BaseControllerTest
 
         // not logged in
         $this->loginGuest();
-        $this->get('https://localhost/admin/tags/edit');
+        $this->get('http://localhost:8080/admin/tags/edit');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
 
         // test with reqular
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/tags/edit');
+        $this->get('http://localhost:8080/admin/tags/edit');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
 
         // test with admin
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/tags/edit');
+        $this->get('http://localhost:8080/admin/tags/edit');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
     }
@@ -253,7 +251,7 @@ class PolicyTest extends BaseControllerTest
         // debug off
         Configure::write('debug', false);
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/tags/edit');
+        $this->get('http://localhost:8080/admin/tags/edit');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
     }
@@ -273,40 +271,40 @@ class PolicyTest extends BaseControllerTest
 
         // not logged
         $this->loginGuest();
-        $this->delete('https://localhost/admin/tags/delete/3');
-        $this->assertRedirectEquals('https://localhost/users/login');
+        $this->delete('http://localhost:8080/admin/tags/delete/3');
+        $this->assertRedirectEquals('/users/login');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
         // test with reqular, not owner
         $this->loginUserRegular();
-        $this->delete('https://localhost/admin/tags/delete/3');
-        $this->assertRedirectEquals('https://localhost/admin');
+        $this->delete('http://localhost:8080/admin/tags/delete/3');
+        $this->assertRedirectEquals('/admin');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
         // test with reqular, owner
         $this->loginUserRegular();
-        $this->delete('https://localhost/admin/tags/delete/4');
-        $this->assertRedirectEquals('https://localhost/admin/tags');
+        $this->delete('http://localhost:8080/admin/tags/delete/4');
+        $this->assertRedirectEquals('/admin/tags');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('The tag `Pig` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
 
         // test with admin
         $this->loginUserAdmin();
-        $this->delete('https://localhost/admin/tags/delete/3');
-        $this->assertRedirectEquals('https://localhost/admin/tags');
+        $this->delete('http://localhost:8080/admin/tags/delete/3');
+        $this->assertRedirectEquals('/admin/tags');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('The tag `Delete Me` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
 
         // test admin with another tag
         $this->loginUserAdmin();
-        $this->delete('https://localhost/admin/tags/delete/2');
-        $this->assertRedirectEquals('https://localhost/admin/tags');
+        $this->delete('http://localhost:8080/admin/tags/delete/2');
+        $this->assertRedirectEquals('/admin/tags');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('The tag `Journal` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
@@ -315,19 +313,19 @@ class PolicyTest extends BaseControllerTest
 
         // not logged in
         $this->loginGuest();
-        $this->delete('https://localhost/admin/tags/delete');
+        $this->delete('http://localhost:8080/admin/tags/delete');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
 
         // test with reqular
         $this->loginUserRegular();
-        $this->delete('https://localhost/admin/tags/delete');
+        $this->delete('http://localhost:8080/admin/tags/delete');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
 
         // test with admin
         $this->loginUserAdmin();
-        $this->delete('https://localhost/admin/tags/delete');
+        $this->delete('http://localhost:8080/admin/tags/delete');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
     }
@@ -348,14 +346,14 @@ class PolicyTest extends BaseControllerTest
         // debug off
         Configure::write('debug', false);
         $this->loginUserAdmin();
-        $this->delete('https://localhost/admin/tags/delete');
+        $this->delete('http://localhost:8080/admin/tags/delete');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
 
         // not logged in, debug off
         Configure::write('debug', false);
         $this->loginGuest();
-        $this->delete('https://localhost/admin/tags/delete');
+        $this->delete('http://localhost:8080/admin/tags/delete');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
     }

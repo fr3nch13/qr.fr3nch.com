@@ -41,7 +41,7 @@ class FormsTest extends BaseControllerTest
     public function testAdd(): void
     {
         // test failed
-        $this->post('https://localhost/admin/qr-codes/add', [
+        $this->post('http://localhost:8080/admin/qr-codes/add', [
         ]);
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/QrCodes/add');
@@ -55,7 +55,7 @@ class FormsTest extends BaseControllerTest
         $this->helperTestFormFieldError('This field is required', 'source-id-error');
 
         // test success
-        $this->post('https://localhost/admin/qr-codes/add', [
+        $this->post('http://localhost:8080/admin/qr-codes/add', [
             'qrkey' => 'newqrcode',
             'name' => 'New QrCode',
             'description' => 'The Description',
@@ -63,7 +63,7 @@ class FormsTest extends BaseControllerTest
             'source_id' => 1,
             'user_id' => 1,
         ]);
-        $this->assertRedirectEquals('https://localhost/admin/qr-codes/view/6');
+        $this->assertRedirectEquals('/admin/qr-codes/view/6');
         $this->assertFlashMessage('The qr code has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -77,7 +77,7 @@ class FormsTest extends BaseControllerTest
     public function testEdit(): void
     {
         // test fail, can't edit qrkey
-        $this->put('https://localhost/admin/qr-codes/edit/1', [
+        $this->put('http://localhost:8080/admin/qr-codes/edit/1', [
             'qrkey' => 'blahblah', // changed key
         ]);
         $this->assertResponseOk();
@@ -90,7 +90,7 @@ class FormsTest extends BaseControllerTest
         // $this->helperTestFormFieldError('Message here.', 'qrkey-error');
 
         // a test fail existing key
-        $this->put('https://localhost/admin/qr-codes/edit/1', [
+        $this->put('http://localhost:8080/admin/qr-codes/edit/1', [
             'qrkey' => 'witchinghour', // an existing record
         ]);
         $this->assertResponseOk();
@@ -102,7 +102,7 @@ class FormsTest extends BaseControllerTest
         // $this->helperTestFormFieldError('Message here.', 'qrkey-error');
 
         // test success
-        $this->put('https://localhost/admin/qr-codes/edit/1', [
+        $this->put('http://localhost:8080/admin/qr-codes/edit/1', [
             'name' => 'New Qr Code',
             'description' => 'The Description',
             'url' => 'https://new.com/path/to/forward',
@@ -111,7 +111,7 @@ class FormsTest extends BaseControllerTest
                 '_ids' => [],
             ],
         ]);
-        $this->assertRedirectEquals('https://localhost/admin/qr-codes/view/1');
+        $this->assertRedirectEquals('/admin/qr-codes/view/1');
         $this->assertFlashMessage('The qr code has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }

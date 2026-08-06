@@ -120,30 +120,6 @@ write_application_var APP_FULL_BASE_URL "$FULL_BASE_URL"
 write_application_var DEBUG "$DEBUG"
 write_application_var DATABASE_URL "$DATABASE_URL"
 write_application_var SECURITY_SALT "$SECURITY_SALT"
-write_application_var FILESYSTEM_DRIVER "$FILESYSTEM_DRIVER"
-write_application_var FILESYSTEM_LOCAL_PATH "$FILESYSTEM_LOCAL_PATH"
-
-if [ -n "${FILESYSTEM_PREFIX-}" ]; then
-    write_application_var FILESYSTEM_PREFIX "$FILESYSTEM_PREFIX"
-fi
-if [ -n "${AWS_S3_ACCESS_KEY_ID-}" ]; then
-    write_application_var AWS_S3_ACCESS_KEY_ID "$AWS_S3_ACCESS_KEY_ID"
-fi
-if [ -n "${AWS_S3_SECRET_ACCESS_KEY-}" ]; then
-    write_application_var AWS_S3_SECRET_ACCESS_KEY "$AWS_S3_SECRET_ACCESS_KEY"
-fi
-if [ -n "${AWS_S3_REGION-}" ]; then
-    write_application_var AWS_S3_REGION "$AWS_S3_REGION"
-fi
-if [ -n "${AWS_S3_BUCKET-}" ]; then
-    write_application_var AWS_S3_BUCKET "$AWS_S3_BUCKET"
-fi
-if [ -n "${AWS_S3_ENV-}" ]; then
-    write_application_var AWS_S3_ENV "$AWS_S3_ENV"
-fi
-if [ -n "${AWS_S3_PREFIX-}" ]; then
-    write_application_var AWS_S3_PREFIX "$AWS_S3_PREFIX"
-fi
 if [ -n "${EMAIL_TRANSPORT_DEFAULT_URL-}" ]; then
     write_application_var EMAIL_TRANSPORT_DEFAULT_URL "$EMAIL_TRANSPORT_DEFAULT_URL"
 fi

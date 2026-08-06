@@ -30,7 +30,6 @@ class CustomRedirectHandler extends RedirectHandler
         if (isset($options['url'])) {
             if (!$request->getAttribute('identity')) {
                 $options['url'] = Router::url([
-                    '_full' => true,
                     'prefix' => false,
                     'plugin' => false,
                     'controller' => 'Users',

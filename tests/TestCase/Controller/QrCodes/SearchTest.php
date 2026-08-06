@@ -38,7 +38,7 @@ class SearchTest extends BaseControllerTest
      */
     public function testIndexSearchGetQ(): void
     {
-        $this->get('https://localhost/qr-codes?q=witch');
+        $this->get('http://localhost:8080/qr-codes?q=witch');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesIndex();
         $this->helperTestTemplate('QrCodes/index');
@@ -58,7 +58,7 @@ class SearchTest extends BaseControllerTest
             'placeholder="What are you looking for ?" class="form-control" value="witch">');
 
         // searching qrkey
-        $this->get('https://localhost/qr-codes?q=3dmerica');
+        $this->get('http://localhost:8080/qr-codes?q=3dmerica');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesIndex();
         $this->helperTestTemplate('QrCodes/index');
@@ -68,7 +68,7 @@ class SearchTest extends BaseControllerTest
         $this->helperTestString('<div class="card-title text-center text-white pt-5">American Flag Charm</div>');
 
         // searching url
-        $this->get('https://localhost/qr-codes?q=1539113524');
+        $this->get('http://localhost:8080/qr-codes?q=1539113524');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesIndex();
         $this->helperTestTemplate('QrCodes/index');
@@ -78,7 +78,7 @@ class SearchTest extends BaseControllerTest
         $this->helperTestString('<div class="card-title text-center text-white pt-5">American Flag Charm</div>');
 
         // searching description
-        $this->get('https://localhost/qr-codes?q=flying');
+        $this->get('http://localhost:8080/qr-codes?q=flying');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesIndex();
         $this->helperTestTemplate('QrCodes/index');
@@ -96,7 +96,7 @@ class SearchTest extends BaseControllerTest
      */
     public function testIndexSearchGetT(): void
     {
-        $this->get('https://localhost/qr-codes?t=Pig');
+        $this->get('http://localhost:8080/qr-codes?t=Pig');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesIndex();
         $this->helperTestTemplate('QrCodes/index');
@@ -130,7 +130,7 @@ class SearchTest extends BaseControllerTest
      */
     public function testIndexSearchGetS(): void
     {
-        $this->get('https://localhost/qr-codes?s=Etsy');
+        $this->get('http://localhost:8080/qr-codes?s=Etsy');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesIndex();
         $this->helperTestTemplate('QrCodes/index');

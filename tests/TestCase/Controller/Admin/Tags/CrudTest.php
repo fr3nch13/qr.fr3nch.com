@@ -39,30 +39,30 @@ class CrudTest extends BaseControllerTest
     public function testIndex(): void
     {
         // get
-        $this->get('https://localhost/admin/tags');
+        $this->get('http://localhost:8080/admin/tags');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/Tags/index');
 
         // post
-        $this->post('https://localhost/admin/tags');
-        $this->assertRedirectEquals('https://localhost/admin/tags');
+        $this->post('http://localhost:8080/admin/tags');
+        $this->assertRedirectEquals('/admin/tags');
         // changed because we added friendsofcake/search
         // which does a Post-Redirect-Get
         // $this->assertResponseCode(405);
         // $this->assertResponseContains('Method Not Allowed');
 
         // patch
-        $this->patch('https://localhost/admin/tags');
+        $this->patch('http://localhost:8080/admin/tags');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('https://localhost/admin/tags');
+        $this->put('http://localhost:8080/admin/tags');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('https://localhost/admin/tags');
+        $this->delete('http://localhost:8080/admin/tags');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
     }
@@ -76,34 +76,34 @@ class CrudTest extends BaseControllerTest
     public function testAdd(): void
     {
         // test get
-        $this->get('https://localhost/admin/tags/add');
+        $this->get('http://localhost:8080/admin/tags/add');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/Tags/add');
 
         // post
-        $this->post('https://localhost/admin/tags/add', [
+        $this->post('http://localhost:8080/admin/tags/add', [
             'name' => 'New Tag',
         ]);
-        $this->assertRedirectEquals('https://localhost/admin/tags');
+        $this->assertRedirectEquals('/admin/tags');
         $this->assertFlashMessage('The tag has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
         // patch
-        $this->patch('https://localhost/admin/tags/add', [
+        $this->patch('http://localhost:8080/admin/tags/add', [
             'name' => 'New Tag',
         ]);
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('https://localhost/admin/tags/add', [
+        $this->put('http://localhost:8080/admin/tags/add', [
             'name' => 'New Tag',
         ]);
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('https://localhost/admin/tags/add');
+        $this->delete('http://localhost:8080/admin/tags/add');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
     }
@@ -117,34 +117,34 @@ class CrudTest extends BaseControllerTest
     public function testEdit(): void
     {
         // test get
-        $this->get('https://localhost/admin/tags/edit/1');
+        $this->get('http://localhost:8080/admin/tags/edit/1');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/Tags/edit');
 
         // post
-        $this->post('https://localhost/admin/tags/edit/1', [
+        $this->post('http://localhost:8080/admin/tags/edit/1', [
             'name' => 'Updated Tag',
         ]);
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // patch
-        $this->patch('https://localhost/admin/tags/edit/1', [
+        $this->patch('http://localhost:8080/admin/tags/edit/1', [
             'name' => 'Updated Tag',
         ]);
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('https://localhost/admin/tags/edit/1', [
+        $this->put('http://localhost:8080/admin/tags/edit/1', [
             'name' => 'Updated Tag',
         ]);
-        $this->assertRedirectEquals('https://localhost/admin/tags');
+        $this->assertRedirectEquals('/admin/tags');
         $this->assertFlashMessage('The tag has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
         // delete
-        $this->delete('https://localhost/admin/tags/edit/1');
+        $this->delete('http://localhost:8080/admin/tags/edit/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
     }
@@ -158,31 +158,31 @@ class CrudTest extends BaseControllerTest
     public function testDelete(): void
     {
         // test get
-        $this->get('https://localhost/admin/tags/delete/1');
+        $this->get('http://localhost:8080/admin/tags/delete/1');
         // allow get, as the delete button is loaded via ajax into a modal.
-        $this->assertRedirectEquals('https://localhost/admin/tags');
+        $this->assertRedirectEquals('/admin/tags');
         $this->assertFlashMessage('The tag `Notebook` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
 
         // post
-        $this->post('https://localhost/admin/tags/delete/2');
-        $this->assertRedirectEquals('https://localhost/admin/tags');
+        $this->post('http://localhost:8080/admin/tags/delete/2');
+        $this->assertRedirectEquals('/admin/tags');
         $this->assertFlashMessage('The tag `Journal` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
 
         // patch
-        $this->patch('https://localhost/admin/tags/delete/1');
+        $this->patch('http://localhost:8080/admin/tags/delete/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('https://localhost/admin/tags/delete/1');
+        $this->put('http://localhost:8080/admin/tags/delete/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('https://localhost/admin/tags/delete/3');
-        $this->assertRedirectEquals('https://localhost/admin/tags');
+        $this->delete('http://localhost:8080/admin/tags/delete/3');
+        $this->assertRedirectEquals('/admin/tags');
         $this->assertFlashMessage('The tag `Delete Me` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
     }

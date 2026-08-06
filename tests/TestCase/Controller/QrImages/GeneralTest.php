@@ -48,7 +48,7 @@ class GeneralTest extends BaseControllerTest
      */
     public function testShow(): void
     {
-        $this->get('https://localhost/qr-images/show/1');
+        $this->get('http://localhost:8080/qr-images/show/1');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
@@ -67,7 +67,7 @@ class GeneralTest extends BaseControllerTest
      */
     public function testShowThumbSm(): void
     {
-        $this->get('https://localhost/qr-images/show/1?thumb=sm');
+        $this->get('http://localhost:8080/qr-images/show/1?thumb=sm');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
@@ -85,7 +85,7 @@ class GeneralTest extends BaseControllerTest
      */
     public function testShowThumbMd(): void
     {
-        $this->get('https://localhost/qr-images/show/1?thumb=md');
+        $this->get('http://localhost:8080/qr-images/show/1?thumb=md');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
@@ -103,7 +103,7 @@ class GeneralTest extends BaseControllerTest
      */
     public function testShowThumbLg(): void
     {
-        $this->get('https://localhost/qr-images/show/1?thumb=lg');
+        $this->get('http://localhost:8080/qr-images/show/1?thumb=lg');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
@@ -121,7 +121,7 @@ class GeneralTest extends BaseControllerTest
      */
     public function testShowDownload(): void
     {
-        $this->get('https://localhost/qr-images/show/1?download=1');
+        $this->get('http://localhost:8080/qr-images/show/1?download=1');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
@@ -140,21 +140,21 @@ class GeneralTest extends BaseControllerTest
      */
     public function testShowInactive(): void
     {
-        $this->get('https://localhost/qr-images/show/3');
-        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fqr-images%2Fshow%2F3');
+        $this->get('http://localhost:8080/qr-images/show/3');
+        $this->assertRedirectEquals('/users/login?redirect=%2Fqr-images%2Fshow%2F3');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
         $this->loginUserRegular();
-        $this->get('https://localhost/qr-images/show/3');
-        $this->assertRedirectEquals('https://localhost/admin?redirect=%2Fqr-images%2Fshow%2F3');
+        $this->get('http://localhost:8080/qr-images/show/3');
+        $this->assertRedirectEquals('/admin?redirect=%2Fqr-images%2Fshow%2F3');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
         $this->loginUserAdmin();
-        $this->get('https://localhost/qr-images/show/3');
+        $this->get('http://localhost:8080/qr-images/show/3');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
@@ -178,11 +178,11 @@ class GeneralTest extends BaseControllerTest
         unlink($path);
         $this->assertFalse(is_readable($path));
 
-        $this->get('https://localhost/qr-images/show/1');
+        $this->get('http://localhost:8080/qr-images/show/1');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unable to find the image file.');
 
-        $this->get('https://localhost/qr-images/show/1?thumb=sm');
+        $this->get('http://localhost:8080/qr-images/show/1?thumb=sm');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unable to find the image file.');
     }
@@ -203,12 +203,12 @@ class GeneralTest extends BaseControllerTest
         $this->assertFalse(is_readable($path));
 
         Configure::write('debug', false);
-        $this->get('https://localhost/qr-images/show/1');
+        $this->get('http://localhost:8080/qr-images/show/1');
         $this->assertResponseCode(404);
         $this->helperTestError400('/qr-images/show/1');
 
         Configure::write('debug', false);
-        $this->get('https://localhost/qr-images/show/1?thumb=sm');
+        $this->get('http://localhost:8080/qr-images/show/1?thumb=sm');
         $this->assertResponseCode(404);
         $this->helperTestError400('/qr-images/show/1?thumb=sm');
     }
@@ -223,7 +223,7 @@ class GeneralTest extends BaseControllerTest
     {
         // check cache policy when debug is off.
         Configure::write('debug', false);
-        $this->get('https://localhost/qr-images/show/1');
+        $this->get('http://localhost:8080/qr-images/show/1');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();

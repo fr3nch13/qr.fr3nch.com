@@ -23,7 +23,6 @@ use Cake\Core\Configure;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\Middleware\BodyParserMiddleware;
 use Cake\Http\Middleware\CsrfProtectionMiddleware;
-use Cake\Http\Middleware\HttpsEnforcerMiddleware;
 use Cake\Http\Middleware\SecurityHeadersMiddleware;
 use Cake\Http\MiddlewareQueue;
 use Cake\Routing\Middleware\AssetMiddleware;
@@ -51,6 +50,7 @@ class ApplicationTest extends TestCase
         $plugins = $app->getPlugins();
 
         $this->assertFalse(Configure::read('debug'), 'debug is true?');
+        $this->assertFalse(Configure::read('App.fullBaseUrl'));
 
         $this->assertTrue($plugins->has('Bake'), 'plugins has Bake?');
         $this->assertFalse($plugins->has('DebugKit'), 'plugins has DebugKit?');
@@ -115,10 +115,8 @@ class ApplicationTest extends TestCase
         $this->assertInstanceOf(AuthorizationMiddleware::class, $middleware->current());
         $middleware->seek(7);
         $this->assertInstanceOf(SecurityHeadersMiddleware::class, $middleware->current());
-        $middleware->seek(8);
-        $this->assertInstanceOf(HttpsEnforcerMiddleware::class, $middleware->current());
         // not used until it's fixed. See Application.php for details.
-        //$middleware->seek(9);
+        //$middleware->seek(8);
         //$this->assertInstanceOf(CspMiddleware::class, $middleware->current());
     }
 }

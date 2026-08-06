@@ -51,51 +51,51 @@ class GeneralTest extends BaseControllerTest
         $entity = $this->QrCodes->get(1);
         $this->assertSame(0, $entity->hits);
         // guest
-        $this->get('https://localhost/admin/f/sownscribe');
-        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fadmin%2Ff%2Fsownscribe');
+        $this->get('http://localhost:8080/admin/f/sownscribe');
+        $this->assertRedirectEquals('/users/login?redirect=%2Fadmin%2Ff%2Fsownscribe');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
         $entity = $this->QrCodes->get(1);
         $this->assertSame(0, $entity->hits);
 
-        $this->get('https://localhost/admin/f/inactive');
-        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fadmin%2Ff%2Finactive');
+        $this->get('http://localhost:8080/admin/f/inactive');
+        $this->assertRedirectEquals('/users/login?redirect=%2Fadmin%2Ff%2Finactive');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
-        $this->get('https://localhost/admin/f/dontexist');
-        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fadmin%2Ff%2Fdontexist');
+        $this->get('http://localhost:8080/admin/f/dontexist');
+        $this->assertRedirectEquals('/users/login?redirect=%2Fadmin%2Ff%2Fdontexist');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
         $this->loginUserAdmin();
 
-        $this->get('https://localhost/admin/f/sownscribe');
+        $this->get('http://localhost:8080/admin/f/sownscribe');
         $this->assertRedirectEquals('https://amazon.com/path/to/details/page');
         $entity = $this->QrCodes->get(1);
         $this->assertSame(0, $entity->hits);
 
-        $this->get('https://localhost/admin/qr-codes/forward/sownscribe');
+        $this->get('http://localhost:8080/admin/qr-codes/forward/sownscribe');
         $this->assertRedirectEquals('https://amazon.com/path/to/details/page');
         $entity = $this->QrCodes->get(1);
         $this->assertSame(0, $entity->hits);
 
-        $this->get('https://localhost/admin/f/inactive');
+        $this->get('http://localhost:8080/admin/f/inactive');
         $this->assertRedirectEquals('https://google.com');
 
-        $this->get('https://localhost/admin/qr-codes/forward/inactive');
+        $this->get('http://localhost:8080/admin/qr-codes/forward/inactive');
         $this->assertRedirectEquals('https://google.com');
 
-        $this->get('https://localhost/admin/f/dontexist');
-        $this->assertRedirectEquals('https://localhost/admin/qr-codes');
+        $this->get('http://localhost:8080/admin/f/dontexist');
+        $this->assertRedirectEquals('/admin/qr-codes');
         $this->assertFlashMessage('A QR Code with the key: `dontexist` could not be found.', 'flash');
         $this->assertFlashElement('flash/error');
 
-        $this->get('https://localhost/admin/f/');
-        $this->assertRedirectEquals('https://localhost/admin/qr-codes');
+        $this->get('http://localhost:8080/admin/f/');
+        $this->assertRedirectEquals('/admin/qr-codes');
         $this->assertFlashMessage('No key was given.', 'flash');
         $this->assertFlashElement('flash/error');
     }
@@ -109,15 +109,15 @@ class GeneralTest extends BaseControllerTest
     public function testShow(): void
     {
         // guest
-        $this->get('https://localhost/admin/qr-codes/show/1');
-        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fadmin%2Fqr-codes%2Fshow%2F1');
+        $this->get('http://localhost:8080/admin/qr-codes/show/1');
+        $this->assertRedirectEquals('/users/login?redirect=%2Fadmin%2Fqr-codes%2Fshow%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
         // default
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/qr-codes/show/1');
+        $this->get('http://localhost:8080/admin/qr-codes/show/1');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
@@ -127,7 +127,7 @@ class GeneralTest extends BaseControllerTest
 
         // dark
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/qr-codes/show/1?l=0');
+        $this->get('http://localhost:8080/admin/qr-codes/show/1?l=0');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
@@ -137,7 +137,7 @@ class GeneralTest extends BaseControllerTest
 
         // light
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/qr-codes/show/1?l=1');
+        $this->get('http://localhost:8080/admin/qr-codes/show/1?l=1');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
@@ -147,7 +147,7 @@ class GeneralTest extends BaseControllerTest
 
         // color
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/qr-codes/show/1?c=eaeaea');
+        $this->get('http://localhost:8080/admin/qr-codes/show/1?c=eaeaea');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
@@ -157,7 +157,7 @@ class GeneralTest extends BaseControllerTest
 
         // color - bad
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/qr-codes/show/1?c=notacolor');
+        $this->get('http://localhost:8080/admin/qr-codes/show/1?c=notacolor');
         $this->assertResponseCode(500);
         $this->assertResponseNotEmpty();
         $this->assertResponseContains('Invalid Color: notacolor');
@@ -173,7 +173,7 @@ class GeneralTest extends BaseControllerTest
     {
         // default
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/qr-codes/show/1?download=1');
+        $this->get('http://localhost:8080/admin/qr-codes/show/1?download=1');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
@@ -184,7 +184,7 @@ class GeneralTest extends BaseControllerTest
         $this->assertSame('binary', $headers['Content-Transfer-Encoding'][0]);
 
         // color
-        $this->get('https://localhost/admin/qr-codes/show/1?c=eaeaea&download=1');
+        $this->get('http://localhost:8080/admin/qr-codes/show/1?c=eaeaea&download=1');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
@@ -196,7 +196,7 @@ class GeneralTest extends BaseControllerTest
 
         // dark
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/qr-codes/show/1?l=0&download=1');
+        $this->get('http://localhost:8080/admin/qr-codes/show/1?l=0&download=1');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
@@ -208,7 +208,7 @@ class GeneralTest extends BaseControllerTest
 
         // light
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/qr-codes/show/1?l=1&download=1');
+        $this->get('http://localhost:8080/admin/qr-codes/show/1?l=1&download=1');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
@@ -245,13 +245,13 @@ class GeneralTest extends BaseControllerTest
         $this->assertFalse(is_readable($path));
 
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/qr-codes/show/1');
+        $this->get('http://localhost:8080/admin/qr-codes/show/1');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unable to find the image file.');
 
         Configure::write('debug', false);
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/qr-codes/show/1');
+        $this->get('http://localhost:8080/admin/qr-codes/show/1');
         $this->assertResponseCode(404);
         $this->helperTestError400('/admin/qr-codes/show/1');
         Configure::write('debug', true);
@@ -271,7 +271,7 @@ class GeneralTest extends BaseControllerTest
         // check cache policy when debug is off.
         Configure::write('debug', false);
 
-        $this->get('https://localhost/admin/qr-codes/show/1');
+        $this->get('http://localhost:8080/admin/qr-codes/show/1');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
@@ -282,7 +282,7 @@ class GeneralTest extends BaseControllerTest
         $this->assertGreaterThan(0, $headers['Content-Length'][0]);
 
         // dark
-        $this->get('https://localhost/admin/qr-codes/show/1?l=0');
+        $this->get('http://localhost:8080/admin/qr-codes/show/1?l=0');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
@@ -293,7 +293,7 @@ class GeneralTest extends BaseControllerTest
         $this->assertGreaterThan(0, $headers['Content-Length'][0]);
 
         // light
-        $this->get('https://localhost/admin/qr-codes/show/1?l=1');
+        $this->get('http://localhost:8080/admin/qr-codes/show/1?l=1');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();

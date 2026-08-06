@@ -41,7 +41,6 @@ use Cake\Http\ServerRequest;
 use Cake\Log\Log;
 use Cake\Mailer\Mailer;
 use Cake\Mailer\TransportFactory;
-use Cake\Routing\Router;
 use Cake\Utility\Security;
 use Cake\Validation\Validator;
 
@@ -136,38 +135,6 @@ ini_set('intl.default_locale', Configure::read('App.defaultLocale'));
 if (PHP_SAPI === 'cli') {
     require CONFIG . 'bootstrap_cli.php';
 }
-
-/*
- * Set the full base URL.
- * This URL is used as the base of all absolute links.
- */
-$fullBaseUrl = Configure::read('App.fullBaseUrl');
-if (!$fullBaseUrl) {
-    /*
-     * When using proxies or load balancers, SSL/TLS connections might
-     * get terminated before reaching the server. If you trust the proxy,
-     * you can enable `$trustProxy` to rely on the `X-Forwarded-Proto`
-     * header to determine whether to generate URLs using `https`.
-     *
-     * See also https://book.cakephp.org/5.x/en/controllers/request-response.html#trusting-proxy-headers
-     */
-    $trustProxy = false;
-
-    $s = null;
-    if (env('HTTPS') || ($trustProxy && env('HTTP_X_FORWARDED_PROTO') === 'https')) {
-        $s = 's';
-    }
-
-    $httpHost = env('HTTP_HOST');
-    if (isset($httpHost)) {
-        $fullBaseUrl = 'http' . $s . '://' . $httpHost;
-    }
-    unset($httpHost, $s);
-}
-if ($fullBaseUrl) {
-    Router::fullBaseUrl($fullBaseUrl);
-}
-unset($fullBaseUrl);
 
 Cache::setConfig(Configure::consume('Cache'));
 ConnectionManager::setConfig(Configure::consume('Datasources'));

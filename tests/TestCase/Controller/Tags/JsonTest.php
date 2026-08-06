@@ -41,7 +41,7 @@ class JsonTest extends BaseControllerTest
      */
     public function testIndex(): void
     {
-        $this->get('https://localhost/tags.json');
+        $this->get('http://localhost:8080/tags.json');
         $this->assertResponseOk();
 
         $content = (string)$this->_response->getBody();

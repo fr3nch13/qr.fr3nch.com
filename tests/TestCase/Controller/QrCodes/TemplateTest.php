@@ -38,15 +38,15 @@ class TemplateTest extends BaseControllerTest
      */
     public function testIndexNormal(): void
     {
-        // not logged in
-        $this->get('https://localhost/qr-codes');
+    // not logged in
+        $this->get('http://localhost:8080/qr-codes');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesIndex();
         $this->helperTestTemplate('QrCodes/index');
 
         // test with reqular
         $this->loginUserRegular();
-        $this->get('https://localhost/qr-codes');
+        $this->get('http://localhost:8080/qr-codes');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesIndex();
         $this->helperTestTemplate('QrCodes/index');
@@ -54,7 +54,7 @@ class TemplateTest extends BaseControllerTest
         // test with admin
         // test html content.
         $this->loginUserAdmin();
-        $this->get('https://localhost/qr-codes');
+        $this->get('http://localhost:8080/qr-codes');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesIndex();
         $this->helperTestTemplate('QrCodes/index');
@@ -80,7 +80,7 @@ class TemplateTest extends BaseControllerTest
     {
         // not logged in
         $this->requestAsAjax();
-        $this->get('https://localhost/qr-codes');
+        $this->get('http://localhost:8080/qr-codes');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
         $this->helperTestTemplate('QrCodes/index');
@@ -88,7 +88,7 @@ class TemplateTest extends BaseControllerTest
         // test with reqular
         $this->requestAsAjax();
         $this->loginUserRegular();
-        $this->get('https://localhost/qr-codes');
+        $this->get('http://localhost:8080/qr-codes');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
         $this->helperTestTemplate('QrCodes/index');
@@ -96,7 +96,7 @@ class TemplateTest extends BaseControllerTest
         // test with admin
         $this->requestAsAjax();
         $this->loginUserAdmin();
-        $this->get('https://localhost/qr-codes');
+        $this->get('http://localhost:8080/qr-codes');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
         $this->helperTestTemplate('QrCodes/index');
@@ -121,21 +121,21 @@ class TemplateTest extends BaseControllerTest
     public function testViewNormal(): void
     {
         // not logged in
-        $this->get('https://localhost/qr-codes/view/1');
+        $this->get('http://localhost:8080/qr-codes/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesView();
         $this->helperTestTemplate('QrCodes/view');
 
         // test with reqular
         $this->loginUserRegular();
-        $this->get('https://localhost/qr-codes/view/1');
+        $this->get('http://localhost:8080/qr-codes/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesView();
         $this->helperTestTemplate('QrCodes/view');
 
         // test with admin
         $this->loginUserAdmin();
-        $this->get('https://localhost/qr-codes/view/1');
+        $this->get('http://localhost:8080/qr-codes/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesView();
         $this->helperTestTemplate('QrCodes/view');
@@ -162,7 +162,7 @@ class TemplateTest extends BaseControllerTest
     {
         // not logged in
         $this->requestAsAjax();
-        $this->get('https://localhost/qr-codes/view/1');
+        $this->get('http://localhost:8080/qr-codes/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
         $this->helperTestTemplate('QrCodes/view');
@@ -170,7 +170,7 @@ class TemplateTest extends BaseControllerTest
         // test with reqular
         $this->requestAsAjax();
         $this->loginUserRegular();
-        $this->get('https://localhost/qr-codes/view/1');
+        $this->get('http://localhost:8080/qr-codes/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
         $this->helperTestTemplate('QrCodes/view');
@@ -178,7 +178,7 @@ class TemplateTest extends BaseControllerTest
         // test with admin
         $this->requestAsAjax();
         $this->loginUserAdmin();
-        $this->get('https://localhost/qr-codes/view/1');
+        $this->get('http://localhost:8080/qr-codes/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
         $this->helperTestTemplate('QrCodes/view');

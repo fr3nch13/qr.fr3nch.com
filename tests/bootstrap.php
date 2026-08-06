@@ -29,11 +29,6 @@ require dirname(__DIR__) . '/vendor/autoload.php';
 
 require dirname(__DIR__) . '/config/bootstrap.php';
 
-if (empty($_SERVER['HTTP_HOST']) && !Configure::read('App.fullBaseUrl')) {
-    // enforce https in tests.
-    Configure::write('App.fullBaseUrl', 'https://localhost');
-}
-
 // Statically set here, instad of in a environment variable, so i can test the actual salted results.
 Configure::write('Security.salt', 'a6a19e29581c105c983e050b1c3cf59e1145b1fa8f645e9e1c6db93bd464e037');
 

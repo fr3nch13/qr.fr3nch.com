@@ -41,7 +41,7 @@ class JsonTest extends BaseControllerTest
     public function testLogin(): void
     {
         // a get
-        $this->get('https://localhost/users/login');
+        $this->get('http://localhost:8080/users/login');
         $this->assertResponseOk();
 
         $content = (string)$this->_response->getBody();
@@ -59,7 +59,7 @@ class JsonTest extends BaseControllerTest
         $this->assertSame($expected, $content['errors']);
 
         // a post fail
-        $this->post('https://localhost/users/login.json', []);
+        $this->post('http://localhost:8080/users/login.json', []);
         $this->assertResponseOk();
         $content = (string)$this->_response->getBody();
         $content = json_decode($content, true);
@@ -76,7 +76,7 @@ class JsonTest extends BaseControllerTest
         $this->assertSame($expected, $content['errors']);
 
         // a post login fail
-        $this->post('https://localhost/users/login.json', [
+        $this->post('http://localhost:8080/users/login.json', [
             'email' => 'admin@example.com',
             'password' => 'badpassword',
         ]);
@@ -96,22 +96,22 @@ class JsonTest extends BaseControllerTest
         $this->assertSame($expected, $content['errors']);
 
         // a post success
-        $this->post('https://localhost/users/login.json', [
+        $this->post('http://localhost:8080/users/login.json', [
             'email' => 'admin@example.com',
             'password' => 'admin',
         ]);
-        $this->assertRedirectEquals('https://localhost/admin');
+        $this->assertRedirectEquals('/admin');
         $this->assertFlashMessage('Welcome back Admin', 'flash');
         $this->assertFlashElement('flash/success');
 
         $this->logoutUser();
 
         // a post success
-        $this->post('https://localhost/users/login.json?redirect=%2Ftags', [
+        $this->post('http://localhost:8080/users/login.json?redirect=%2Ftags', [
             'email' => 'admin@example.com',
             'password' => 'admin',
         ]);
-        $this->assertRedirectEquals('https://localhost/tags');
+        $this->assertRedirectEquals('/tags');
         $this->assertFlashMessage('Welcome back Admin', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -125,7 +125,7 @@ class JsonTest extends BaseControllerTest
     public function testProfile(): void
     {
         $this->loginUserAdmin();
-        $this->get('https://localhost/users/profile/2.json');
+        $this->get('http://localhost:8080/users/profile/2.json');
         $this->assertResponseOk();
 
         $content = (string)$this->_response->getBody();
