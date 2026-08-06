@@ -19,11 +19,17 @@ class MigrationIdsCommand extends Command
         '2023102416330001' => '20231024163300',
     ];
 
+    /**
+     * Describe the command purpose for CLI help output.
+     */
     public static function getDescription(): string
     {
         return 'Reconcile legacy application migration IDs with CakePHP Migrations 5.';
     }
 
+    /**
+     * Configure command options.
+     */
     public function buildOptionParser(ConsoleOptionParser $parser): ConsoleOptionParser
     {
         return $parser
@@ -35,6 +41,9 @@ class MigrationIdsCommand extends Command
             ]);
     }
 
+    /**
+     * Reconcile migration IDs and archive legacy migration history tables.
+     */
     public function execute(Arguments $args, ConsoleIo $io): int
     {
         $connection = ConnectionManager::get((string)$args->getOption('connection'));
@@ -89,6 +98,9 @@ class MigrationIdsCommand extends Command
         return static::CODE_SUCCESS;
     }
 
+    /**
+     * Reconcile one legacy/new migration version pair and remove duplicates.
+     */
     private function reconcileVersion(Connection $connection, string $oldVersion, string $newVersion): int
     {
         $rows = $connection->execute(
@@ -133,6 +145,9 @@ class MigrationIdsCommand extends Command
         return $updated;
     }
 
+    /**
+     * Determine a unique backup table name for a legacy migration log table.
+     */
     private function nextBackupTable(Connection $connection, string $legacyTable): string
     {
         $schema = $connection->getDriver()->schemaDialect();

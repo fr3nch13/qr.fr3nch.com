@@ -2,9 +2,16 @@ name: Run in development image
 description: Load the branch development image and run a command inside it.
 
 inputs:
+  image-name:
+    description: Local Docker image name containing the development image.
+    required: true
   image-tag:
     description: Development image tag produced by the build job.
     required: true
+  security-salt:
+    description: Security salt exposed to the command container.
+    required: false
+    default: github-actions-test-salt-not-for-production
   command:
     description: Command to run inside the development image.
     required: true
@@ -15,7 +22,7 @@ inputs:
   database-test-url:
     description: Test database URL exposed to the container.
     required: false
-    default: sqlite://./testdb.sqlite
+    default: sqlite:////var/www/html/tmp/tests.sqlite
 
 runs:
   using: composite
@@ -35,11 +42,15 @@ runs:
     env:
       COMMAND: ${{ inputs.command }}
       DATABASE_TEST_URL: ${{ inputs.database-test-url }}
+      IMAGE_NAME: ${{ inputs.image-name }}
+      IMAGE_TAG: ${{ inputs.image-tag }}
       INSTALL_COMPOSER_DEPENDENCIES: ${{ inputs.install-composer-dependencies }}
-      SECURITY_SALT: ${{ env.SECURITY_SALT }}
+      SECURITY_SALT: ${{ inputs.security-salt }}
     run: |
+      command="${COMMAND}"
+
       if [[ "${INSTALL_COMPOSER_DEPENDENCIES}" == "true" ]]; then
-        COMMAND="git config --global --add safe.directory /var/www/html && composer install --no-interaction --no-scripts --prefer-dist && ${COMMAND}"
+        command="git config --global --add safe.directory /var/www/html && composer install --no-interaction --no-scripts --prefer-dist && ${command}"
       fi
 
       docker run --rm \
@@ -47,5 +58,5 @@ runs:
         -e SECURITY_SALT="${SECURITY_SALT}" \
         -v "${{ github.workspace }}:/var/www/html" \
         -w /var/www/html \
-        "${IMAGE_NAME}:${{ inputs.image-tag }}" \
-        bash -lc "${COMMAND}"
+        "${IMAGE_NAME}:${IMAGE_TAG}" \
+        bash -lc "${command}"
