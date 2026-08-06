@@ -8,13 +8,24 @@ app_root="$test_root/opt/qr-fr3nch-com"
 nginx_root="$test_root/etc/nginx/conf.d"
 bin_dir="$test_root/bin"
 state_dir="$test_root/state"
+certbot_root="$test_root/opt/certbot"
+certbot_live_dir="$test_root/etc/letsencrypt/live"
+systemd_unit_dir="$test_root/etc/systemd/system"
 
 cleanup() {
     rm -rf "$test_root"
 }
 trap cleanup EXIT HUP INT TERM
 
-mkdir -p "$stage_dir" "$app_root" "$nginx_root" "$bin_dir" "$state_dir"
+mkdir -p \
+    "$stage_dir" \
+    "$app_root" \
+    "$nginx_root" \
+    "$bin_dir" \
+    "$state_dir" \
+    "$certbot_root/bin" \
+    "$certbot_live_dir/qr.fr3nch.com" \
+    "$systemd_unit_dir"
 
 printf '%s\n' old-compose > "$app_root/compose.yaml"
 printf '%s\n' old-env > "$app_root/.env"
@@ -22,9 +33,31 @@ printf '%s\n' old-script > "$app_root/deploy-container.sh"
 printf '%s\n' old-nginx > "$nginx_root/qr-fr3nch-com.conf"
 printf '%s\n' new-compose > "$stage_dir/compose.yaml"
 printf '%s\n' new-env > "$stage_dir/application.env"
+printf '%s\n' new-http-nginx > "$stage_dir/nginx-bootstrap.conf"
 printf '%s\n' new-nginx > "$stage_dir/nginx-server.conf"
+cp "$repo_root/deploy/files/certbot-renew.service" "$stage_dir/certbot-renew.service"
+cp "$repo_root/deploy/files/certbot-renew.timer" "$stage_dir/certbot-renew.timer"
 sed 's/max_attempts=10/max_attempts=1/g' \
     "$repo_root/deploy/files/deploy-container.sh" > "$stage_dir/deploy-container.sh"
+
+cat > "$certbot_root/bin/pip" <<'EOF'
+#!/bin/sh
+exit 0
+EOF
+
+cat > "$certbot_root/bin/certbot" <<'EOF'
+#!/bin/sh
+if [ "$1" = certonly ]; then
+    printf '%s\n' "$@" > "$TEST_STATE_DIR/certbot-certonly-args"
+    mkdir -p "$TEST_CERTBOT_LIVE_DIR/qr.fr3nch.com"
+    printf '%s\n' certificate > "$TEST_CERTBOT_LIVE_DIR/qr.fr3nch.com/fullchain.pem"
+    printf '%s\n' private-key > "$TEST_CERTBOT_LIVE_DIR/qr.fr3nch.com/privkey.pem"
+    printf '%s\n' issued > "$TEST_STATE_DIR/certificate-issued"
+fi
+exit 0
+EOF
+
+chmod 755 "$certbot_root/bin/pip" "$certbot_root/bin/certbot"
 
 cat > "$bin_dir/dnf" <<'EOF'
 #!/bin/sh
@@ -38,6 +71,17 @@ EOF
 
 cat > "$bin_dir/nginx" <<'EOF'
 #!/bin/sh
+exit 0
+EOF
+
+cat > "$bin_dir/semanage" <<'EOF'
+#!/bin/sh
+exit 0
+EOF
+
+cat > "$bin_dir/restorecon" <<'EOF'
+#!/bin/sh
+printf '%s\n' "$*" > "$TEST_STATE_DIR/restorecon"
 exit 0
 EOF
 
@@ -103,7 +147,14 @@ chmod 755 "$test_root/bootstrap-host.sh"
 if env \
     PATH="$bin_dir:$PATH" \
     TEST_STATE_DIR="$state_dir" \
+    TEST_CERTBOT_LIVE_DIR="$certbot_live_dir" \
     APP_ROOT="$app_root" \
+    DOMAIN=qr.fr3nch.com \
+    CERTBOT_EMAIL=admin@example.com \
+    CERTBOT_ROOT="$certbot_root" \
+    CERTBOT_WEBROOT="$test_root/opt/certbot/webroot" \
+    CERTBOT_LIVE_DIR="$certbot_live_dir" \
+    SYSTEMD_UNIT_DIR="$systemd_unit_dir" \
     PROJECT_NAME=qr-fr3nch-com \
     DOCKER_HUB_REPO=example/qr.fr3nch.com \
     IMAGE_TAG=2608.06.1 \
@@ -120,6 +171,12 @@ test "$(cat "$app_root/compose.yaml")" = old-compose
 test "$(cat "$app_root/.env")" = old-env
 test "$(cat "$app_root/deploy-container.sh")" = old-script
 test "$(cat "$nginx_root/qr-fr3nch-com.conf")" = old-nginx
+test -d "$app_root/tmp"
+test -f "$state_dir/certificate-issued"
+test -f "$state_dir/restorecon"
 test -f "$state_dir/lock-held"
 test -f "$state_dir/rollback-started"
+test "$(grep -c '^--domain$' "$state_dir/certbot-certonly-args")" -eq 1
+grep -A 1 -Fx -- '--cert-name' "$state_dir/certbot-certonly-args" | grep -Fx 'qr.fr3nch.com' >/dev/null
+grep -A 1 -Fx -- '--domain' "$state_dir/certbot-certonly-args" | grep -Fx 'qr.fr3nch.com' >/dev/null
 grep -Fx 'sha256:previous qr-fr3nch-com:deploy-current' "$state_dir/image-tags" >/dev/null

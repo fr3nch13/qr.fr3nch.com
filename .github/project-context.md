@@ -53,6 +53,32 @@ The CI workflow owns release publishing and Lightsail deployment. A release-tag 
 
 A weekly Sunday 06:00 UTC scheduled run resolves the newest valid release tag merged into `main`, checks out that immutable tag in every job, and reruns the same pipeline. Scheduled Docker builds disable the build cache so current base-image and APT packages are included. Composer and npm dependencies remain pinned by the tag's committed `composer.lock` and `package-lock.json`; Dependabot owns updates to those lockfiles.
 
+The host persists the complete CakePHP `tmp` directory at
+`/opt/qr-fr3nch-com/tmp` and bind-mounts it to `/var/www/html/tmp`. This retains
+uploads, generated QR files, caches, sessions, and other runtime files across
+container replacement. Back up this host directory according to the
+application's data-retention requirements.
+
+Certbot is installed in `/opt/certbot` through a Python virtual environment and
+uses `/opt/certbot/webroot` for HTTP-01 challenges. The bootstrap labels that
+webroot as `httpd_sys_content_t` so host Nginx can read challenges while SELinux
+is enforcing. This repository owns an independent certificate containing only
+`qr.fr3nch.com`, with its lineage under
+`/etc/letsencrypt/live/qr.fr3nch.com/`; the `fr3nch.com` project manages its own
+certificate and Nginx file. Each tag or weekly scheduled deployment upgrades
+Certbot, retries initial HTTP-01 issuance when necessary, checks for due
+renewals, and keeps an HTTP proxy active if issuance is unavailable.
+`certbot-renew.timer` also runs twice daily and reloads Nginx after a successful
+renewal. The Nginx plugin is intentionally not installed because deployment
+owns the server configuration. Verify certificate automation on the host with:
+
+```sh
+sudo systemctl status certbot-renew.timer
+sudo systemctl list-timers certbot-renew.timer
+sudo /opt/certbot/bin/certbot certificates
+sudo /opt/certbot/bin/certbot renew --dry-run
+```
+
 The deployment records the exact image used by the last successful internal
 health check, including its release tag, image ID, repository digest, and
 container ID. Inspect it on the Lightsail host with:
@@ -70,14 +96,7 @@ Environment Variables:
 | --- | --- | --- |
 | `DEPLOY_HOST` | Yes | Lightsail instance hostname or IP address. |
 | `DEPLOY_USER` | Yes | Non-root SSH user allowed to run the bootstrap with `sudo`. |
-| `FULL_BASE_URL` | Yes | Public application URL, `https://qr.fr3nch.com`. |
-| `FILESYSTEM_DRIVER` | Yes | `local` or `s3`. |
-| `FILESYSTEM_LOCAL_PATH` | Yes | Container path used by local storage, even when S3 is selected as the primary driver. |
-| `FILESYSTEM_PREFIX` | No | Upload prefix; defaults from the S3 prefix and environment. |
-| `AWS_S3_REGION` | For S3 | AWS region used by uploads and cache storage. |
-| `AWS_S3_BUCKET` | For S3 | S3 bucket name. |
-| `AWS_S3_ENV` | No | Environment segment for S3 cache prefixes; defaults to `development`. |
-| `AWS_S3_PREFIX` | No | Root S3 prefix; defaults to `fr3nch.com`. |
+| `CERTBOT_EMAIL` | Yes | Let's Encrypt registration and expiry-notification email address. |
 
 Configure these Environment Secrets in `production`:
 
@@ -86,8 +105,6 @@ Configure these Environment Secrets in `production`:
 | `DEPLOY_SSH_PRIVATE_KEY` | Yes | Private key for `DEPLOY_USER`. |
 | `DATABASE_URL` | Yes | Production CakePHP database connection URL. |
 | `SECURITY_SALT` | Yes | Production CakePHP security salt. |
-| `AWS_S3_ACCESS_KEY_ID` | For S3 | S3 access key used by uploads and cache storage. |
-| `AWS_S3_SECRET_ACCESS_KEY` | For S3 | S3 secret access key. |
 | `EMAIL_TRANSPORT_DEFAULT_URL` | No | CakePHP mail transport URL. |
 
 Configure these Repository Secrets because image publication runs before the
@@ -102,6 +119,18 @@ job enters the `production` Environment:
 The deployment currently derives the application root, container port, host
 port, lock path, domain, image repository, and TLS paths in version-controlled
 configuration; they are not GitHub settings.
+
+For an AWS Lightsail managed MySQL database, set `DATABASE_URL` to this template
+as a `production` Environment Secret:
+
+```text
+mysql://USERNAME:PASSWORD@LIGHTSAIL_DATABASE_ENDPOINT:3306/DATABASE_NAME?encoding=utf8mb4&timezone=UTC
+```
+
+Use the database endpoint shown in the Lightsail console, not an `http://` or
+`https://` URL. Percent-encode reserved URL characters in the username,
+password, and database name. For example, `@` becomes `%40`, `:` becomes `%3A`,
+`/` becomes `%2F`, and `#` becomes `%23`.
 
 Validate workflow changes with:
 

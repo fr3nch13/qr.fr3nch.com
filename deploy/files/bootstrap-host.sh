@@ -17,6 +17,8 @@ if [ -z "$stage_dir" ]; then
 fi
 
 require_var APP_ROOT
+require_var DOMAIN
+require_var CERTBOT_EMAIL
 require_var PROJECT_NAME
 require_var DOCKER_HUB_REPO
 require_var IMAGE_TAG
@@ -107,7 +109,7 @@ wait_for_internal_health() {
     return 1
 }
 
-for required_file in compose.yaml application.env nginx-server.conf deploy-container.sh; do
+for required_file in compose.yaml application.env nginx-bootstrap.conf nginx-server.conf deploy-container.sh certbot-renew.service certbot-renew.timer; do
     if [ ! -f "$stage_dir/$required_file" ]; then
         echo "Missing staged file: $stage_dir/$required_file" >&2
         exit 1
@@ -126,16 +128,50 @@ dnf install -y \
     docker \
     docker-compose-plugin \
     python3 \
+    python3-pip \
+    policycoreutils-python-utils \
     util-linux \
     curl
 
 systemctl enable --now docker
-if ! systemctl enable --now nginx; then
-    echo "::warning title=Nginx startup failed::The application will still be deployed and checked on its host-loopback port."
+if ! systemctl enable nginx; then
+    echo "::warning title=Nginx enablement failed::The application will still be deployed and checked on its host-loopback port."
 fi
 
 install -d -m 700 -o root -g root "$APP_ROOT"
 install -d -m 700 -o root -g root "$(dirname "$LOCK_PATH")"
+install -d -m 770 -o 33 -g 33 "$APP_ROOT/tmp"
+
+certbot_root="${CERTBOT_ROOT:-/opt/certbot}"
+certbot_webroot="${CERTBOT_WEBROOT:-/opt/certbot/webroot}"
+certbot_live_dir="${CERTBOT_LIVE_DIR:-/etc/letsencrypt/live}"
+systemd_unit_dir="${SYSTEMD_UNIT_DIR:-/etc/systemd/system}"
+certbot_available=true
+
+install -d -m 755 -o root -g root "$certbot_webroot"
+if ! semanage fcontext -a -t httpd_sys_content_t "${certbot_webroot}(/.*)?" 2>/dev/null; then
+    semanage fcontext -m -t httpd_sys_content_t "${certbot_webroot}(/.*)?"
+fi
+restorecon -R "$certbot_webroot"
+if [ ! -x "$certbot_root/bin/pip" ] && ! python3 -m venv "$certbot_root"; then
+    certbot_available=false
+    echo "::warning title=Certbot installation failed::Unable to create the Certbot virtual environment. HTTP will remain available."
+fi
+if [ "$certbot_available" = true ] && ! "$certbot_root/bin/pip" install --upgrade pip certbot; then
+    echo "::warning title=Certbot update failed::The existing Certbot installation will be used when available."
+fi
+if [ ! -x "$certbot_root/bin/certbot" ]; then
+    certbot_available=false
+fi
+
+if [ "$certbot_available" = true ]; then
+    install -m 644 -o root -g root "$stage_dir/certbot-renew.service" "$systemd_unit_dir/certbot-renew.service"
+    install -m 644 -o root -g root "$stage_dir/certbot-renew.timer" "$systemd_unit_dir/certbot-renew.timer"
+    systemctl daemon-reload
+    if ! systemctl enable --now certbot-renew.timer; then
+        echo "::warning title=Certbot renewal timer failed::Enable certbot-renew.timer manually after deployment."
+    fi
+fi
 
 nginx_config="/etc/nginx/conf.d/$PROJECT_NAME.conf"
 compose_config="$APP_ROOT/compose.yaml"
@@ -161,18 +197,54 @@ if [ "$had_compose_config" = true ]; then
     fi
 fi
 
-install -m 600 -o root -g root "$stage_dir/nginx-server.conf" "$nginx_config"
+install -m 600 -o root -g root "$stage_dir/nginx-bootstrap.conf" "$nginx_config"
 install -m 600 -o root -g root "$stage_dir/compose.yaml" "$compose_config"
 install -m 600 -o root -g root "$stage_dir/application.env" "$application_env"
 install -m 700 -o root -g root "$stage_dir/deploy-container.sh" "$deploy_script"
 
-if nginx -t; then
-    if ! systemctl reload nginx; then
-        echo "::warning title=Nginx reload failed::The application will still be deployed and checked on its host-loopback port."
-    fi
+nginx_bootstrap_active=false
+if nginx -t && systemctl start nginx && systemctl reload nginx; then
+    nginx_bootstrap_active=true
 else
     restore_file "$had_nginx_config" "$rollback_dir/nginx-server.conf" "$nginx_config"
-    echo "::warning title=Nginx configuration unavailable::The previous configuration was restored. The application will still be deployed and checked on its host-loopback port."
+    echo "::warning title=Nginx HTTP configuration unavailable::The previous configuration was restored. The application will still be deployed and checked on its host-loopback port."
+fi
+
+if [ "$certbot_available" = true ] && [ "$nginx_bootstrap_active" = true ]; then
+    if ! "$certbot_root/bin/certbot" renew --quiet; then
+        echo "::warning title=Certificate renewal failed::The existing certificate will remain active when available."
+    fi
+fi
+
+certificate_file="$certbot_live_dir/$DOMAIN/fullchain.pem"
+certificate_key_file="$certbot_live_dir/$DOMAIN/privkey.pem"
+if [ ! -f "$certificate_file" ] || [ ! -f "$certificate_key_file" ]; then
+    if [ "$certbot_available" = true ] && [ "$nginx_bootstrap_active" = true ]; then
+        if ! "$certbot_root/bin/certbot" certonly \
+            --webroot \
+            --webroot-path "$certbot_webroot" \
+            --cert-name "$DOMAIN" \
+            --domain "$DOMAIN" \
+            --email "$CERTBOT_EMAIL" \
+            --agree-tos \
+            --non-interactive \
+            --keep-until-expiring; then
+            echo "::warning title=Certificate issuance failed::Verify DNS and inbound port 80. HTTP will remain available."
+        fi
+    fi
+fi
+
+if [ -f "$certificate_file" ] && [ -f "$certificate_key_file" ]; then
+    install -m 600 -o root -g root "$stage_dir/nginx-server.conf" "$nginx_config"
+    if nginx -t && systemctl reload nginx; then
+        echo "HTTPS configuration active for $DOMAIN"
+    else
+        install -m 600 -o root -g root "$stage_dir/nginx-bootstrap.conf" "$nginx_config"
+        systemctl reload nginx || true
+        echo "::warning title=Nginx HTTPS configuration unavailable::HTTP will remain available."
+    fi
+else
+    echo "::warning title=Certificate unavailable::HTTP will remain available until certificate issuance succeeds."
 fi
 
 if [ -n "${DOCKERHUB_USERNAME-}" ] && [ -n "${DOCKERHUB_TOKEN-}" ]; then

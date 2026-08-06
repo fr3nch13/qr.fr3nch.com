@@ -44,14 +44,13 @@ require_var IMAGE_TAG
 require_var APP_HOST_PORT
 require_var APP_CONTAINER_PORT
 require_var LOCK_PATH
-require_var FULL_BASE_URL
 require_var DEBUG
 require_var DATABASE_URL
 require_var SECURITY_SALT
-require_var FILESYSTEM_DRIVER
-require_var FILESYSTEM_LOCAL_PATH
+require_var CERTBOT_EMAIL
 
 APP_ROOT="${APP_ROOT:-/opt/${PROJECT_NAME}}"
+CERTBOT_WEBROOT="${CERTBOT_WEBROOT:-/opt/certbot/webroot}"
 TLS_CERTIFICATE_FILE="${TLS_CERTIFICATE_FILE:-/etc/letsencrypt/live/${DOMAIN}/fullchain.pem}"
 TLS_CERTIFICATE_KEY_FILE="${TLS_CERTIFICATE_KEY_FILE:-/etc/letsencrypt/live/${DOMAIN}/privkey.pem}"
 healthcheck_path="${HEALTHCHECK_PATH:-/}"
@@ -80,6 +79,10 @@ server {
     listen [::]:80;
     server_name ${DOMAIN};
 
+    location /.well-known/acme-challenge/ {
+        root ${CERTBOT_WEBROOT};
+    }
+
     location / {
         return 301 https://\$host\$request_uri;
     }
@@ -104,19 +107,39 @@ server {
 }
 EOF
 
-cat > "$output_dir/compose.yaml" <<EOF
-services:
-  app:
-    image: ${deploy_tag}
-    restart: unless-stopped
-    env_file:
-      - .env
-    ports:
-      - "127.0.0.1:${APP_HOST_PORT}:${APP_CONTAINER_PORT}"
+cat > "$output_dir/nginx-bootstrap.conf" <<EOF
+server {
+    listen 80;
+    listen [::]:80;
+    server_name ${DOMAIN};
+
+    location /.well-known/acme-challenge/ {
+        root ${CERTBOT_WEBROOT};
+    }
+
+    location / {
+        proxy_pass http://127.0.0.1:${APP_HOST_PORT};
+        proxy_http_version 1.1;
+        proxy_set_header Host \$host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto http;
+    }
+}
 EOF
 
+{
+        printf '%s\n' 'services:'
+        printf '%s\n' '  app:'
+        printf '    image: %s\n' "$deploy_tag"
+        printf '%s\n' '    restart: unless-stopped'
+        printf '%s\n' '    env_file:'
+        printf '%s\n' '      - .env'
+        printf '    ports: ["127.0.0.1:%s:%s"]\n' "$APP_HOST_PORT" "$APP_CONTAINER_PORT"
+        printf '%s\n' '    volumes: ["./tmp:/var/www/html/tmp"]'
+} > "$output_dir/compose.yaml"
+
 : > "$application_env"
-write_application_var APP_FULL_BASE_URL "$FULL_BASE_URL"
 write_application_var DEBUG "$DEBUG"
 write_application_var DATABASE_URL "$DATABASE_URL"
 write_application_var SECURITY_SALT "$SECURITY_SALT"
@@ -126,6 +149,8 @@ fi
 
 : > "$runtime_env"
 write_shell_var APP_ROOT "$APP_ROOT"
+write_shell_var DOMAIN "$DOMAIN"
+write_shell_var CERTBOT_EMAIL "$CERTBOT_EMAIL"
 write_shell_var PROJECT_NAME "$PROJECT_NAME"
 write_shell_var DOCKER_HUB_REPO "$DOCKER_HUB_REPO"
 write_shell_var IMAGE_TAG "$IMAGE_TAG"

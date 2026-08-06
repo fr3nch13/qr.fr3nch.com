@@ -359,6 +359,8 @@ jobs:
 
         sh deploy/render-artifacts.sh "$stage_dir"
         cp deploy/files/bootstrap-host.sh "$stage_dir/bootstrap-host.sh"
+        cp deploy/files/certbot-renew.service "$stage_dir/certbot-renew.service"
+        cp deploy/files/certbot-renew.timer "$stage_dir/certbot-renew.timer"
         cp deploy/files/deploy-container.sh "$stage_dir/deploy-container.sh"
 
         {
@@ -374,6 +376,8 @@ jobs:
         scp \
           "$STAGE_DIR/application.env" \
           "$STAGE_DIR/bootstrap-host.sh" \
+          "$STAGE_DIR/certbot-renew.service" \
+          "$STAGE_DIR/certbot-renew.timer" \
           "$STAGE_DIR/compose.yaml" \
           "$STAGE_DIR/deploy-container.sh" \
           "$STAGE_DIR/nginx-bootstrap.conf" \
