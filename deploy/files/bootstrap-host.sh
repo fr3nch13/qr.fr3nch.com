@@ -126,14 +126,27 @@ exec 9>"$LOCK_PATH"
 chmod 600 "$LOCK_PATH"
 flock 9
 
-dnf install -y \
-    nginx \
-    docker \
-    python3 \
-    python3-pip \
-    policycoreutils-python-utils \
-    util-linux \
-    curl
+packages_to_install=""
+require_command() {
+    command_name="$1"
+    package_name="$2"
+    if ! command -v "$command_name" >/dev/null 2>&1; then
+        packages_to_install="$packages_to_install $package_name"
+    fi
+}
+
+require_command nginx nginx
+require_command docker docker
+require_command python3 python3
+require_command pip3 python3-pip
+require_command semanage policycoreutils-python-utils
+require_command flock util-linux
+require_command curl curl
+
+if [ -n "$packages_to_install" ]; then
+    # shellcheck disable=SC2086
+    dnf install -y $packages_to_install
+fi
 
 # Manually install Docker Compose v2 plugin for Linux, since AL2023 does not include it in the default repositories.
 compose_arch=$(uname -m)
