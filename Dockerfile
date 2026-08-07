@@ -26,7 +26,7 @@ COPY --from=php-extensions /usr/local/lib/php/extensions/ /usr/local/lib/php/ext
 COPY --from=php-extensions /usr/local/etc/php/conf.d/ /usr/local/etc/php/conf.d/
 
 # Enable Apache modules commonly needed by CakePHP apps.
-COPY docker/apache-proxy-scheme.conf /etc/apache2/conf-available/proxy-scheme.conf
+COPY resources/docker/apache-proxy-scheme.conf /etc/apache2/conf-available/proxy-scheme.conf
 RUN a2enmod rewrite headers setenvif \
     && a2enconf proxy-scheme \
     && sed -i 's/^Listen 80$/Listen 8080/' /etc/apache2/ports.conf \
@@ -71,7 +71,7 @@ FROM base AS production
 
 COPY --from=application-build --chown=www-data:www-data /var/www/html /var/www/html
 RUN chmod 755 /var/www/html/docker-entrypoint.sh
-RUN chmod 755 /var/www/html/scripts/docker-healthcheck.sh
-HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 CMD ["/var/www/html/scripts/docker-healthcheck.sh"]
+RUN chmod 755 /var/www/html/resources/scripts/docker-healthcheck.sh
+HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 CMD ["/var/www/html/resources/scripts/docker-healthcheck.sh"]
 
 CMD ["./docker-entrypoint.sh"]

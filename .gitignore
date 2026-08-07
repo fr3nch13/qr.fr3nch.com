@@ -7,6 +7,7 @@
 /tmp/uploads/*
 !/tmp/uploads/.gitkeep
 /webroot/assets/
+*.sqlite
 
 # Dependencies
 /vendor/*
@@ -15,7 +16,6 @@
 
 # Test and migration artifacts
 /.phpunit.cache/
-/testdb.sqlite
 /config/Migrations/schema-dump-default.lock
 
 # Local integration configuration
