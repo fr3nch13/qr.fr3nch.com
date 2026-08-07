@@ -13,7 +13,7 @@ use Cake\View\View;
  *
  * Your application's default view class
  *
- * @link https://book.cakephp.org/4/en/views.html#the-app-view
+ * @link https://book.cakephp.org/5.x/views.html#the-app-view
  * @property \App\View\Helper\ActiveUserHelper $ActiveUser
  * @property \App\View\Helper\FormHelper $Form
  * @property \App\View\Helper\GravatarHelper $Gravatar

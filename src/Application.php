@@ -40,7 +40,6 @@ use App\Policy\UsersControllerPolicy;
 use Authentication\AuthenticationService;
 use Authentication\AuthenticationServiceInterface;
 use Authentication\AuthenticationServiceProviderInterface;
-use Authentication\Identifier\AbstractIdentifier;
 use Authentication\Middleware\AuthenticationMiddleware;
 use Authorization\AuthorizationService;
 use Authorization\AuthorizationServiceInterface;
@@ -72,9 +71,7 @@ use Psr\Http\Message\ServerRequestInterface;
  * This defines the bootstrapping logic and middleware layers you
  * want to use in your application.
  */
-class Application extends BaseApplication implements
-    AuthenticationServiceProviderInterface,
-    AuthorizationServiceProviderInterface
+class Application extends BaseApplication implements AuthenticationServiceProviderInterface, AuthorizationServiceProviderInterface
 {
     /**
      * Load all the application configuration and bootstrap logic.
@@ -153,19 +150,19 @@ class Application extends BaseApplication implements
 
             // Parse various types of encoded request bodies so that they are
             // available as array through $request->getData()
-            // https://book.cakephp.org/4/en/controllers/middleware.html#body-parser-middleware
+            // https://book.cakephp.org/5.x/controllers/middleware.html#body-parser-middleware
             ->add(new BodyParserMiddleware())
 
             // Cross Site Request Forgery (CSRF) Protection Middleware
-            // https://book.cakephp.org/4/en/security/csrf.html#cross-site-request-forgery-csrf-middleware
+            // https://book.cakephp.org/5.x/security/csrf.html#cross-site-request-forgery-csrf-middleware
             ->add(new CsrfProtectionMiddleware([
                 'httponly' => true,
             ]))
 
-            // @link https://book.cakephp.org/5/en/tutorials-and-examples/cms/authentication.html
+            // @link https://book.cakephp.org/5.x/tutorials-and-examples/cms/authentication.html
             ->add(new AuthenticationMiddleware($this))
 
-            // @link https://book.cakephp.org/5/en/tutorials-and-examples/cms/authorization.html
+            // @link https://book.cakephp.org/5.x/tutorials-and-examples/cms/authorization.html
             ->add(new AuthorizationMiddleware($this, [
                 'requireAuthorizationCheck' => false,
                 'identityDecorator' => function ($auth, $user) {
@@ -188,7 +185,7 @@ class Application extends BaseApplication implements
             // It's causing inline onclicks to be blocked, even though unsafe-inline is set to true.
 
             // Content Security Policy
-            // @link https://book.cakephp.org/5/en/security/content-security-policy.html#content-security-policy-middleware
+            // @link https://book.cakephp.org/5.x/security/content-security-policy.html#content-security-policy-middleware
             // @link https://github.com/paragonie/csp-builder
             ->add(new CspMiddleware([
                 'script-src' => [
@@ -206,7 +203,7 @@ class Application extends BaseApplication implements
             ]))
             */
 
-        // @link https://book.cakephp.org/5/en/security/security-headers.html
+        // @link https://book.cakephp.org/5.x/security/security-headers.html
         $securityHeaders = new SecurityHeadersMiddleware();
         $securityHeaders
             ->setReferrerPolicy()
@@ -223,7 +220,7 @@ class Application extends BaseApplication implements
      *
      * @param \Cake\Core\ContainerInterface $container The Container to update.
      * @return void
-     * @link https://book.cakephp.org/4/en/development/dependency-injection.html#dependency-injection
+     * @link https://book.cakephp.org/5.x/development/dependency-injection.html#dependency-injection
      */
     public function services(ContainerInterface $container): void
     {
@@ -239,8 +236,8 @@ class Application extends BaseApplication implements
     public function getAuthenticationService(ServerRequestInterface $request): AuthenticationServiceInterface
     {
         $fields = [
-            AbstractIdentifier::CREDENTIAL_USERNAME => 'email',
-            AbstractIdentifier::CREDENTIAL_PASSWORD => 'password',
+            'username' => 'email',
+            'password' => 'password',
         ];
 
         $authenticationService = new AuthenticationService([
@@ -254,13 +251,12 @@ class Application extends BaseApplication implements
         ]);
 
         $identifier = [
-            'Authentication.Password' => [
-                'fields' => $fields,
-                'resolver' => [
-                    'className' => 'Authentication.Orm',
-                    'userModel' => 'Users',
-                    'finder' => 'active',
-                ],
+            'className' => 'Authentication.Password',
+            'fields' => $fields,
+            'resolver' => [
+                'className' => 'Authentication.Orm',
+                'userModel' => 'Users',
+                'finder' => 'active',
             ],
         ];
 
@@ -273,44 +269,12 @@ class Application extends BaseApplication implements
         $authenticationService->loadAuthenticator('Authentication.Form', [
             'identifier' => $identifier,
             'fields' => $fields,
-            'loginUrl' => [
-                Router::url([
-                    'prefix' => false,
-                    'plugin' => false,
-                    'controller' => 'Users',
-                    'action' => 'login',
-                    '_ext' => null,
-                ]),
-                Router::url([
-                    'prefix' => false,
-                    'plugin' => false,
-                    'controller' => 'Users',
-                    'action' => 'login',
-                    '_ext' => 'json',
-                ]),
-            ],
         ]);
 
         // Used for Remember me
         $authenticationService->loadAuthenticator('Authentication.Cookie', [
             'identifier' => $identifier,
             'fields' => $fields,
-            'loginUrl' => [
-                Router::url([
-                    'prefix' => false,
-                    'plugin' => false,
-                    'controller' => 'Users',
-                    'action' => 'login',
-                    '_ext' => null,
-                ]),
-                Router::url([
-                    'prefix' => false,
-                    'plugin' => false,
-                    'controller' => 'Users',
-                    'action' => 'login',
-                    '_ext' => 'json',
-                ]),
-            ],
         ]);
 
         return $authenticationService;

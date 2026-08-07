@@ -115,7 +115,7 @@ return function (RouteBuilder $routes): void {
     // Figure out why the redirect for the login is going here
     // commented out until this is resolved.
     // I mean it's not that I need an api interface at the moment.
-    // @link https://book.cakephp.org/5/en/development/routing.html#restful-routing
+    // @link https://book.cakephp.org/5.x/development/routing.html#restful-routing
     // milestone: 4
     // labels: routes
     $routes->scope('/api', function (RouteBuilder $routes) {
