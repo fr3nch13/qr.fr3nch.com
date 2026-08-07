@@ -1,4 +1,7 @@
 #!/bin/sh
+# Renders the environment-specific deployment bundle used by GitHub Actions.
+# Produces Compose, Nginx, and protected runtime configuration files for a
+# release image; the resulting directory is uploaded to the target host.
 set -eu
 umask 077
 

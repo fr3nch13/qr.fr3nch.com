@@ -1,4 +1,7 @@
 #!/bin/sh
+# Bootstraps or updates the target host from a staged release bundle.
+# Installs host dependencies, configures Nginx and TLS, prepares persistent
+# application storage, and invokes the container rollout with rollback support.
 set -eu
 
 require_var() {
