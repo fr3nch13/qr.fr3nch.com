@@ -19,7 +19,7 @@ use Cake\View\JsonView;
  * Add your application-wide methods in the class below, your controllers
  * will inherit them.
  *
- * @link https://book.cakephp.org/5/en/controllers.html#the-app-controller
+ * @link https://book.cakephp.org/5.x/controllers.html#the-app-controller
  * @property \Authentication\Controller\Component\AuthenticationComponent $Authentication
  * @property \Authorization\Controller\Component\AuthorizationComponent $Authorization
  * @property \Cake\Controller\Component\FlashComponent $Flash
@@ -50,17 +50,17 @@ class AppController extends Controller
         /*
          * Enable the following component for recommended CakePHP form protection settings.
          *
-         * @link https://book.cakephp.org/4/en/controllers/components/form-protection.html
+         * @link https://book.cakephp.org/5.x/controllers/components/form-protection.html
          */
         $this->loadComponent('FormProtection');
 
         /**
-         * @link https://book.cakephp.org/5/en/tutorials-and-examples/cms/authentication.html
+         * @link https://book.cakephp.org/5.x/tutorials-and-examples/cms/authentication.html
          */
         $this->loadComponent('Authentication.Authentication');
 
         /**
-         *  @link https://book.cakephp.org/5/en/tutorials-and-examples/cms/authorization.html
+         *  @link https://book.cakephp.org/5.x/tutorials-and-examples/cms/authorization.html
          */
         $this->loadComponent('Authorization.Authorization');
 

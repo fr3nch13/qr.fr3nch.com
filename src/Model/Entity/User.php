@@ -63,7 +63,7 @@ class User extends Entity implements AuthorizationIdentity, AuthenticationIdenti
      *
      * @param string $password The password to hash.
      * @return string|null The hashed password.
-     * @link https://book.cakephp.org/5/en/tutorials-and-examples/cms/authentication.html
+     * @link https://book.cakephp.org/5.x/tutorials-and-examples/cms/authentication.html
      */
     protected function _setPassword(string $password): ?string
     {
