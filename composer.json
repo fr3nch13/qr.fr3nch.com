@@ -12,7 +12,7 @@
     ],
     "require": {
         "php": ">=8.5",
-        "cakephp/authentication": "^3.3.7",
+        "cakephp/authentication": "^4.2.1",
         "cakephp/authorization": "^3.5.3",
         "cakephp/cakephp": "^5.4.1",
         "cakephp/migrations": "^5.2.6",
