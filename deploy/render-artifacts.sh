@@ -140,7 +140,7 @@ services:
         env_file:
             - .env
         ports: ["127.0.0.1:${APP_HOST_PORT}:${APP_CONTAINER_PORT}"]
-        volumes: ["./tmp:/var/www/html/tmp", "./logs:/var/www/html/logs"]
+        volumes: ["./tmp:/var/www/html/tmp:Z", "./logs:/var/www/html/logs:Z"]
 EOF
 
 : > "$application_env"
