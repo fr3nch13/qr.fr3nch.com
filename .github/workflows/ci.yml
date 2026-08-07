@@ -390,7 +390,7 @@ jobs:
       run: |
         set -euo pipefail
         ssh "$DEPLOY_USER@$DEPLOY_HOST" \
-          "sudo /bin/sh -eu -c '. \"$REMOTE_STAGE_DIR/runtime.env\" && /bin/sh \"$REMOTE_STAGE_DIR/bootstrap-host.sh\" \"$REMOTE_STAGE_DIR\"'"
+          "sudo /bin/sh -eu -c '. \"$REMOTE_STAGE_DIR/runtime.env\" && . \"$REMOTE_STAGE_DIR/bootstrap-host.sh\" \"$REMOTE_STAGE_DIR\"'"
 
     - name: Verify public HTTPS endpoint
       shell: bash

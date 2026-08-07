@@ -132,16 +132,16 @@ server {
 }
 EOF
 
-{
-        printf '%s\n' 'services:'
-        printf '%s\n' '  app:'
-        printf '    image: %s\n' "$deploy_tag"
-        printf '%s\n' '    restart: unless-stopped'
-        printf '%s\n' '    env_file:'
-        printf '%s\n' '      - .env'
-        printf '    ports: ["127.0.0.1:%s:%s"]\n' "$APP_HOST_PORT" "$APP_CONTAINER_PORT"
-        printf '%s\n' "    volumes: [\"./tmp:${APP_ROOT}/tmp\", \"./logs:${APP_ROOT}/logs\"]"
-} > "$output_dir/compose.yaml"
+cat > "$output_dir/compose.yaml" <<EOF
+services:
+    app:
+        image: ${deploy_tag}
+        restart: unless-stopped
+        env_file:
+            - .env
+        ports: ["127.0.0.1:${APP_HOST_PORT}:${APP_CONTAINER_PORT}"]
+        volumes: ["./tmp:/var/www/html/tmp", "./logs:/var/www/html/logs"]
+EOF
 
 : > "$application_env"
 write_application_var DEBUG "$DEBUG"

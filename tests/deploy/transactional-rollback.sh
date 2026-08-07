@@ -43,7 +43,7 @@ env \
     sh "$repo_root/deploy/render-artifacts.sh" "$render_dir"
 
 grep -F 'add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;' "$render_dir/nginx-server.conf" >/dev/null
-grep -F '    volumes: ["./tmp:/opt/qr-fr3nch-com/tmp", "./logs:/opt/qr-fr3nch-com/logs"]' "$render_dir/compose.yaml" >/dev/null
+grep -F '    volumes: ["./tmp:/var/www/html/tmp", "./logs:/var/www/html/logs"]' "$render_dir/compose.yaml" >/dev/null
 
 printf '%s\n' old-compose > "$app_root/compose.yaml"
 printf '%s\n' old-env > "$app_root/.env"
