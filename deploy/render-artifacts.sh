@@ -140,7 +140,7 @@ EOF
         printf '%s\n' '    env_file:'
         printf '%s\n' '      - .env'
         printf '    ports: ["127.0.0.1:%s:%s"]\n' "$APP_HOST_PORT" "$APP_CONTAINER_PORT"
-        printf '%s\n' "    volumes: [\"./tmp:${APP_ROOT}/tmp\"]"
+        printf '%s\n' "    volumes: [\"./tmp:${APP_ROOT}/tmp\", \"./logs:${APP_ROOT}/logs\"]"
 } > "$output_dir/compose.yaml"
 
 : > "$application_env"

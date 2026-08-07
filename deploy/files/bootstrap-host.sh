@@ -143,7 +143,7 @@ fi
 
 install -d -m 700 -o root -g root "$APP_ROOT"
 install -d -m 700 -o root -g root "$(dirname "$LOCK_PATH")"
-install -d -m 770 -o 33 -g 33 "$APP_ROOT/tmp"
+install -d -m 770 -o 33 -g 33 "$APP_ROOT/tmp" "$APP_ROOT/logs"
 
 certbot_root="${CERTBOT_ROOT:-/opt/certbot}"
 certbot_webroot="${CERTBOT_WEBROOT:-/opt/certbot/webroot}"
