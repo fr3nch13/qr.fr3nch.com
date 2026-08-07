@@ -190,6 +190,7 @@ test "$(cat "$app_root/.env")" = old-env
 test "$(cat "$app_root/deploy-container.sh")" = old-script
 test "$(cat "$nginx_root/qr-fr3nch-com.conf")" = old-nginx
 test -d "$app_root/tmp"
+test -d "$app_root/logs"
 test -f "$state_dir/certificate-issued"
 test -f "$state_dir/restorecon"
 test -f "$state_dir/lock-held"
