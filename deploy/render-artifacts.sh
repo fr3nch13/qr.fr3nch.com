@@ -1,4 +1,7 @@
 #!/bin/sh
+# Renders the environment-specific deployment bundle used by GitHub Actions.
+# Produces Compose, Nginx, and protected runtime configuration files for a
+# release image; the resulting directory is uploaded to the target host.
 set -eu
 umask 077
 
@@ -137,7 +140,7 @@ EOF
         printf '%s\n' '    env_file:'
         printf '%s\n' '      - .env'
         printf '    ports: ["127.0.0.1:%s:%s"]\n' "$APP_HOST_PORT" "$APP_CONTAINER_PORT"
-        printf '%s\n' '    volumes: ["./tmp:/var/www/html/tmp"]'
+        printf '%s\n' "    volumes: [\"./tmp:${APP_ROOT}/tmp\", \"./logs:${APP_ROOT}/logs\"]"
 } > "$output_dir/compose.yaml"
 
 : > "$application_env"

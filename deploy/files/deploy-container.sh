@@ -1,4 +1,7 @@
 #!/bin/sh
+# Rolls out a tagged application image on an already-bootstrapped host.
+# Pulls and starts the image, verifies the internal health endpoint, records
+# deployment metadata, and restores the previous image if the rollout fails.
 set -eu
 
 require_var() {
