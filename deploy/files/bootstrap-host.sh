@@ -129,12 +129,37 @@ flock 9
 dnf install -y \
     nginx \
     docker \
-    docker-compose-plugin \
     python3 \
     python3-pip \
     policycoreutils-python-utils \
     util-linux \
     curl
+
+# Manually install Docker Compose v2 plugin for Linux, since AL2023 does not include it in the default repositories.
+compose_arch=$(uname -m)
+case "$compose_arch" in
+    x86_64|aarch64) ;;
+    *)
+        echo "Unsupported architecture for the Docker Compose plugin: $compose_arch" >&2
+        exit 1
+        ;;
+esac
+
+compose_plugin_dir=/usr/libexec/docker/cli-plugins
+compose_plugin="$compose_plugin_dir/docker-compose"
+compose_download=$(mktemp)
+trap 'rm -f "$compose_download"; cleanup' EXIT HUP INT TERM
+curl --fail --silent --show-error --location --retry 3 \
+    --output "$compose_download" \
+    "https://github.com/docker/compose/releases/latest/download/docker-compose-linux-${compose_arch}"
+install -d -m 755 -o root -g root "$compose_plugin_dir"
+install -m 755 -o root -g root "$compose_download" "$compose_plugin"
+rm -f "$compose_download"
+
+if ! docker compose version >/dev/null 2>&1; then
+    echo "Docker Compose v2 is required but could not be installed." >&2
+    exit 1
+fi
 
 systemctl enable --now docker
 if ! systemctl enable nginx; then
