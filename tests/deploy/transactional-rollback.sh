@@ -111,6 +111,20 @@ EOF
 
 cat > "$bin_dir/curl" <<'EOF'
 #!/bin/sh
+case "$*" in
+    *github.com/docker/compose/releases/latest/download/*)
+        output_file=""
+        while [ "$#" -gt 0 ]; do
+            if [ "$1" = --output ]; then
+                output_file="$2"
+                break
+            fi
+            shift
+        done
+        : > "$output_file"
+        exit 0
+        ;;
+esac
 if [ "${TRANSACTIONAL_ROLLBACK-}" = true ]; then
     exit 1
 fi
