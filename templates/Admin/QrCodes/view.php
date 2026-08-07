@@ -3,6 +3,7 @@ use Cake\Core\Configure;
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\QrCode $qrCode
+ * @var array<string, int> $stats
  */
 
 if (!$this->getRequest()->is('ajax')) {
@@ -61,7 +62,7 @@ if (!$color) {
                     'controller' => 'Sources',
                     'action' => 'view',
                     $qrCode->source->id,
-                ]
+                ],
             ) : '' ?> </dd>
 
             <dt class="col-4 col-md-3"><?= __('Owner') ?></dt>
@@ -71,7 +72,7 @@ if (!$color) {
                     'controller' => 'Users',
                     'action' => 'view',
                     $qrCode->user->id,
-                ]
+                ],
             ) : '' ?> </dd>
 
             <dt class="col-4 col-md-3"><?= __('Forward URL') ?></dt>

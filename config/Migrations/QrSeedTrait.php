@@ -5,50 +5,45 @@ namespace App\Migrations;
 
 use Cake\Console\ConsoleIo;
 
-/**
- * Here in migrations because the seed mingration command 
- * wants to treat is as a seed.
- */
+/** @mixin \Migrations\BaseSeed */
 trait QrSeedTrait
 {
     /**
-     * @var \Cake\Console\ConsoleIo console object
+     * Gets the seed I/O object.
+     *
+     * @return \Cake\Console\ConsoleIo
      */
-    public $io;
-
-    /**
-     * Makes the I/O object
-     * 
-     * @return void
-     */
-    public function makeIo(): void
+    public function seedIo(): ConsoleIo
     {
-        if (!$this->io) {
-            $this->io = new ConsoleIo();
+        $io = $this->getIo();
+        if (!$io) {
+            $io = new ConsoleIo();
+            $this->setIo($io);
         }
+
+        return $io;
     }
 
     /**
      * Checks to make sure we can run the seed first
-     * 
+    *
      * @return bool If we can proceed to seed or not.
      */
     public function checkTable(string $tableName): bool
     {
-        $this->makeIo();
+        $io = $this->seedIo();
+        $io->out(__('Checking table: {0}', [$tableName]));
 
-        $this->io->out(__('Checking table: {0}', [$tableName]));
-        
         $result = $this->table($tableName)->getAdapter()->fetchAll('select * from `' . $tableName . '`');
         if (count($result)) {
-            $this->io->warning(__('The table: {0} already has {1} rows.', [
+            $io->warning(__('The table: {0} already has {1} rows.', [
                 $tableName,
                 count($result),
             ]));
             return false;
         }
 
-        $this->io->out(__('Adding seeds to table: {0}', [$tableName]));
+        $io->out(__('Adding seeds to table: {0}', [$tableName]));
 
         return true;
     }

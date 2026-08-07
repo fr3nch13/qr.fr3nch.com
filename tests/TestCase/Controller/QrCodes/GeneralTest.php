@@ -49,32 +49,32 @@ class GeneralTest extends BaseControllerTest
      */
     public function testForward(): void
     {
-        $this->get('https://localhost/?k=sownscribe');
-        $this->assertRedirectEquals('https://localhost/f/sownscribe');
+        $this->get('http://localhost:8080/?k=sownscribe');
+        $this->assertRedirectEquals('/f/sownscribe');
 
-        $this->get('https://localhost/f/sownscribe');
+        $this->get('http://localhost:8080/f/sownscribe');
         $this->assertRedirectEquals('https://amazon.com/path/to/details/page');
 
-        $this->get('https://localhost/qr-codes/forward/sownscribe');
+        $this->get('http://localhost:8080/qr-codes/forward/sownscribe');
         $this->assertRedirectEquals('https://amazon.com/path/to/details/page');
 
-        $this->get('https://localhost/?k=inactive');
-        $this->assertRedirectEquals('https://localhost/f/inactive');
+        $this->get('http://localhost:8080/?k=inactive');
+        $this->assertRedirectEquals('/f/inactive');
 
-        $this->get('https://localhost/f/inactive');
-        $this->assertRedirectEquals('https://localhost/');
+        $this->get('http://localhost:8080/f/inactive');
+        $this->assertRedirectEquals('/');
         $this->assertFlashMessage('This QR Code is inactive.', 'flash');
         $this->assertFlashElement('flash/warning');
 
-        $this->get('https://localhost/?k=dontexist');
-        $this->assertRedirectEquals('https://localhost/f/dontexist');
+        $this->get('http://localhost:8080/?k=dontexist');
+        $this->assertRedirectEquals('/f/dontexist');
 
-        $this->get('https://localhost/f/dontexist');
-        $this->assertRedirectEquals('https://localhost/');
+        $this->get('http://localhost:8080/f/dontexist');
+        $this->assertRedirectEquals('/');
         $this->assertFlashMessage('A QR Code with the key: `dontexist` could not be found.', 'flash');
         $this->assertFlashElement('flash/error');
 
-        $this->get('https://localhost/f/');
+        $this->get('http://localhost:8080/f/');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
     }
@@ -91,14 +91,14 @@ class GeneralTest extends BaseControllerTest
         $this->assertSame(0, $entity->hits);
         $this->assertNull($entity->last_hit);
 
-        $this->get('https://localhost/f/sownscribe');
+        $this->get('http://localhost:8080/f/sownscribe');
         $this->assertRedirectEquals('https://amazon.com/path/to/details/page');
 
         $entity = $this->QrCodes->get(1);
         $this->assertSame(1, $entity->hits);
         $this->assertInstanceOf(DateTime::class, $entity->last_hit);
 
-        $this->get('https://localhost/qr-codes/forward/sownscribe');
+        $this->get('http://localhost:8080/qr-codes/forward/sownscribe');
         $this->assertRedirectEquals('https://amazon.com/path/to/details/page');
         $entity = $this->QrCodes->get(1);
         $this->assertSame(2, $entity->hits);
@@ -114,7 +114,7 @@ class GeneralTest extends BaseControllerTest
     public function testShow(): void
     {
         // default
-        $this->get('https://localhost/qr-codes/show/1');
+        $this->get('http://localhost:8080/qr-codes/show/1');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
@@ -124,7 +124,7 @@ class GeneralTest extends BaseControllerTest
         $this->assertGreaterThan(0, $headers['Content-Length'][0]);
 
         // dark
-        $this->get('https://localhost/qr-codes/show/1?l=0');
+        $this->get('http://localhost:8080/qr-codes/show/1?l=0');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
@@ -134,7 +134,7 @@ class GeneralTest extends BaseControllerTest
         $this->assertGreaterThan(0, $headers['Content-Length'][0]);
 
         // light
-        $this->get('https://localhost/qr-codes/show/1?l=1');
+        $this->get('http://localhost:8080/qr-codes/show/1?l=1');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
@@ -144,7 +144,7 @@ class GeneralTest extends BaseControllerTest
         $this->assertGreaterThan(0, $headers['Content-Length'][0]);
 
         // color
-        $this->get('https://localhost/qr-codes/show/1?c=eaeaea');
+        $this->get('http://localhost:8080/qr-codes/show/1?c=eaeaea');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
@@ -154,7 +154,7 @@ class GeneralTest extends BaseControllerTest
         $this->assertGreaterThan(0, $headers['Content-Length'][0]);
 
         // color - bad
-        $this->get('https://localhost/qr-codes/show/1?c=notacolor');
+        $this->get('http://localhost:8080/qr-codes/show/1?c=notacolor');
         $this->assertResponseCode(500);
         $this->assertResponseNotEmpty();
         $this->assertResponseContains('Invalid Color: notacolor');
@@ -168,15 +168,15 @@ class GeneralTest extends BaseControllerTest
      */
     public function testShowInactive(): void
     {
-        $this->get('https://localhost/qr-codes/show/4');
-        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fqr-codes%2Fshow%2F4');
+        $this->get('http://localhost:8080/qr-codes/show/4');
+        $this->assertRedirectEquals('/users/login?redirect=%2Fqr-codes%2Fshow%2F4');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
         // color
         $this->loginUserRegular();
-        $this->get('https://localhost/qr-codes/show/4');
+        $this->get('http://localhost:8080/qr-codes/show/4');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
@@ -186,7 +186,7 @@ class GeneralTest extends BaseControllerTest
 
         // dark
         $this->loginUserRegular();
-        $this->get('https://localhost/qr-codes/show/4?l=0');
+        $this->get('http://localhost:8080/qr-codes/show/4?l=0');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
@@ -196,7 +196,7 @@ class GeneralTest extends BaseControllerTest
 
         // light
         $this->loginUserRegular();
-        $this->get('https://localhost/qr-codes/show/4?l=1');
+        $this->get('http://localhost:8080/qr-codes/show/4?l=1');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
@@ -230,7 +230,7 @@ class GeneralTest extends BaseControllerTest
         $path = Configure::read('App.paths.qr_codes') . DS . $qrCode->id . '-' . $dark . '.svg';
         $this->assertFalse(is_readable($path));
 
-        $this->get('https://localhost/qr-codes/show/1');
+        $this->get('http://localhost:8080/qr-codes/show/1');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unable to find the image file.');
 
@@ -263,7 +263,7 @@ class GeneralTest extends BaseControllerTest
         $this->assertFalse(is_readable($path));
 
         Configure::write('debug', false);
-        $this->get('https://localhost/qr-codes/show/1');
+        $this->get('http://localhost:8080/qr-codes/show/1');
         $this->assertResponseCode(404);
         $this->helperTestError400('/qr-codes/show/1');
 
@@ -282,7 +282,7 @@ class GeneralTest extends BaseControllerTest
         Configure::write('debug', false);
 
         // default
-        $this->get('https://localhost/qr-codes/show/1');
+        $this->get('http://localhost:8080/qr-codes/show/1');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
@@ -294,7 +294,7 @@ class GeneralTest extends BaseControllerTest
         $this->assertGreaterThan(0, $headers['Content-Length'][0]);
 
         //dark
-        $this->get('https://localhost/qr-codes/show/1?l=0');
+        $this->get('http://localhost:8080/qr-codes/show/1?l=0');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
@@ -306,7 +306,7 @@ class GeneralTest extends BaseControllerTest
         $this->assertGreaterThan(0, $headers['Content-Length'][0]);
 
         // light
-        $this->get('https://localhost/qr-codes/show/1?l=1');
+        $this->get('http://localhost:8080/qr-codes/show/1?l=1');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
@@ -318,7 +318,7 @@ class GeneralTest extends BaseControllerTest
         $this->assertGreaterThan(0, $headers['Content-Length'][0]);
 
         // color
-        $this->get('https://localhost/qr-codes/show/1?c=eaeaea');
+        $this->get('http://localhost:8080/qr-codes/show/1?c=eaeaea');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
@@ -330,7 +330,7 @@ class GeneralTest extends BaseControllerTest
         $this->assertGreaterThan(0, $headers['Content-Length'][0]);
 
         // color - bad
-        $this->get('https://localhost/qr-codes/show/1?c=notacolor');
+        $this->get('http://localhost:8080/qr-codes/show/1?c=notacolor');
         $this->assertResponseCode(500);
         $this->assertResponseNotEmpty();
     }
@@ -344,7 +344,7 @@ class GeneralTest extends BaseControllerTest
     public function testShowDownload(): void
     {
         // default
-        $this->get('https://localhost/qr-codes/show/1?download=1');
+        $this->get('http://localhost:8080/qr-codes/show/1?download=1');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
@@ -355,7 +355,7 @@ class GeneralTest extends BaseControllerTest
         $this->assertSame('binary', $headers['Content-Transfer-Encoding'][0]);
 
         // color
-        $this->get('https://localhost/qr-codes/show/1?c=eaeaea&download=1');
+        $this->get('http://localhost:8080/qr-codes/show/1?c=eaeaea&download=1');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
@@ -366,7 +366,7 @@ class GeneralTest extends BaseControllerTest
         $this->assertSame('binary', $headers['Content-Transfer-Encoding'][0]);
 
         // dark
-        $this->get('https://localhost/qr-codes/show/1?l=0&download=1');
+        $this->get('http://localhost:8080/qr-codes/show/1?l=0&download=1');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
@@ -377,7 +377,7 @@ class GeneralTest extends BaseControllerTest
         $this->assertSame('binary', $headers['Content-Transfer-Encoding'][0]);
 
         // light
-        $this->get('https://localhost/qr-codes/show/1?l=1&download=1');
+        $this->get('http://localhost:8080/qr-codes/show/1?l=1&download=1');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();

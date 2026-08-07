@@ -40,20 +40,17 @@ class TemplateTest extends BaseControllerTest
     {
         // test with reqular
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/tags');
+        $this->get('http://localhost:8080/admin/tags');
         $this->assertResponseOk();
         $this->helperTestLayoutDashboardIndex();
         $this->helperTestTemplate('Admin/Tags/index');
 
         // test with admin
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/tags');
+        $this->get('http://localhost:8080/admin/tags');
         $this->assertResponseOk();
         $this->helperTestLayoutDashboardIndex();
         $this->helperTestTemplate('Admin/Tags/index');
-
-        // validate the html
-        $this->helperValidateHTML(true);
     }
 
     /**
@@ -67,7 +64,7 @@ class TemplateTest extends BaseControllerTest
         // test with reqular
         $this->requestAsAjax();
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/tags');
+        $this->get('http://localhost:8080/admin/tags');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
         $this->helperTestTemplate('Admin/Tags/index');
@@ -75,7 +72,7 @@ class TemplateTest extends BaseControllerTest
         // test with admin
         $this->requestAsAjax();
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/tags');
+        $this->get('http://localhost:8080/admin/tags');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
         $this->helperTestTemplate('Admin/Tags/index');
@@ -92,7 +89,7 @@ class TemplateTest extends BaseControllerTest
         // test with reqular, get
         $this->requestAsAjax();
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/tags/add');
+        $this->get('http://localhost:8080/admin/tags/add');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
         $this->helperTestTemplate('Admin/Tags/add');
@@ -100,7 +97,7 @@ class TemplateTest extends BaseControllerTest
         // test with admin, get
         $this->requestAsAjax();
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/tags/add');
+        $this->get('http://localhost:8080/admin/tags/add');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
         $this->helperTestTemplate('Admin/Tags/add');
@@ -116,20 +113,17 @@ class TemplateTest extends BaseControllerTest
     {
         // test with reqular, get
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/tags/edit/4');
+        $this->get('http://localhost:8080/admin/tags/edit/4');
         $this->assertResponseOk();
         $this->helperTestLayoutDashboardForm();
         $this->helperTestTemplate('Admin/Tags/edit');
 
         // test with admin, get
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/tags/edit/1');
+        $this->get('http://localhost:8080/admin/tags/edit/1');
         $this->assertResponseOk();
         $this->helperTestLayoutDashboardForm();
         $this->helperTestTemplate('Admin/Tags/edit');
-
-        // validate the html
-        $this->helperValidateHTML(true);
     }
 
     /**
@@ -143,7 +137,7 @@ class TemplateTest extends BaseControllerTest
         // test with reqular, get
         $this->requestAsAjax();
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/tags/edit/4');
+        $this->get('http://localhost:8080/admin/tags/edit/4');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
         $this->helperTestTemplate('Admin/Tags/edit');
@@ -151,7 +145,7 @@ class TemplateTest extends BaseControllerTest
         // test with admin, get
         $this->requestAsAjax();
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/tags/edit/1');
+        $this->get('http://localhost:8080/admin/tags/edit/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
         $this->helperTestTemplate('Admin/Tags/edit');

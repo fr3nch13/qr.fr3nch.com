@@ -58,7 +58,6 @@ use Cake\Error\Middleware\ErrorHandlerMiddleware;
 use Cake\Http\BaseApplication;
 use Cake\Http\Middleware\BodyParserMiddleware;
 use Cake\Http\Middleware\CsrfProtectionMiddleware;
-use Cake\Http\Middleware\HttpsEnforcerMiddleware;
 use Cake\Http\Middleware\SecurityHeadersMiddleware;
 use Cake\Http\MiddlewareQueue;
 use Cake\ORM\Locator\TableLocator;
@@ -72,8 +71,6 @@ use Psr\Http\Message\ServerRequestInterface;
  *
  * This defines the bootstrapping logic and middleware layers you
  * want to use in your application.
- *
- * @extends \Cake\Http\BaseApplication<\App\Application>
  */
 class Application extends BaseApplication implements
     AuthenticationServiceProviderInterface,
@@ -94,14 +91,14 @@ class Application extends BaseApplication implements
         }
         FactoryLocator::add(
             'Table',
-            (new TableLocator())->allowFallbackClass(false)
+            (new TableLocator())->allowFallbackClass(false),
         );
 
         /*
          * Only try to load DebugKit in development mode
          * Debug Kit should not be installed on a production system
          */
-        if (Configure::read('debug') === true && !$this->getPlugins()->has('DebugKit')) {
+        if (Configure::read('debug')) {
             $this->addOptionalPlugin('DebugKit');
         }
 
@@ -125,13 +122,9 @@ class Application extends BaseApplication implements
             $this->addPlugin('Search');
         }
 
-        // my stats plugin
         if (!$this->getPlugins()->has('Fr3nch13/Stats')) {
             $this->addPlugin('Fr3nch13/Stats');
         }
-
-        // register the event listeners.
-        $this->registerEventListeners();
     }
 
     /**
@@ -180,7 +173,7 @@ class Application extends BaseApplication implements
                 },
                 'unauthorizedHandler' => [
                     'className' => 'CustomRedirect',
-                    'url' => Router::url('/admin', true),
+                    'url' => Router::url('/admin'),
                     'queryParam' => 'redirect',
                     'exceptions' => [
                         MissingIdentityException::class,
@@ -222,22 +215,6 @@ class Application extends BaseApplication implements
             ->noSniff();
         $middlewareQueue->add($securityHeaders);
 
-        $https = new HttpsEnforcerMiddleware([
-            'redirect' => true,
-            'statusCode' => 302,
-            'disableOnDebug' => true,
-            'hsts' => [
-                // How long the header value should be cached for.
-                'maxAge' => 60 * 60 * 24 * 365,
-                // should this policy apply to subdomains?
-                'includeSubDomains' => true,
-                // Should the header value be cacheable in google's HSTS preload
-                // service? While not part of the spec it is widely implemented.
-                'preload' => true,
-            ],
-        ]);
-        $middlewareQueue->add($https);
-
         return $middlewareQueue;
     }
 
@@ -250,6 +227,7 @@ class Application extends BaseApplication implements
      */
     public function services(ContainerInterface $container): void
     {
+        $container->add(QrCodeListener::class);
     }
 
     /**
@@ -275,21 +253,25 @@ class Application extends BaseApplication implements
             'queryParam' => 'redirect',
         ]);
 
-        // Load identifiers, ensure we check email and password fields
-        $authenticationService->loadIdentifier('Authentication.Password', [
-            'fields' => $fields,
-            'resolver' => [
-                'className' => 'Authentication.Orm',
-                'userModel' => 'Users',
-                'finder' => 'active',
+        $identifier = [
+            'Authentication.Password' => [
+                'fields' => $fields,
+                'resolver' => [
+                    'className' => 'Authentication.Orm',
+                    'userModel' => 'Users',
+                    'finder' => 'active',
+                ],
             ],
-        ]);
+        ];
 
         // Load the authenticators, you want session first
-        $authenticationService->loadAuthenticator('Authentication.Session');
+        $authenticationService->loadAuthenticator('Authentication.Session', [
+            'identifier' => $identifier,
+        ]);
 
         // Configure form data check to pick email and password
         $authenticationService->loadAuthenticator('Authentication.Form', [
+            'identifier' => $identifier,
             'fields' => $fields,
             'loginUrl' => [
                 Router::url([
@@ -311,6 +293,7 @@ class Application extends BaseApplication implements
 
         // Used for Remember me
         $authenticationService->loadAuthenticator('Authentication.Cookie', [
+            'identifier' => $identifier,
             'fields' => $fields,
             'loginUrl' => [
                 Router::url([
@@ -374,22 +357,11 @@ class Application extends BaseApplication implements
     }
 
     /**
-     * Register event listeners globally.
-     *
-     * Called in self::bootstrap()
-     *
-     * @return void
+     * @inheritDoc
      */
-    protected function registerEventListeners(): void
+    public function eventListeners(): array
     {
-        /** @var \Cake\Event\EventManager $eventManager */
-        $eventManager = $this->getEventManager();
-        // make sure they're only getting registered globally, once.
-        // TODO: Hacky as we're tracking the event key, not if the listener itself is already registered.
-        // Maybe use listeners('QrCode.onHit')
-        if (empty($eventManager->prioritisedListeners('QrCode.onHit'))) {
-            $eventManager->on(new QrCodeListener());
-        }
+        return [QrCodeListener::class];
     }
 
     /**

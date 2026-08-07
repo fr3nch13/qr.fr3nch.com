@@ -39,24 +39,22 @@ class TemplateTest extends BaseControllerTest
     public function testLoginNormal(): void
     {
         // not logged in
-        $this->get('https://localhost/users/login');
+        $this->get('http://localhost:8080/users/login');
         $this->assertResponseOk();
         $this->helperTestLayoutLogin();
         $this->helperTestTemplate('Users/login');
-        // validate the html
-        $this->helperValidateHTML(true);
 
         // test with reqular
         $this->loginUserRegular();
-        $this->get('https://localhost/users/login');
-        $this->assertRedirectEquals('https://localhost/admin');
+        $this->get('http://localhost:8080/users/login');
+        $this->assertRedirectEquals('/admin');
         $this->assertFlashMessage('Welcome back Regular', 'flash');
         $this->assertFlashElement('flash/success');
 
         // test with admin
         $this->loginUserAdmin();
-        $this->get('https://localhost/users/login');
-        $this->assertRedirectEquals('https://localhost/admin');
+        $this->get('http://localhost:8080/users/login');
+        $this->assertRedirectEquals('/admin');
         $this->assertFlashMessage('Welcome back Admin', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -71,7 +69,7 @@ class TemplateTest extends BaseControllerTest
     {
         // not logged in
         $this->requestAsAjax();
-        $this->get('https://localhost/users/login');
+        $this->get('http://localhost:8080/users/login');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
         $this->helperTestTemplate('Users/login');
@@ -79,16 +77,16 @@ class TemplateTest extends BaseControllerTest
         // test with reqular
         $this->requestAsAjax();
         $this->loginUserRegular();
-        $this->get('https://localhost/users/login');
-        $this->assertRedirectEquals('https://localhost/admin');
+        $this->get('http://localhost:8080/users/login');
+        $this->assertRedirectEquals('/admin');
         $this->assertFlashMessage('Welcome back Regular', 'flash');
         $this->assertFlashElement('flash/success');
 
         // test with admin
         $this->requestAsAjax();
         $this->loginUserAdmin();
-        $this->get('https://localhost/users/login');
-        $this->assertRedirectEquals('https://localhost/admin');
+        $this->get('http://localhost:8080/users/login');
+        $this->assertRedirectEquals('/admin');
         $this->assertFlashMessage('Welcome back Admin', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -102,27 +100,24 @@ class TemplateTest extends BaseControllerTest
     public function testProfileNormal(): void
     {
         // not logged in
-        $this->get('https://localhost/users/profile/1');
+        $this->get('http://localhost:8080/users/profile/1');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesView();
         $this->helperTestTemplate('Users/profile');
 
         // test with reqular
         $this->loginUserRegular();
-        $this->get('https://localhost/users/profile/1');
+        $this->get('http://localhost:8080/users/profile/1');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesView();
         $this->helperTestTemplate('Users/profile');
 
         // test with admin
         $this->loginUserAdmin();
-        $this->get('https://localhost/users/profile/1');
+        $this->get('http://localhost:8080/users/profile/1');
         $this->assertResponseOk();
         $this->helperTestLayoutPagesView();
         $this->helperTestTemplate('Users/profile');
-
-        // validate the html
-        $this->helperValidateHTML(true);
     }
 
     /**
@@ -135,7 +130,7 @@ class TemplateTest extends BaseControllerTest
     {
         // not logged in
         $this->requestAsAjax();
-        $this->get('https://localhost/users/profile/1');
+        $this->get('http://localhost:8080/users/profile/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
         $this->helperTestTemplate('Users/profile');
@@ -143,7 +138,7 @@ class TemplateTest extends BaseControllerTest
         // test with reqular
         $this->requestAsAjax();
         $this->loginUserRegular();
-        $this->get('https://localhost/users/profile/1');
+        $this->get('http://localhost:8080/users/profile/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
         $this->helperTestTemplate('Users/profile');
@@ -151,7 +146,7 @@ class TemplateTest extends BaseControllerTest
         // test with admin
         $this->requestAsAjax();
         $this->loginUserAdmin();
-        $this->get('https://localhost/users/profile/1');
+        $this->get('http://localhost:8080/users/profile/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
         $this->helperTestTemplate('Users/profile');

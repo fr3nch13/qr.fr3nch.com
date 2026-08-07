@@ -2,12 +2,12 @@
 declare(strict_types=1);
 
 use Cake\Core\Configure;
-use Migrations\AbstractSeed;
+use Migrations\BaseSeed;
 
 /**
  * QrImage seed.
  */
-class QrImageSeed extends AbstractSeed
+class QrImageSeed extends BaseSeed
 {
     use \App\Migrations\QrSeedTrait;
 
@@ -35,7 +35,9 @@ class QrImageSeed extends AbstractSeed
      */
     public function run(): void
     {
-        $this->checkTable('qr_images');
+        if (!$this->checkTable('qr_images')) {
+            return;
+        }
         $table = $this->table('qr_images');
 
         $data = [

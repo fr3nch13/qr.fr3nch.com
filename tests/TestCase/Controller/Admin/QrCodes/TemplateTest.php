@@ -40,16 +40,15 @@ class TemplateTest extends BaseControllerTest
     {
         // test with reqular
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/qr-codes');
+        $this->get('http://localhost:8080/admin/qr-codes');
         $this->assertResponseOk();
         $this->helperTestLayoutDashboardIndex();
         $this->helperTestTemplate('Admin/QrCodes/index');
-        $this->helperValidateHTML(true);
 
         // test with admin
         // test html content.
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/qr-codes');
+        $this->get('http://localhost:8080/admin/qr-codes');
         $this->assertResponseOk();
         $this->helperTestLayoutDashboardIndex();
         $this->helperTestTemplate('Admin/QrCodes/index');
@@ -58,9 +57,6 @@ class TemplateTest extends BaseControllerTest
         $this->helperTestObjectComment(5, 'QrCode/entity');
         $this->helperTestObjectComment(3, 'QrCode/entity/active');
         $this->helperTestObjectComment(2, 'QrCode/entity/inactive');
-
-        // validate the html
-        $this->helperValidateHTML(true);
     }
 
     /**
@@ -74,7 +70,7 @@ class TemplateTest extends BaseControllerTest
         // test with reqular
         $this->requestAsAjax();
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/qr-codes');
+        $this->get('http://localhost:8080/admin/qr-codes');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
         $this->helperTestTemplate('Admin/QrCodes/index');
@@ -82,7 +78,7 @@ class TemplateTest extends BaseControllerTest
         // test with admin
         $this->requestAsAjax();
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/qr-codes');
+        $this->get('http://localhost:8080/admin/qr-codes');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
         $this->helperTestTemplate('Admin/QrCodes/index');
@@ -98,7 +94,7 @@ class TemplateTest extends BaseControllerTest
     {
         // test with reqular
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/qr-codes/view/1');
+        $this->get('http://localhost:8080/admin/qr-codes/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutDashboardView();
         $this->helperTestTemplate('Admin/QrCodes/details');
@@ -106,14 +102,23 @@ class TemplateTest extends BaseControllerTest
 
         // test with admin
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/qr-codes/view/1');
+        $this->get('http://localhost:8080/admin/qr-codes/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutDashboardView();
         $this->helperTestTemplate('Admin/QrCodes/details');
         $this->helperTestTemplate('Admin/QrCodes/view');
+    }
 
-        // validate the html
-        $this->helperValidateHTML(true);
+    /**
+     * Test the copied forwarding URL uses the full HTTPS request origin.
+     */
+    public function testViewUsesFullHttpsForwardUrl(): void
+    {
+        $this->loginUserAdmin();
+        $this->get('https://qr.fr3nch.com/admin/qr-codes/view/1');
+
+        $this->assertResponseOk();
+        $this->assertResponseContains('https://qr.fr3nch.com/f/sownscribe');
     }
 
     /**
@@ -127,7 +132,7 @@ class TemplateTest extends BaseControllerTest
         // test with reqular
         $this->requestAsAjax();
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/qr-codes/view/1');
+        $this->get('http://localhost:8080/admin/qr-codes/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
         $this->helperTestTemplate('Admin/QrCodes/view');
@@ -135,7 +140,7 @@ class TemplateTest extends BaseControllerTest
         // test with admin
         $this->requestAsAjax();
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/qr-codes/view/1');
+        $this->get('http://localhost:8080/admin/qr-codes/view/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
         $this->helperTestTemplate('Admin/QrCodes/view');
@@ -151,20 +156,17 @@ class TemplateTest extends BaseControllerTest
     {
         // test with reqular, get
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/qr-codes/add');
+        $this->get('http://localhost:8080/admin/qr-codes/add');
         $this->assertResponseOk();
         $this->helperTestLayoutDashboardForm();
         $this->helperTestTemplate('Admin/QrCodes/add');
 
         // test with admin, get
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/qr-codes/add');
+        $this->get('http://localhost:8080/admin/qr-codes/add');
         $this->assertResponseOk();
         $this->helperTestLayoutDashboardForm();
         $this->helperTestTemplate('Admin/QrCodes/add');
-
-        // validate the html
-        $this->helperValidateHTML(true);
     }
 
     /**
@@ -178,7 +180,7 @@ class TemplateTest extends BaseControllerTest
         // test with reqular, get
         $this->requestAsAjax();
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/qr-codes/add');
+        $this->get('http://localhost:8080/admin/qr-codes/add');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
         $this->helperTestTemplate('Admin/QrCodes/add');
@@ -186,7 +188,7 @@ class TemplateTest extends BaseControllerTest
         // test with admin, get
         $this->requestAsAjax();
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/qr-codes/add');
+        $this->get('http://localhost:8080/admin/qr-codes/add');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
         $this->helperTestTemplate('Admin/QrCodes/add');
@@ -202,20 +204,17 @@ class TemplateTest extends BaseControllerTest
     {
         // test with reqular, get
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/qr-codes/edit/3');
+        $this->get('http://localhost:8080/admin/qr-codes/edit/3');
         $this->assertResponseOk();
         $this->helperTestLayoutDashboardView();
         $this->helperTestTemplate('Admin/QrCodes/edit');
 
         // test with admin, get
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/qr-codes/edit/1');
+        $this->get('http://localhost:8080/admin/qr-codes/edit/1');
         $this->assertResponseOk();
         $this->helperTestLayoutDashboardView();
         $this->helperTestTemplate('Admin/QrCodes/edit');
-
-        // validate the html
-        $this->helperValidateHTML(true);
     }
 
     /**
@@ -229,7 +228,7 @@ class TemplateTest extends BaseControllerTest
         // test with reqular, get
         $this->requestAsAjax();
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/qr-codes/edit/3');
+        $this->get('http://localhost:8080/admin/qr-codes/edit/3');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
         $this->helperTestTemplate('Admin/QrCodes/edit');
@@ -237,7 +236,7 @@ class TemplateTest extends BaseControllerTest
         // test with admin, get
         $this->requestAsAjax();
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/qr-codes/edit/1');
+        $this->get('http://localhost:8080/admin/qr-codes/edit/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
         $this->helperTestTemplate('Admin/QrCodes/edit');

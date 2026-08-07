@@ -31,26 +31,25 @@ class PolicyTest extends BaseControllerTest
     /**
      * Test missing action
      *
-     * @alert Keep the https://localhost/ as the HttpsEnforcerMiddleware will try to redirect.
      * @return void
      */
     public function testDontexistDebugOn(): void
     {
         // not logged in
         $this->loginGuest();
-        $this->get('https://localhost/tags/dontexist');
+        $this->get('http://localhost:8080/tags/dontexist');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Error: Missing Action `App\Controller\TagsController::dontexist()`');
 
         // test with reqular
         $this->loginUserRegular();
-        $this->get('https://localhost/tags/dontexist');
+        $this->get('http://localhost:8080/tags/dontexist');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Error: Missing Action `App\Controller\TagsController::dontexist()`');
 
         // test with admin
         $this->loginUserAdmin();
-        $this->get('https://localhost/tags/dontexist');
+        $this->get('http://localhost:8080/tags/dontexist');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Error: Missing Action `App\Controller\TagsController::dontexist()`');
     }
@@ -58,7 +57,6 @@ class PolicyTest extends BaseControllerTest
     /**
      * Test missing action
      *
-     * @alert Keep the https://localhost/ as the HttpsEnforcerMiddleware will try to redirect.
      * @return void
      */
     public function testDontexistDebugOff(): void
@@ -66,7 +64,7 @@ class PolicyTest extends BaseControllerTest
         // test with debug off
         Configure::write('debug', false);
         $this->loginUserAdmin();
-        $this->get('https://localhost/tags/dontexist');
+        $this->get('http://localhost:8080/tags/dontexist');
         $this->assertResponseCode(404);
         $this->helperTestError400('/tags/dontexist');
     }
@@ -83,19 +81,19 @@ class PolicyTest extends BaseControllerTest
     {
         // not logged in
         $this->loginGuest();
-        $this->get('https://localhost/tags');
+        $this->get('http://localhost:8080/tags');
         $this->assertResponseOk();
         $this->helperTestTemplate('Tags/index');
 
         // test with reqular
         $this->loginUserRegular();
-        $this->get('https://localhost/tags');
+        $this->get('http://localhost:8080/tags');
         $this->assertResponseOk();
         $this->helperTestTemplate('Tags/index');
 
         // test with admin
         $this->loginUserAdmin();
-        $this->get('https://localhost/tags');
+        $this->get('http://localhost:8080/tags');
         $this->assertResponseOk();
         $this->helperTestTemplate('Tags/index');
     }
@@ -113,7 +111,7 @@ class PolicyTest extends BaseControllerTest
         // test with debug off
         Configure::write('debug', false);
         $this->loginUserAdmin();
-        $this->get('https://localhost/tags');
+        $this->get('http://localhost:8080/tags');
         $this->assertResponseOk();
         $this->helperTestTemplate('Tags/index');
     }

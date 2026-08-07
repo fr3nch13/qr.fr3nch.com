@@ -110,9 +110,6 @@ $logoImage = $this->Html->image($logoImage, [
         <div class="collapse navbar-collapse" id="navbar" data-bs-parent="#mainNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <?= $this->Html->link(__('Home'), 'https://fr3nch.com', ['class' => 'nav-link']); ?>
-                </li>
-                <li class="nav-item">
                     <?= $this->Html->link(__('QR Codes'), [
                         'plugin' => false,
                         'prefix' => false,
@@ -130,7 +127,7 @@ $logoImage = $this->Html->image($logoImage, [
                     ], ['class' => 'nav-link']); ?>
                 </li>
                 <li class="nav-item">
-                    <?= $this->Html->link(__('Shop'), 'https://shop.fr3nch.com', ['class' => 'nav-link']); ?>
+                    <?= $this->Html->link(__('fr3nch.com'), 'https://fr3nch.com', ['class' => 'nav-link']); ?>
                 </li>
             </ul>
         </div>

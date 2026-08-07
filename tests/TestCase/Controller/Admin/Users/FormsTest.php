@@ -42,7 +42,7 @@ class FormsTest extends BaseControllerTest
         $this->loginUserAdmin();
 
         // test failed
-        $this->post('https://localhost/admin/users/add', [
+        $this->post('http://localhost:8080/admin/users/add', [
         ]);
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/Users/add');
@@ -54,7 +54,7 @@ class FormsTest extends BaseControllerTest
         $this->helperTestFormFieldError('This field is required', 'password-error');
 
         // formatting fail
-        $this->post('https://localhost/admin/users/add', [
+        $this->post('http://localhost:8080/admin/users/add', [
             'name' => 'New User',
             'email' => 'new user@example.com', // invalid email
             // missing password
@@ -68,7 +68,7 @@ class FormsTest extends BaseControllerTest
         $this->helperTestFormFieldError('This field is required', 'password-error');
 
         // existing email
-        $this->post('https://localhost/admin/users/add', [
+        $this->post('http://localhost:8080/admin/users/add', [
             'name' => 'New User',
             'email' => 'regular@example.com', // invalid email
             'password' => 'password',
@@ -81,12 +81,12 @@ class FormsTest extends BaseControllerTest
         $this->helperTestFormFieldError('This Email already exists.', 'email-error');
 
         // test success
-        $this->post('https://localhost/admin/users/add', [
+        $this->post('http://localhost:8080/admin/users/add', [
             'name' => 'New User',
             'email' => 'newuser@example.com', // invalid email
             'password' => 'password',
         ]);
-        $this->assertRedirectEquals('https://localhost/admin/users/view/5');
+        $this->assertRedirectEquals('/admin/users/view/5');
         $this->assertFlashMessage('The user has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -102,7 +102,7 @@ class FormsTest extends BaseControllerTest
         $this->loginUserAdmin();
 
         // test fail
-        $this->put('https://localhost/admin/users/edit/3', [
+        $this->put('http://localhost:8080/admin/users/edit/3', [
             'name' => 'Regular', // an existing record, can have same name,
             'email' => 'regular@example.com', // existing record, should be unique
         ]);
@@ -113,11 +113,11 @@ class FormsTest extends BaseControllerTest
         // test to make sure the fields that are required are actually tagged as so.
         $this->helperTestFormFieldError('This Email already exists.', 'email-error');
         // test put success
-        $this->put('https://localhost/admin/users/edit/3', [
+        $this->put('http://localhost:8080/admin/users/edit/3', [
             'name' => 'New User',
             'description' => 'The Description',
         ]);
-        $this->assertRedirectEquals('https://localhost/admin/users/view/3');
+        $this->assertRedirectEquals('/admin/users/view/3');
         $this->assertFlashMessage('The user has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }

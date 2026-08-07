@@ -15,8 +15,8 @@ class TagsTablePolicy
      * Check if $user can view the list of Tags.
      *
      * @param \App\Model\Entity\User|null $user The identity object.
-     * @param \Cake\ORM\Query\SelectQuery $query The initial query.
-     * @return \Cake\ORM\Query\SelectQuery The updated query.
+     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Tag> $query The initial query.
+     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Tag> The updated query.
      */
     public function scopeIndex(?User $user, SelectQuery $query): SelectQuery
     {

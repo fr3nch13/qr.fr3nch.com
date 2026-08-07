@@ -20,8 +20,6 @@ if (!defined('STDIN')) {
     define('STDIN', fopen('php://stdin', 'r'));
 }
 
-use Cake\Codeception\Console\Installer as CodeceptionInstaller;
-use Cake\Utility\Security;
 use Composer\IO\IOInterface;
 use Composer\Script\Event;
 use Exception;
@@ -61,32 +59,9 @@ class Installer
 
         $rootDir = dirname(dirname(__DIR__));
 
-        static::createAppLocalConfig($rootDir, $io);
         static::createWritableDirectories($rootDir, $io);
 
         static::setFolderPermissions($rootDir, $io);
-        static::setSecuritySalt($rootDir, $io);
-
-        if (class_exists(CodeceptionInstaller::class)) {
-            CodeceptionInstaller::customizeCodeceptionBinary($event);
-        }
-    }
-
-    /**
-     * Create config/app_local.php file if it does not exist.
-     *
-     * @param string $dir The application's root directory.
-     * @param \Composer\IO\IOInterface $io IO interface to write to console.
-     * @return void
-     */
-    public static function createAppLocalConfig(string $dir, IOInterface $io): void
-    {
-        $appLocalConfig = $dir . '/config/app_local.php';
-        $appLocalConfigTemplate = $dir . '/config/app_local.example.php';
-        if (!file_exists($appLocalConfig)) {
-            copy($appLocalConfigTemplate, $appLocalConfig);
-            $io->write('Created `config/app_local.php` file');
-        }
     }
 
     /**
@@ -131,7 +106,7 @@ class Installer
                 '<info>Set Folder Permissions ? (Default to N)</info> [<comment>y,N</comment>]? ',
                 $validator,
                 10,
-                'N'
+                'N',
             );
         }
 
@@ -156,7 +131,6 @@ class Installer
         };
 
         $walker = function (string $dir) use (&$walker, $changePerms): void {
-            /** @phpstan-ignore-next-line */
             $files = array_diff(scandir($dir), ['.', '..']);
             foreach ($files as $file) {
                 $path = $dir . '/' . $file;
@@ -173,19 +147,6 @@ class Installer
         $walker($dir . '/tmp');
         $changePerms($dir . '/tmp');
         $changePerms($dir . '/logs');
-    }
-
-    /**
-     * Set the security.salt value in the application's config file.
-     *
-     * @param string $dir The application's root directory.
-     * @param \Composer\IO\IOInterface $io IO interface to write to console.
-     * @return void
-     */
-    public static function setSecuritySalt(string $dir, IOInterface $io): void
-    {
-        $newKey = hash('sha256', Security::randomBytes(64));
-        static::setSecuritySaltInFile($dir, $io, $newKey, 'app_local.php');
     }
 
     /**

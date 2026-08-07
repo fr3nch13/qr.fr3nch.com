@@ -49,7 +49,7 @@ class GeneralTest extends BaseControllerTest
      */
     public function testShow(): void
     {
-        $this->get('https://localhost/admin/qr-images/show/1');
+        $this->get('http://localhost:8080/admin/qr-images/show/1');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
@@ -68,7 +68,7 @@ class GeneralTest extends BaseControllerTest
      */
     public function testShowThumbSm(): void
     {
-        $this->get('https://localhost/admin/qr-images/show/1?thumb=sm');
+        $this->get('http://localhost:8080/admin/qr-images/show/1?thumb=sm');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
@@ -86,7 +86,7 @@ class GeneralTest extends BaseControllerTest
      */
     public function testShowThumbMd(): void
     {
-        $this->get('https://localhost/admin/qr-images/show/1?thumb=md');
+        $this->get('http://localhost:8080/admin/qr-images/show/1?thumb=md');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
@@ -104,7 +104,7 @@ class GeneralTest extends BaseControllerTest
      */
     public function testShowThumbLg(): void
     {
-        $this->get('https://localhost/admin/qr-images/show/1?thumb=lg');
+        $this->get('http://localhost:8080/admin/qr-images/show/1?thumb=lg');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
@@ -122,7 +122,7 @@ class GeneralTest extends BaseControllerTest
      */
     public function testShowDownload(): void
     {
-        $this->get('https://localhost/admin/qr-images/show/1?download=1');
+        $this->get('http://localhost:8080/admin/qr-images/show/1?download=1');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
@@ -148,7 +148,7 @@ class GeneralTest extends BaseControllerTest
         unlink($path);
         $this->assertFalse(is_readable($path));
 
-        $this->get('https://localhost/admin/qr-images/show/1');
+        $this->get('http://localhost:8080/admin/qr-images/show/1');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unable to find the image file.');
     }
@@ -169,7 +169,7 @@ class GeneralTest extends BaseControllerTest
         $this->assertFalse(is_readable($path));
 
         Configure::write('debug', false);
-        $this->get('https://localhost/admin/qr-images/show/1');
+        $this->get('http://localhost:8080/admin/qr-images/show/1');
         $this->assertResponseCode(404);
         $this->helperTestError400('/admin/qr-images/show/1');
     }
@@ -184,7 +184,7 @@ class GeneralTest extends BaseControllerTest
     {
         // check cache policy when debug is off.
         Configure::write('debug', false);
-        $this->get('https://localhost/admin/qr-images/show/1');
+        $this->get('http://localhost:8080/admin/qr-images/show/1');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();

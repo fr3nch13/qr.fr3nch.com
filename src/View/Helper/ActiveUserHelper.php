@@ -13,6 +13,7 @@ use Cake\View\Helper;
  * ActiveUserHelper helper library.
  *
  * @property \Authentication\View\Helper\IdentityHelper $Identity
+ * @extends \Cake\View\Helper<\App\View\AppView>
  */
 class ActiveUserHelper extends Helper
 {

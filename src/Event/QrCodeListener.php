@@ -32,12 +32,17 @@ class QrCodeListener extends StatsListener
     /**
      * When a QR Code is scanned, we should register it.
      *
-     * @param \Cake\Event\Event $event The triggered event.
+     * @param \Cake\Event\Event<object> $event The triggered event.
      * @param \App\Model\Entity\QrCode $qrCode The Entity we need to update.
-     * @return bool If the Hit was registered as expected.
+     * @return void
      */
-    public function registerHit(Event $event, QrCode $qrCode): bool
+    public function registerHit(Event $event, QrCode $qrCode): void
     {
+        if ($event->getData('hitRegistered')) {
+            return;
+        }
+        $event->setData('hitRegistered', true);
+
         // track if any qr codes are hot
         parent::recordCount($event, 'QrCode.hits');
 
@@ -51,6 +56,6 @@ class QrCodeListener extends StatsListener
         $qrCode->hits = $qrCode->hits + 1;
         $qrCode->last_hit = new DateTime();
 
-        return $QrCodes->save($qrCode) ? true : false;
+        $event->setResult((bool)$QrCodes->save($qrCode));
     }
 }

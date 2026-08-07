@@ -2,6 +2,8 @@
 /**
  * @var \App\View\AppView $this
  * @var iterable<\App\Model\Entity\QrCode> $qrCodes
+ * @var iterable<\App\Model\Entity\Tag> $tags
+ * @var iterable<\App\Model\Entity\Source> $sources
  */
 
 if (!$this->getRequest()->is('ajax')) {

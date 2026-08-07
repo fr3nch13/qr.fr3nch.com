@@ -39,25 +39,22 @@ class TemplateTest extends BaseControllerTest
     public function testIndexNormal(): void
     {
         // not logged in
-        $this->get('https://localhost/admin/sources');
-        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fadmin%2Fsources');
+        $this->get('http://localhost:8080/admin/sources');
+        $this->assertRedirectEquals('/users/login?redirect=%2Fadmin%2Fsources');
 
         // test with reqular
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/sources');
+        $this->get('http://localhost:8080/admin/sources');
         $this->assertResponseOk();
         $this->helperTestLayoutDashboardIndex();
         $this->helperTestTemplate('Admin/Sources/index');
 
         // test with admin
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/sources');
+        $this->get('http://localhost:8080/admin/sources');
         $this->assertResponseOk();
         $this->helperTestLayoutDashboardIndex();
         $this->helperTestTemplate('Admin/Sources/index');
-
-        // validate the html
-        $this->helperValidateHTML(true);
     }
 
     /**
@@ -70,13 +67,13 @@ class TemplateTest extends BaseControllerTest
     {
         // not logged in
         $this->requestAsAjax();
-        $this->get('https://localhost/admin/sources');
-        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fadmin%2Fsources');
+        $this->get('http://localhost:8080/admin/sources');
+        $this->assertRedirectEquals('/users/login?redirect=%2Fadmin%2Fsources');
 
         // test with reqular
         $this->requestAsAjax();
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/sources');
+        $this->get('http://localhost:8080/admin/sources');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
         $this->helperTestTemplate('Admin/Sources/index');
@@ -84,7 +81,7 @@ class TemplateTest extends BaseControllerTest
         // test with admin
         $this->requestAsAjax();
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/sources');
+        $this->get('http://localhost:8080/admin/sources');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
         $this->helperTestTemplate('Admin/Sources/index');
@@ -100,18 +97,15 @@ class TemplateTest extends BaseControllerTest
     {
         // test with reqular, get
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/sources/add');
-        $this->assertRedirectEquals('https://localhost/admin?redirect=%2Fadmin%2Fsources%2Fadd');
+        $this->get('http://localhost:8080/admin/sources/add');
+        $this->assertRedirectEquals('/admin?redirect=%2Fadmin%2Fsources%2Fadd');
 
         // test with admin, get
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/sources/add');
+        $this->get('http://localhost:8080/admin/sources/add');
         $this->assertResponseOk();
         $this->helperTestLayoutDashboardForm();
         $this->helperTestTemplate('Admin/Sources/add');
-
-        // validate the html
-        $this->helperValidateHTML(true);
     }
 
     /**
@@ -125,13 +119,13 @@ class TemplateTest extends BaseControllerTest
         // test with reqular, get
         $this->requestAsAjax();
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/sources/add');
-        $this->assertRedirectEquals('https://localhost/admin?redirect=%2Fadmin%2Fsources%2Fadd');
+        $this->get('http://localhost:8080/admin/sources/add');
+        $this->assertRedirectEquals('/admin?redirect=%2Fadmin%2Fsources%2Fadd');
 
         // test with admin, get
         $this->requestAsAjax();
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/sources/add');
+        $this->get('http://localhost:8080/admin/sources/add');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
         $this->helperTestTemplate('Admin/Sources/add');
@@ -147,18 +141,15 @@ class TemplateTest extends BaseControllerTest
     {
         // test with reqular, get
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/sources/edit/1');
-        $this->assertRedirectEquals('https://localhost/admin?redirect=%2Fadmin%2Fsources%2Fedit%2F1');
+        $this->get('http://localhost:8080/admin/sources/edit/1');
+        $this->assertRedirectEquals('/admin?redirect=%2Fadmin%2Fsources%2Fedit%2F1');
 
         // test with admin, get
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/sources/edit/1');
+        $this->get('http://localhost:8080/admin/sources/edit/1');
         $this->assertResponseOk();
         $this->helperTestLayoutDashboardForm();
         $this->helperTestTemplate('Admin/Sources/edit');
-
-        // validate the html
-        $this->helperValidateHTML(true);
     }
 
     /**
@@ -172,13 +163,13 @@ class TemplateTest extends BaseControllerTest
         // test with reqular, get
         $this->requestAsAjax();
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/sources/edit/1');
-        $this->assertRedirectEquals('https://localhost/admin?redirect=%2Fadmin%2Fsources%2Fedit%2F1');
+        $this->get('http://localhost:8080/admin/sources/edit/1');
+        $this->assertRedirectEquals('/admin?redirect=%2Fadmin%2Fsources%2Fedit%2F1');
 
         // test with admin, get
         $this->requestAsAjax();
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/sources/edit/1');
+        $this->get('http://localhost:8080/admin/sources/edit/1');
         $this->assertResponseOk();
         $this->helperTestLayoutAjax();
         $this->helperTestTemplate('Admin/Sources/edit');

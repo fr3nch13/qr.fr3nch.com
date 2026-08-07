@@ -39,26 +39,26 @@ class CrudTest extends BaseControllerTest
     public function testIndex(): void
     {
         // get
-        $this->get('https://localhost/admin/qr-codes');
+        $this->get('http://localhost:8080/admin/qr-codes');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/QrCodes/index');
 
         // post
-        $this->post('https://localhost/admin/qr-codes');
-        $this->assertRedirectEquals('https://localhost/admin/qr-codes');
+        $this->post('http://localhost:8080/admin/qr-codes');
+        $this->assertRedirectEquals('/admin/qr-codes');
 
         // patch
-        $this->patch('https://localhost/admin/qr-codes');
+        $this->patch('http://localhost:8080/admin/qr-codes');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('https://localhost/admin/qr-codes');
+        $this->put('http://localhost:8080/admin/qr-codes');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('https://localhost/admin/qr-codes');
+        $this->delete('http://localhost:8080/admin/qr-codes');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
     }
@@ -72,27 +72,27 @@ class CrudTest extends BaseControllerTest
     public function testView(): void
     {
         // test get
-        $this->get('https://localhost/admin/qr-codes/view/1');
+        $this->get('http://localhost:8080/admin/qr-codes/view/1');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/QrCodes/view');
 
         // post
-        $this->post('https://localhost/admin/qr-codes/view/1');
+        $this->post('http://localhost:8080/admin/qr-codes/view/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // patch
-        $this->patch('https://localhost/admin/qr-codes/view/1');
+        $this->patch('http://localhost:8080/admin/qr-codes/view/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('https://localhost/admin/qr-codes/view/1');
+        $this->put('http://localhost:8080/admin/qr-codes/view/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('https://localhost/admin/qr-codes/view/1');
+        $this->delete('http://localhost:8080/admin/qr-codes/view/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
     }
@@ -106,12 +106,12 @@ class CrudTest extends BaseControllerTest
     public function testAdd(): void
     {
         // test get
-        $this->get('https://localhost/admin/qr-codes/add');
+        $this->get('http://localhost:8080/admin/qr-codes/add');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/QrCodes/add');
 
         // post
-        $this->post('https://localhost/admin/qr-codes/add', [
+        $this->post('http://localhost:8080/admin/qr-codes/add', [
             'qrkey' => 'newqrcode',
             'name' => 'New QrCode',
             'description' => 'The Description',
@@ -120,12 +120,12 @@ class CrudTest extends BaseControllerTest
             'user_id' => 1,
             'tags' => ['_ids' => ['new code', 'Notebook', 'Journal']],
         ]);
-        $this->assertRedirectEquals('https://localhost/admin/qr-codes/view/6');
+        $this->assertRedirectEquals('/admin/qr-codes/view/6');
         $this->assertFlashMessage('The qr code has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
         // patch
-        $this->patch('https://localhost/admin/qr-codes/add', [
+        $this->patch('http://localhost:8080/admin/qr-codes/add', [
             'qrkey' => 'newqrcode',
             'name' => 'New QrCode',
             'description' => 'The Description',
@@ -137,7 +137,7 @@ class CrudTest extends BaseControllerTest
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('https://localhost/admin/qr-codes/add', [
+        $this->put('http://localhost:8080/admin/qr-codes/add', [
             'qrkey' => 'newqrcode',
             'name' => 'New QrCode',
             'description' => 'The Description',
@@ -149,7 +149,7 @@ class CrudTest extends BaseControllerTest
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('https://localhost/admin/qr-codes/add');
+        $this->delete('http://localhost:8080/admin/qr-codes/add');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
     }
@@ -163,35 +163,35 @@ class CrudTest extends BaseControllerTest
     public function testEdit(): void
     {
         // test get
-        $this->get('https://localhost/admin/qr-codes/edit/1');
+        $this->get('http://localhost:8080/admin/qr-codes/edit/1');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/QrCodes/edit');
 
         // post
-        $this->post('https://localhost/admin/qr-codes/edit/1', [
+        $this->post('http://localhost:8080/admin/qr-codes/edit/1', [
             'name' => 'Edited QrCode',
         ]);
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // patch
-        $this->patch('https://localhost/admin/qr-codes/edit/1', [
+        $this->patch('http://localhost:8080/admin/qr-codes/edit/1', [
             'name' => 'Edited QrCode',
         ]);
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('https://localhost/admin/qr-codes/edit/1', [
+        $this->put('http://localhost:8080/admin/qr-codes/edit/1', [
             'name' => 'Edited QrCode',
             'tags' => ['_ids' => ['new code', 'Notebook', 'Journal']],
         ]);
-        $this->assertRedirectEquals('https://localhost/admin/qr-codes/view/1');
+        $this->assertRedirectEquals('/admin/qr-codes/view/1');
         $this->assertFlashMessage('The qr code has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
 
         // delete
-        $this->delete('https://localhost/admin/qr-codes/edit/1');
+        $this->delete('http://localhost:8080/admin/qr-codes/edit/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
     }
@@ -205,29 +205,29 @@ class CrudTest extends BaseControllerTest
     public function testDelete(): void
     {
         // test get
-        $this->get('https://localhost/admin/qr-codes/delete/1');
+        $this->get('http://localhost:8080/admin/qr-codes/delete/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // post
-        $this->post('https://localhost/admin/qr-codes/delete/1');
-        $this->assertRedirectEquals('https://localhost/admin/qr-codes');
+        $this->post('http://localhost:8080/admin/qr-codes/delete/1');
+        $this->assertRedirectEquals('/admin/qr-codes');
         $this->assertFlashMessage('The qr code `Sow & Scribe` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
 
         // patch
-        $this->patch('https://localhost/admin/qr-codes/delete/1');
+        $this->patch('http://localhost:8080/admin/qr-codes/delete/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('https://localhost/admin/qr-codes/delete/1');
+        $this->put('http://localhost:8080/admin/qr-codes/delete/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('https://localhost/admin/qr-codes/delete/2');
-        $this->assertRedirectEquals('https://localhost/admin/qr-codes');
+        $this->delete('http://localhost:8080/admin/qr-codes/delete/2');
+        $this->assertRedirectEquals('/admin/qr-codes');
         $this->assertFlashMessage('The qr code `The Witching Hour` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
     }

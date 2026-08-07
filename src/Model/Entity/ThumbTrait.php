@@ -191,11 +191,11 @@ trait ThumbTrait
         }
 
         if ($width > $height) {
-            $newWidth = (int)$sizes['x'];
-            $newHeight = (int)round($height * $percent / 100);
+            $newWidth = max(1, (int)$sizes['x']);
+            $newHeight = max(1, (int)round($height * $percent / 100));
         } else {
-            $newWidth = (int)round($width * $percent / 100);
-            $newHeight = (int)$sizes['y'];
+            $newWidth = max(1, (int)round($width * $percent / 100));
+            $newHeight = max(1, (int)$sizes['y']);
         }
 
         if ($imageDetails[2] == 1) {
@@ -229,8 +229,10 @@ trait ThumbTrait
                 $thumbImage instanceof GdImage
             ) {
                 imagesavealpha($thumbImage, true);
-                /** @var int $color The color ints below are hard-coded so how would this return a false? */
                 $color = imagecolorallocatealpha($thumbImage, 0, 0, 0, 127);
+                if ($color === false) {
+                    return false;
+                }
                 imagefill($thumbImage, 0, 0, $color);
                 imagecopyresampled($thumbImage, $originalImage, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 

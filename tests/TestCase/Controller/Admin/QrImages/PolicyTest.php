@@ -31,26 +31,25 @@ class PolicyTest extends BaseControllerTest
     /**
      * Test missing action
      *
-     * @alert Keep the https://localhost/admin/ as the HttpsEnforcerMiddleware will try to redirect.
      * @return void
      */
     public function testDontexistDebugOn(): void
     {
         // not logged in
         $this->loginGuest();
-        $this->get('https://localhost/admin/qr-images/dontexist');
+        $this->get('http://localhost:8080/admin/qr-images/dontexist');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Error: Missing Action `App\Controller\Admin\QrImagesController::dontexist()`');
 
         // test with reqular
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/qr-images/dontexist');
+        $this->get('http://localhost:8080/admin/qr-images/dontexist');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Error: Missing Action `App\Controller\Admin\QrImagesController::dontexist()`');
 
         // test with admin
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/qr-images/dontexist');
+        $this->get('http://localhost:8080/admin/qr-images/dontexist');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Error: Missing Action `App\Controller\Admin\QrImagesController::dontexist()`');
     }
@@ -58,7 +57,6 @@ class PolicyTest extends BaseControllerTest
     /**
      * Test missing action
      *
-     * @alert Keep the https://localhost/admin/ as the HttpsEnforcerMiddleware will try to redirect.
      * @return void
      */
     public function testDontexistDebugOff(): void
@@ -66,7 +64,7 @@ class PolicyTest extends BaseControllerTest
         // test with debug off
         Configure::write('debug', false);
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/qr-images/dontexist');
+        $this->get('http://localhost:8080/admin/qr-images/dontexist');
         $this->assertResponseCode(404);
         $this->helperTestError400('/admin/qr-images/dontexist');
     }
@@ -80,19 +78,19 @@ class PolicyTest extends BaseControllerTest
     {
         // not logged in
         $this->loginGuest();
-        $this->get('https://localhost/admin/qr-images');
+        $this->get('http://localhost:8080/admin/qr-images');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Error: Missing Action `App\Controller\Admin\QrImagesController::index()`');
 
         // test with reqular
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/qr-images');
+        $this->get('http://localhost:8080/admin/qr-images');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Error: Missing Action `App\Controller\Admin\QrImagesController::index()`');
 
         // test with admin
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/qr-images');
+        $this->get('http://localhost:8080/admin/qr-images');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Error: Missing Action `App\Controller\Admin\QrImagesController::index()`');
     }
@@ -107,7 +105,7 @@ class PolicyTest extends BaseControllerTest
         // test with debug off
         Configure::write('debug', false);
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/qr-images');
+        $this->get('http://localhost:8080/admin/qr-images');
         $this->assertResponseCode(404);
         $this->helperTestError400('/admin/qr-images');
     }
@@ -122,23 +120,23 @@ class PolicyTest extends BaseControllerTest
     {
         // not logged in
         $this->loginGuest();
-        $this->get('https://localhost/admin/qr-images/qr-code/1');
-        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fadmin%2Fqr-images%2Fqr-code%2F1');
+        $this->get('http://localhost:8080/admin/qr-images/qr-code/1');
+        $this->assertRedirectEquals('/users/login?redirect=%2Fadmin%2Fqr-images%2Fqr-code%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
         // test with reqular, not owner
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/qr-images/qr-code/1');
-        $this->assertRedirectEquals('https://localhost/admin?redirect=%2Fadmin%2Fqr-images%2Fqr-code%2F1');
+        $this->get('http://localhost:8080/admin/qr-images/qr-code/1');
+        $this->assertRedirectEquals('/admin?redirect=%2Fadmin%2Fqr-images%2Fqr-code%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
         // test with reqular, owner
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/qr-images/qr-code/3');
+        $this->get('http://localhost:8080/admin/qr-images/qr-code/3');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/QrImages/qr_code');
         $this->helperTestObjectComment(3, 'QrImages/entity');
@@ -147,7 +145,7 @@ class PolicyTest extends BaseControllerTest
 
         // test with admin, not owner
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/qr-images/qr-code/3');
+        $this->get('http://localhost:8080/admin/qr-images/qr-code/3');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/QrImages/qr_code');
         $this->helperTestObjectComment(3, 'QrImages/entity');
@@ -156,7 +154,7 @@ class PolicyTest extends BaseControllerTest
 
         // test with admin, owner
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/qr-images/qr-code/1');
+        $this->get('http://localhost:8080/admin/qr-images/qr-code/1');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/QrImages/qr_code');
         $this->helperTestObjectComment(3, 'QrImages/entity');
@@ -175,7 +173,7 @@ class PolicyTest extends BaseControllerTest
         // test with debug off
         Configure::write('debug', false);
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/qr-images/qr-code/1');
+        $this->get('http://localhost:8080/admin/qr-images/qr-code/1');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/QrImages/qr_code');
     }
@@ -190,30 +188,30 @@ class PolicyTest extends BaseControllerTest
     {
         // not logged in, active image
         $this->loginGuest();
-        $this->get('https://localhost/admin/qr-images/show/1');
-        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fadmin%2Fqr-images%2Fshow%2F1');
+        $this->get('http://localhost:8080/admin/qr-images/show/1');
+        $this->assertRedirectEquals('/users/login?redirect=%2Fadmin%2Fqr-images%2Fshow%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
         // not logged in, inactive image
-        $this->get('https://localhost/admin/qr-images/show/7');
-        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fadmin%2Fqr-images%2Fshow%2F7');
+        $this->get('http://localhost:8080/admin/qr-images/show/7');
+        $this->assertRedirectEquals('/users/login?redirect=%2Fadmin%2Fqr-images%2Fshow%2F7');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
         // not logged in, missing image, debug on
         $this->loginGuest();
-        $this->get('https://localhost/admin/qr-images/show/999');
-        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fadmin%2Fqr-images%2Fshow%2F999');
+        $this->get('http://localhost:8080/admin/qr-images/show/999');
+        $this->assertRedirectEquals('/users/login?redirect=%2Fadmin%2Fqr-images%2Fshow%2F999');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
         // test with admin, active image
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/qr-images/show/1');
+        $this->get('http://localhost:8080/admin/qr-images/show/1');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
@@ -222,7 +220,7 @@ class PolicyTest extends BaseControllerTest
 
         // test with admin, inactive image, not owner
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/qr-images/show/7');
+        $this->get('http://localhost:8080/admin/qr-images/show/7');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
@@ -231,7 +229,7 @@ class PolicyTest extends BaseControllerTest
 
         // test with reqular, active image
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/qr-images/show/1');
+        $this->get('http://localhost:8080/admin/qr-images/show/1');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
@@ -240,7 +238,7 @@ class PolicyTest extends BaseControllerTest
 
         // test with reqular, inactive image, owner
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/qr-images/show/7');
+        $this->get('http://localhost:8080/admin/qr-images/show/7');
         $this->assertResponseOk();
         $this->assertResponseNotEmpty();
         $headers = $this->_response->getHeaders();
@@ -249,21 +247,21 @@ class PolicyTest extends BaseControllerTest
 
         // test with reqular, inactive image, not owner
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/qr-images/show/3');
-        $this->assertRedirectEquals('https://localhost/admin?redirect=%2Fadmin%2Fqr-images%2Fshow%2F3');
+        $this->get('http://localhost:8080/admin/qr-images/show/3');
+        $this->assertRedirectEquals('/admin?redirect=%2Fadmin%2Fqr-images%2Fshow%2F3');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
         // test with missing id and debug
         $this->loginGuest();
-        $this->get('https://localhost/admin/qr-images/show');
+        $this->get('http://localhost:8080/admin/qr-images/show');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
 
         // test with missing id and debug
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/qr-images/show');
+        $this->get('http://localhost:8080/admin/qr-images/show');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
     }
@@ -279,8 +277,8 @@ class PolicyTest extends BaseControllerTest
         // not logged in, missing image, debug off
         Configure::write('debug', false);
         $this->loginGuest();
-        $this->get('https://localhost/admin/qr-images/show/999');
-        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fadmin%2Fqr-images%2Fshow%2F999');
+        $this->get('http://localhost:8080/admin/qr-images/show/999');
+        $this->assertRedirectEquals('/users/login?redirect=%2Fadmin%2Fqr-images%2Fshow%2F999');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
@@ -288,7 +286,7 @@ class PolicyTest extends BaseControllerTest
         // test with missing id, no debug
         Configure::write('debug', false);
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/qr-images/show');
+        $this->get('http://localhost:8080/admin/qr-images/show');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
     }
@@ -305,37 +303,37 @@ class PolicyTest extends BaseControllerTest
 
         // not logged
         $this->loginGuest();
-        $this->get('https://localhost/admin/qr-images/add/1');
-        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fadmin%2Fqr-images%2Fadd%2F1');
+        $this->get('http://localhost:8080/admin/qr-images/add/1');
+        $this->assertRedirectEquals('/users/login?redirect=%2Fadmin%2Fqr-images%2Fadd%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
         // test with reqular, not owner
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/qr-images/add/1');
-        $this->assertRedirectEquals('https://localhost/admin?redirect=%2Fadmin%2Fqr-images%2Fadd%2F1');
+        $this->get('http://localhost:8080/admin/qr-images/add/1');
+        $this->assertRedirectEquals('/admin?redirect=%2Fadmin%2Fqr-images%2Fadd%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
         // test with reqular, owner
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/qr-images/add/3');
+        $this->get('http://localhost:8080/admin/qr-images/add/3');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/QrImages/add');
         $this->helperTestFormTag('/admin/qr-images/add/3', 'post', true);
 
         // test with admin, not owner
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/qr-images/add/3');
+        $this->get('http://localhost:8080/admin/qr-images/add/3');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/QrImages/add');
         $this->helperTestFormTag('/admin/qr-images/add/3', 'post', true);
 
         // test with admin, owner
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/qr-images/add/1');
+        $this->get('http://localhost:8080/admin/qr-images/add/1');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/QrImages/add');
         $this->helperTestFormTag('/admin/qr-images/add/1', 'post', true);
@@ -344,19 +342,19 @@ class PolicyTest extends BaseControllerTest
 
         // not logged in
         $this->loginGuest();
-        $this->get('https://localhost/admin/qr-images/add');
+        $this->get('http://localhost:8080/admin/qr-images/add');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
 
         // test with reqular
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/qr-images/add');
+        $this->get('http://localhost:8080/admin/qr-images/add');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
 
         // test with admin
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/qr-images/add');
+        $this->get('http://localhost:8080/admin/qr-images/add');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
     }
@@ -373,7 +371,7 @@ class PolicyTest extends BaseControllerTest
         // debug off
         Configure::write('debug', false);
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/qr-images/add');
+        $this->get('http://localhost:8080/admin/qr-images/add');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
     }
@@ -390,37 +388,37 @@ class PolicyTest extends BaseControllerTest
 
         // not logged
         $this->loginGuest();
-        $this->get('https://localhost/admin/qr-images/edit/1');
-        $this->assertRedirectEquals('https://localhost/users/login?redirect=%2Fadmin%2Fqr-images%2Fedit%2F1');
+        $this->get('http://localhost:8080/admin/qr-images/edit/1');
+        $this->assertRedirectEquals('/users/login?redirect=%2Fadmin%2Fqr-images%2Fedit%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
         // test with reqular, not owner
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/qr-images/edit/1');
-        $this->assertRedirectEquals('https://localhost/admin?redirect=%2Fadmin%2Fqr-images%2Fedit%2F1');
+        $this->get('http://localhost:8080/admin/qr-images/edit/1');
+        $this->assertRedirectEquals('/admin?redirect=%2Fadmin%2Fqr-images%2Fedit%2F1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
         // test with reqular, owner
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/qr-images/edit/5');
+        $this->get('http://localhost:8080/admin/qr-images/edit/5');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/QrImages/edit');
         $this->helperTestFormTag('/admin/qr-images/edit/5', 'put');
 
         // test with admin, owner
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/qr-images/edit/1');
+        $this->get('http://localhost:8080/admin/qr-images/edit/1');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/QrImages/edit');
         $this->helperTestFormTag('/admin/qr-images/edit/1', 'put');
 
         // test with admin, not owner
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/qr-images/edit/5');
+        $this->get('http://localhost:8080/admin/qr-images/edit/5');
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/QrImages/edit');
         $this->helperTestFormTag('/admin/qr-images/edit/5', 'put');
@@ -429,19 +427,19 @@ class PolicyTest extends BaseControllerTest
 
         // not logged in
         $this->loginGuest();
-        $this->get('https://localhost/admin/qr-images/edit');
+        $this->get('http://localhost:8080/admin/qr-images/edit');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
 
         // test with reqular
         $this->loginUserRegular();
-        $this->get('https://localhost/admin/qr-images/edit');
+        $this->get('http://localhost:8080/admin/qr-images/edit');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
 
         // test with admin
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/qr-images/edit');
+        $this->get('http://localhost:8080/admin/qr-images/edit');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
     }
@@ -459,7 +457,7 @@ class PolicyTest extends BaseControllerTest
         // debug off
         Configure::write('debug', false);
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/qr-images/edit');
+        $this->get('http://localhost:8080/admin/qr-images/edit');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
     }
@@ -476,43 +474,43 @@ class PolicyTest extends BaseControllerTest
 
         // not logged
         $this->loginGuest();
-        $this->delete('https://localhost/admin/qr-images/delete/1');
-        $this->assertRedirectEquals('https://localhost/users/login');
+        $this->delete('http://localhost:8080/admin/qr-images/delete/1');
+        $this->assertRedirectEquals('/users/login');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
         // test with reqular, not owner
         $this->loginUserRegular();
-        $this->delete('https://localhost/admin/qr-images/delete/1');
-        $this->assertRedirectEquals('https://localhost/admin');
+        $this->delete('http://localhost:8080/admin/qr-images/delete/1');
+        $this->assertRedirectEquals('/admin');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('You are not authorized to access that location', 'flash');
         $this->assertFlashElement('flash/error');
 
         // test with reqular, owner
         $this->loginUserRegular();
-        $this->delete('https://localhost/admin/qr-images/delete/5');
+        $this->delete('http://localhost:8080/admin/qr-images/delete/5');
         // qr-codes/index is the homepage.
-        $this->assertRedirectEquals('https://localhost/admin/qr-images/qr-code/3');
+        $this->assertRedirectEquals('/admin/qr-images/qr-code/3');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('The image `In Hand` for `American Flag Charm` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
 
         // test with admin, not owner
         $this->loginUserAdmin();
-        $this->delete('https://localhost/admin/qr-images/delete/6');
+        $this->delete('http://localhost:8080/admin/qr-images/delete/6');
         // qr-codes/index is the homepage.
-        $this->assertRedirectEquals('https://localhost/admin/qr-images/qr-code/3');
+        $this->assertRedirectEquals('/admin/qr-images/qr-code/3');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('The image `Dimensions Top` for `American Flag Charm` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
 
         // test with admin, owner
         $this->loginUserAdmin();
-        $this->delete('https://localhost/admin/qr-images/delete/1');
+        $this->delete('http://localhost:8080/admin/qr-images/delete/1');
         // qr-codes/index is the homepage.
-        $this->assertRedirectEquals('https://localhost/admin/qr-images/qr-code/1');
+        $this->assertRedirectEquals('/admin/qr-images/qr-code/1');
         // from \App\Middleware\UnauthorizedHandler\CustomRedirectHandler
         $this->assertFlashMessage('The image `Front Cover` for `Sow & Scribe` has been deleted.', 'flash');
         $this->assertFlashElement('flash/success');
@@ -521,19 +519,19 @@ class PolicyTest extends BaseControllerTest
 
         // not logged in
         $this->loginGuest();
-        $this->delete('https://localhost/admin/qr-images/delete');
+        $this->delete('http://localhost:8080/admin/qr-images/delete');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
 
         // test with reqular
         $this->loginUserRegular();
-        $this->delete('https://localhost/admin/qr-images/delete');
+        $this->delete('http://localhost:8080/admin/qr-images/delete');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
 
         // test with admin
         $this->loginUserAdmin();
-        $this->delete('https://localhost/admin/qr-images/delete');
+        $this->delete('http://localhost:8080/admin/qr-images/delete');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
     }
@@ -551,14 +549,14 @@ class PolicyTest extends BaseControllerTest
         // test with admin, debug off
         Configure::write('debug', false);
         $this->loginUserAdmin();
-        $this->delete('https://localhost/admin/qr-images/delete');
+        $this->delete('http://localhost:8080/admin/qr-images/delete');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
 
         // not logged in, debug off
         Configure::write('debug', false);
         $this->loginGuest();
-        $this->delete('https://localhost/admin/qr-images/delete');
+        $this->delete('http://localhost:8080/admin/qr-images/delete');
         $this->assertResponseCode(404);
         $this->assertResponseContains('Unknown ID');
     }

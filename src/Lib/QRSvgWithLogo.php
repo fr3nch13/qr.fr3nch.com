@@ -33,7 +33,7 @@ class QRSvgWithLogo extends QRMarkupSVG
             $this->options->svgPreserveAspectRatio,
             $this->options->eol,
             $width * $this->scale * 5, // use the scale option to modify the size
-            $height * $this->scale * 5
+            $height * $this->scale * 5,
         );
 
         if ($this->options->svgAddXmlHeader) {
@@ -72,7 +72,7 @@ class QRSvgWithLogo extends QRMarkupSVG
                 $this->getCssClass($M_TYPE),
                 $this->getModuleValue($M_TYPE),
                 $this->options->svgOpacity,
-                $path
+                $path,
             );
         }
 
@@ -103,7 +103,7 @@ class QRSvgWithLogo extends QRMarkupSVG
             $this->options->svgLogoCssClass,
             $this->options->logoColor,
             $logoContent,
-            $this->options->eol
+            $this->options->eol,
         );
     }
 }

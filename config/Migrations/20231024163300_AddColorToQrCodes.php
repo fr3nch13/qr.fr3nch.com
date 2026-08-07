@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-use Migrations\AbstractMigration;
+use Migrations\BaseMigration;
 
-class AddGravatarEmailToUsers extends AbstractMigration
+class AddColorToQrCodes extends BaseMigration
 {
     use \App\Migrations\QrMigrationTrait;
 
@@ -18,12 +18,12 @@ class AddGravatarEmailToUsers extends AbstractMigration
     {
         $this->beforeChange();
 
-        $table = $this->table('users');
-        $this->io->out(__('Adding column `{0}` to table: `{1}`', [
-            'gravatar_email',
-            'users',
+        $table = $this->table('qr_codes');
+        $this->migrationIo()->out(__('Adding column `{0}` to table: `{1}`', [
+            'color',
+            'qr_codes',
         ]));
-        $table->addColumn('gravatar_email', 'string');
+        $table->addColumn('color', 'string', ['null' => true]);
         $table->update();
 
         $this->afterChange();

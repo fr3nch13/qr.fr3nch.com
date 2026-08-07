@@ -39,26 +39,26 @@ class CrudTest extends BaseControllerTest
     public function testShow(): void
     {
         // get
-        $this->get('https://localhost/qr-codes/show/1');
+        $this->get('http://localhost:8080/qr-codes/show/1');
         $this->assertResponseOk();
 
         // post
-        $this->post('https://localhost/qr-codes/show/1');
+        $this->post('http://localhost:8080/qr-codes/show/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // patch
-        $this->patch('https://localhost/qr-codes/show/1');
+        $this->patch('http://localhost:8080/qr-codes/show/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('https://localhost/qr-codes/show/1');
+        $this->put('http://localhost:8080/qr-codes/show/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('https://localhost/qr-codes/show/1');
+        $this->delete('http://localhost:8080/qr-codes/show/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
     }
@@ -72,13 +72,13 @@ class CrudTest extends BaseControllerTest
     public function testIndex(): void
     {
         // get
-        $this->get('https://localhost/qr-codes');
+        $this->get('http://localhost:8080/qr-codes');
         $this->assertResponseOk();
         $this->helperTestTemplate('QrCodes/index');
 
         // post
-        $this->post('https://localhost/qr-codes');
-        $this->assertRedirectEquals('https://localhost/qr-codes');
+        $this->post('http://localhost:8080/qr-codes');
+        $this->assertRedirectEquals('/qr-codes');
         // changed because we added friendsofcake/search
         // which does a Post-Redirect-Get
         // $this->assertResponseCode(405);
@@ -86,17 +86,17 @@ class CrudTest extends BaseControllerTest
 
 
         // patch
-        $this->patch('https://localhost/qr-codes');
+        $this->patch('http://localhost:8080/qr-codes');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('https://localhost/qr-codes');
+        $this->put('http://localhost:8080/qr-codes');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('https://localhost/qr-codes');
+        $this->delete('http://localhost:8080/qr-codes');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
     }
@@ -110,27 +110,27 @@ class CrudTest extends BaseControllerTest
     public function testView(): void
     {
         // test get
-        $this->get('https://localhost/qr-codes/view/1');
+        $this->get('http://localhost:8080/qr-codes/view/1');
         $this->assertResponseOk();
         $this->helperTestTemplate('QrCodes/view');
 
         // post
-        $this->post('https://localhost/qr-codes/view/1');
+        $this->post('http://localhost:8080/qr-codes/view/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // patch
-        $this->patch('https://localhost/qr-codes/view/1');
+        $this->patch('http://localhost:8080/qr-codes/view/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('https://localhost/qr-codes/view/1');
+        $this->put('http://localhost:8080/qr-codes/view/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('https://localhost/qr-codes/view/1');
+        $this->delete('http://localhost:8080/qr-codes/view/1');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
     }

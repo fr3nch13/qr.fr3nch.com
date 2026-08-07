@@ -44,7 +44,7 @@ class FormsTest extends BaseControllerTest
     public function testAddNoFiles(): void
     {
         // test failed
-        $this->post('https://localhost/admin/qr-images/add/1', [
+        $this->post('http://localhost:8080/admin/qr-images/add/1', [
         ]);
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/QrImages/add');
@@ -63,7 +63,7 @@ class FormsTest extends BaseControllerTest
     public function testAddEmptyFiles(): void
     {
         // test failed
-        $this->post('https://localhost/admin/qr-images/add/1', [
+        $this->post('http://localhost:8080/admin/qr-images/add/1', [
             'newimages' => [
                 'notanuploadedfile',
             ],
@@ -92,7 +92,7 @@ class FormsTest extends BaseControllerTest
         $images = $this->helperTestUploads($imagePaths, 'newimages');
 
         // test success
-        $this->post('https://localhost/admin/qr-images/add/1', [
+        $this->post('http://localhost:8080/admin/qr-images/add/1', [
             'newimages' => $images,
         ]);
         $this->assertResponseOk();
@@ -118,7 +118,7 @@ class FormsTest extends BaseControllerTest
         $images = $this->helperTestUploads($imagePaths, 'newimages');
 
         // test success
-        $this->post('https://localhost/admin/qr-images/add/999', [
+        $this->post('http://localhost:8080/admin/qr-images/add/999', [
             'newimages' => $images,
         ]);
         $this->assertResponseCode(404);
@@ -140,7 +140,7 @@ class FormsTest extends BaseControllerTest
         $images = $this->helperTestUploads($imagePaths, 'newimages', UPLOAD_ERR_NO_FILE);
 
         // test
-        $this->post('https://localhost/admin/qr-images/add/1', [
+        $this->post('http://localhost:8080/admin/qr-images/add/1', [
             'newimages' => $images,
         ]);
         $this->assertResponseOk();
@@ -167,7 +167,7 @@ class FormsTest extends BaseControllerTest
         $images = $this->helperTestUploads($imagePaths, 'newimages', UPLOAD_ERR_INI_SIZE);
 
         // test success
-        $this->post('https://localhost/admin/qr-images/add/1', [
+        $this->post('http://localhost:8080/admin/qr-images/add/1', [
             'newimages' => $images,
         ]);
         $this->assertResponseOk();
@@ -194,7 +194,7 @@ class FormsTest extends BaseControllerTest
         $images = $this->helperTestUploads($imagePaths, 'newimages', UPLOAD_ERR_FORM_SIZE);
 
         // test success
-        $this->post('https://localhost/admin/qr-images/add/1', [
+        $this->post('http://localhost:8080/admin/qr-images/add/1', [
             'newimages' => $images,
         ]);
         $this->assertResponseOk();
@@ -222,7 +222,7 @@ class FormsTest extends BaseControllerTest
         $images = $this->helperTestUploads($imagePaths, 'newimages', UPLOAD_ERR_OK, str_repeat('c', 300) . '.jpg');
 
         // test success
-        $this->post('https://localhost/admin/qr-images/add/1', [
+        $this->post('http://localhost:8080/admin/qr-images/add/1', [
             'newimages' => $images,
         ]);
         $this->assertResponseOk();
@@ -230,7 +230,7 @@ class FormsTest extends BaseControllerTest
         $this->helperTestFormTag('/admin/qr-images/add/1', 'post', true);
         $this->helperTestAlert(
             'The images could not be saved. Please, try again.',
-            'danger'
+            'danger',
         );
         // test to make sure the fields that are required are actually tagged as so.
         $this->helperTestString('<p class="text-danger">Error: ccccccccccccccccccccccccccccccccccccccc' .
@@ -255,7 +255,7 @@ class FormsTest extends BaseControllerTest
         $images = $this->helperTestUploads($imagePaths, 'newimages');
 
         // test success
-        $this->post('https://localhost/admin/qr-images/add/1', [
+        $this->post('http://localhost:8080/admin/qr-images/add/1', [
             'newimages' => $images,
         ]);
         $this->assertResponseOk();
@@ -282,10 +282,10 @@ class FormsTest extends BaseControllerTest
         $images = $this->helperTestUploads($imagePaths, 'newimages');
 
         // test success
-        $this->post('https://localhost/admin/qr-images/add/1', [
+        $this->post('http://localhost:8080/admin/qr-images/add/1', [
             'newimages' => $images,
         ]);
-        $this->assertRedirectEquals('https://localhost/admin/qr-images/qr-code/1');
+        $this->assertRedirectEquals('/admin/qr-images/qr-code/1');
         $this->assertFlashMessage('The images have been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -299,7 +299,7 @@ class FormsTest extends BaseControllerTest
     public function testEdit(): void
     {
         // test fail
-        $this->put('https://localhost/admin/qr-images/edit/2', [
+        $this->put('http://localhost:8080/admin/qr-images/edit/2', [
             'name' => '',
         ]);
         $this->assertResponseOk();
@@ -310,10 +310,10 @@ class FormsTest extends BaseControllerTest
         $this->helperTestFormFieldError('This field cannot be left empty', 'name-error');
 
         // test success
-        $this->put('https://localhost/admin/qr-images/edit/2', [
+        $this->put('http://localhost:8080/admin/qr-images/edit/2', [
             'name' => 'New Image',
         ]);
-        $this->assertRedirectEquals('https://localhost/admin/qr-images/qr-code/1');
+        $this->assertRedirectEquals('/admin/qr-images/qr-code/1');
         $this->assertFlashMessage('The image has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }

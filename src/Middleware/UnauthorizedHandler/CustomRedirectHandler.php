@@ -25,12 +25,11 @@ class CustomRedirectHandler extends RedirectHandler
     public function handle(
         Exception $exception,
         ServerRequestInterface $request,
-        array $options = []
+        array $options = [],
     ): ResponseInterface {
         if (isset($options['url'])) {
             if (!$request->getAttribute('identity')) {
                 $options['url'] = Router::url([
-                    '_full' => true,
                     'prefix' => false,
                     'plugin' => false,
                     'controller' => 'Users',

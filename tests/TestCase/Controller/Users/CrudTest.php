@@ -41,27 +41,27 @@ class CrudTest extends BaseControllerTest
         // test this without being logged in this is tested in PolicyTest
 
         // get
-        $this->get('https://localhost/users/login');
+        $this->get('http://localhost:8080/users/login');
         $this->assertResponseOk();
         $this->helperTestTemplate('Users/login');
 
         // post
-        $this->post('https://localhost/users/login');
+        $this->post('http://localhost:8080/users/login');
         $this->assertResponseOk();
         $this->helperTestTemplate('Users/login');
 
         // patch
-        $this->patch('https://localhost/users/login');
+        $this->patch('http://localhost:8080/users/login');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('https://localhost/users/login');
+        $this->put('http://localhost:8080/users/login');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('https://localhost/users/login');
+        $this->delete('http://localhost:8080/users/login');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
     }
@@ -76,33 +76,33 @@ class CrudTest extends BaseControllerTest
     {
         // get
         $this->loginUserAdmin();
-        $this->get('https://localhost/users/logout');
-        $this->assertRedirectEquals('https://localhost/users/login');
+        $this->get('http://localhost:8080/users/logout');
+        $this->assertRedirectEquals('/users/login');
         $this->assertFlashMessage('You have been logged out', 'flash');
         $this->assertFlashElement('flash/success');
 
         // post
         $this->loginUserAdmin();
-        $this->post('https://localhost/users/logout');
-        $this->assertRedirectEquals('https://localhost/users/login');
+        $this->post('http://localhost:8080/users/logout');
+        $this->assertRedirectEquals('/users/login');
         $this->assertFlashMessage('You have been logged out', 'flash');
         $this->assertFlashElement('flash/success');
 
         // patch
         $this->loginUserAdmin();
-        $this->patch('https://localhost/users/logout');
+        $this->patch('http://localhost:8080/users/logout');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // put
         $this->loginUserAdmin();
-        $this->put('https://localhost/users/logout');
+        $this->put('http://localhost:8080/users/logout');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
         $this->loginUserAdmin();
-        $this->delete('https://localhost/users/logout');
+        $this->delete('http://localhost:8080/users/logout');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
     }
@@ -118,27 +118,27 @@ class CrudTest extends BaseControllerTest
         $this->loginUserAdmin();
 
         // test get
-        $this->get('https://localhost/users/profile/3');
+        $this->get('http://localhost:8080/users/profile/3');
         $this->assertResponseOk();
         $this->helperTestTemplate('Users/profile');
 
         // post
-        $this->post('https://localhost/users/profile/3');
+        $this->post('http://localhost:8080/users/profile/3');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // patch
-        $this->patch('https://localhost/users/profile/3');
+        $this->patch('http://localhost:8080/users/profile/3');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('https://localhost/users/profile/3');
+        $this->put('http://localhost:8080/users/profile/3');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('https://localhost/users/profile/3');
+        $this->delete('http://localhost:8080/users/profile/3');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
     }

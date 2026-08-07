@@ -11,21 +11,11 @@ use Cake\Validation\Validator;
 /**
  * Sources Model
  *
- * @property \App\Model\Table\QrCodesTable&\Cake\ORM\Association\HasMany $QrCodes
- * @property \App\Model\Table\UsersTable&\Cake\ORM\Association\BelongsTo $Users
- * @method \App\Model\Entity\Source newEmptyEntity()
- * @method \App\Model\Entity\Source newEntity(array $data, array $options = [])
- * @method \App\Model\Entity\Source[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\Source get(int $primaryKey, $contain = [])
- * @method \App\Model\Entity\Source findOrCreate($search, ?callable $callback = null, $options = [])
- * @method \App\Model\Entity\Source patchEntity(\App\Model\Entity\Source  $entity, array $data, array $options = [])
- * @method \App\Model\Entity\Source[] patchEntities(iterable $entities, array $data, array $options = [])
- * @method \App\Model\Entity\Source|false save(\App\Model\Entity\Source $entity, $options = [])
- * @method \App\Model\Entity\Source saveOrFail(\App\Model\Entity\Source $entity, $options = [])
- * @method \App\Model\Entity\Source[]|\Cake\Datasource\ResultSetInterface|false saveMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\Source[]|\Cake\Datasource\ResultSetInterface saveManyOrFail(iterable $entities, $options = [])
- * @method \App\Model\Entity\Source[]|\Cake\Datasource\ResultSetInterface|false deleteMany(iterable $entities, $options = [])
- * @method \App\Model\Entity\Source[]|\Cake\Datasource\ResultSetInterface deleteManyOrFail(iterable $entities, $options = [])
+ * @property \App\Model\Table\QrCodesTable $QrCodes
+ * @property \App\Model\Table\UsersTable $Users
+ * @extends \Cake\ORM\Table<array{
+ *   Timestamp: \Cake\ORM\Behavior\TimestampBehavior
+ * }, \App\Model\Entity\Source>
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
 class SourcesTable extends Table
@@ -113,8 +103,8 @@ class SourcesTable extends Table
      *
      * Here should be need to impliment it later.
      *
-     * @param \Cake\ORM\Query\SelectQuery $query The initial query
-     * @return \Cake\ORM\Query\SelectQuery The updated query
+     * @param \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Source> $query The initial query
+     * @return \Cake\ORM\Query\SelectQuery<\App\Model\Entity\Source> The updated query
      */
     public function findActive(SelectQuery $query): SelectQuery
     {

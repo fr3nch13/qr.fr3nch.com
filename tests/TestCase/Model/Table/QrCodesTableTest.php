@@ -11,9 +11,11 @@ use App\Model\Table\TagsTable;
 use App\Model\Table\UsersTable;
 use Cake\Core\Configure;
 use Cake\Http\Exception\InternalErrorException;
+use Cake\Http\ServerRequestFactory;
 use Cake\ORM\Association\BelongsTo;
 use Cake\ORM\Association\BelongsToMany;
 use Cake\ORM\Behavior\TimestampBehavior;
+use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use ReflectionClass;
 
@@ -119,26 +121,23 @@ class QrCodesTableTest extends TestCase
 
         ////// foreach association.
         // make sure the association exists
-        $this->assertNotNull($Associations->get('Users'));
-        $this->assertInstanceOf(BelongsTo::class, $Associations->get('Users'));
-        $this->assertInstanceOf(UsersTable::class, $Associations->get('Users')->getTarget());
-        $Association = $this->QrCodes->Users;
+        $Association = $Associations->get('Users');
+        $this->assertInstanceOf(BelongsTo::class, $Association);
+        $this->assertInstanceOf(UsersTable::class, $Association->getTarget());
         $this->assertSame('Users', $Association->getName());
         $this->assertSame('user_id', $Association->getForeignKey());
 
         // make sure the association exists
-        $this->assertNotNull($Associations->get('Sources'));
-        $this->assertInstanceOf(BelongsTo::class, $Associations->get('Sources'));
-        $this->assertInstanceOf(SourcesTable::class, $Associations->get('Sources')->getTarget());
-        $Association = $this->QrCodes->Sources;
+        $Association = $Associations->get('Sources');
+        $this->assertInstanceOf(BelongsTo::class, $Association);
+        $this->assertInstanceOf(SourcesTable::class, $Association->getTarget());
         $this->assertSame('Sources', $Association->getName());
         $this->assertSame('source_id', $Association->getForeignKey());
 
         // make sure the association exists
-        $this->assertNotNull($Associations->get('Tags'));
-        $this->assertInstanceOf(BelongsToMany::class, $Associations->get('Tags'));
-        $this->assertInstanceOf(TagsTable::class, $Associations->get('Tags')->getTarget());
-        $Association = $this->QrCodes->Tags;
+        $Association = $Associations->get('Tags');
+        $this->assertInstanceOf(BelongsToMany::class, $Association);
+        $this->assertInstanceOf(TagsTable::class, $Association->getTarget());
         $this->assertSame('Tags', $Association->getName());
         $this->assertSame('QrCodesTags', $Association->getThrough());
         $this->assertSame('qr_code_id', $Association->getForeignKey());
@@ -344,6 +343,7 @@ class QrCodesTableTest extends TestCase
     {
         // test getting an existing record
         $qrCode = $this->QrCodes->find('key', key: 'sownscribe')->first();
+        $this->assertNotNull($qrCode);
         $this->assertSame(1, $qrCode->id);
 
         // test getting a non-existant record
@@ -673,6 +673,24 @@ class QrCodesTableTest extends TestCase
 
         // no color set in entity, defaults to dark
         $entity = $this->QrCodes->get(2);
+        $originalRequest = Router::getRequest();
+        try {
+            Router::setRequest(ServerRequestFactory::fromGlobals([
+                'HTTP_HOST' => 'qr.fr3nch.com',
+                'HTTPS' => 'on',
+                'REQUEST_METHOD' => 'GET',
+                'REQUEST_URI' => '/',
+                'SCRIPT_NAME' => '/index.php',
+            ]));
+
+            $QR = new PhpQrGenerator($entity);
+            $this->assertSame('https://qr.fr3nch.com/f/' . $entity->qrkey, static::getProperty($QR, 'data'));
+        } finally {
+            if ($originalRequest !== null) {
+                Router::setRequest($originalRequest);
+            }
+        }
+
         $QR = new PhpQrGenerator($entity);
         $QR->generate();
         $this->assertTrue(is_readable($path_dark));
@@ -795,7 +813,6 @@ class QrCodesTableTest extends TestCase
     {
         $reflectedClass = new ReflectionClass($object);
         $reflection = $reflectedClass->getProperty($property);
-        $reflection->setAccessible(true);
 
         return $reflection->getValue($object);
     }

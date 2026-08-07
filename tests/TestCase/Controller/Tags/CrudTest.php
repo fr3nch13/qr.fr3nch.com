@@ -39,30 +39,30 @@ class CrudTest extends BaseControllerTest
     public function testIndex(): void
     {
         // get
-        $this->get('https://localhost/tags');
+        $this->get('http://localhost:8080/tags');
         $this->assertResponseOk();
         $this->helperTestTemplate('Tags/index');
 
         // post
-        $this->post('https://localhost/tags');
-        $this->assertRedirectEquals('https://localhost/tags');
+        $this->post('http://localhost:8080/tags');
+        $this->assertRedirectEquals('/tags');
         // changed because we added friendsofcake/search
         // which does a Post-Redirect-Get
         // $this->assertResponseCode(405);
         // $this->assertResponseContains('Method Not Allowed');
 
         // patch
-        $this->patch('https://localhost/tags');
+        $this->patch('http://localhost:8080/tags');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // put
-        $this->put('https://localhost/tags');
+        $this->put('http://localhost:8080/tags');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
 
         // delete
-        $this->delete('https://localhost/tags');
+        $this->delete('http://localhost:8080/tags');
         $this->assertResponseCode(405);
         $this->assertResponseContains('Method Not Allowed');
     }

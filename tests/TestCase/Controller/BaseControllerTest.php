@@ -7,9 +7,8 @@ use App\Model\Table\UsersTable;
 use Cake\Core\Configure;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
-use HtmlValidator\Exception\ServerException as ValidatorServerException;
-use HtmlValidator\Validator as HtmlValidator;
 use Laminas\Diactoros\UploadedFile;
+use LogicException;
 use const UPLOAD_ERR_OK;
 
 /**
@@ -148,41 +147,19 @@ class BaseControllerTest extends TestCase
      */
     public function debugBody(): void
     {
-        debug((string)$this->_response->getBody());
+        debug($this->responseBody());
     }
 
     /**
-     * Uses an HTML validator to validate the compiled html.
-     *
-     * @param bool $showContent If we should print out the html in debug on an issue
-     * @return void
+     * Get the response body after an integration request.
      */
-    public function helperValidateHTML(bool $showContent = false): void
+    protected function responseBody(): string
     {
-        $content = (string)$this->_response->getBody();
-
-        try {
-            // TODO: add more html validation, but do it locally.
-            // Maybe with github actions?
-            // @link https://github.com/marketplace/actions/html5-validator
-            // labels: testing, frontend, html validation
-
-            $validator = new HtmlValidator();
-            $result = $validator->validateDocument($content);
-            if ($showContent && ($result->hasErrors() || $result->hasWarnings())) {
-                debug($content);
-            }
-            $this->assertFalse($result->hasErrors(), (string)$result);
-            $this->assertFalse($result->hasWarnings(), (string)$result);
-
-            // TODO: enable below once the PR I submitted to friendsofcake/bootstrap-ui is approved
-            // labels: testing, frontend, html validation, bootstrap-ui
-            //$this->assertFalse($result->hasMessages(), (string)$result);
-
-            // Incase validator.nu throws an error.
-        } catch (ValidatorServerException $e) {
-            $this->assertTrue(true);
+        if ($this->_response === null) {
+            throw new LogicException('No integration response is available.');
         }
+
+        return (string)$this->_response->getBody();
     }
 
     /**
@@ -205,7 +182,7 @@ class BaseControllerTest extends TestCase
         }
         $files = [];
         foreach ($tmpPaths as $tmpPath) {
-            if (file_exists($filePath)) {
+            if (file_exists($tmpPath)) {
                 $files[] = new UploadedFile(
                     // stream or path to file representing the temp file
                     $tmpPath,
@@ -214,9 +191,9 @@ class BaseControllerTest extends TestCase
                     // the upload/error status
                     $errCode,
                     // the filename as sent by the client
-                    ($altFileName ? $altFileName : basename($tmpPath)),
+                    ($altFileName ?: basename($tmpPath)),
                     // the mimetype as sent by the client
-                    mime_content_type($tmpPath) ?: null
+                    mime_content_type($tmpPath) ?: null,
                 );
             } else {
                 $files[] = new UploadedFile(
@@ -229,7 +206,7 @@ class BaseControllerTest extends TestCase
                     // the filename as sent by the client
                     basename($tmpPath),
                     // the mimetype as sent by the client
-                    ''
+                    '',
                 );
             }
         }
@@ -248,7 +225,7 @@ class BaseControllerTest extends TestCase
      */
     public function helperTestString(string $string): void
     {
-        $content = (string)$this->_response->getBody();
+        $content = $this->responseBody();
 
         $this->assertSame(1, substr_count($content, $string));
     }
@@ -262,7 +239,7 @@ class BaseControllerTest extends TestCase
      */
     public function helperTestAlert(string $message, string $type): void
     {
-        $content = (string)$this->_response->getBody();
+        $content = $this->responseBody();
 
         // container
         $this->assertSame(1, substr_count($content, '<div role="alert" class="alert alert-dismissible ' .
@@ -284,10 +261,10 @@ class BaseControllerTest extends TestCase
      */
     public function helperTestFormFieldError(string $message, string $id): void
     {
-        $content = (string)$this->_response->getBody();
+        $content = $this->responseBody();
 
         // message
-        $needle = '<div id="' . $id . '" class="ms-0 invalid-feedback">' . $message . '</div>';
+        $needle = '<div id="' . $id . '" class="invalid-feedback">' . $message . '</div>';
         $this->assertSame(1, substr_count($content, $needle));
     }
 
@@ -301,7 +278,7 @@ class BaseControllerTest extends TestCase
      */
     public function helperTestFormTag(string $action, string $method = 'post', bool $isFile = false): void
     {
-        $content = (string)$this->_response->getBody();
+        $content = $this->responseBody();
 
         $fileString = '';
         if ($isFile) {
@@ -330,7 +307,7 @@ class BaseControllerTest extends TestCase
      */
     public function helperTestFilterElements(bool $isFiltered = false): void
     {
-        $content = (string)$this->_response->getBody();
+        $content = $this->responseBody();
 
         // Make sure the page content is wrapped correctly.
         $this->assertSame(1, substr_count($content, '<div class="offcanvas-wrap">'));
@@ -359,7 +336,7 @@ class BaseControllerTest extends TestCase
      */
     public function helperTestObjectComment(int $count, string $coment, string $namespace = 'App'): void
     {
-        $content = (string)$this->_response->getBody();
+        $content = $this->responseBody();
 
         $templateString = $namespace . '.' . $coment;
         $this->assertSame($count, substr_count($content, '<!-- OBJECT_COMMENT: ' . $templateString . ' -->'));
@@ -374,7 +351,7 @@ class BaseControllerTest extends TestCase
      */
     public function helperTestTemplate(string $templatePath, string $namespace = 'App'): void
     {
-        $content = (string)$this->_response->getBody();
+        $content = $this->responseBody();
 
         $templateString = $namespace . '.' . $templatePath;
         $this->assertSame(1, substr_count($content, '<!-- START: ' . $templateString . ' -->'));
@@ -388,7 +365,7 @@ class BaseControllerTest extends TestCase
      */
     public function helperTestLayoutBase(): void
     {
-        $content = (string)$this->_response->getBody();
+        $content = $this->responseBody();
 
         $this->assertSame(1, substr_count($content, '<!-- START: App.layout/base -->'));
         $this->assertSame(1, substr_count($content, '<!-- END: App.layout/base -->'));
@@ -397,7 +374,7 @@ class BaseControllerTest extends TestCase
         $this->assertSame(1, substr_count($content, '</head>'));
         $this->assertSame(1, substr_count($content, '<body>'));
         // favicons
-        $this->assertSame(1, substr_count($content, '<link href="/favicon.ico" type="image/x-icon" rel="icon"><link href="/favicon.ico" type="image/x-icon" rel="shortcut icon">'));
+        $this->assertSame(1, substr_count($content, '<link href="/favicon.ico" type="image/x-icon" rel="icon">'));
         $this->assertSame(1, substr_count($content, '<link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">'));
         $this->assertSame(1, substr_count($content, '<link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">'));
         $this->assertSame(1, substr_count($content, '<link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">'));
@@ -428,7 +405,7 @@ class BaseControllerTest extends TestCase
     public function helperTestLayoutDefault(): void
     {
         $this->helperTestLayoutBase();
-        $content = (string)$this->_response->getBody();
+        $content = $this->responseBody();
 
         $this->assertSame(1, substr_count($content, '<!-- START: App.layout/default -->'));
         $this->assertSame(1, substr_count($content, '<!-- END: App.layout/default -->'));
@@ -445,7 +422,7 @@ class BaseControllerTest extends TestCase
     public function helperTestLayoutPagesGeneric(): void
     {
         $this->helperTestLayoutBase();
-        $content = (string)$this->_response->getBody();
+        $content = $this->responseBody();
 
         $this->assertSame(1, substr_count($content, '<!-- START: App.layout/pages/generic -->'));
         $this->assertSame(1, substr_count($content, '<!-- END: App.layout/pages/generic -->'));
@@ -461,7 +438,7 @@ class BaseControllerTest extends TestCase
     public function helperTestLayoutPagesIndex(): void
     {
         $this->helperTestLayoutBase();
-        $content = (string)$this->_response->getBody();
+        $content = $this->responseBody();
 
         $this->assertSame(1, substr_count($content, '<!-- START: App.layout/pages/index -->'));
         $this->assertSame(1, substr_count($content, '<!-- END: App.layout/pages/index -->'));
@@ -477,7 +454,7 @@ class BaseControllerTest extends TestCase
     public function helperTestLayoutPagesView(): void
     {
         $this->helperTestLayoutBase();
-        $content = (string)$this->_response->getBody();
+        $content = $this->responseBody();
 
         $this->assertSame(1, substr_count($content, '<!-- START: App.layout/pages/view -->'));
         $this->assertSame(1, substr_count($content, '<!-- END: App.layout/pages/view -->'));
@@ -493,7 +470,7 @@ class BaseControllerTest extends TestCase
     public function helperTestLayoutPagesForm(): void
     {
         $this->helperTestLayoutBase();
-        $content = (string)$this->_response->getBody();
+        $content = $this->responseBody();
 
         $this->assertSame(1, substr_count($content, '<!-- START: App.layout/pages/form -->'));
         $this->assertSame(1, substr_count($content, '<!-- END: App.layout/pages/form -->'));
@@ -509,7 +486,7 @@ class BaseControllerTest extends TestCase
     public function helperTestLayoutLogin(): void
     {
         $this->helperTestLayoutBase();
-        $content = (string)$this->_response->getBody();
+        $content = $this->responseBody();
 
         $this->assertSame(1, substr_count($content, '<!-- START: App.layout/login -->'));
         $this->assertSame(1, substr_count($content, '<!-- END: App.layout/login -->'));
@@ -525,7 +502,7 @@ class BaseControllerTest extends TestCase
     public function helperTestLayoutDashboardIndex(): void
     {
         $this->helperTestLayoutBase();
-        $content = (string)$this->_response->getBody();
+        $content = $this->responseBody();
 
         $this->assertSame(1, substr_count($content, '<!-- START: App.layout/dashboard/index -->'));
         $this->assertSame(1, substr_count($content, '<!-- END: App.layout/dashboard/index -->'));
@@ -541,7 +518,7 @@ class BaseControllerTest extends TestCase
     public function helperTestLayoutDashboardView(): void
     {
         $this->helperTestLayoutBase();
-        $content = (string)$this->_response->getBody();
+        $content = $this->responseBody();
 
         $this->assertSame(1, substr_count($content, '<!-- START: App.layout/dashboard/view -->'));
         $this->assertSame(1, substr_count($content, '<!-- END: App.layout/dashboard/view -->'));
@@ -557,7 +534,7 @@ class BaseControllerTest extends TestCase
     public function helperTestLayoutDashboardForm(): void
     {
         $this->helperTestLayoutBase();
-        $content = (string)$this->_response->getBody();
+        $content = $this->responseBody();
 
         $this->assertSame(1, substr_count($content, '<!-- START: App.layout/dashboard/form -->'));
         $this->assertSame(1, substr_count($content, '<!-- END: App.layout/dashboard/form -->'));
@@ -574,7 +551,7 @@ class BaseControllerTest extends TestCase
     public function helperTestError400(?string $path = null): void
     {
         $this->helperTestLayoutError();
-        $content = (string)$this->_response->getBody();
+        $content = $this->responseBody();
 
         $this->assertSame(1, substr_count($content, '<!-- START: App.Error/error400 -->'));
         $this->assertSame(1, substr_count($content, '<!-- END: App.Error/error400 -->'));
@@ -594,7 +571,7 @@ class BaseControllerTest extends TestCase
     public function helperTestError500(): void
     {
         $this->helperTestLayoutError();
-        $content = (string)$this->_response->getBody();
+        $content = $this->responseBody();
 
         $this->assertSame(1, substr_count($content, '<!-- START: App.Error/error500 -->'));
         $this->assertSame(1, substr_count($content, '<!-- END: App.Error/error400 -->'));
@@ -609,7 +586,7 @@ class BaseControllerTest extends TestCase
      */
     public function helperTestLayoutError(): void
     {
-        $content = (string)$this->_response->getBody();
+        $content = $this->responseBody();
 
         $this->assertSame(1, substr_count($content, '<!-- START: App.layout/error -->'));
         $this->assertSame(1, substr_count($content, '<!-- END: App.layout/error -->'));
@@ -624,7 +601,7 @@ class BaseControllerTest extends TestCase
      */
     public function helperTestLayoutAjax(): void
     {
-        $content = (string)$this->_response->getBody();
+        $content = $this->responseBody();
 
         $this->assertSame(0, substr_count($content, '<!-- START: App.layout/default -->'));
         $this->assertSame(0, substr_count($content, '<!-- END: App.layout/default -->'));

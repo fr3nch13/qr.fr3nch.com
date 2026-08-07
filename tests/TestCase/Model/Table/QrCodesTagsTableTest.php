@@ -49,18 +49,6 @@ class QrCodesTagsTableTest extends TestCase
     }
 
     /**
-     * tearDown method
-     *
-     * @return void
-     */
-    protected function tearDown(): void
-    {
-        unset($this->QrCodesTags);
-
-        parent::tearDown();
-    }
-
-    /**
      * Tests the class name of the Table
      *
      * @return void
@@ -97,18 +85,16 @@ class QrCodesTagsTableTest extends TestCase
 
         ////// foreach association.
         // make sure the association exists
-        $this->assertNotNull($Associations->get('Tags'));
-        $this->assertInstanceOf(BelongsTo::class, $Associations->get('Tags'));
-        $this->assertInstanceOf(TagsTable::class, $Associations->get('Tags')->getTarget());
-        $Association = $this->QrCodesTags->Tags;
+        $Association = $Associations->get('Tags');
+        $this->assertInstanceOf(BelongsTo::class, $Association);
+        $this->assertInstanceOf(TagsTable::class, $Association->getTarget());
         $this->assertSame('Tags', $Association->getName());
         $this->assertSame('tag_id', $Association->getForeignKey());
 
         // make sure the association exists
-        $this->assertNotNull($Associations->get('QrCodes'));
-        $this->assertInstanceOf(BelongsTo::class, $Associations->get('QrCodes'));
-        $this->assertInstanceOf(QrCodesTable::class, $Associations->get('QrCodes')->getTarget());
-        $Association = $this->QrCodesTags->QrCodes;
+        $Association = $Associations->get('QrCodes');
+        $this->assertInstanceOf(BelongsTo::class, $Association);
+        $this->assertInstanceOf(QrCodesTable::class, $Association->getTarget());
         $this->assertSame('QrCodes', $Association->getName());
         $this->assertSame('qr_code_id', $Association->getForeignKey());
     }

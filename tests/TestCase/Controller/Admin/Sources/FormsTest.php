@@ -41,7 +41,7 @@ class FormsTest extends BaseControllerTest
     public function testAdd(): void
     {
         // test failed
-        $this->post('https://localhost/admin/sources/add', [
+        $this->post('http://localhost:8080/admin/sources/add', [
         ]);
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/Sources/add');
@@ -52,7 +52,7 @@ class FormsTest extends BaseControllerTest
         $this->helperTestFormFieldError('This field is required', 'description-error');
 
         // existing fail
-        $this->post('https://localhost/admin/sources/add', [
+        $this->post('http://localhost:8080/admin/sources/add', [
             'name' => 'Etsy',
             'description' => 'description',
         ]);
@@ -64,11 +64,11 @@ class FormsTest extends BaseControllerTest
         $this->helperTestFormFieldError('This Name already exists.', 'name-error');
 
         // test success
-        $this->post('https://localhost/admin/sources/add', [
+        $this->post('http://localhost:8080/admin/sources/add', [
             'name' => 'new name',
             'description' => 'description',
         ]);
-        $this->assertRedirectEquals('https://localhost/admin/sources');
+        $this->assertRedirectEquals('/admin/sources');
         $this->assertFlashMessage('The source has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -82,7 +82,7 @@ class FormsTest extends BaseControllerTest
     public function testEdit(): void
     {
         // test fail
-        $this->put('https://localhost/admin/sources/edit/1', [
+        $this->put('http://localhost:8080/admin/sources/edit/1', [
             'name' => 'Etsy', // an existing record
         ]);
         $this->assertResponseOk();
@@ -93,11 +93,11 @@ class FormsTest extends BaseControllerTest
         $this->helperTestFormFieldError('This Name already exists.', 'name-error');
 
         // test put success
-        $this->put('https://localhost/admin/sources/edit/1', [
+        $this->put('http://localhost:8080/admin/sources/edit/1', [
             'name' => 'New Source',
             'description' => 'The Description',
         ]);
-        $this->assertRedirectEquals('https://localhost/admin/sources');
+        $this->assertRedirectEquals('/admin/sources');
         $this->assertFlashMessage('The source has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }

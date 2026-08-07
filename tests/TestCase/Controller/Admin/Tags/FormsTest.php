@@ -41,7 +41,7 @@ class FormsTest extends BaseControllerTest
     public function testAdd(): void
     {
         // test failed
-        $this->post('https://localhost/admin/tags/add', [
+        $this->post('http://localhost:8080/admin/tags/add', [
         ]);
         $this->assertResponseOk();
         $this->helperTestTemplate('Admin/Tags/add');
@@ -51,10 +51,10 @@ class FormsTest extends BaseControllerTest
         $this->helperTestFormFieldError('This field is required', 'name-error');
 
         // test success
-        $this->post('https://localhost/admin/tags/add', [
+        $this->post('http://localhost:8080/admin/tags/add', [
             'name' => 'new tag',
         ]);
-        $this->assertRedirectEquals('https://localhost/admin/tags');
+        $this->assertRedirectEquals('/admin/tags');
         $this->assertFlashMessage('The tag has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -68,7 +68,7 @@ class FormsTest extends BaseControllerTest
     public function testEdit(): void
     {
         // test fail
-        $this->put('https://localhost/admin/tags/edit/1', [
+        $this->put('http://localhost:8080/admin/tags/edit/1', [
             'name' => 'Amazon', // an existing record
         ]);
         $this->assertResponseOk();
@@ -79,11 +79,11 @@ class FormsTest extends BaseControllerTest
         $this->helperTestFormFieldError('This Tag already exists.', 'name-error');
 
         // test put success
-        $this->put('https://localhost/admin/tags/edit/1', [
+        $this->put('http://localhost:8080/admin/tags/edit/1', [
             'name' => 'New Tag',
             'description' => 'The Description',
         ]);
-        $this->assertRedirectEquals('https://localhost/admin/tags');
+        $this->assertRedirectEquals('/admin/tags');
         $this->assertFlashMessage('The tag has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }

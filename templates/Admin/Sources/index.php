@@ -41,7 +41,7 @@ $this->assign('title', $this->fetch('page_title'));
                         'data-bs-target' => '#edit-modal',
                         'data-ajax-target' => '#editModalBody',
                         'escape' => false,
-                    ]
+                    ],
                 ); ?>
             <?php endforeach; ?>
             </div>

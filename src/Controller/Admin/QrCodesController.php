@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Model\Entity\QrCode;
 use Cake\Core\Configure;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\NotFoundException;
@@ -88,7 +89,7 @@ class QrCodesController extends AppController
         $qrCode = $this->QrCodes->find('key', key: $key)->first();
 
         // if we can't find it, redirect to index with an error message.
-        if (!$qrCode) {
+        if (!$qrCode instanceof QrCode) {
             $this->Flash->error(__('A QR Code with the key: `{0}` could not be found.', [
                 $key,
             ]));
@@ -195,9 +196,9 @@ class QrCodesController extends AppController
                 'list',
                 keyField: 'name',
                 valueField: 'name',
-                limit: 200
+                limit: 200,
             )
-            ->order(['name' => 'asc'])
+            ->orderBy(['name' => 'asc'])
             ->all();
         $tags = $this->QrCodes->Tags
             ->find('active')
@@ -205,9 +206,9 @@ class QrCodesController extends AppController
                 'list',
                 keyField: 'name',
                 valueField: 'name',
-                limit: 200
+                limit: 200,
             )
-            ->order(['name' => 'asc'])
+            ->orderBy(['name' => 'asc'])
             ->all();
 
         $this->set(compact('qrCodes', 'sources', 'tags'));

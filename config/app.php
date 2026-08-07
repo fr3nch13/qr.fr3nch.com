@@ -6,6 +6,11 @@ use Cake\Database\Driver\Mysql;
 use Cake\Log\Engine\FileLog;
 use Cake\Mailer\Transport\MailTransport;
 
+$defaultCachePrefix = 'cache/';
+$cakeCoreCachePrefix = 'cake_core/';
+$cakeModelCachePrefix = 'cake_model/';
+$cakeTranslationsCachePrefix = 'cake_translations/';
+
 return [
     /*
      * Debug Level:
@@ -101,7 +106,7 @@ return [
     'Cache' => [
         'default' => [
             'className' => FileEngine::class,
-            'path' => CACHE,
+            'prefix' => $defaultCachePrefix,
             'url' => env('CACHE_DEFAULT_URL', null),
         ],
 
@@ -113,8 +118,7 @@ return [
          */
         '_cake_core_' => [
             'className' => FileEngine::class,
-            'prefix' => 'myapp_cake_core_',
-            'path' => CACHE . 'persistent' . DS,
+            'prefix' => $cakeCoreCachePrefix,
             'serialize' => true,
             'duration' => '+1 years',
             'url' => env('CACHE_CAKECORE_URL', null),
@@ -128,11 +132,23 @@ return [
          */
         '_cake_model_' => [
             'className' => FileEngine::class,
-            'prefix' => 'myapp_cake_model_',
-            'path' => CACHE . 'models' . DS,
+            'prefix' => $cakeModelCachePrefix,
             'serialize' => true,
             'duration' => '+1 years',
             'url' => env('CACHE_CAKEMODEL_URL', null),
+        ],
+
+        /*
+         * Configure the cache for translation files. This cache configuration is used to store
+         * compiled translation files.
+         * Duration will be set to '+2 minutes' in bootstrap.php when debug = true
+         */
+        '_cake_translations_' => [
+            'className' => FileEngine::class,
+            'prefix' => $cakeTranslationsCachePrefix,
+            'serialize' => true,
+            'duration' => '+1 years',
+            'url' => env('CACHE_CAKETRANSLATION_URL', null),
         ],
     ],
 
@@ -150,11 +166,11 @@ return [
      * Options:
      *
      * - `errorLevel` - int - The level of errors you are interested in capturing.
-     * - `trace` - boolean - Whether or not backtraces should be included in
+     * - `trace` - boolean - Whether backtraces should be included in
      *   logged errors/exceptions.
-     * - `log` - boolean - Whether or not you want exceptions logged.
+     * - `log` - boolean - Whether you want exceptions logged.
      * - `exceptionRenderer` - string - The class responsible for rendering uncaught exceptions.
-     *   The chosen class will be used for for both CLI and web environments. If you want different
+     *   The chosen class will be used for both CLI and web environments. If you want different
      *   classes used in CLI and web environments you'll need to write that conditional logic as well.
      *   The conventional location for custom renderers is in `src/Error`. Your exception renderer needs to
      *   implement the `render()` method and return either a string or Http\Response.
@@ -287,6 +303,7 @@ return [
             'driver' => Mysql::class,
             'persistent' => false,
             'timezone' => 'UTC',
+            'url' => env('DATABASE_URL', null),
 
             /*
              * For MariaDB/MySQL the internal default changed from utf8 to utf8mb4, aka full utf-8 support, in CakePHP 3.6
@@ -330,6 +347,7 @@ return [
             'driver' => Mysql::class,
             'persistent' => false,
             'timezone' => 'UTC',
+            'url' => env('DATABASE_TEST_URL', null),
             //'encoding' => 'utf8mb4',
             'flags' => [],
             'cacheMetadata' => true,

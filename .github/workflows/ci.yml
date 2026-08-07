@@ -1,102 +1,434 @@
 name: CI
 
 on:
+  pull_request:
   push:
     branches:
       - main
-  pull_request:
-    branches:
+    tags:
       - '*'
+  schedule:
+    - cron: '0 6 * * 0'
   workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
 
+env:
+  DOMAIN: qr.fr3nch.com
+  PROJECT_NAME: qr-fr3nch-com
+  APP_HOST_PORT: "8081"
+  DOCKER_HUB_IMAGE_NAME: development
+  DOCKER_HUB_REPO: fr3nch13702/qr.fr3nch.com
+
 jobs:
-  testsuite:
-    runs-on: ubuntu-22.04
-    strategy:
-      fail-fast: false
-      matrix:
-        php-version: ['8.2', 'latest']
-        composer-options: ['']
+  resolve-source:
+    name: Resolve Source
+    runs-on: &default-runner ubuntu-24.04
+    outputs:
+      checkout-ref: ${{ steps.source.outputs.checkout_ref }}
+      release-tag: ${{ steps.source.outputs.release_tag }}
+      source-ref-name: ${{ steps.source.outputs.source_ref_name }}
 
     steps:
     - name: Git checkout
-      uses: actions/checkout@v4
-
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
+      uses: actions/checkout@v7
       with:
-        php-version: ${{ matrix.php-version }}
-        extensions: mbstring, intl, pdo_sqlite, xdebug
-        ini-values: zend.assertions=1
-        coverage: none
+        fetch-depth: 0
 
-    - name: Composer install
-      uses: ramsey/composer-install@v3
+    - name: Resolve source revision
+      id: source
+      shell: bash
+      run: |
+        set -euo pipefail
+
+        checkout_ref="${GITHUB_SHA}"
+        source_ref_name="${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}"
+        release_tag=""
+
+        if [[ "${GITHUB_EVENT_NAME}" == "schedule" ]]; then
+          git fetch origin main --tags --force
+
+          while IFS= read -r candidate; do
+            if [[ "${candidate}" =~ ^[0-9]{2}(0[1-9]|1[0-2])\.(0[1-9]|[12][0-9]|3[01])\.[1-9][0-9]*$ ]]; then
+              release_tag="${candidate}"
+              break
+            fi
+          done < <(git tag --merged origin/main --list --sort=-version:refname)
+
+          if [[ -z "${release_tag}" ]]; then
+            echo "No valid release tag merged into main was found." >&2
+            exit 1
+          fi
+        elif [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+          release_tag="${GITHUB_REF_NAME}"
+        fi
+
+        if [[ -n "${release_tag}" ]]; then
+          if [[ ! "${release_tag}" =~ ^[0-9]{2}(0[1-9]|1[0-2])\.(0[1-9]|[12][0-9]|3[01])\.[1-9][0-9]*$ ]]; then
+            echo "Release tag must match yymm.dd.<patch>, for example 2608.04.1." >&2
+            exit 1
+          fi
+
+          git fetch origin main --tags --force
+          release_commit="$(git rev-parse "${release_tag}^{commit}")"
+          if ! git merge-base --is-ancestor "${release_commit}" origin/main; then
+            echo "Release tags must point to a commit on main." >&2
+            exit 1
+          fi
+
+          checkout_ref="refs/tags/${release_tag}"
+          source_ref_name="${release_tag}"
+        fi
+
+        {
+          echo "checkout_ref=${checkout_ref}"
+          echo "release_tag=${release_tag}"
+          echo "source_ref_name=${source_ref_name}"
+        } >> "${GITHUB_OUTPUT}"
+
+  build-development-image:
+    name: Build Development Image
+    runs-on: *default-runner
+    needs: resolve-source
+    outputs:
+      image-tag: ${{ steps.meta.outputs.image_tag }}
+
+    steps:
+    - name: Git checkout
+      uses: actions/checkout@v7
       with:
-        composer-options: ${{ matrix.composer-options }}
+        ref: ${{ needs.resolve-source.outputs.checkout-ref }}
 
-    - name: Composer post install
-      run: composer run-script post-install-cmd --no-interaction
+    - name: Compute image tag
+      id: meta
+      shell: bash
+      env:
+        SOURCE_REF_NAME: ${{ needs.resolve-source.outputs.source-ref-name }}
+      run: |
+        MY_SAFE_REF="$(echo "${SOURCE_REF_NAME}" | tr '[:upper:]' '[:lower:]' | sed 's#[^a-z0-9._-]#-#g')"
+        echo "image_tag=${MY_SAFE_REF}" >> "$GITHUB_OUTPUT"
+        echo "cache_scope=${DOCKER_HUB_IMAGE_NAME}-${MY_SAFE_REF}" >> "$GITHUB_OUTPUT"
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v4
+
+    - name: Build development image
+      uses: docker/build-push-action@v7
+      with:
+        context: .
+        target: development
+        load: true
+        tags: ${{ env.DOCKER_HUB_IMAGE_NAME }}:${{ steps.meta.outputs.image_tag }}
+        no-cache: ${{ github.event_name == 'schedule' }}
+        cache-from: type=gha,scope=${{ steps.meta.outputs.cache_scope }}
+        cache-to: type=gha,mode=max,scope=${{ steps.meta.outputs.cache_scope }}
+
+    - name: Export development image
+      run: |
+        docker save "${DOCKER_HUB_IMAGE_NAME}:${{ steps.meta.outputs.image_tag }}" \
+          --output /tmp/development-image.tar
+
+    - name: Upload development image artifact
+      uses: actions/upload-artifact@v7
+      with:
+        name: development-image-${{ steps.meta.outputs.image_tag }}
+        path: /tmp/development-image.tar
+        retention-days: 1
+
+  quality:
+    name: Code Standards and Static Analysis
+    runs-on: *default-runner
+    needs:
+      - resolve-source
+      - build-development-image
+
+    steps:
+    - name: Git checkout
+      uses: actions/checkout@v7
+      with:
+        ref: ${{ needs.resolve-source.outputs.checkout-ref }}
+
+    - name: Run checks
+      uses: ./.github/actions/run-in-development-image
+      with:
+        image-name: ${{ env.DOCKER_HUB_IMAGE_NAME }}
+        image-tag: ${{ needs.build-development-image.outputs.image-tag }}
+        command: >-
+          composer validate --strict &&
+          composer run-script actionlint &&
+          composer run-script deploy-test &&
+          composer run-script cs-check &&
+          composer run-script phpstan
+
+  testsuite:
+    name: PHPUnit
+    runs-on: *default-runner
+    needs:
+      - resolve-source
+      - build-development-image
+
+    steps:
+    - name: Git checkout
+      uses: actions/checkout@v7
+      with:
+        ref: ${{ needs.resolve-source.outputs.checkout-ref }}
 
     - name: Run PHPUnit
-      run: composer test
-      env:
-        DATABASE_TEST_URL: sqlite://./testdb.sqlite
-
-  coding-standard:
-    name: Coding Standard & Static Analysis
-    runs-on: ubuntu-22.04
-
-    steps:
-    - name: Git checkout
-      uses: actions/checkout@v4
-
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
+      uses: ./.github/actions/run-in-development-image
       with:
-        php-version: '8.2'
-        extensions: mbstring, intl
-        coverage: none
-        tools: cs2pr, phpstan:1.10
-
-    - name: Composer install
-      uses: ramsey/composer-install@v3
-
-    - name: Run PHP CodeSniffer
-      run: vendor/bin/phpcs --report=checkstyle | cs2pr
-
-    - name: Run phpstan
-      if: always()
-      run: phpstan
+        image-name: ${{ env.DOCKER_HUB_IMAGE_NAME }}
+        image-tag: ${{ needs.build-development-image.outputs.image-tag }}
+        command: composer run-script test
 
   coverage-php:
     name: Code Coverage
-    runs-on: ubuntu-22.04
+    runs-on: *default-runner
+    needs:
+      - resolve-source
+      - build-development-image
 
     steps:
     - name: Git checkout
-      uses: actions/checkout@v4
-
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
+      uses: actions/checkout@v7
       with:
-        php-version: '8.2'
-        extensions: mbstring, intl
-        coverage: pcov
-
-    - name: Composer install
-      uses: ramsey/composer-install@v3
+        ref: ${{ needs.resolve-source.outputs.checkout-ref }}
 
     - name: Run PHPUnit
-      run:  composer run-script coverage-clover
+      uses: ./.github/actions/run-in-development-image
+      with:
+        image-name: ${{ env.DOCKER_HUB_IMAGE_NAME }}
+        image-tag: ${{ needs.build-development-image.outputs.image-tag }}
+        command: composer run-script coverage-clover
 
     - name: Upload to Codecov
-      uses: codecov/codecov-action@v4
+      uses: codecov/codecov-action@v7
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       with:
         files: ./tmp/coverage.xml
         verbose: true
+
+  assets:
+    name: Asset Build
+    runs-on: *default-runner
+    needs:
+      - resolve-source
+      - build-development-image
+
+    steps:
+    - name: Git checkout
+      uses: actions/checkout@v7
+      with:
+        ref: ${{ needs.resolve-source.outputs.checkout-ref }}
+
+    - name: Build assets
+      uses: ./.github/actions/run-in-development-image
+      with:
+        image-name: ${{ env.DOCKER_HUB_IMAGE_NAME }}
+        image-tag: ${{ needs.build-development-image.outputs.image-tag }}
+        command: composer run-script assets:install
+        install-composer-dependencies: 'false'
+
+  publish-production-image:
+    name: Build and Publish Production Image
+    if: >-
+      success() &&
+      needs.resolve-source.outputs.release-tag != ''
+    runs-on: *default-runner
+    outputs:
+      image-tag: ${{ steps.image-meta.outputs.image_tag }}
+    needs:
+      - resolve-source
+      - quality
+      - testsuite
+      - coverage-php
+      - assets
+
+    steps:
+    - name: Git checkout
+      uses: actions/checkout@v7
+      with:
+        ref: ${{ needs.resolve-source.outputs.checkout-ref }}
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v4
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v4
+
+    - name: Compute image tags and labels
+      id: image-meta
+      shell: bash
+      env:
+        RELEASE_TAG: ${{ needs.resolve-source.outputs.release-tag }}
+      run: |
+        image_tag="${RELEASE_TAG}"
+        {
+          echo "image_tag=${image_tag}"
+          echo 'docker_tags<<EOF'
+          echo "${DOCKER_HUB_REPO}:latest"
+          echo "${DOCKER_HUB_REPO}:${image_tag}"
+          echo 'EOF'
+        } >> "${GITHUB_OUTPUT}"
+
+    - name: Docker - Build and push production image
+      id: publish-image
+      uses: docker/build-push-action@v7
+      with:
+        context: .
+        target: production
+        push: true
+        tags: ${{ steps.image-meta.outputs.docker_tags }}
+        no-cache: ${{ github.event_name == 'schedule' }}
+
+    - name: Summarize published image
+      shell: bash
+      run: |
+        {
+          echo "## Published Production Image"
+          echo
+          echo "- Repository: ${DOCKER_HUB_REPO}"
+          echo "- Digest: ${{ steps.publish-image.outputs.digest }}"
+          echo "- Release tag: ${{ steps.image-meta.outputs.image_tag }}"
+        } >> "${GITHUB_STEP_SUMMARY}"
+
+  deploy-lightsail-instance:
+    name: Deploy Lightsail Instance
+    needs:
+      - resolve-source
+      - publish-production-image
+    runs-on: *default-runner
+    environment: production
+    env:
+      IMAGE_TAG: ${{ needs.publish-production-image.outputs.image-tag }}
+      APP_CONTAINER_PORT: "8080"
+      LOCK_PATH: /var/lock/fr3nch-deploy.lock
+      DEBUG: "false"
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      SECURITY_SALT: ${{ secrets.SECURITY_SALT }}
+      CERTBOT_EMAIL: ${{ vars.CERTBOT_EMAIL }}
+      EMAIL_TRANSPORT_DEFAULT_URL: ${{ secrets.EMAIL_TRANSPORT_DEFAULT_URL }}
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+      DEPLOY_HOST: ${{ vars.DEPLOY_HOST }}
+      DEPLOY_USER: ${{ vars.DEPLOY_USER }}
+
+    steps:
+    - name: Git checkout
+      uses: actions/checkout@v7
+      with:
+        ref: ${{ needs.resolve-source.outputs.checkout-ref }}
+
+    - name: Configure SSH material
+      shell: bash
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
+      run: |
+        set -euo pipefail
+        if [[ -z "${DEPLOY_HOST}" ]]; then
+          echo "DEPLOY_HOST is required to derive the SSH known_hosts entry." >&2
+          exit 1
+        fi
+
+        install -d -m 700 "$HOME/.ssh"
+        printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+        chmod 600 "$HOME/.ssh/id_ed25519"
+        ssh-keyscan -H "$DEPLOY_HOST" > "$HOME/.ssh/known_hosts"
+        chmod 600 "$HOME/.ssh/known_hosts"
+
+    - name: Render deployment bundle
+      shell: bash
+      run: |
+        set -euo pipefail
+        if [[ -z "${DEPLOY_HOST}" || -z "${DEPLOY_USER}" || -z "${DOCKER_HUB_REPO}" ]]; then
+          echo "Required deployment variables are missing. Set DEPLOY_HOST, DEPLOY_USER, and DOCKER_HUB_REPO in the production environment variables." >&2
+          exit 1
+        fi
+
+        stage_dir="$RUNNER_TEMP/${PROJECT_NAME}-deploy"
+        rm -rf "$stage_dir"
+        mkdir -p "$stage_dir"
+
+        sh deploy/render-artifacts.sh "$stage_dir"
+        cp deploy/files/bootstrap-host.sh "$stage_dir/bootstrap-host.sh"
+        cp deploy/files/certbot-renew.service "$stage_dir/certbot-renew.service"
+        cp deploy/files/certbot-renew.timer "$stage_dir/certbot-renew.timer"
+        cp deploy/files/deploy-container.sh "$stage_dir/deploy-container.sh"
+
+        {
+          echo "STAGE_DIR=$stage_dir"
+          echo "REMOTE_STAGE_DIR=/tmp/${PROJECT_NAME}-deploy-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+        } >> "$GITHUB_ENV"
+
+    - name: Upload deployment bundle
+      shell: bash
+      run: |
+        set -euo pipefail
+        ssh "$DEPLOY_USER@$DEPLOY_HOST" "rm -rf '$REMOTE_STAGE_DIR' && mkdir -p '$REMOTE_STAGE_DIR'"
+        scp \
+          "$STAGE_DIR/application.env" \
+          "$STAGE_DIR/bootstrap-host.sh" \
+          "$STAGE_DIR/certbot-renew.service" \
+          "$STAGE_DIR/certbot-renew.timer" \
+          "$STAGE_DIR/compose.yaml" \
+          "$STAGE_DIR/deploy-container.sh" \
+          "$STAGE_DIR/nginx-bootstrap.conf" \
+          "$STAGE_DIR/nginx-server.conf" \
+          "$STAGE_DIR/runtime.env" \
+          "$DEPLOY_USER@$DEPLOY_HOST:$REMOTE_STAGE_DIR/"
+
+    - name: Run remote deployment
+      shell: bash
+      run: |
+        set -euo pipefail
+        ssh "$DEPLOY_USER@$DEPLOY_HOST" \
+          "sudo /bin/sh -eu -c '. \"$REMOTE_STAGE_DIR/runtime.env\" && \"$REMOTE_STAGE_DIR/bootstrap-host.sh\" \"$REMOTE_STAGE_DIR\"'"
+
+    - name: Verify public HTTPS endpoint
+      shell: bash
+      run: |
+        set -euo pipefail
+        public_healthcheck_url="https://${DOMAIN}${HEALTHCHECK_PATH:-/}"
+        attempt=1
+        max_attempts=10
+
+        while [[ "$attempt" -le "$max_attempts" ]]; do
+          if curl --silent --show-error --location --fail --max-time 8 "$public_healthcheck_url" >/dev/null 2>&1; then
+            exit 0
+          fi
+
+          if [[ "$attempt" -eq "$max_attempts" ]]; then
+            echo "::warning title=Public HTTPS check failed::Unable to reach $public_healthcheck_url after deployment. The internal health check passed; verify DNS, TLS, and the reverse proxy."
+            exit 0
+          fi
+
+          attempt=$((attempt + 1))
+          sleep 6
+        done
+
+    - name: Deployment summary
+      shell: bash
+      run: |
+        {
+          echo "## Deployment"
+          echo
+          echo "- Domain: $DOMAIN"
+          echo "- Image repo: $DOCKER_HUB_REPO"
+          echo "- Image tag: $IMAGE_TAG"
+          echo "- App root: /opt/$PROJECT_NAME"
+          echo "- App host port: $APP_HOST_PORT"
+        } >> "$GITHUB_STEP_SUMMARY"
+
+    - name: Cleanup SSH material
+      if: always()
+      shell: bash
+      run: |
+        rm -f "$HOME/.ssh/id_ed25519" "$HOME/.ssh/known_hosts"

@@ -42,7 +42,7 @@ class JsonTest extends BaseControllerTest
     public function testQrCode(): void
     {
         $this->requestAsJson();
-        $this->get('https://localhost/admin/qr-images/qr-code/1.json');
+        $this->get('http://localhost:8080/admin/qr-images/qr-code/1.json');
         $this->assertResponseOk();
 
         $content = (string)$this->_response->getBody();
@@ -69,7 +69,7 @@ class JsonTest extends BaseControllerTest
     {
         // a get
         $this->requestAsJson();
-        $this->get('https://localhost/admin/qr-images/add/1.json');
+        $this->get('http://localhost:8080/admin/qr-images/add/1.json');
         $this->assertResponseOk();
         $content = (string)$this->_response->getBody();
         $content = json_decode($content, true);
@@ -95,7 +95,7 @@ class JsonTest extends BaseControllerTest
     public function testAddNoFiles(): void
     {
         // a post fail
-        $this->post('https://localhost/admin/qr-images/add/1.json', [
+        $this->post('http://localhost:8080/admin/qr-images/add/1.json', [
         ]);
 
         $this->assertResponseOk();
@@ -135,7 +135,7 @@ class JsonTest extends BaseControllerTest
         ];
         $images = $this->helperTestUploads($imagePaths, 'newimages', UPLOAD_ERR_NO_FILE);
 
-        $this->post('https://localhost/admin/qr-images/add/1.json', [
+        $this->post('http://localhost:8080/admin/qr-images/add/1.json', [
             'newimages' => $images,
         ]);
         $this->assertResponseOk();
@@ -176,10 +176,10 @@ class JsonTest extends BaseControllerTest
         $images = $this->helperTestUploads($imagePaths, 'newimages');
 
         // test success
-        $this->post('https://localhost/admin/qr-images/add/1.json', [
+        $this->post('http://localhost:8080/admin/qr-images/add/1.json', [
             'newimages' => $images,
         ]);
-        $this->assertRedirectEquals('https://localhost/admin/qr-images/qr-code/1.json');
+        $this->assertRedirectEquals('/admin/qr-images/qr-code/1.json');
         $this->assertFlashMessage('The images have been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }
@@ -194,7 +194,7 @@ class JsonTest extends BaseControllerTest
     {
         // test with admin, get
         $this->loginUserAdmin();
-        $this->get('https://localhost/admin/qr-images/edit/1.json');
+        $this->get('http://localhost:8080/admin/qr-images/edit/1.json');
         $this->assertResponseOk();
         $content = (string)$this->_response->getBody();
         $content = json_decode($content, true);
@@ -207,13 +207,13 @@ class JsonTest extends BaseControllerTest
         $this->assertTrue(empty($content['errors']));
 
         // a put success
-        $this->put('https://localhost/admin/qr-images/edit/1.json', [
+        $this->put('http://localhost:8080/admin/qr-images/edit/1.json', [
             'name' => 'New JSON QR Code',
         ]);
         $content = (string)$this->_response->getBody();
         $content = json_decode($content, true);
 
-        $this->assertRedirectEquals('https://localhost/admin/qr-images/qr-code/1.json');
+        $this->assertRedirectEquals('/admin/qr-images/qr-code/1.json');
         $this->assertFlashMessage('The image has been saved.', 'flash');
         $this->assertFlashElement('flash/success');
     }

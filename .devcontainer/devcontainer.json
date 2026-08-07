@@ -1,0 +1,65 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/php-mariadb
+{
+    "name": "qr.fr3nch.com",
+    "build": {
+        "dockerfile": "../Dockerfile",
+        "target": "devcontainer"
+    },
+    "runArgs": [
+        "--env-file",
+        "${localWorkspaceFolder}/config/.env",
+        "-p",
+        "8081:8080"
+    ],
+    "mounts": [
+        "source=qr-root-config,target=/root/.config,type=volume",
+        "source=qr-root-aws,target=/root/.aws,type=volume",
+        "source=qr-codex,target=/root/.codex,type=volume",
+        "source=qr-hermes,target=/root/.hermes,type=volume"
+    ],
+    "overrideCommand": false,
+    "workspaceMount": "source=${localWorkspaceFolder},target=/var/www/html,type=bind,consistency=cached",
+    "workspaceFolder": "/var/www/html",
+
+    // Features to add to the dev container. More info: https://containers.dev/features.
+    "features": {
+        "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+            "moby": false
+        }
+    },
+
+    // Apache listens on port 8080 in the container.
+    "forwardPorts": [8080],
+    "portsAttributes": {
+        "8080": {
+            "label": "Apache",
+            "requireLocalPort": true
+        }
+    },
+
+    // Configure Apache to serve CakePHP's public webroot after the workspace mounts.
+
+    // Configure tool-specific properties.
+    // "customizations": {},
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "xdebug.php-debug",
+                "bmewburn.vscode-intelephense-client",
+                "junstyle.php-cs-fixer",
+                "neilbrayfield.php-docblocker",
+                "MehediDracula.php-namespace-resolver",
+                "joaompfp.hermes-ai-agent",
+                "openai.chatgpt"
+            ]
+        }
+    },
+    "waitFor": "postCreateCommand",
+    "postCreateCommand": "bash .devcontainer/post_create.sh",
+    "postStartCommand": "bash .devcontainer/post_start.sh"
+
+
+    // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+    // "remoteUser": "root"
+}

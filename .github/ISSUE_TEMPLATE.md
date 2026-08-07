@@ -4,7 +4,7 @@ This is a (multiple allowed):
 * [ ] enhancement
 * [ ] feature-discussion (RFC)
 
-* QR Application Version: EXACT RELEASE VERSION OR COMMIT HASH, HERE.
+* Application Version: EXACT RELEASE VERSION OR COMMIT HASH, HERE.
 * Platform and Target: YOUR WEB-SERVER, DATABASE AND OTHER RELEVANT INFO AND HOW THE REQUEST IS BEING MADE, HERE.
 
 ### What you did
