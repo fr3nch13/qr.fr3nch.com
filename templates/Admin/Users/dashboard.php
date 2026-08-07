@@ -2,6 +2,7 @@
 /**
  * @var \App\View\AppView $this
  * @var iterable<\App\Model\Entity\User> $users
+ * @var array<string, int> $stats
  */
 
 if (!$this->getRequest()->is('ajax')) {

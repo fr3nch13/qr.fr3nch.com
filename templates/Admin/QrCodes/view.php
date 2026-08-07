@@ -3,6 +3,7 @@ use Cake\Core\Configure;
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\QrCode $qrCode
+ * @var array<string, int> $stats
  */
 
 if (!$this->getRequest()->is('ajax')) {

@@ -16,7 +16,7 @@ declare(strict_types=1);
  */
 namespace App\Controller;
 
-use App\View\AppView;
+use Cake\Core\Configure;
 use Cake\Event\EventInterface;
 
 /**
@@ -27,19 +27,19 @@ use Cake\Event\EventInterface;
 class ErrorController extends AppController
 {
     /**
-     * Configure error rendering without loading request-only components.
+     * Initialization hook method.
      *
      * @return void
      */
     public function initialize(): void
     {
-        $this->viewBuilder()->setClassName(AppView::class);
+        // Only add parent::initialize() if you are confident your appcontroller is safe.
     }
 
     /**
-     * Skip application authorization while rendering an existing exception.
+     * beforeFilter callback.
      *
-     * @param \Cake\Event\EventInterface<\Cake\Controller\Controller> $event Event.
+    * @param EventInterface<\Cake\Controller\Controller> $event Event.
      * @return void
      */
     public function beforeFilter(EventInterface $event): void
@@ -49,7 +49,7 @@ class ErrorController extends AppController
     /**
      * beforeRender callback.
      *
-     * @param \Cake\Event\EventInterface<\Cake\Controller\Controller> $event Event.
+    * @param EventInterface<\Cake\Controller\Controller> $event Event.
      * @return void
      */
     public function beforeRender(EventInterface $event): void
@@ -57,5 +57,20 @@ class ErrorController extends AppController
         parent::beforeRender($event);
 
         $this->viewBuilder()->setTemplatePath('Error');
+
+        $this->viewBuilder()->setLayout('error');
+        if (Configure::read('debug')) {
+            $this->viewBuilder()->setLayout('dev_error');
+        }
+    }
+
+    /**
+     * afterFilter callback.
+     *
+    * @param EventInterface<\Cake\Controller\Controller> $event Event.
+     * @return void
+     */
+    public function afterFilter(EventInterface $event): void
+    {
     }
 }

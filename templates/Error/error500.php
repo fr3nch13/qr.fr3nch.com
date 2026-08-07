@@ -8,16 +8,14 @@
 use Cake\Core\Configure;
 use Cake\Error\Debugger;
 
-$this->layout = 'error';
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <?php
+
+$this->assign('title', $message);
+$this->assign('errorType', '500');
+
 if (Configure::read('debug')) :
-    $this->layout = 'dev_error';
-
-    $this->assign('title', $message);
-    $this->assign('templateName', 'error500.php');
-
     $this->start('file');
     ?>
 
@@ -49,7 +47,7 @@ endif;
 
 <h1 class="display-2"><?= h($message) ?></h1>
 <p>
-    <strong><?= __d('cake', 'Error') ?>: <?=$code ?></strong>
+    <strong><?= __d('cake', 'Error') ?>: </strong>
     <?= h($message) ?>
 </p>
 

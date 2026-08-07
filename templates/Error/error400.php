@@ -8,17 +8,14 @@
 use Cake\Core\Configure;
 use Cake\Error\Debugger;
 
-$this->layout = 'error';
 ?>
 <?= $this->Template->templateComment(true, __FILE__); ?>
 <?php
 
+$this->assign('title', $message);
+$this->assign('errorType', '400');
+
 if (Configure::read('debug')) :
-    $this->layout = 'dev_error';
-
-    $this->assign('title', $message);
-    $this->assign('templateName', 'error400.php');
-
     $this->start('file');
     ?>
     <?php if (!empty($error->queryString)) : ?>
@@ -40,7 +37,7 @@ endif;
 ?>
 <h1 class="display-2"><?= h($message) ?></h1>
 <p>
-    <strong><?= __d('cake', 'Error') ?>: <?=$code ?></strong>
+    <strong><?= __d('cake', 'Error') ?>: </strong>
     <?= __d('cake', 'The requested address {0} was not found.', "<strong>'{$url}'</strong>") ?>
 </p>
 <?= $this->Template->templateComment(false, __FILE__); ?>
