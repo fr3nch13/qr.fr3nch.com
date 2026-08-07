@@ -15,6 +15,7 @@ node_modules/
 logs/
 tmp/
 webroot/assets/
+*.sqlite
 
 # Local configuration and test artifacts
 config/app_local.php
@@ -25,7 +26,6 @@ config/.env.*
 !config/.env.example
 pushover-config
 .phpunit.cache/
-testdb.sqlite
 config/Migrations/schema-dump-default.lock
 
 # Operating system and editor files

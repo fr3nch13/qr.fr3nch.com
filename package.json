@@ -5,7 +5,7 @@
     "node": ">=18"
   },
   "scripts": {
-    "build": "node scripts/build-assets.mjs"
+    "build": "node resources/scripts/build-assets.mjs"
   },
   "dependencies": {
     "aos": "^2.3.4",

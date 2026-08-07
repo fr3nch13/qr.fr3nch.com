@@ -40,9 +40,10 @@ env \
     DATABASE_URL=sqlite:////var/www/html/tmp/prod.sqlite \
     SECURITY_SALT=test-salt \
     CERTBOT_EMAIL=admin@example.com \
-    sh "$repo_root/deploy/render-artifacts.sh" "$render_dir"
+    sh "$repo_root/resources/deploy/render-artifacts.sh" "$render_dir"
 
 grep -F 'add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" always;' "$render_dir/nginx-server.conf" >/dev/null
+grep -F '    http2 on;' "$render_dir/nginx-server.conf" >/dev/null
 grep -F '    volumes: ["./tmp:/var/www/html/tmp:Z", "./logs:/var/www/html/logs:Z"]' "$render_dir/compose.yaml" >/dev/null
 
 printf '%s\n' old-compose > "$app_root/compose.yaml"
@@ -53,10 +54,10 @@ printf '%s\n' new-compose > "$stage_dir/compose.yaml"
 printf '%s\n' new-env > "$stage_dir/application.env"
 printf '%s\n' new-http-nginx > "$stage_dir/nginx-bootstrap.conf"
 printf '%s\n' new-nginx > "$stage_dir/nginx-server.conf"
-cp "$repo_root/deploy/files/certbot-renew.service" "$stage_dir/certbot-renew.service"
-cp "$repo_root/deploy/files/certbot-renew.timer" "$stage_dir/certbot-renew.timer"
+cp "$repo_root/resources/deploy/files/certbot-renew.service" "$stage_dir/certbot-renew.service"
+cp "$repo_root/resources/deploy/files/certbot-renew.timer" "$stage_dir/certbot-renew.timer"
 sed 's/max_attempts=10/max_attempts=1/g' \
-    "$repo_root/deploy/files/deploy-container.sh" > "$stage_dir/deploy-container.sh"
+    "$repo_root/resources/deploy/files/deploy-container.sh" > "$stage_dir/deploy-container.sh"
 
 cat > "$certbot_root/bin/pip" <<'EOF'
 #!/bin/sh
@@ -173,7 +174,7 @@ sed \
     -e "s|\^/opt/|^$test_root/opt/|" \
     -e "s|stage_prefix=\"/tmp/\${PROJECT_NAME}-deploy-\"|stage_prefix=\"$test_root/tmp/\${PROJECT_NAME}-deploy-\"|" \
     -e 's|max_attempts=10|max_attempts=1|g' \
-    "$repo_root/deploy/files/bootstrap-host.sh" > "$test_root/bootstrap-host.sh"
+    "$repo_root/resources/deploy/files/bootstrap-host.sh" > "$test_root/bootstrap-host.sh"
 chmod 755 "$test_root/bootstrap-host.sh"
 
 if env \

@@ -6,7 +6,7 @@ set -eu
 # Why this exists:
 # - Verifies the app can serve an HTTP request from inside the container, not
 #   just that the Apache process is running.
-# - Uses `/users/login` because it is unauthenticated and expected to return
+# - Uses `/` because it is unauthenticated and expected to return
 #   either 200 (ok) or 302 (redirect), both of which indicate the app stack is
 #   responsive.
 #
@@ -24,7 +24,7 @@ $ctx = stream_context_create([
     ],
 ]);
 
-$headers = @get_headers("http://127.0.0.1:8080/users/login", false, $ctx);
+$headers = @get_headers("http://127.0.0.1:8080/", false, $ctx);
 if (!is_array($headers) || !isset($headers[0])) {
     exit(1);
 }
