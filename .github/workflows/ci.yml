@@ -338,11 +338,11 @@ jobs:
           exit 1
         fi
 
-        install -d -m 700 "$HOME/.ssh"
-        printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
-        chmod 600 "$HOME/.ssh/id_ed25519"
-        ssh-keyscan -H "$DEPLOY_HOST" > "$HOME/.ssh/known_hosts"
-        chmod 600 "$HOME/.ssh/known_hosts"
+        install -d -m 700 "$HOME/.ssh" || { echo "Failed to create $HOME/.ssh" >&2; exit 1; }
+        printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519" || { echo "Failed to write SSH private key" >&2; exit 1; }
+        chmod 600 "$HOME/.ssh/id_ed25519" || { echo "Failed to chmod SSH private key" >&2; exit 1; }
+        ssh-keyscan -H "$DEPLOY_HOST" > "$HOME/.ssh/known_hosts" || { echo "ssh-keyscan failed for $DEPLOY_HOST" >&2; exit 1; }
+        chmod 600 "$HOME/.ssh/known_hosts" || { echo "Failed to chmod known_hosts" >&2; exit 1; }
 
     - name: Render deployment bundle
       shell: bash
