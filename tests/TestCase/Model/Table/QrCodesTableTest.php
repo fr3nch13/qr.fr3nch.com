@@ -46,6 +46,21 @@ class QrCodesTableTest extends TestCase
     ];
 
     /**
+     * Checks if a file is readable at call time.
+     *
+     * Wrapped so static analysis doesn't narrow the result across file creation/deletion.
+     *
+     * @param string $path The file path.
+     * @return bool
+     */
+    private function fileIsReadable(string $path): bool
+    {
+        clearstatcache(true, $path);
+
+        return is_readable($path);
+    }
+
+    /**
      * setUp method
      *
      * @return void
@@ -427,21 +442,21 @@ class QrCodesTableTest extends TestCase
         if (file_exists($path_color)) {
             unlink($path_color);
         }
-        $this->assertFalse(is_readable($path_color));
+        $this->assertFalse($this->fileIsReadable($path_color));
 
         // dark path
         $path_dark = Configure::read('App.paths.qr_codes') . DS . '1-' . $dark . '.svg';
         if (file_exists($path_dark)) {
             unlink($path_dark);
         }
-        $this->assertFalse(is_readable($path_dark));
+        $this->assertFalse($this->fileIsReadable($path_dark));
 
         // light path
         $path_light = Configure::read('App.paths.qr_codes') . DS . '1-' . $light . '.svg';
         if (file_exists($path_light)) {
             unlink($path_light);
         }
-        $this->assertFalse(is_readable($path_light));
+        $this->assertFalse($this->fileIsReadable($path_light));
 
         // entity 1 has a color set
         $entity = $this->QrCodes->get(1);
@@ -449,32 +464,32 @@ class QrCodesTableTest extends TestCase
         // color created
         // $entity->path will trigger the creation of the code file
         $this->assertSame($path_color, $entity->path);
-        $this->assertTrue(is_readable($path_color));
+        $this->assertTrue($this->fileIsReadable($path_color));
 
         // dark created
         $this->assertSame($path_dark, $entity->path_dark);
-        $this->assertTrue(is_readable($path_dark));
+        $this->assertTrue($this->fileIsReadable($path_dark));
 
         // light created
         $this->assertSame($path_light, $entity->path_light);
-        $this->assertTrue(is_readable($path_light));
-        $this->assertTrue(is_readable($path_light));
+        $this->assertTrue($this->fileIsReadable($path_light));
+        $this->assertTrue($this->fileIsReadable($path_light));
 
         // test the AfterSave and regenerate
         unlink($path_color);
         unlink($path_dark);
         unlink($path_light);
 
-        $this->assertFalse(is_readable($path_color));
-        $this->assertFalse(is_readable($path_dark));
-        $this->assertFalse(is_readable($path_light));
+        $this->assertFalse($this->fileIsReadable($path_color));
+        $this->assertFalse($this->fileIsReadable($path_dark));
+        $this->assertFalse($this->fileIsReadable($path_light));
 
         $entity->name = 'Updated Name';
         $this->QrCodes->save($entity);
 
-        $this->assertTrue(is_readable($path_color));
-        $this->assertTrue(is_readable($path_dark));
-        $this->assertTrue(is_readable($path_light));
+        $this->assertTrue($this->fileIsReadable($path_color));
+        $this->assertTrue($this->fileIsReadable($path_dark));
+        $this->assertTrue($this->fileIsReadable($path_light));
     }
 
     /**
@@ -495,23 +510,23 @@ class QrCodesTableTest extends TestCase
         if (file_exists($path_dark)) {
             unlink($path_dark);
         }
-        $this->assertFalse(is_readable($path_dark));
+        $this->assertFalse($this->fileIsReadable($path_dark));
         $path_light = Configure::read('App.paths.qr_codes') . DS . '3-' . $light . '.svg';
         if (file_exists($path_light)) {
             unlink($path_light);
         }
-        $this->assertFalse(is_readable($path_light));
+        $this->assertFalse($this->fileIsReadable($path_light));
 
         $entity = $this->QrCodes->get(3);
 
         $this->assertSame($path_dark, $entity->path);
-        $this->assertTrue(is_readable($path_dark));
+        $this->assertTrue($this->fileIsReadable($path_dark));
 
         $this->assertSame($path_dark, $entity->path_dark);
-        $this->assertTrue(is_readable($path_dark));
+        $this->assertTrue($this->fileIsReadable($path_dark));
 
         $this->assertSame($path_light, $entity->path_light);
-        $this->assertTrue(is_readable($path_light));
+        $this->assertTrue($this->fileIsReadable($path_light));
     }
 
     /**
@@ -529,12 +544,12 @@ class QrCodesTableTest extends TestCase
         if (file_exists($path_dark)) {
             unlink($path_dark);
         }
-        $this->assertFalse(is_readable($path_dark));
+        $this->assertFalse($this->fileIsReadable($path_dark));
         $path_light = Configure::read('App.paths.qr_codes') . DS . '6-' . $light . '.svg';
         if (file_exists($path_light)) {
             unlink($path_light);
         }
-        $this->assertFalse(is_readable($path_light));
+        $this->assertFalse($this->fileIsReadable($path_light));
 
         $entity = $this->QrCodes->newEntity([
             'qrkey' => 'newentity6',
@@ -551,8 +566,8 @@ class QrCodesTableTest extends TestCase
 
         // save the new entity
         $this->QrCodes->save($entity);
-        $this->assertTrue(is_readable($path_dark));
-        $this->assertTrue(is_readable($path_light));
+        $this->assertTrue($this->fileIsReadable($path_dark));
+        $this->assertTrue($this->fileIsReadable($path_light));
     }
 
     /**
@@ -575,12 +590,12 @@ class QrCodesTableTest extends TestCase
         if (file_exists($path_dark)) {
             unlink($path_dark);
         }
-        $this->assertFalse(is_readable($path_dark));
+        $this->assertFalse($this->fileIsReadable($path_dark));
         $path_light = Configure::read('App.paths.qr_codes') . DS . '6-' . $light . '.svg';
         if (file_exists($path_light)) {
             unlink($path_light);
         }
-        $this->assertFalse(is_readable($path_light));
+        $this->assertFalse($this->fileIsReadable($path_light));
 
         $entity = $this->QrCodes->newEntity([
             'qrkey' => 'newentity7',
@@ -599,8 +614,8 @@ class QrCodesTableTest extends TestCase
         $this->expectException(InternalErrorException::class);
         $this->expectExceptionMessage('Unable to create Default QR Codes.');
         $this->QrCodes->save($entity);
-        $this->assertFalse(is_readable($path_dark));
-        $this->assertFalse(is_readable($path_light));
+        $this->assertFalse($this->fileIsReadable($path_dark));
+        $this->assertFalse($this->fileIsReadable($path_light));
         $this->assertNull($entity->path);
         $this->assertNull($entity->path_dark);
         $this->assertNull($entity->path_light);
@@ -624,7 +639,7 @@ class QrCodesTableTest extends TestCase
         if (file_exists($path_color)) {
             unlink($path_color);
         }
-        $this->assertFalse(is_readable($path_color));
+        $this->assertFalse($this->fileIsReadable($path_color));
 
         $entity = $this->QrCodes->newEntity([
             'qrkey' => 'newentity7',
@@ -644,7 +659,7 @@ class QrCodesTableTest extends TestCase
         $this->expectException(InternalErrorException::class);
         $this->expectExceptionMessage('Unable to create Color QR Code.');
         $this->QrCodes->save($entity);
-        $this->assertFalse(is_readable($path_color));
+        $this->assertFalse($this->fileIsReadable($path_color));
         $this->assertNull($entity->path);
         Configure::write('App.paths.qr_codes', $originalPath);
     }
@@ -664,12 +679,12 @@ class QrCodesTableTest extends TestCase
         if (file_exists($path_dark)) {
             unlink($path_dark);
         }
-        $this->assertFalse(is_readable($path_dark));
+        $this->assertFalse($this->fileIsReadable($path_dark));
         $path_light = Configure::read('App.paths.qr_codes') . DS . '2-' . $light . '.svg';
         if (file_exists($path_light)) {
             unlink($path_light);
         }
-        $this->assertFalse(is_readable($path_light));
+        $this->assertFalse($this->fileIsReadable($path_light));
 
         // no color set in entity, defaults to dark
         $entity = $this->QrCodes->get(2);
@@ -693,15 +708,15 @@ class QrCodesTableTest extends TestCase
 
         $QR = new PhpQrGenerator($entity);
         $QR->generate();
-        $this->assertTrue(is_readable($path_dark));
-        $this->assertFalse(is_readable($path_light));
+        $this->assertTrue($this->fileIsReadable($path_dark));
+        $this->assertFalse($this->fileIsReadable($path_light));
 
         // test light
         $entity = $this->QrCodes->get(2);
         $QR = new PhpQrGenerator($entity);
         $QR->setColor(Configure::read('QrCode.lightcolor'));
         $QR->generate();
-        $this->assertTrue(is_readable($path_light));
+        $this->assertTrue($this->fileIsReadable($path_light));
     }
 
     /**
