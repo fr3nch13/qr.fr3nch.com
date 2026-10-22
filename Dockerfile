@@ -16,6 +16,16 @@ RUN GOBIN=/out go install github.com/rhysd/actionlint/cmd/actionlint@latest
 
 FROM php:8.5-apache-trixie AS base
 
+# Keep the system up-to-date with the latest security patches.
+# SECURITY_UPDATES_CACHE_BUST is used to invalidate the caching of this stage
+# it's set to a unique value when the image is built in the CI pipeline jobs.
+ARG SECURITY_UPDATES_CACHE_BUST
+RUN echo "Security updates cache key: ${SECURITY_UPDATES_CACHE_BUST}" \
+    && apt-get update \
+    && export DEBIAN_FRONTEND=noninteractive \
+    && apt-get upgrade -y \
+    && apt-get clean -y && rm -rf /var/lib/apt/lists/*
+
 # Install runtime libraries and the app's database client.
 RUN apt-get update \
     && export DEBIAN_FRONTEND=noninteractive \

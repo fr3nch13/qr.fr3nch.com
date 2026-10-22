@@ -122,6 +122,9 @@ jobs:
       with:
         context: .
         target: development
+        pull: true
+        build-args: |
+          SECURITY_UPDATES_CACHE_BUST=${{ github.run_id }}-${{ github.run_attempt }}
         load: true
         tags: ${{ env.DOCKER_HUB_IMAGE_NAME }}:${{ steps.meta.outputs.image_tag }}
         no-cache: ${{ github.event_name == 'schedule' }}
@@ -285,6 +288,9 @@ jobs:
       with:
         context: .
         target: production
+        pull: true
+        build-args: |
+          SECURITY_UPDATES_CACHE_BUST=${{ github.run_id }}-${{ github.run_attempt }}
         push: true
         tags: ${{ steps.image-meta.outputs.docker_tags }}
         no-cache: ${{ github.event_name == 'schedule' }}
